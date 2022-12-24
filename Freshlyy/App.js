@@ -8,7 +8,7 @@ import Theme from './constants/theme';
 
 const Stack = createNativeStackNavigator();
 
-import HomeScreen from './screens/HomeScreen';
+import StartScreen from './screens/StartScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -20,7 +20,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name='Home'
-          component={HomeScreen}
+          component={StartScreen}
           options={{
             title: '',
             headerShown: false,
