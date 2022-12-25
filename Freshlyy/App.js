@@ -3,12 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import { P, H1 } from './components/Texts';
+import Header from './components/Header';
 
 import Theme from './constants/theme';
 
 const Stack = createNativeStackNavigator();
 
 import StartScreen from './screens/StartScreen';
+import ProductDetailScreen from './screens/ProductDetailScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -19,10 +21,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='Home'
-          component={StartScreen}
+          name='Product Details'
+          component={ProductDetailScreen}
           options={{
-            title: '',
+            title: 'Carrots',
             headerShown: false,
           }}
         />
