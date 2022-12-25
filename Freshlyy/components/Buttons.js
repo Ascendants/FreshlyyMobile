@@ -11,7 +11,7 @@ module.exports.BigButton = function (props) {
 };
 const styles = StyleSheet.create({
   bigButtonText: {
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'center',
     color: Theme.textColor,
   },
