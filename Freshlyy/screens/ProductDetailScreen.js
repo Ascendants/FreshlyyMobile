@@ -9,9 +9,15 @@ import {
 } from '../components/Buttons';
 import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
+import ImageDots from '../components/ImageDots';
 import Theme from '../constants/theme';
 
 export default function () {
+  const [imageScroll, setImageScroll] = React.useState(0);
+  function scrollImage(e) {
+    const scroll = Math.round(e.nativeEvent.contentOffset.x / 345);
+    setImageScroll(scroll);
+  }
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -19,9 +25,33 @@ export default function () {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.pageContent}>
             <View style={styles.productImageContainer}>
-              <Image
-                source={require('../assets/carrot.jpg')}
-                style={styles.productImage}
+              <ScrollView
+                style={styles.productImageSwiper}
+                horizontal={true}
+                decelerationRate={0}
+                snapToInterval={345} //your element width
+                snapToAlignment={'center'}
+                showsHorizontalScrollIndicator={false}
+                onScroll={scrollImage}
+                scrollEventThrottle={300}
+              >
+                <Image
+                  source={require('../assets/carrot.jpg')}
+                  style={styles.productImage}
+                />
+                <Image
+                  source={require('../assets/carrot2.jpg')}
+                  style={styles.productImage}
+                />
+                <Image
+                  source={require('../assets/carrot3.jpg')}
+                  style={styles.productImage}
+                />
+              </ScrollView>
+              <ImageDots
+                style={styles.dots}
+                numOfElem={3}
+                index={imageScroll}
               />
             </View>
             <View style={styles.actionArea}>
@@ -50,9 +80,6 @@ export default function () {
                     />
                   }
                 />
-                {/* <IconButton icon='heart' iconType='feather' />
-                <IconButton icon='message-square' iconType='feather' />
-                <IconButton icon='ios-share-outline' iconType='ionicons' /> */}
               </View>
             </View>
             <View style={styles.ratingArea}>
@@ -121,13 +148,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
   pageContent: {
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   productImageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
     flex: 1,
+    // width: 350,
+  },
+  productImageSwiper: {
+    width: 345,
+    height: 325,
   },
   productImage: {
     flex: 1,
@@ -135,6 +167,11 @@ const styles = StyleSheet.create({
     height: 325,
     borderRadius: 30,
     resizeMode: 'cover',
+    marginHorizontal: 10,
+  },
+  dots: {
+    position: 'absolute',
+    bottom: 5,
   },
   actionArea: {
     flexDirection: 'row',
