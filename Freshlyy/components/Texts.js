@@ -1,4 +1,3 @@
-import { ThemeConsumer } from '@rneui/themed';
 import React from 'react';
 import { Text, View } from 'react-native';
 import Theme from '../constants/theme';
