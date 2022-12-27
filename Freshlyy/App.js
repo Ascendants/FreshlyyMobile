@@ -27,6 +27,7 @@ export default function App() {
             title: 'Carrots',
             headerShown: false,
           }}
+          initialParams={{ pid: 'P001' }}
         />
         {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
       </Stack.Navigator>

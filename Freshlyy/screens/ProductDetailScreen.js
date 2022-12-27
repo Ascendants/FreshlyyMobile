@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FreshlyyImageStore } from '../utils/firebase';
+import { ref, listAll, getDownloadURL, getStorage } from 'firebase/storage';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
 import {
   GreyButton,
@@ -12,12 +14,61 @@ import Header from '../components/Header';
 import ImageDots from '../components/ImageDots';
 import Theme from '../constants/theme';
 
-export default function () {
+export default function ({ route, navigation }) {
   const [imageScroll, setImageScroll] = React.useState(0);
+  const [selectedQuantity, setSelectedQuantity] = React.useState(0.5);
+  const [product, setProduct] = React.useState({ pid: route.params.pid });
+  const [pImages, setPImages] = React.useState([]);
+  function increaseQuantity() {
+    setSelectedQuantity((curr) => curr + 0.5);
+  }
+  function decreaseQuantity() {
+    setSelectedQuantity((curr) => Math.max(curr - 0.5, 0.5));
+  }
   function scrollImage(e) {
     const scroll = Math.round(e.nativeEvent.contentOffset.x / 345);
     setImageScroll(scroll);
   }
+  React.useEffect(() => {
+    const productId = product.pid;
+    setProduct((prev) => {
+      return {
+        ...prev,
+        title: 'Sri Lankan Carrots',
+        description:
+          "I dug these bad boys up just today morning from my farm. I'll deliver them for you real quick so that the freshness of them will be intact!",
+        seller: 'Haritha',
+        price: '1250',
+        unit: 'KG',
+        distance: 2.5,
+        pricePerKm: 100,
+        minQtyIncrement: 0.5,
+        numOfReviews: 10,
+        overallRating: 4,
+      };
+    });
+    const imageFolder = ref(FreshlyyImageStore, '/ProductImages/' + productId);
+    listAll(imageFolder)
+      .then((res) => {
+        Promise.all(res.items.map((item) => getDownloadURL(item))).then(
+          (urls) => {
+            setPImages(
+              urls.sort((pitem, nitem) => {
+                const pattern = new RegExp(/%2..*%2F(.*?)\?alt/);
+                const pnum = parseInt(
+                  pattern.exec(pitem)[1].split('_')[1].split('.')[0]
+                );
+                const nnum = parseInt(
+                  pattern.exec(nitem)[1].split('_')[1].split('.')[0]
+                );
+                return pnum - nnum;
+              })
+            );
+          }
+        );
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -36,26 +87,26 @@ export default function () {
                 scrollEventThrottle={300}
               >
                 <Image
-                  source={require('../assets/carrot.jpg')}
+                  source={{ uri: pImages[0] }}
                   style={styles.productImage}
                 />
                 <Image
-                  source={require('../assets/carrot2.jpg')}
+                  source={{ uri: pImages[1] }}
                   style={styles.productImage}
                 />
                 <Image
-                  source={require('../assets/carrot3.jpg')}
+                  source={{ uri: pImages[2] }}
                   style={styles.productImage}
                 />
               </ScrollView>
               <ImageDots
                 style={styles.dots}
-                numOfElem={3}
+                numOfElem={pImages.length}
                 index={imageScroll}
               />
             </View>
             <View style={styles.actionArea}>
-              <H3 style={styles.productTopic}>Sri Lankan Carrots</H3>
+              <H3 style={styles.productTopic}>{product.title}</H3>
               <View style={styles.actionButtonContainer}>
                 <GreyButton
                   title={
@@ -90,30 +141,26 @@ export default function () {
                 <AntDesign name='star' size={18} color={Theme.yellow} />
                 <AntDesign name='staro' size={18} color={Theme.yellow} />
               </View>
-              <P>10 Reviews</P>
+              <P>{product.numOfReviews} Reviews</P>
             </View>
             <View style={styles.sellerDetail}>
               <Image
                 source={require('../assets/seller.jpg')}
                 style={styles.sellerImage}
               />
-              <H4 style={styles.sellerName}>Haritha</H4>
+              <H4 style={styles.sellerName}>{product.seller}</H4>
             </View>
             <View style={styles.detail}>
-              <Pr fontSize={20}>1250</Pr>
+              <Pr fontSize={20}>{product.price}</Pr>
               <H4>/KG</H4>
             </View>
             <View style={styles.detail}>
-              <H4>2.5 KM Away | </H4>
-              <Pr fontSize={20}>100</Pr>
+              <H4>{product.distance} KM Away | </H4>
+              <Pr fontSize={20}>{product.pricePerKm}</Pr>
               <H4>/KM</H4>
             </View>
             <View style={styles.detail}>
-              <P>
-                I dug these bad boys up just today morning from my farm. I'll
-                deliver them for you real quick so that the freshness of them
-                will be intact!
-              </P>
+              <P>{product.description}</P>
             </View>
             <View>
               <View style={styles.qtyArea}>
@@ -121,8 +168,11 @@ export default function () {
                   title={
                     <Feather name='minus' size={24} color={Theme.primary} />
                   }
+                  onPress={decreaseQuantity}
                 />
-                <H3>0.5 KG</H3>
+                <H3 style={{ width: 100, textAlign: 'center' }}>
+                  {selectedQuantity} KG
+                </H3>
                 <FilledBigButton
                   title={
                     <Ionicons
@@ -131,6 +181,7 @@ export default function () {
                       color={Theme.contrastTextColor}
                     />
                   }
+                  onPress={increaseQuantity}
                 />
               </View>
               <ShadedBigButton title='Add to Cart' />

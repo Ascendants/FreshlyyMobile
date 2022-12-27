@@ -5,14 +5,20 @@ import Theme from '../constants/theme';
 
 module.exports.BigButton = function (props) {
   return (
-    <TouchableOpacity style={styles.bigButtonBackground}>
+    <TouchableOpacity
+      style={styles.bigButtonBackground}
+      onPress={props.onPress}
+    >
       <Text style={styles.bigButtonText}>{props.title}</Text>
     </TouchableOpacity>
   );
 };
 module.exports.GreyButton = function (props) {
   return (
-    <TouchableOpacity style={[styles.greyButtonBackground]}>
+    <TouchableOpacity
+      style={[styles.greyButtonBackground]}
+      onPress={props.onPress}
+    >
       <Text>{props.title}</Text>
     </TouchableOpacity>
   );
@@ -21,6 +27,7 @@ module.exports.GreyButton = function (props) {
 module.exports.FilledBigButton = function (props) {
   return (
     <TouchableOpacity
+      onPress={props.onPress}
       style={[styles.bigButtonBackground, styles.filledBigButtonBackground]}
     >
       <Text style={[styles.bigButtonText, styles.filledBigButtonText]}>
@@ -32,6 +39,7 @@ module.exports.FilledBigButton = function (props) {
 module.exports.ShadedBigButton = function (props) {
   return (
     <TouchableOpacity
+      onPress={props.onPress}
       style={[styles.bigButtonBackground, styles.shadedBigButtonBackground]}
     >
       <Text style={[styles.bigButtonText, styles.shadedBigButtonText]}>
