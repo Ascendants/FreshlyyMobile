@@ -25,9 +25,13 @@ export default function () {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
+        // position: 'absolute',
         alignItems: 'center',
-        bottom: 20,    
+        justifyContent: 'center',
+        margin: 0,
+        // bottom: 20,
+        // backgroundColor: 'black'
+            
     },
     navbar: {
         flexDirection: 'row',
