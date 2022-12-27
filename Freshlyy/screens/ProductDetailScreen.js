@@ -13,12 +13,17 @@ import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
 import ImageDots from '../components/ImageDots';
 import Theme from '../constants/theme';
+import ENV from '../constants/env';
+
+import Rating from '../components/Rating';
 
 export default function ({ route, navigation }) {
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0.5);
-  const [product, setProduct] = React.useState({ pid: route.params.pid });
-  const [pImages, setPImages] = React.useState([]);
+  const [product, setProduct] = React.useState({
+    purl: route.params.purl,
+    imageUrls: [],
+  });
   function increaseQuantity() {
     setSelectedQuantity((curr) => curr + 0.5);
   }
@@ -30,42 +35,15 @@ export default function ({ route, navigation }) {
     setImageScroll(scroll);
   }
   React.useEffect(() => {
-    const productId = product.pid;
-    setProduct((prev) => {
-      return {
-        ...prev,
-        title: 'Sri Lankan Carrots',
-        description:
-          "I dug these bad boys up just today morning from my farm. I'll deliver them for you real quick so that the freshness of them will be intact!",
-        seller: 'Haritha',
-        price: '1250',
-        unit: 'KG',
-        distance: 2.5,
-        pricePerKm: 100,
-        minQtyIncrement: 0.5,
-        numOfReviews: 10,
-        overallRating: 4,
-      };
-    });
-    const imageFolder = ref(FreshlyyImageStore, '/ProductImages/' + productId);
-    listAll(imageFolder)
+    const purl = product.purl;
+    fetch(ENV.backend + '/public/product/' + purl, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
       .then((res) => {
-        Promise.all(res.items.map((item) => getDownloadURL(item))).then(
-          (urls) => {
-            setPImages(
-              urls.sort((pitem, nitem) => {
-                const pattern = new RegExp(/%2..*%2F(.*?)\?alt/);
-                const pnum = parseInt(
-                  pattern.exec(pitem)[1].split('_')[1].split('.')[0]
-                );
-                const nnum = parseInt(
-                  pattern.exec(nitem)[1].split('_')[1].split('.')[0]
-                );
-                return pnum - nnum;
-              })
-            );
-          }
-        );
+        setProduct((prev) => {
+          return { ...prev, ...res.product };
+        });
       })
       .catch((err) => console.log(err));
   }, []);
@@ -86,22 +64,19 @@ export default function ({ route, navigation }) {
                 onScroll={scrollImage}
                 scrollEventThrottle={300}
               >
-                <Image
-                  source={{ uri: pImages[0] }}
-                  style={styles.productImage}
-                />
-                <Image
-                  source={{ uri: pImages[1] }}
-                  style={styles.productImage}
-                />
-                <Image
-                  source={{ uri: pImages[2] }}
-                  style={styles.productImage}
-                />
+                {product.imageUrls.map((image) => {
+                  return (
+                    <Image
+                      key={image}
+                      source={{ uri: image }}
+                      style={styles.productImage}
+                    />
+                  );
+                })}
               </ScrollView>
               <ImageDots
                 style={styles.dots}
-                numOfElem={pImages.length}
+                numOfElem={product.imageUrls.length}
                 index={imageScroll}
               />
             </View>
@@ -134,21 +109,15 @@ export default function ({ route, navigation }) {
               </View>
             </View>
             <View style={styles.ratingArea}>
-              <View style={styles.starContainer}>
-                <AntDesign name='star' size={18} color={Theme.yellow} />
-                <AntDesign name='star' size={18} color={Theme.yellow} />
-                <AntDesign name='star' size={18} color={Theme.yellow} />
-                <AntDesign name='star' size={18} color={Theme.yellow} />
-                <AntDesign name='staro' size={18} color={Theme.yellow} />
-              </View>
-              <P>{product.numOfReviews} Reviews</P>
+              <Rating value={product.overallRating} />
+              <P>10 Reviews</P>
             </View>
-            <View style={styles.sellerDetail}>
+            <View style={styles.farmerDetail}>
               <Image
-                source={require('../assets/seller.jpg')}
-                style={styles.sellerImage}
+                source={require('../assets/farmer.jpg')}
+                style={styles.farmerImage}
               />
-              <H4 style={styles.sellerName}>{product.seller}</H4>
+              <H4 style={styles.farmerName}>{product.farmerName}</H4>
             </View>
             <View style={styles.detail}>
               <Pr fontSize={20}>{product.price}</Pr>
@@ -241,11 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
   },
-  starContainer: {
-    marginRight: 10,
-    flexDirection: 'row',
-  },
-  sellerDetail: {
+  farmerDetail: {
     backgroundColor: Theme.overlay,
     flexDirection: 'row',
     padding: 10,
@@ -253,13 +218,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
   },
-  sellerImage: {
+  farmerImage: {
     width: 30,
     height: 30,
     marginRight: 10,
     borderRadius: 15,
   },
-  sellerName: {
+  farmerName: {
     color: Theme.primary,
   },
   detail: {
