@@ -114,7 +114,7 @@ export default function ({ route, navigation }) {
             </View>
             <View style={styles.farmerDetail}>
               <Image
-                source={require('../assets/farmer.jpg')}
+                source={{ uri: product.farmerImage }}
                 style={styles.farmerImage}
               />
               <H4 style={styles.farmerName}>{product.farmerName}</H4>
