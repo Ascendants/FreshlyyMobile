@@ -27,7 +27,9 @@ export default function App() {
             title: 'Carrots',
             headerShown: false,
           }}
-          initialParams={{ pid: 'P001' }}
+          initialParams={{
+            purl: 'sri_lankan_carrots_63aaf131d5c6be39b45d74b9',
+          }}
         />
         {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
       </Stack.Navigator>
