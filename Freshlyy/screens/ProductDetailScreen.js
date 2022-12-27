@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginRight: 10,
-    borderRadius: '50%',
+    borderRadius: 15,
   },
   sellerName: {
     color: Theme.primary,
