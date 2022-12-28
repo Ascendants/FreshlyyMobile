@@ -96,6 +96,23 @@ module.exports.H5 = function (props) {
   );
 };
 
+module.exports.H6 = function (props) {
+  return (
+    <Text
+      style={{
+        fontFamily: 'Poppins',
+        color: Theme.textColor,
+        fontSize: 10,
+        fontWeight: 'light',
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  );
+};
+
+
 module.exports.Pr = function (props) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
