@@ -5,7 +5,7 @@ import { FreshlyyImageStore } from '../utils/firebase';
 import { ref, listAll, getDownloadURL, getStorage } from 'firebase/storage';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
 import {
-  GreyButton,
+  SmallSecondaryButton,
   FilledBigButton,
   ShadedBigButton,
 } from '../components/Buttons';
@@ -83,7 +83,7 @@ export default function ({ route, navigation }) {
             <View style={styles.actionArea}>
               <H3 style={styles.productTopic}>{product.title}</H3>
               <View style={styles.actionButtonContainer}>
-                <GreyButton
+                <SmallSecondaryButton
                   title={
                     <Feather
                       name='message-circle'
@@ -92,12 +92,12 @@ export default function ({ route, navigation }) {
                     />
                   }
                 />
-                <GreyButton
+                <SmallSecondaryButton
                   title={
                     <Feather name='heart' size={24} color={Theme.textColor} />
                   }
                 />
-                <GreyButton
+                <SmallSecondaryButton
                   title={
                     <Ionicons
                       name='ios-share-outline'
