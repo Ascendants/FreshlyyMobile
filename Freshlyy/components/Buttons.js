@@ -13,7 +13,7 @@ module.exports.BigButton = function (props) {
     </TouchableOpacity>
   );
 };
-module.exports.GreyButton = function (props) {
+module.exports.SmallSecondaryButton = function (props) {
   return (
     <TouchableOpacity
       style={[styles.greyButtonBackground]}
