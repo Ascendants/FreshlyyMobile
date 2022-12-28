@@ -36,6 +36,20 @@ module.exports.FilledBigButton = function (props) {
     </TouchableOpacity>
   );
 };
+
+module.exports.FilledNormalButton = function (props) {
+  return (
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={styles.filledNormalButtonBackground}
+    >
+      <Text style={styles.filledNormalButtonText}>
+        {props.title}
+      </Text>
+    </TouchableOpacity>
+  )
+}
+
 module.exports.ShadedBigButton = function (props) {
   return (
     <TouchableOpacity
@@ -73,6 +87,16 @@ const styles = StyleSheet.create({
   filledBigButtonText: {
     color: Theme.contrastTextColor,
   },
+  filledNormalButtonBackground: {
+    padding: 2,
+    width: '25%',
+    borderRadius: 10,
+    backgroundColor: Theme.primary,
+    color: Theme.contrastTextColor,
+  },  
+  filledNormalButtonText: {
+    color: Theme.contrastTextColor,
+  }, 
   greyButtonBackground: {
     alignSelf: 'center',
     borderRadius: 10,
