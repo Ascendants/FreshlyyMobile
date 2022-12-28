@@ -11,6 +11,8 @@ const Stack = createNativeStackNavigator();
 
 import StartScreen from './screens/StartScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
+import GetStartedScreen from './screens/GetStartedScreen';
+import HomeScreen from './screens/HomeScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -21,13 +23,13 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='Product Details'
-          component={ProductDetailScreen}
+          name='Get Started'
+          component={GetStartedScreen}
           options={{
-            title: 'Carrots',
+            title: 'Get Started',
             headerShown: false,
           }}
-          initialParams={{ pid: 'P001' }}
+          //initialParams={{ pid: 'P001' }}
         />
         {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
       </Stack.Navigator>
