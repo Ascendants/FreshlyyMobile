@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
-import {H4, H1} from "./Texts";
+import {H5, H1, P} from "./Texts";
 import theme from "../constants/theme";
 
 export default function() {
@@ -8,7 +8,7 @@ export default function() {
         <View style={styles.card}>
             <Image source={require('../assets/kom.jpg')} style={styles.image}/>
             <View style={styles.cardElements}>
-                <Text style={styles.name}>Komuthu Fernando</Text>
+                <P style={styles.name}>Komuthu Fernando</P>
                 <Text style={styles.subTopic}>Total Earnings</Text>
                 <Text style={styles.mainTopic}>Rs 10 000</Text>    
             </View>
@@ -35,12 +35,10 @@ const styles = StyleSheet.create({
     },
 
     name: {
-        fontFamily: 'Poppins',
-        fontWeight: 'Light',
+
         color: theme.primary,
         paddingVertical: 10,
         paddingHorizontal: 20,
-        alignContent: 'flex-start'
     },
 
     subTopic: {
