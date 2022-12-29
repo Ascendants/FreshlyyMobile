@@ -1,15 +1,15 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import {H5, H6} from "../components/Texts";
 import Theme from "../constants/theme";
 
 export default function(props) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <Image source={props.imageUri} style={styles.icon}/>
       <H5 style={styles.number}>{props.number}</H5>
       <H6>{props.text}</H6>
-    </View>
+    </TouchableOpacity>
   )
 }
 

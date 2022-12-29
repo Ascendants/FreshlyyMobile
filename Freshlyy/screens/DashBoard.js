@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text, ScrollView } from 'react-native';
 import { H1, P } from '../components/Texts';
+import {FilledBigButton} from '../components/Buttons';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import InfoCardDB from '../components/InfoCardDB';
@@ -35,9 +36,10 @@ export default function () {
 						<DashBoardCard 
 							imageUri={require('../assets/pending.png')} 
 							number={3}
-							text='Pending Payments'
+							text='Pending Approvals'
 						/>
 					</View>
+					<FilledBigButton title='Add Product' style={styles.button}/>
 				</ScrollView> 
 				<Navbar />
 			</View>
@@ -56,5 +58,10 @@ const styles = StyleSheet.create({
 		marginTop: 30,
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
-	}
+	},
+	button: {
+		width: '85%',
+		margin: 30,
+		padding: 6,
+	},
 });
