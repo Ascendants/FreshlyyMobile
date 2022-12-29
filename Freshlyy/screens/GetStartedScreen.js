@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { H1, H2 } from '../components/Texts';
 import Theme from '../constants/theme';
-import { FilledBigButton } from '../components/Buttons';
+import { Button } from '../components/Buttons';
 import theme from '../constants/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
@@ -16,7 +16,7 @@ export default function () {
         style={styles.startImage}
       />
       <H1 style={styles.logoText}>Welcome!</H1>
-      <FilledBigButton title='Create Your Account' />
+      <Button title='Create Your Account' color='filledPrimary' size='big' />
       <Text style={styles.noAccText}>Already have an account?</Text>
 
       <TouchableOpacity>

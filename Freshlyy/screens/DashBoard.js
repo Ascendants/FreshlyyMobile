@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text, ScrollView } from 'react-native';
 import { H1, P } from '../components/Texts';
-import { FilledBigButton } from '../components/Buttons';
+import { Button } from '../components/Buttons';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import InfoCardDB from '../components/InfoCardDB';
@@ -40,7 +40,12 @@ export default function () {
               text='Pending Approvals'
             />
           </View>
-          <FilledBigButton title='Add Product' style={styles.button} />
+          <Button
+            size='small'
+            color='shadedPrimary'
+            title='Add Product'
+            // style={styles.button}
+          />
           <ServicesCardDB />
         </ScrollView>
         <Navbar />

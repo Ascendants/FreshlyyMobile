@@ -4,11 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FreshlyyImageStore } from '../utils/firebase';
 import { ref, listAll, getDownloadURL, getStorage } from 'firebase/storage';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
-import {
-  SmallSecondaryButton,
-  FilledBigButton,
-  ShadedBigButton,
-} from '../components/Buttons';
+import { Button } from '../components/Buttons';
 import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
 import ImageDots from '../components/ImageDots';
@@ -83,7 +79,7 @@ export default function ({ route, navigation }) {
             <View style={styles.actionArea}>
               <H3 style={styles.productTopic}>{product.title}</H3>
               <View style={styles.actionButtonContainer}>
-                <SmallSecondaryButton
+                <Button
                   title={
                     <Feather
                       name='message-circle'
@@ -91,13 +87,17 @@ export default function ({ route, navigation }) {
                       color={Theme.textColor}
                     />
                   }
+                  size='small'
+                  color='shadedTertiary'
                 />
-                <SmallSecondaryButton
+                <Button
                   title={
                     <Feather name='heart' size={24} color={Theme.textColor} />
                   }
+                  size='small'
+                  color='shadedTertiary'
                 />
-                <SmallSecondaryButton
+                <Button
                   title={
                     <Ionicons
                       name='ios-share-outline'
@@ -105,6 +105,8 @@ export default function ({ route, navigation }) {
                       color={Theme.textColor}
                     />
                   }
+                  size='small'
+                  color='shadedTertiary'
                 />
               </View>
             </View>
@@ -133,7 +135,9 @@ export default function ({ route, navigation }) {
             </View>
             <View>
               <View style={styles.qtyArea}>
-                <ShadedBigButton
+                <Button
+                  size='big'
+                  color='shadedPrimary'
                   title={
                     <Feather name='minus' size={24} color={Theme.primary} />
                   }
@@ -142,7 +146,9 @@ export default function ({ route, navigation }) {
                 <H3 style={{ width: 100, textAlign: 'center' }}>
                   {selectedQuantity} KG
                 </H3>
-                <FilledBigButton
+                <Button
+                  size='big'
+                  color='filledPrimary'
                   title={
                     <Ionicons
                       name='add-outline'
@@ -153,7 +159,7 @@ export default function ({ route, navigation }) {
                   onPress={increaseQuantity}
                 />
               </View>
-              <ShadedBigButton title='Add to Cart' />
+              <Button size='big' color='shadedPrimary' title='Add to Cart' />
             </View>
           </View>
         </ScrollView>

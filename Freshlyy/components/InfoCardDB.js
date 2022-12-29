@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { P, Pr, H1, H4 } from './Texts';
 import Theme from '../constants/theme';
-import { FilledNormalButton } from '../components/Buttons';
+import { Button } from '../components/Buttons';
 
 export default function () {
   return (
@@ -17,14 +17,9 @@ export default function () {
             </Pr>
           </H1>
         </View>
-        {/* <FilledNormalButton title="Withdraw" style={[styles.button, styles.buttonText]}/> */}
         <View style={styles.cardRight}>
           <Image source={require('../assets/kom.jpg')} style={styles.image} />
-          <TouchableOpacity>
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>More Info</Text>
-            </View>
-          </TouchableOpacity>
+          <Button title='More Info' size='normal' color='filledPrimary' />
         </View>
       </View>
     </View>
