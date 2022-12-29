@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
-import { H2, H3 } from '../components/Texts';
-import { BigButton } from '../components/Buttons';
+import { H2, H4 } from '../components/Texts';
+import { Button } from '../components/Buttons';
 
 import Theme from '../constants/theme';
 
@@ -22,10 +22,10 @@ export default function () {
           </View>
           <View style={styles.descContainer}>
             <H2 style={styles.text}>Welcome</H2>
-            <H3 style={{ ...styles.text, ...styles.description }}>
+            <H4 style={{ ...styles.text, ...styles.description }}>
               Fresh Produce. To the Doorstep.
-            </H3>
-            <BigButton title='Get Started' />
+            </H4>
+            <Button size='big' color='filledPrimary' title='Get Started' />
           </View>
         </View>
       </ImageBackground>

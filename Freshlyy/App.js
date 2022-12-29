@@ -13,6 +13,7 @@ import StartScreen from './screens/StartScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
 import DashBoardScreen from './screens/DashBoard';
 import GetStartedScreen from './screens/GetStartedScreen';
+import DashBoard from './screens/DashBoard';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -24,7 +25,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name='DashBoard'
-          component={ProductDetailScreen}
+          component={StartScreen}
           options={{
             title: 'DashBoard',
             headerShown: false,
