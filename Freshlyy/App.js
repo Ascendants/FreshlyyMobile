@@ -24,8 +24,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='DashBoard'
-          component={StartScreen}
+          name="Get Started"
+          component={SignUpScreen}
           options={{
             title: 'DashBoard',
             headerShown: false,
