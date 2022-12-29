@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import InfoCardDB from '../components/InfoCardDB';
 import DashBoardCard from '../components/DashBoardCard';
+import ServicesCardDB from '../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function () {
@@ -40,6 +41,7 @@ export default function () {
 						/>
 					</View>
 					<FilledBigButton title='Add Product' style={styles.button}/>
+					<ServicesCardDB />
 				</ScrollView> 
 				<Navbar />
 			</View>
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
 	button: {
 		width: '85%',
 		margin: 30,
-		padding: 6,
+		padding: 5,
+		fontSize: 15,
 	},
 });
