@@ -69,9 +69,8 @@ const styles = StyleSheet.create({
     color: Theme.textColor,
   },
   bigButtonBackground: {
-    padding: 5, //15
-    margin: 30, //10
-    width: '85%',
+    padding: 15, 
+    margin: 10, 
     alignSelf: 'center',
     borderRadius: 18,
     backgroundColor: 'white',
