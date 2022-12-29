@@ -11,8 +11,7 @@ const Stack = createNativeStackNavigator();
 
 import StartScreen from './screens/StartScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
-import GetStartedScreen from './screens/GetStartedScreen';
-import HomeScreen from './screens/HomeScreen';
+import DashBoardScreen from './screens/DashBoard';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -23,10 +22,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='Get Started'
-          component={GetStartedScreen}
+          name='DashBoard'
+          component={DashBoardScreen}
           options={{
-            title: 'Get Started',
+            title: 'DashBoard',
             headerShown: false,
           }}
           initialParams={{

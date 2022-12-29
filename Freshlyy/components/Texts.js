@@ -80,6 +80,55 @@ module.exports.H4 = function (props) {
   );
 };
 
+module.exports.H5 = function (props) {
+  return (
+    <Text
+      style={{
+        fontFamily: 'Poppins',
+        color: Theme.textColor,
+        fontSize: 15,
+        fontWeight: 'light',
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  );
+};
+
+module.exports.H6 = function (props) {
+  return (
+    <Text
+      style={{
+        fontFamily: 'Poppins',
+        color: Theme.textColor,
+        fontSize: 10,
+        fontWeight: 'light',
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  );
+};
+
+module.exports.H7 = function (props) {
+  return (
+    <Text
+      style={{
+        fontFamily: 'Poppins',
+        color: Theme.textColor,
+        fontSize: 8,
+        fontWeight: 'light',
+        paddingTop: 5,
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  );
+};
+
 module.exports.Pr = function (props) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
