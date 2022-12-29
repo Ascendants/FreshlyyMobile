@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
         width:'100%',
-        bottom: 20,
+        bottom: 0,
             
     },
     navbar: {
