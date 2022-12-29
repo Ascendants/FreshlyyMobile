@@ -1,33 +1,47 @@
-import React from "react";
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
-import {H5, H6, H7} from '../components/Texts';
-import Theme from "../constants/theme";
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { H5, H6, H7 } from '../components/Texts';
+import Theme from '../constants/theme';
 
-export default function() {
-  return(
+export default function () {
+  return (
     <View style={styles.container}>
       <H5 style={styles.topic}>My Services</H5>
-      <View style={styles.notify}><H6 style={styles.notifyNumber}>20</H6></View>
+      <View style={styles.notify}>
+        <H6 style={styles.notifyNumber}>20</H6>
+      </View>
       <View style={styles.iconContainer}>
         <TouchableOpacity>
-          <Image source={require('../assets/message.png')} style={styles.logo}/>
+          <Image
+            source={require('../assets/message.png')}
+            style={styles.logo}
+          />
           <H7>Messages</H7>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Image source={require('../assets/question.png')} style={styles.logo}/>
+          <Image
+            source={require('../assets/question.png')}
+            style={styles.logo}
+          />
           <H7>Help Center</H7>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Image source={require('../assets/customer-support.png')} style={styles.logo}/>
+          <Image
+            source={require('../assets/customer-support.png')}
+            style={styles.logo}
+          />
           <H7>Support Ticket</H7>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Image source={require('../assets/documents.png')} style={styles.logo}/>
+          <Image
+            source={require('../assets/documents.png')}
+            style={styles.logo}
+          />
           <H7>Reviews</H7>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -36,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.primaryShadeLighter,
     width: '90%',
     height: 160,
-    borderRadius: 30
+    borderRadius: 30,
   },
   topic: {
     margin: 20,
@@ -68,5 +82,5 @@ const styles = StyleSheet.create({
   },
   notifyNumber: {
     color: 'white',
-  }
-})
+  },
+});

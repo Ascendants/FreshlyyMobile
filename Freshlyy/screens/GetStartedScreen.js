@@ -16,8 +16,8 @@ export default function () {
         style={styles.startImage}
       />
       <H1 style={styles.logoText}>Welcome!</H1>
-      <FilledBigButton title="Create your account" />
-      <Text style={styles.noAccText}>Already have an account!</Text>
+      <FilledBigButton title='Create Your Account' />
+      <Text style={styles.noAccText}>Already have an account?</Text>
 
       <TouchableOpacity>
         <Text style={styles.signInText}>Sign in here!</Text>

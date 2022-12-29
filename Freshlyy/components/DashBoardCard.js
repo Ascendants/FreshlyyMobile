@@ -1,19 +1,19 @@
-import React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
-import {H5, H6} from "../components/Texts";
-import Theme from "../constants/theme";
+import React from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { H5, H6 } from '../components/Texts';
+import Theme from '../constants/theme';
 
-export default function(props) {
+export default function (props) {
   const simpleAlert = () => {
     alert('hello');
-  }
+  };
   return (
     <TouchableOpacity style={styles.container} onPress={simpleAlert}>
-      <Image source={props.imageUri} style={styles.icon}/>
+      <Image source={props.imageUri} style={styles.icon} />
       <H5 style={styles.number}>{props.number}</H5>
       <H6>{props.text}</H6>
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     tintColor: Theme.primary,
   },
   number: {
-    color:Theme.secondary,
-    paddingTop:4,
+    color: Theme.secondary,
+    paddingTop: 4,
     fontWeight: 'bold',
   },
-})
+});
