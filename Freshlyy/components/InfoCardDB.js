@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
-import {H5, H1, P} from "./Texts";
+import {P, Pr} from "./Texts";
 import Theme from "../constants/theme";
 import { FilledNormalButton } from "../components/Buttons";
 
@@ -11,12 +11,12 @@ export default function() {
             <View style={styles.cardElements}>
                 <P style={styles.name}>Komuthu Fernando</P>
                 <Text style={styles.subTopic}>Total Earnings</Text>
-                <Text style={styles.mainTopic}>Rs 10 000</Text>    
+                <Pr style={styles.mainTopic} fontSize={40}>10 000</Pr>    
             </View>
             {/* <FilledNormalButton title="Withdraw" style={[styles.button, styles.buttonText]}/> */}
             <TouchableOpacity>
                 <View style={styles.button}>
-                    <Text style={styles.buttonText}>Withdraw</Text>
+                    <Text style={styles.buttonText}>More Info</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -52,10 +52,12 @@ const styles = StyleSheet.create({
     },
 
     mainTopic: {
-        fontSize: 40,
+        // fontSize: 40,
         fontWeight: 'bold',
         color: 'black',
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
+        paddingLeft:20,
+        // marginLeft: 20,
         alignContent: 'flex-start'
     },
 
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'flex-end',    
         right: 20,
-        // bottom: 0,
+        bottom: 0,
         backgroundColor: Theme.primary,
         padding: 5,
         width: '25%',
