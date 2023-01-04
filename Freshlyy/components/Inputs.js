@@ -9,16 +9,42 @@ import {
   TextInput,
 } from 'react-native';
 import Theme from '../constants/theme';
+import DropDownPicker from 'react-native-dropdown-picker';
+import DatePicker from 'react-native-date-picker';
+import { BigButton } from './Buttons';
 
-export default function (props) {
+module.exports.TextInputBox = function (props) {
   return (
     <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-      <TextInput style={styles.input} placeholder={props.placeholder} />
+      <TextInput style={styles.input} placeholder={props.placeholder} keyboardType={props.type} />
     </View>
   );
-}
+};
 
+module.exports.DropDownPicker = function (props) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState(props.list);
+  return (
+    <View style={styles.dropdowncont}>
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        style={styles.dropdown}
+      />
+    </View>
+  );
+};
+// module.exports.DatePicker = function (props) {
+//   const [date, setDate] = useState(new Date());
+
+//   return <DatePicker date={date} onDateChange={setDate} />;
+// };
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -56,5 +82,13 @@ const styles = StyleSheet.create({
     borderColor: Theme.overlay,
     borderWidth: 1,
     borderRadius: 10,
+  },
+  dropdowncont: {
+    paddingTop: 15,
+  },
+  dropdown: {
+    backgroundColor: Theme.overlay,
+    width: '80%',
+    borderColor: Theme.overlay,
   },
 });
