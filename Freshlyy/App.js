@@ -16,6 +16,8 @@ import DashBoardScreen from './screens/DashBoard';
 import GetStartedScreen from './screens/GetStartedScreen';
 import DashBoard from './screens/DashBoard';
 import CheckoutScreen from './screens/CheckoutScreen';
+import HomeScreen from './screens/HomeScreen';
+import PaymentScreen from './screens/PaymentScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -29,14 +31,20 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name='DashBoard'
+            name='Checkout'
             component={CheckoutScreen}
             options={{
-              title: 'DashBoard',
               headerShown: false,
             }}
             initialParams={{
               purl: 'sri_lankan_carrots_63aaf131d5c6be39b45d74b9',
+            }}
+          />
+          <Stack.Screen
+            name='Payment'
+            component={PaymentScreen}
+            options={{
+              headerShown: false,
             }}
           />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}

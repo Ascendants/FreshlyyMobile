@@ -2,12 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Theme from '../constants/theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function (props) {
+  const nav = useNavigation();
   return (
     <View style={styles.container}>
       {props.back ? (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={nav.goBack}>
           <Ionicons name='ios-chevron-back' size={32} color={Theme.textColor} />
         </TouchableOpacity>
       ) : (

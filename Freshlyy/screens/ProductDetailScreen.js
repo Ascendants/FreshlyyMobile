@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FreshlyyImageStore } from '../utils/firebase';
-import { ref, listAll, getDownloadURL, getStorage } from 'firebase/storage';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
@@ -10,7 +9,7 @@ import Header from '../components/Header';
 import ImageDots from '../components/ImageDots';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
-
+import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 
 export default function ({ route, navigation }) {
