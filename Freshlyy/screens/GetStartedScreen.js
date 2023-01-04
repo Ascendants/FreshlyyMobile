@@ -5,7 +5,6 @@ import { H1, H2 } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import theme from '../constants/theme';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 export default function () {
   return (

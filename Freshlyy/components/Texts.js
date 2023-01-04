@@ -6,8 +6,7 @@ module.exports.P = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'Poppins',
-        fontWeight: 'Light',
+        fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
         ...props.style,
       }}
@@ -23,7 +22,6 @@ module.exports.H1 = function (props) {
       style={{
         fontFamily: 'Poppins',
         fontSize: 50,
-        fontWeight: 'Bold',
         color: Theme.textColor,
         ...props.style,
       }}
@@ -36,9 +34,8 @@ module.exports.H2 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'Poppins',
+        fontFamily: 'PoppinsRegular',
         fontSize: 30,
-        fontWeight: 'Bold',
         color: Theme.textColor,
         ...props.style,
       }}
@@ -52,10 +49,9 @@ module.exports.H3 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'Poppins',
+        fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
         fontSize: 25,
-        fontWeight: 'light',
         ...props.style,
       }}
     >
@@ -68,10 +64,9 @@ module.exports.H4 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'Poppins',
+        fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
         fontSize: 20,
-        fontWeight: 'light',
         ...props.style,
       }}
     >
@@ -84,10 +79,9 @@ module.exports.H5 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'Poppins',
+        fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
         fontSize: 15,
-        fontWeight: 'light',
         ...props.style,
       }}
     >
@@ -100,10 +94,9 @@ module.exports.H6 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'Poppins',
+        fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
         fontSize: 10,
-        fontWeight: 'light',
         ...props.style,
       }}
     >
@@ -116,10 +109,9 @@ module.exports.H7 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'Poppins',
+        fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
         fontSize: 8,
-        fontWeight: 'light',
         paddingTop: 5,
         ...props.style,
       }}
@@ -147,8 +139,7 @@ module.exports.Pr = function (props) {
         style={{
           fontFamily: 'Poppins',
           color: Theme.textColor,
-          fontSize: props.fontSize,
-          fontWeight: 'light',
+          fontSize: props.fontSize ? props.fontSize : 16,
           ...props.style,
         }}
       >

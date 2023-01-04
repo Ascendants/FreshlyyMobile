@@ -80,32 +80,38 @@ export default function ({ route, navigation }) {
               <H3 style={styles.productTopic}>{product.title}</H3>
               <View style={styles.actionButtonContainer}>
                 <Button
-                  title={
+                  icon={
                     <Feather
                       name='message-circle'
                       size={24}
                       color={Theme.textColor}
                     />
                   }
-                  size='small'
+                  title='Chat'
+                  type='icon'
+                  size='normal'
                   color='shadedTertiary'
                 />
                 <Button
-                  title={
+                  type='icon'
+                  icon={
                     <Feather name='heart' size={24} color={Theme.textColor} />
                   }
-                  size='small'
+                  title='Wishlist'
+                  size='normal'
                   color='shadedTertiary'
                 />
                 <Button
-                  title={
+                  type='icon'
+                  icon={
                     <Ionicons
                       name='ios-share-outline'
                       size={24}
                       color={Theme.textColor}
                     />
                   }
-                  size='small'
+                  title='Share'
+                  size='normal'
                   color='shadedTertiary'
                 />
               </View>
@@ -210,6 +216,7 @@ const styles = StyleSheet.create({
   actionButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
     flex: 3,
   },
   ratingArea: {
