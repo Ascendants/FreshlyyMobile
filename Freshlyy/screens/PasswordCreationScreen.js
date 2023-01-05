@@ -13,6 +13,7 @@ import Theme from '../constants/theme';
 import { FilledBigButton,ShadedBigButton  } from '../components/Buttons';
 import { TextInputBox, DropDownPicker } from '../components/Inputs';
 
+import { H1, H2,H4} from '../components/Texts';
 
 export default function (){
     return(
