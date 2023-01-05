@@ -3,10 +3,9 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { H2, H3, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import Header from '../components/Header';
-import Card from '../components/Card';
+import CartCard from '../components/CartCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
-import { MaterialIcons } from '@expo/vector-icons';
 
 export default function () {
 	return (
@@ -14,35 +13,38 @@ export default function () {
 			<View style={styles.screen}>
 				<Header />
 				<H2>My Cart</H2>
-				<ScrollView howsVerticalScrollIndicator={false} style={styles.container}>
-					<CartCard 
-            imgUrl={require('../assets/carrot.jpg')}
-            title='Sri Lankan Carrots'
-            seller='Haritha'
-            quantity={1}
-            amt={1250}
-          />
-          <CartCard 
-            imgUrl={require('../assets/carrot.jpg')}
-            title='Sri Lankan Carrots'
-            seller='Haritha'
-            quantity={1}
-            amt={1250}
-          />
-          <CartCard 
-            imgUrl={require('../assets/carrot.jpg')}
-            title='Sri Lankan Carrots'
-            seller='Haritha'
-            quantity={1}
-            amt={1250}
-          />
-          <CartCard 
-            imgUrl={require('../assets/carrot.jpg')}
-            title='Sri Lankan Carrots'
-            seller='Haritha'
-            quantity={1}
-            amt={1250}
-          />        
+				<ScrollView
+					howsVerticalScrollIndicator={false}
+					style={styles.container}
+				>
+					<CartCard
+						imgUrl={require('../assets/carrot.jpg')}
+						title="Sri Lankan Carrots"
+						seller="Haritha"
+						quantity={1}
+						amt={1250}
+					/>
+					<CartCard
+						imgUrl={require('../assets/carrot.jpg')}
+						title="Sri Lankan Carrots"
+						seller="Haritha"
+						quantity={1}
+						amt={1250}
+					/>
+					<CartCard
+						imgUrl={require('../assets/carrot.jpg')}
+						title="Sri Lankan Carrots"
+						seller="Haritha"
+						quantity={1}
+						amt={1250}
+					/>
+					<CartCard
+						imgUrl={require('../assets/carrot.jpg')}
+						title="Sri Lankan Carrots"
+						seller="Haritha"
+						quantity={1}
+						amt={1250}
+					/>
 				</ScrollView>
 				<View style={styles.bottomContainer}>
 					<View style={styles.left}>
@@ -50,11 +52,7 @@ export default function () {
 						<Pr fontSize={35}>3550</Pr>
 					</View>
 					<View style={styles.right}>
-						<Button
-							size="big"
-							color="filledPrimary"
-							title="Checkout"
-						/>
+						<Button size="big" color="filledPrimary" title="Checkout" />
 					</View>
 				</View>
 			</View>
@@ -64,7 +62,6 @@ export default function () {
 
 const styles = StyleSheet.create({
 	screen: {
-		// flex: 1,
 		height: '100%',
 		alignItems: 'center',
 	},
@@ -76,24 +73,16 @@ const styles = StyleSheet.create({
 		backgroundColor: Theme.overlayShade,
 		height: 130,
 		width: '100%',
-		// justifyContent: 'flex-end',
 		borderTopLeftRadius: 50,
 		borderTopRightRadius: 50,
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-    
 	},
 	left: {
-		// marginTop:30,
 		paddingTop: 20,
 		paddingLeft: 20,
-		// backgroundColor: 'blue',
 	},
 	right: {
 		justifyContent: 'center',
-		// backgroundColor: 'yellow',
 	},
-  // hr: {
-  //   width: '100%'
-  // }
 });

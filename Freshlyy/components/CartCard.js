@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderRadius: 15,
-    // padding: 10,
   },
   rightBackgroundColor1: {
     backgroundColor: Theme.blue,
