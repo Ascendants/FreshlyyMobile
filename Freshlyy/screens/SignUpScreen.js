@@ -11,7 +11,7 @@ import {
 import Theme from '../constants/theme';
 import { FilledBigButton } from '../components/Buttons';
 import { TextInputBox, DropDownPicker } from '../components/Inputs';
-
+import {Ionicons} from '@expo/vector-icons';
 
 export default function () {
   return (
@@ -29,11 +29,13 @@ export default function () {
       <TextInputBox inputlabel="Email" placeholder="Enter email" type="email-address" />
      
 
+
       <DropDownPicker
+        inputlabel='Gender'
         list={[
-          { label: 'male', value: 'male' },
-          { label: 'female', value: 'female' },
-          { label: 'Other', value: 'other' },
+          { label: 'Male', value: 'm'},
+          { label: 'Female', value: 'f' },
+          { label: 'Other', value: 'o' },
         ]}
       />
        <TextInputBox inputlabel="NIC Number" placeholder="Enter NIC" />
