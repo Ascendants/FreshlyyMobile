@@ -5,7 +5,7 @@ export default {
   secondaryShade: '#3666AC40',
   tertiary: '#9E9E9E',
   tertiaryShade: '#9E9E9E40',
-  warning: '#efcb68',
+  warning: '#EFCB68',
   warningShade: '#efcb6840',
   danger: '#AD343E',
   dangerShade: '#AD343E40',
@@ -15,6 +15,6 @@ export default {
   overlay: '#e0e0e0',
   overlayShade: '#88888840',
   overlayShadeDarker: '#ffffff50',
-  yellow: '#efcb68',
+  yellow: '#EFCB68',
   blue: '#3666ac',
 };
