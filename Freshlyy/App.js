@@ -14,6 +14,7 @@ import ProductDetailScreen from './screens/ProductDetailScreen';
 import DashBoardScreen from './screens/DashBoard';
 import GetStartedScreen from './screens/GetStartedScreen';
 import DashBoard from './screens/DashBoard';
+import MyCartScreen from './screens/MyCartScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -24,8 +25,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='DashBoard'
-          component={StartScreen}
+          name='MyCart'
+          component={MyCartScreen}
           options={{
             title: 'DashBoard',
             headerShown: false,
