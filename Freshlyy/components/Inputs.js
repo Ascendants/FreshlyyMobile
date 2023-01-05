@@ -39,7 +39,7 @@ module.exports.DropDownPicker = function (props) {
       style={[
         styles.inputcont,
         {
-          zIndex: Platform.OS === 'ios' ? 100 : null,
+          zIndex: 100,
         },
       ]}
     >

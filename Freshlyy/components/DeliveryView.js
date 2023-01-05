@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    height: 120,
+    height: 140,
     width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: Theme.textColor,
