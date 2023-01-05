@@ -18,7 +18,6 @@ import DashBoard from './screens/DashBoard';
 import CheckoutScreen from './screens/CheckoutScreen';
 import HomeScreen from './screens/HomeScreen';
 import PaymentScreen from './screens/PaymentScreen';
-import HomeScreen from './screens/HomeScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ProductHomePageScreen from './screens/ProductHomePageScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -37,7 +36,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={CheckoutScreen}
+            component={LoginScreen}
             options={{
               headerShown: false,
             }}
