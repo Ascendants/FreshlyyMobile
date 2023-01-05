@@ -4,11 +4,8 @@ import { H5, H6 } from '../components/Texts';
 import Theme from '../constants/theme';
 
 export default function (props) {
-  const simpleAlert = () => {
-    alert('hello');
-  };
   return (
-    <TouchableOpacity style={styles.container} onPress={simpleAlert}>
+    <TouchableOpacity style={styles.container}>
       <Image source={props.imageUri} style={styles.icon} />
       <H5 style={styles.number}>{props.number}</H5>
       <H6>{props.text}</H6>

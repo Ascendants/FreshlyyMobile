@@ -4,6 +4,7 @@ import { H1, P } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
+import SwipeOverlay from '../components/SwipeOverlay';
 import InfoCardDB from '../components/InfoCardDB';
 import DashBoardCard from '../components/DashBoardCard';
 import ServicesCardDB from '../components/ServicesCardDB';
@@ -40,13 +41,16 @@ export default function () {
               text='Pending Approvals'
             />
           </View>
+					<View style={styles.buttonContainer}>
           <Button
-            size='small'
+            size='big'
             color='shadedPrimary'
             title='Add Product'
-            // style={styles.button}
+            backgroundstyle={styles.button}
           />
+					</View>
           <ServicesCardDB />
+					<SwipeOverlay />
         </ScrollView>
         <Navbar />
       </View>
@@ -66,6 +70,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
+	buttonContainer:{
+		alignItems:'center',
+	},
   button: {
     width: '85%',
     margin: 30,

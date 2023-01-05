@@ -25,7 +25,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name='DashBoard'
-          component={StartScreen}
+          component={DashBoardScreen}
           options={{
             title: 'DashBoard',
             headerShown: false,
