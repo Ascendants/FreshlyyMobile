@@ -9,21 +9,23 @@ import {
   ScrollView
 } from 'react-native';
 import Theme from '../constants/theme';
-import { FilledBigButton } from '../components/Buttons';
-import { TextInputBox, DropDownPicker } from '../components/Inputs';
+import { Button } from '../components/Buttons';
+import { TextInputBox, DropDownPicker,DatePicker } from '../components/Inputs';
 import {Ionicons} from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
 
 export default function () {
   return (
+    <SafeAreaView>
     <ScrollView>
     <View style={styles.screen}>
-      <View>
-        <Image source={require('../assets/logo.png')} style={styles.logo} />
-      </View>
+      <Header back={true}/>
       <Image
         source={require('../assets/signupvector.png')}
         style={styles.vectorimage}
       />
+      {/* <DatePicker/> */}
       <TextInputBox inputlabel="First Name" placeholder="Enter first name"  />
       <TextInputBox inputlabel="Last Name" placeholder="Enter last name "  />
       <TextInputBox inputlabel="Email" placeholder="Enter email" type="email-address" />
@@ -43,10 +45,11 @@ export default function () {
        <TextInputBox inputlabel="Address line 1" placeholder="Enter address 1" />
        <TextInputBox inputlabel="Address line 2" placeholder="Enter address 2" />
       <TouchableOpacity>
-        <FilledBigButton title="Next" />
+        <Button title="Next" color="filledSecondary" size="normal"/>
       </TouchableOpacity>
     </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
