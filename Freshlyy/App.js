@@ -15,6 +15,8 @@ import GetStartedScreen from './screens/GetStartedScreen';
 import HomeScreen from './screens/HomeScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ProductHomePageScreen from './screens/ProductHomePageScreen';
+import LoginScreen from './screens/LoginScreen';
+import PasswordCreationScreen from './screens/PasswordCreationScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -26,7 +28,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="Get Started"
-          component={SignUpScreen}
+          component={PasswordCreationScreen}
           options={{
             title: 'Get Started',
             headerShown: false,

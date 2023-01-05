@@ -17,7 +17,7 @@ module.exports.TextInputBox = function (props) {
   return (
     <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-      <TextInput style={styles.input} placeholder={props.placeholder} keyboardType={props.type} />
+      <TextInput style={styles.input} placeholder={props.placeholder} textContentType={props.type} />
     </View>
   );
 };

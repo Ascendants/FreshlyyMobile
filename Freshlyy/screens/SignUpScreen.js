@@ -1,4 +1,3 @@
-import { contains } from '@firebase/util';
 import { React, useState } from 'react';
 import {
   StyleSheet,
@@ -7,16 +6,16 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView
 } from 'react-native';
-import { H1, H2 } from '../components/Texts';
 import Theme from '../constants/theme';
 import { FilledBigButton } from '../components/Buttons';
-import theme from '../constants/theme';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import Inputs from '../components/Inputs';
+import { TextInputBox, DropDownPicker } from '../components/Inputs';
+
 
 export default function () {
   return (
+    <ScrollView>
     <View style={styles.screen}>
       <View>
         <Image source={require('../assets/logo.png')} style={styles.logo} />
@@ -25,12 +24,27 @@ export default function () {
         source={require('../assets/signupvector.png')}
         style={styles.vectorimage}
       />
-      <Inputs inputlabel="First Name" placeholder="Enter first name" />
-      <Inputs inputlabel="Last Name" placeholder="Enter last name " />
+      <TextInputBox inputlabel="First Name" placeholder="Enter first name"  />
+      <TextInputBox inputlabel="Last Name" placeholder="Enter last name "  />
+      <TextInputBox inputlabel="Email" placeholder="Enter email" type="email-address" />
+     
+
+      <DropDownPicker
+        list={[
+          { label: 'male', value: 'male' },
+          { label: 'female', value: 'female' },
+          { label: 'Other', value: 'other' },
+        ]}
+      />
+       <TextInputBox inputlabel="NIC Number" placeholder="Enter NIC" />
+       <TextInputBox inputlabel="Street No" placeholder="Enter street no" />
+       <TextInputBox inputlabel="Address line 1" placeholder="Enter address 1" />
+       <TextInputBox inputlabel="Address line 2" placeholder="Enter address 2" />
       <TouchableOpacity>
         <FilledBigButton title="Next" />
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 }
 
