@@ -10,17 +10,19 @@ import {
   
 } from 'react-native';
 import Theme from '../constants/theme';
-import { FilledBigButton,ShadedBigButton  } from '../components/Buttons';
-import { TextInputBox, DropDownPicker } from '../components/Inputs';
+import { Button } from '../components/Buttons';
+import { TextInputBox, DropDownPicker,CheckBox } from '../components/Inputs';
+import Header from '../components/Header';
 
 import { H1, H2,H4} from '../components/Texts';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function (){
     return(
+       <SafeAreaView>
+        
         <View style={styles.screen}> 
-          <View>
-             <Image source={require('../assets/logo.png')} style={styles.logo} />
-          </View>
+          <Header back={true}/>
           <Image source={require('../assets/passwordvec.png')} style={styles.loginpic}/>
           <View style={styles.inputcont}>
           <TextInputBox inputlabel="Password" type="new-password" />
@@ -29,17 +31,18 @@ export default function (){
           <View>
           
           </View>
-        
-          <TouchableOpacity>
-              <ShadedBigButton  title="Log In" style={styles.loginbutton}/>
-          </TouchableOpacity>
+          <Button title="Next" color="filledSecondary" size="normal"/>
+          
+          {/* <CheckBox /> */}
         </View>
+       
+        </SafeAreaView>
         
     )
 }
 const styles=StyleSheet.create({
     screen: {
-        flex: 1,
+        height:'100%',
         alignItems: 'center',
         //justifyContent: 'center',
         fontFamily: 'Poppins',

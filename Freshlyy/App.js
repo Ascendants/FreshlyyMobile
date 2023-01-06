@@ -22,6 +22,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import ProductHomePageScreen from './screens/ProductHomePageScreen';
 import LoginScreen from './screens/LoginScreen';
 import PasswordCreationScreen from './screens/PasswordCreationScreen';
+import BeFarmerScreen from './screens/BeFarmerScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -36,7 +37,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={SignUpScreen}
+            component={BeFarmerScreen}
             options={{
               headerShown: false,
             }}
