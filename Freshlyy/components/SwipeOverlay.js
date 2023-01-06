@@ -7,12 +7,10 @@ import { AntDesign } from '@expo/vector-icons';
 // import { BlurView } from "@react-native-community/blur";
 
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-
 export default function() {
   return(
       <View style={styles.container}>
-        {/* // <BlurView blurType="light" blurAmount={10} reducedTransparencyFallbackColor="white"> */}
+        {/* <BlurView blurType="light" blurAmount={10} reducedTransparencyFallbackColor="white"> */}
         <View style={styles.top}>
           <AntDesign name="down" size={24} color={Theme.textColor} />
         </View>
@@ -37,7 +35,12 @@ export default function() {
             imgUrl={require('../assets/carrot.jpg')}
             topic='Sri Lankan Eggplant'
             subTopic='2 KG'
-          />     
+          />  
+          <SwipeOverlayCard 
+            imgUrl={require('../assets/carrot.jpg')}
+            topic='Sri Lankan Eggplant'
+            subTopic='2 KG'
+          />   
         </ScrollView>
        {/* </BlurView> */}
       </View>
@@ -48,14 +51,10 @@ export default function() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
-    height: SCREEN_HEIGHT,
     width: "100%",
     borderTopLeftRadius: 60,
     borderTopRightRadius: 60,
-    position: 'absolute',
     alignSelf: 'center',
-    top: SCREEN_HEIGHT / 6,
-    
   },
   top: {
     alignSelf: 'center',

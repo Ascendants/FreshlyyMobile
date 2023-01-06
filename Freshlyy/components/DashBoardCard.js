@@ -5,24 +5,17 @@ import Theme from '../constants/theme';
 
 export default function (props) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <View style={styles.container}>
       <Image source={props.imageUri} style={styles.icon} />
       <H5 style={styles.number}>{props.number}</H5>
       <H6>{props.text}</H6>
-    </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
     alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: Theme.overlay,
-    width: '30%',
-    height: 100,
-    borderRadius: 10,
-    justifyContent: 'center',
   },
   icon: {
     width: 40,

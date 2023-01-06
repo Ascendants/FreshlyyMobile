@@ -36,7 +36,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={SignUpScreen}
+            component={DashBoardScreen}
             options={{
               headerShown: false,
             }}
