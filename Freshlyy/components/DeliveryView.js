@@ -11,28 +11,32 @@ export default function (props) {
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.descContainer}>
-          <H5 style={{ fontFamily: 'Poppins' }}>{option.farmer}</H5>
-          <P>Sold by {option.farmer}</P>
+          <H5 style={{ fontFamily: 'Poppins' }}>{option.farmerName}</H5>
+          <H5>{option.distance} KM</H5>
           <View style={styles.detail}>
-            <Pr>{option.upkm}</Pr>
+            <Pr>{option.costPerKM}</Pr>
             <P>/KM</P>
           </View>
-          <Pr>{option.tprice}</Pr>
+          <Pr>{(option.costPerKM * option.distance).toFixed(2)}</Pr>
           <P style={{ color: Theme.secondary }}>
-            {option.getItDelivered
-              ? 'Farmer will deliver'
-              : 'You are picking up'}
+            {props.delivery ? 'Farmer will deliver' : 'You are picking up'}
           </P>
         </View>
       </View>
       <View style={styles.actionContainer}>
-        {option.getItDelivered ? (
-          <Button size='normal' color='filledSecondary' title="I'll Pick Up" />
+        {props.delivery ? (
+          <Button
+            size='normal'
+            color='filledSecondary'
+            title="I'll Pick Up"
+            onPress={props.setDelivery.bind(this, false)}
+          />
         ) : (
           <Button
             size='normal'
             color='filledPrimary'
             title='Get it delivered'
+            onPress={props.setDelivery.bind(this, true)}
           />
         )}
       </View>

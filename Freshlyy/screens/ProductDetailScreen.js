@@ -14,16 +14,18 @@ import Rating from '../components/Rating';
 
 export default function ({ route, navigation }) {
   const [imageScroll, setImageScroll] = React.useState(0);
-  const [selectedQuantity, setSelectedQuantity] = React.useState(0.5);
+  const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   const [product, setProduct] = React.useState({
     purl: route.params.purl,
     imageUrls: [],
   });
   function increaseQuantity() {
-    setSelectedQuantity((curr) => curr + 0.5);
+    setSelectedQuantity((curr) => curr + product.minQtyIncrement);
   }
   function decreaseQuantity() {
-    setSelectedQuantity((curr) => Math.max(curr - 0.5, 0.5));
+    setSelectedQuantity((curr) =>
+      Math.max(curr - product.minQtyIncrement, product.minQtyIncrement)
+    );
   }
   function scrollImage(e) {
     const scroll = Math.round(e.nativeEvent.contentOffset.x / 345);
@@ -39,6 +41,7 @@ export default function ({ route, navigation }) {
         setProduct((prev) => {
           return { ...prev, ...res.product };
         });
+        setSelectedQuantity(res.product.minQtyIncrement);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -211,6 +214,7 @@ const styles = StyleSheet.create({
   },
   productTopic: {
     flex: 4,
+    alignSelf: 'center',
   },
   actionButtonContainer: {
     flexDirection: 'row',

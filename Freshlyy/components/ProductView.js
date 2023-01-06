@@ -15,9 +15,9 @@ export default function (props) {
         </View>
         <View style={styles.descContainer}>
           <H5 style={{ fontFamily: 'Poppins' }}>{product.title}</H5>
-          <P>Sold by {product.farmer}</P>
+          <P>Sold by {product.farmerName}</P>
           <P>{product.qty} KG</P>
-          <Pr>{product.price}</Pr>
+          <Pr>{product.uPrice * product.qty}</Pr>
         </View>
       </View>
       <View style={styles.actionContainer}>

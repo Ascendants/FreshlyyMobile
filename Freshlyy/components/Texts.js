@@ -64,7 +64,7 @@ module.exports.H4 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'PoppinsRegular',
+        fontFamily: 'Poppins',
         color: Theme.textColor,
         fontSize: 20,
         ...props.style,
@@ -79,7 +79,7 @@ module.exports.H5 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'PoppinsRegular',
+        fontFamily: 'Poppins',
         color: Theme.textColor,
         fontSize: 15,
         ...props.style,
