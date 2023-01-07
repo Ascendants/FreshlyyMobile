@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DatePicker from 'react-native-date-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { BigButton } from './Buttons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 module.exports.TextInputBox = function (props) {
   const [state,setState] = useState(0);
@@ -68,11 +69,64 @@ module.exports.DropDownPicker = function (props) {
     </View>
   );
 };
-// module.exports.DatePicker = function (props) {
-//   const [date, setDate] = useState(new Date());
 
-//   return <DatePicker date={date} onDateChange={setDate} />;
-// };
+
+
+// module.exports.DatePicker=function (props)  {
+//   const [datePicker, setDatePicker] = useState(false);
+ 
+//   const [date, setDate] = useState(new Date());
+ 
+//   const [timePicker, setTimePicker] = useState(false);
+ 
+//   const [time, setTime] = useState(new Date(Date.now()));
+ 
+//   function showDatePicker() {
+//     setDatePicker(true);
+//   };
+ 
+//   function showTimePicker() {
+//     setTimePicker(true);
+//   };
+ 
+//   function onDateSelected(event, value) {
+//     setDate(value);
+//     setDatePicker(false);
+//   };
+ 
+//   function onTimeSelected(event, value) {
+//     setTime(value);
+//     setTimePicker(false);
+//   }
+//   return (
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <View >
+        
+//         <Text >Date = {date.toDateString()}</Text>
+ 
+//         <Text >Time = {time.toLocaleTimeString('en-US')}</Text>
+//         {datePicker && (
+//           <DateTimePicker
+//             value={date}
+//             mode={'date'}
+//             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+//             is24Hour={true}
+//             onChange={onDateSelected}
+            
+//           />
+          
+//         )}
+        
+//           {!datePicker && (
+//           <View style={{ margin: 10 }}>
+//             <BigButton title="Show Date Picker" color="green" onPress={showDatePicker} />
+            
+//           </View>
+//         )}
+//         </View>
+//         </SafeAreaView>
+//         )
+// }
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
