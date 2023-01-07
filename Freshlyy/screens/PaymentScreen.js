@@ -14,6 +14,7 @@ import LottieView from 'lottie-react-native';
 export default function ({ navigation, route }) {
   const [orderData, setOrderData] = React.useState({
     selectedPaymentMethod: 'cod',
+    order: route.params.order,
   });
   const [confirmPayment, setConfirmPayment] = React.useState(false);
   function setSelectedPayment(method) {
@@ -69,7 +70,7 @@ export default function ({ navigation, route }) {
             <View style={styles.pageArea}>
               <H4 style={styles.title}>Choose a payment option</H4>
               <PaymentSelector
-                methods={user.paymentMethods}
+                methods={[]}
                 setSelectedPayment={setSelectedPayment}
                 selectedMethod={orderData.selectedPaymentMethod}
               />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, StatusBar } from 'react-native';
 import { H1, H2, H3, H4, Pr } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
@@ -26,10 +26,31 @@ export default function ({ navigation, route }) {
   const delay = (time) =>
     new Promise((resolve, reject) => setTimeout(resolve, time));
   async function placeOrder() {
+    const data = {};
     setConfirmOrder(true);
-    await delay(2000);
-    navigation.navigate('Payment', { order: orderData });
-    setConfirmOrder(false);
+    data.deliveryCharges = [];
+    Object.keys(deliveries).forEach((farmer) => {
+      data.deliveryCharges.push({
+        farmer: farmer,
+        delivery: deliveries[farmer],
+      });
+    });
+    fetch(ENV.backend + '/customer/place-order/', {
+      method: 'POST',
+      headers: {
+        userEmail: route.params.userEmail,
+        'Content-Type': 'application/json',
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        navigation.navigate('Payment', { order: res });
+        setConfirmOrder(false);
+      })
+      .catch((err) => console.log(err));
   }
   const user = React.useContext(UserContext);
   function setDelivery(farmer, value) {
@@ -81,63 +102,66 @@ export default function ({ navigation, route }) {
       .catch((err) => console.log(err));
   }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Modal visible={confirmOrder}>
-          <View style={styles.modalContent}>
-            <LottieView
-              autoPlay
-              style={{
-                width: 200,
-                height: 200,
-              }}
-              source={require('../assets/Freshlyy.json')}
-            />
-            <H3>Placing Order</H3>
-          </View>
-        </Modal>
-        <Header back={true} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.pageContent}>
-            <H3 style={styles.title}>Your Order</H3>
-            <View style={styles.pageArea}>
-              {cart.map((farmer) =>
-                farmer.items.map((item) => (
-                  <ProductView key={item.item} product={item} />
-                ))
-              )}
-            </View>
-            <View style={styles.pageArea}>
-              <H3>Sub Total</H3>
-              <Pr fontSize={30}>{subTotal.toFixed(2)}</Pr>
-            </View>
-            <View style={styles.pageArea}>
-              <H4 style={styles.title}>Delivery Costs</H4>
-              {cart.map((farmer) => (
-                <DeliveryView
-                  option={farmer}
-                  key={farmer.farmer}
-                  delivery={deliveries[farmer.farmer]}
-                  setDelivery={(value) => setDelivery(farmer.farmer, value)}
-                />
-              ))}
-            </View>
-            <View style={styles.pageArea}>
-              <H3>Total</H3>
-              <Pr fontSize={30}>{total.toFixed(2)}</Pr>
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                size='big'
-                color='filledWarning'
-                title='Confirm Order'
-                onPress={placeOrder}
+    <>
+      <StatusBar barStyle='dark-content' />
+      <SafeAreaView>
+        <View style={styles.screen}>
+          <Modal visible={confirmOrder}>
+            <View style={styles.modalContent}>
+              <LottieView
+                autoPlay
+                style={{
+                  width: 200,
+                  height: 200,
+                }}
+                source={require('../assets/Freshlyy.json')}
               />
+              <H3>Placing Order</H3>
             </View>
-          </View>
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+          </Modal>
+          <Header back={true} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.pageContent}>
+              <H3 style={styles.title}>Your Order</H3>
+              <View style={styles.pageArea}>
+                {cart.map((farmer) =>
+                  farmer.items.map((item) => (
+                    <ProductView key={item.item} product={item} />
+                  ))
+                )}
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Sub Total</H3>
+                <Pr fontSize={30}>{subTotal.toFixed(2)}</Pr>
+              </View>
+              <View style={styles.pageArea}>
+                <H4 style={styles.title}>Delivery Costs</H4>
+                {cart.map((farmer) => (
+                  <DeliveryView
+                    option={farmer}
+                    key={farmer.farmer}
+                    delivery={deliveries[farmer.farmer]}
+                    setDelivery={(value) => setDelivery(farmer.farmer, value)}
+                  />
+                ))}
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Total</H3>
+                <Pr fontSize={30}>{total.toFixed(2)}</Pr>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  size='big'
+                  color='filledWarning'
+                  title='Confirm Order'
+                  onPress={placeOrder}
+                />
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+    </>
   );
 }
 const styles = StyleSheet.create({
