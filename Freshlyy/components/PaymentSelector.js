@@ -8,6 +8,7 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 export default function (props) {
   const methods = props.methods;
   function switchMethod(method) {
+    props.clearCvv();
     props.setSelectedPayment(method);
   }
   return (
@@ -31,14 +32,14 @@ export default function (props) {
       </TouchableOpacity>
       {methods.map((method) => (
         <TouchableOpacity
-          key={method.CardId}
-          onPress={switchMethod.bind(this, method.CardId)}
+          key={method.cardId}
+          onPress={switchMethod.bind(this, method.cardId)}
           style={styles.methodClicker}
         >
           <View
             style={[
               styles.method,
-              props.selectedMethod == method.CardId
+              props.selectedMethod == method.cardId
                 ? styles.selectedMethod
                 : null,
             ]}
@@ -47,7 +48,7 @@ export default function (props) {
               source={require('../assets/card.png')}
               style={styles.methodImage}
             />
-            <H4 style={{ fontFamily: 'Poppins' }}>{method.CardName}</H4>
+            <H4 style={{ fontFamily: 'Poppins' }}> {method.cardName}</H4>
           </View>
         </TouchableOpacity>
       ))}

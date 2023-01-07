@@ -31,17 +31,18 @@ export default function App() {
   });
   if (!fonts) return null;
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={null}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={SignUpScreen}
+            component={CheckoutScreen}
             options={{
               headerShown: false,
             }}
             initialParams={{
-              purl: 'sri_lankan_carrots_63aaf131d5c6be39b45d74b9',
+              purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
+              userEmail: 'harini@freshlyy.com',
             }}
           />
           <Stack.Screen
