@@ -47,7 +47,11 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        navigation.navigate('Payment', { order: res });
+        if (res.message != 'Success') throw new Error('Something went wrong');
+        navigation.navigate('Payment', {
+          order: res,
+          userEmail: route.params.userEmail,
+        });
         setConfirmOrder(false);
       })
       .catch((err) => console.log(err));
@@ -90,6 +94,7 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
+        if (!res.cart) throw new Error('Malformed Response');
         setCart(res.cart);
 
         setDeliveries((curr) => {
@@ -179,13 +184,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     textAlign: 'center',
     marginBottom: 10,
-  },
-  coupon: {
-    marginVertical: 20,
-    height: 100,
-    backgroundColor: Theme.overlay,
-    width: '100%',
-    borderRadius: 15,
   },
   buttonContainer: {
     justifyContent: 'center',

@@ -25,6 +25,10 @@ module.exports.TextInputBox = function (props) {
         style={[styles.input, state ? styles.inputFocused : null]}
         placeholder={props.placeholder}
         textContentType={props.type}
+        keyboardType={props.keyboardType}
+        onChangeText={(value) => props.onChange(value)}
+        value={props.value}
+        maxLength={props.maxLength}
       />
     </View>
   );
@@ -110,7 +114,8 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: 'Poppins',
-    padding: 5,
+    color: Theme.textColor,
+    padding: 8,
     paddingHorizontal: 10,
     backgroundColor: Theme.overlay,
     borderRadius: 10,

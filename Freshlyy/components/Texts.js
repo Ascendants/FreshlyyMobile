@@ -123,7 +123,7 @@ module.exports.H7 = function (props) {
 
 module.exports.Pr = function (props) {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+    <Text>
       <Text
         style={{
           fontFamily: 'Poppins',
@@ -145,6 +145,6 @@ module.exports.Pr = function (props) {
       >
         &nbsp;{props.children}
       </Text>
-    </View>
+    </Text>
   );
 };
