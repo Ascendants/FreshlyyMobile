@@ -81,7 +81,7 @@ module.exports.H5 = function (props) {
       style={{
         fontFamily: 'Poppins',
         color: Theme.textColor,
-        fontSize: 15,
+        fontSize: 18,
         ...props.style,
       }}
     >
@@ -94,9 +94,9 @@ module.exports.H6 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'PoppinsRegular',
+        fontFamily: 'Poppins',
         color: Theme.textColor,
-        fontSize: 10,
+        fontSize: 16,
         ...props.style,
       }}
     >
@@ -111,7 +111,23 @@ module.exports.H7 = function (props) {
       style={{
         fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
-        fontSize: 8,
+        fontSize: 12,
+        paddingTop: 5,
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  );
+};
+
+module.exports.H8 = function (props) {
+  return (
+    <Text
+      style={{
+        fontFamily: 'PoppinsRegular',
+        color: Theme.textColor,
+        fontSize: 10,
         paddingTop: 5,
         ...props.style,
       }}

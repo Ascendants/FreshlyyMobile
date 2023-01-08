@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text, ScrollView } from 'react-native';
-import { H1, P } from '../components/Texts';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Button } from '../components/Buttons';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
@@ -41,7 +40,7 @@ export default function () {
             />
           </View>
           <Button
-            size='small'
+            size='big'
             color='shadedPrimary'
             title='Add Product'
             // style={styles.button}

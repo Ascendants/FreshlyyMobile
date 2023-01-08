@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { H5, H6 } from '../components/Texts';
+import { H6, H7 } from '../components/Texts';
 import Theme from '../constants/theme';
 
 export default function (props) {
@@ -10,8 +10,8 @@ export default function (props) {
   return (
     <TouchableOpacity style={styles.container} onPress={simpleAlert}>
       <Image source={props.imageUri} style={styles.icon} />
-      <H5 style={styles.number}>{props.number}</H5>
-      <H6>{props.text}</H6>
+      <H6 style={styles.number}>{props.number}</H6>
+      <H7>{props.text}</H7>
     </TouchableOpacity>
   );
 }

@@ -22,6 +22,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import ProductHomePageScreen from './screens/ProductHomePageScreen';
 import LoginScreen from './screens/LoginScreen';
 import PasswordCreationScreen from './screens/PasswordCreationScreen';
+import MessageScreen from './screens/MessageScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -48,6 +49,13 @@ export default function App() {
           <Stack.Screen
             name='Payment'
             component={PaymentScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='Message'
+            component={MessageScreen}
             options={{
               headerShown: false,
             }}

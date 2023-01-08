@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { H5, H6, H7 } from '../components/Texts';
+import { H6, H7, H8 } from '../components/Texts';
 import Theme from '../constants/theme';
 
 export default function () {
   return (
     <View style={styles.container}>
-      <H5 style={styles.topic}>My Services</H5>
+      <H6 style={styles.topic}>My Services</H6>
       <View style={styles.notify}>
-        <H6 style={styles.notifyNumber}>20</H6>
+        <H7 style={styles.notifyNumber}>20</H7>
       </View>
       <View style={styles.iconContainer}>
         <TouchableOpacity>
@@ -16,28 +16,28 @@ export default function () {
             source={require('../assets/message.png')}
             style={styles.logo}
           />
-          <H7>Messages</H7>
+          <H8>Messages</H8>
         </TouchableOpacity>
         <TouchableOpacity>
           <Image
             source={require('../assets/question.png')}
             style={styles.logo}
           />
-          <H7>Help Center</H7>
+          <H8>Help Center</H8>
         </TouchableOpacity>
         <TouchableOpacity>
           <Image
             source={require('../assets/customer-support.png')}
             style={styles.logo}
           />
-          <H7>Support Ticket</H7>
+          <H8>Support Ticket</H8>
         </TouchableOpacity>
         <TouchableOpacity>
           <Image
             source={require('../assets/documents.png')}
             style={styles.logo}
           />
-          <H7>Reviews</H7>
+          <H8>Reviews</H8>
         </TouchableOpacity>
       </View>
     </View>
