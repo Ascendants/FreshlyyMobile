@@ -64,7 +64,7 @@ module.exports.H4 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'PoppinsRegular',
+        fontFamily: 'Poppins',
         color: Theme.textColor,
         fontSize: 20,
         ...props.style,
@@ -79,9 +79,9 @@ module.exports.H5 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'PoppinsRegular',
+        fontFamily: 'Poppins',
         color: Theme.textColor,
-        fontSize: 15,
+        fontSize: 18,
         ...props.style,
       }}
     >
@@ -94,9 +94,9 @@ module.exports.H6 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'PoppinsRegular',
+        fontFamily: 'Poppins',
         color: Theme.textColor,
-        fontSize: 10,
+        fontSize: 16,
         ...props.style,
       }}
     >
@@ -111,7 +111,23 @@ module.exports.H7 = function (props) {
       style={{
         fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
-        fontSize: 8,
+        fontSize: 12,
+        paddingTop: 5,
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  );
+};
+
+module.exports.H8 = function (props) {
+  return (
+    <Text
+      style={{
+        fontFamily: 'PoppinsRegular',
+        color: Theme.textColor,
+        fontSize: 10,
         paddingTop: 5,
         ...props.style,
       }}
@@ -123,7 +139,7 @@ module.exports.H7 = function (props) {
 
 module.exports.Pr = function (props) {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+    <Text>
       <Text
         style={{
           fontFamily: 'Poppins',
@@ -145,6 +161,6 @@ module.exports.Pr = function (props) {
       >
         &nbsp;{props.children}
       </Text>
-    </View>
+    </Text>
   );
 };

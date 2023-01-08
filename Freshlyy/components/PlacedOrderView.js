@@ -7,37 +7,32 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import ListItem from './ListItem';
 
 export default function (props) {
-  const option = props.option;
+  const order = props.order;
   return (
     <ListItem>
       <View style={styles.descContainer}>
-        <H6 style={{ fontFamily: 'Poppins' }}>{option.farmerName}</H6>
-        <H6>{option.distance} KM</H6>
-        <Text>
-          <Pr>{option.costPerKM}</Pr>
-          <P>/KM</P>
-        </Text>
-        <Pr>{(option.costPerKM * option.distance).toFixed(2)}</Pr>
+        <H6>From {order.farmerName}</H6>
+        <P
+          style={{
+            fontSize: 12,
+            marginBottom: 10,
+          }}
+        >
+          Order: {order._id}
+        </P>
+        <P>
+          Date: {new Date(order.orderUpdate.placed).toISOString().split('T')[0]}
+        </P>
+        <P>2 Items</P>
+        <P>Sub Total: {order.totalPrice}</P>
+        <P>Delivery: {order.totalDeliveryCharge}</P>
         <P style={{ color: Theme.secondary }}>
-          {props.delivery ? 'Farmer will deliver' : 'You are picking up'}
+          {order.isDelivery ? 'Farmer will deliver' : 'You are picking up'}
         </P>
       </View>
       <View style={styles.actionContainer}>
-        {props.delivery ? (
-          <Button
-            size='normal'
-            color='filledSecondary'
-            title="I'll Pick Up"
-            onPress={props.setDelivery.bind(this, false)}
-          />
-        ) : (
-          <Button
-            size='normal'
-            color='filledPrimary'
-            title='Get it delivered'
-            onPress={props.setDelivery.bind(this, true)}
-          />
-        )}
+        <H3>Total</H3>
+        <Pr fontSize={30}>{order.totalDeliveryCharge + order.totalPrice}</Pr>
       </View>
     </ListItem>
   );
@@ -61,9 +56,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   actionContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    textAlign: 'right',
+    alignItems: 'flex-end',
     height: '100%',
   },
 });

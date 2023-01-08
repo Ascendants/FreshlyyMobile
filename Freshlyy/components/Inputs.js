@@ -17,12 +17,22 @@ import CheckBox from '@react-native-community/checkbox';
 
 
 module.exports.TextInputBox = function (props) {
-  const [state,setState] = useState(0);
+  const [state, setState] = useState(0);
 
   return (
     <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-      <TextInput onFocus={()=>setState(1)} onBlur={()=>setState(0)} style={[styles.input,(state?styles.inputFocused:null)]} placeholder={props.placeholder} textContentType={props.type} />
+      <TextInput
+        onFocus={() => setState(1)}
+        onBlur={() => setState(0)}
+        style={[styles.input, state ? styles.inputFocused : null]}
+        placeholder={props.placeholder}
+        textContentType={props.type}
+        keyboardType={props.keyboardType}
+        onChangeText={(value) => props.onChange(value)}
+        value={props.value}
+        maxLength={props.maxLength}
+      />
     </View>
   );
 };
@@ -32,41 +42,45 @@ module.exports.DropDownPicker = function (props) {
   const [value, setValue] = useState(null);
   const [items, setItems] = useState(props.list);
   return (
-    <View style={styles.inputcont}>
+    <View
+      style={[
+        styles.inputcont,
+        {
+          zIndex: 100,
+        },
+      ]}
+    >
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
       <DropDownPicker
-        placeholder={props.placeholder?props.placeholder:'-- Select'}
+        placeholder={props.placeholder ? props.placeholder : '-- Select'}
         open={open}
         value={value}
         items={items}
         setOpen={setOpen}
         setValue={setValue}
-        listMode="SCROLLVIEW"
+        listMode='SCROLLVIEW'
         setItems={setItems}
-        dropDownDirection="BOTTOM"
+        dropDownDirection='BOTTOM'
         style={{
-          backgroundColor:Theme.overlay,
-          borderWidth:0,
-          paddingHorizontal:10,
-          paddingVertical:7,
-          borderRadius:10,
-          minHeight:20,
+          backgroundColor: Theme.overlay,
+          borderWidth: 0,
+          paddingHorizontal: 10,
+          paddingVertical: 7,
+          borderRadius: 10,
+          minHeight: 20,
         }}
         textStyle={{
-          fontFamily:'Poppins',
-          color:Theme.textColor,
+          fontFamily: 'Poppins',
+          color: Theme.textColor,
         }}
         dropDownContainerStyle={{
-          backgroundColor:Theme.overlay,
-
-          borderWidth:0,
+          backgroundColor: Theme.overlay,
+          borderWidth: 0,
         }}
         placeholderStyle={{
-          color:Theme.tertiary,
+          color: Theme.tertiary,
           // fontFamily:""
-
         }}
-        
       />
     </View>
   );
@@ -169,13 +183,13 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: 'Poppins',
-    padding:5,
-    paddingHorizontal:10,
+    color: Theme.textColor,
+    padding: 8,
+    paddingHorizontal: 10,
     backgroundColor: Theme.overlay,
     borderRadius: 10,
   },
-  inputFocused:{
-    backgroundColor:Theme.primaryShade,
+  inputFocused: {
+    backgroundColor: Theme.primaryShade,
   },
-
 });
