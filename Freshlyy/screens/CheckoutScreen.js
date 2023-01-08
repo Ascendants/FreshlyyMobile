@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Image, ScrollView, StatusBar } from 'react-native';
-import { H1, H2, H3, H4, Pr } from '../components/Texts';
+import { H3, H4, Pr } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import theme from '../constants/theme';
@@ -54,7 +54,24 @@ export default function ({ navigation, route }) {
         });
         setConfirmOrder(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setConfirmOrder(false);
+        if ((err.message = 'Not Available')) {
+          navigation.navigate('Message', {
+            type: 'fail',
+            messageTitle: 'Order could not be placed :(',
+            messageText: 'One or more items in cart was not available.',
+            goto: 'Cart',
+          });
+          return;
+        }
+        navigation.navigate('Message', {
+          type: 'fail',
+          messageTitle: 'Order could not be placed :(',
+          messageText: 'Something went wrong. Please try again.',
+          goto: 'Checkout',
+        });
+      });
   }
   const user = React.useContext(UserContext);
   function setDelivery(farmer, value) {

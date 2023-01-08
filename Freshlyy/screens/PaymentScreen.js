@@ -67,14 +67,26 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.message == 'Success') {
-          console.log('Success');
-        }
-
-        // navigation.navigate('Payment', { order: res });
         setConfirmPayment(false);
+        if (res.message != 'Success') {
+          throw new Error('Something went wrong');
+        }
+        navigation.navigate('Message', {
+          type: 'Success',
+          messageTitle: 'Payment Complete!',
+          messageText: 'The farmers will process your order and let you know!',
+          goto: 'Order Detail',
+          goButtonText: 'View Order',
+        });
+        return;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        navigation.navigate('Message', {
+          type: 'fail',
+          messageTitle: 'Payment Failed :(',
+          messageText: 'Something went wrong :(',
+        });
+      });
   }
   const user = React.useContext(UserContext);
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { H5, H6, H3, H4, P, Pr } from '../components/Texts';
+import { H6, H3, H4, P, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import Theme from '../constants/theme';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ export default function (props) {
         <Image source={{ uri: product.imageUri }} style={styles.image} />
       </View>
       <View style={styles.descContainer}>
-        <H5 style={{ fontFamily: 'Poppins' }}>{product.title}</H5>
+        <H6 style={{ fontFamily: 'Poppins' }}>{product.title}</H6>
         <P>Sold by {product.farmerName}</P>
         <P>{product.qty} KG</P>
         <Pr>{product.uPrice * product.qty}</Pr>

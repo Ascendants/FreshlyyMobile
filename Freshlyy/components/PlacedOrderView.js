@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { H5, H6, H3, H4, P, Pr } from '../components/Texts';
+import { H6, H3, H4, P, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import Theme from '../constants/theme';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
@@ -11,7 +11,7 @@ export default function (props) {
   return (
     <ListItem>
       <View style={styles.descContainer}>
-        <H5>From {order.farmerName}</H5>
+        <H6>From {order.farmerName}</H6>
         <P
           style={{
             fontSize: 12,
