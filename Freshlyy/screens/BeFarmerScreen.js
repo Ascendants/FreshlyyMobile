@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Theme from "../constants/theme";
 import { Button } from "../components/Buttons";
 import { TextInputBox, DropDownPicker } from "../components/Inputs";
-import { H1, H2, H4, P } from "../components/Texts";
+import {  H2,H4,H5} from "../components/Texts";
 import Header from "../components/Header";
 
 export default function () {
@@ -23,17 +23,18 @@ export default function () {
           source={require("../assets/befarmer.png")}
           style={styles.loginpic}
         />
-        <H4 style={styles.logintext}>Do you want to become farmer too?</H4>
+        <H2 style={styles.logintext}>Become a farmer!</H2>
+        <H4 style={styles.logintext}>Start Selling Today</H4>
         <View>
           <View style={styles.buttoncont}>
-            <Button title="Yes" color="filledPrimary" size="normal" />
-            <H4 style={styles.desctext}>
+            <Button title="Become a farmer" color="shadedPrimary" size="big" />
+            <H5 style={styles.desctext}>
               Additional information will be collected
-            </H4>
+            </H5>
           </View>
+         
           <View style={styles.buttoncont}>
-            <Button title=" No " color="filledSecondary" size="normal" />
-            <H4 style={styles.desctext}>You can be a farmer later as well</H4>
+            <Button title=" Later " color="shadedSecondary" size="big" />
           </View>
         </View>
       </View>
@@ -54,19 +55,19 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   logintext: {
-    margin: 10,
+    marginTop:-10,
     color: Theme.textColor,
+
     fontFamily: "Poppins",
   },
   buttoncont: {
     display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
+    justifyContent:'center',
     alignItems: "center",
-    marginVertical: 20,
+    marginVertical:20,
   },
   desctext: {
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: "Poppins",
   },
 });

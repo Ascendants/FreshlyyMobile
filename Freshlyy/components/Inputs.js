@@ -32,7 +32,9 @@ module.exports.TextInputBox = function (props) {
         onChangeText={(value) => props.onChange(value)}
         value={props.value}
         maxLength={props.maxLength}
+        
       />
+      {props.error && (<Text style={styles.errormsg}>{props.error}</Text>)}
     </View>
   );
 };
@@ -162,6 +164,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //justifyContent: 'center',
     fontFamily: 'Poppins',
+  },
+  errormsg:{
+    color:Theme.danger,
   },
   logo: {
     height: 50,
