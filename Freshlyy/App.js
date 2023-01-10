@@ -23,6 +23,8 @@ import SignUpScreen from './screens/SignUpScreen';
 import ProductHomePageScreen from './screens/ProductHomePageScreen';
 import LoginScreen from './screens/LoginScreen';
 import PasswordCreationScreen from './screens/PasswordCreationScreen';
+import BeFarmerScreen from './screens/BeFarmerScreen';
+import FarmerCreateAccountScreen from './screens/FarmerCreateAccountScreen';
 import MessageScreen from './screens/MessageScreen';
 
 export default function App() {
@@ -38,7 +40,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={DashBoardScreen}
+            component={FarmerCreateAccountScreen}
             options={{
               headerShown: false,
             }}

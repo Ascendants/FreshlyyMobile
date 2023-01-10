@@ -13,6 +13,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BigButton } from './Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CheckBox from '@react-native-community/checkbox';
+
 
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
@@ -30,7 +32,9 @@ module.exports.TextInputBox = function (props) {
         onChangeText={(value) => props.onChange(value)}
         value={props.value}
         maxLength={props.maxLength}
+        
       />
+      {props.error && (<Text style={styles.errormsg}>{props.error}</Text>)}
     </View>
   );
 };
@@ -84,6 +88,19 @@ module.exports.DropDownPicker = function (props) {
   );
 };
 
+// module.exports.CheckBox=function(props){
+//   const [toggleCheckBox, setToggleCheckBox] = useState(false)
+//   return(
+//     <View>
+//     <CheckBox
+//       disabled={false}
+//       value={toggleCheckBox}
+//       onValueChange={(newValue) => setToggleCheckBox(newValue)}
+//     />
+//   </View>
+//   )
+
+// }
 
 
 // module.exports.DatePicker=function (props)  {
@@ -147,6 +164,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //justifyContent: 'center',
     fontFamily: 'Poppins',
+  },
+  errormsg:{
+    color:Theme.danger,
   },
   logo: {
     height: 50,
