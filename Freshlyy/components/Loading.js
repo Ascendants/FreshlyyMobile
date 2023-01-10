@@ -1,11 +1,19 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { H1, P } from '../components/Texts';
+import LottieView from 'lottie-react-native';
 
 export default function () {
   return (
     <View style={styles.screen}>
-      <H1>Hello</H1>
+      <LottieView
+        autoPlay
+        style={{
+          width: 200,
+          height: 200,
+        }}
+        source={require('../assets/Freshlyy.json')}
+      />
     </View>
   );
 }

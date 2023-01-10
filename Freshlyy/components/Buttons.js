@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
 import Theme from '../constants/theme';
 
@@ -61,18 +61,31 @@ module.exports.Button = function (props) {
       buttonBackground.push(styles.bigButtonBackground);
       buttonText.push(styles.bigButtonText);
   }
-  buttonBackground.push(props.backgroundStyle);
-  buttonText.push(props.textStyle);
-  return (
+  let button = (
     <TouchableOpacity style={buttonBackground} onPress={props.onPress}>
       <Text style={buttonText}>{props.title}</Text>
     </TouchableOpacity>
   );
+  if (props.type == 'icon') {
+    button = (
+      <TouchableOpacity
+        style={[buttonBackground, styles.buttonIconBackground]}
+        onPress={props.onPress}
+      >
+        {props.icon}
+        <Text style={[buttonText, styles.buttonIconText]}>{props.title}</Text>
+      </TouchableOpacity>
+    );
+  }
+  buttonBackground.push(props.backgroundStyle);
+  buttonText.push(props.textStyle);
+  return button;
 };
 
 const styles = StyleSheet.create({
   bigButtonText: {
-    fontSize: 22,
+    fontFamily: 'Poppins',
+    fontSize: 20,
     textAlign: 'center',
   },
   bigButtonBackground: {
@@ -83,23 +96,22 @@ const styles = StyleSheet.create({
   normalButtonText: {
     fontSize: 16,
     textAlign: 'center',
-    fontWeight: '500',
+    fontFamily: 'Poppins',
   },
   normalButtonBackground: {
     padding: 6,
     paddingHorizontal: 8,
-    marginVertical: 5,
+    margin: 5,
     borderRadius: 12,
   },
   smallButtonText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: 'PoppinsBold',
     textAlign: 'center',
   },
   smallButtonBackground: {
     padding: 5,
     margin: 6,
-    alignSelf: 'center',
     borderRadius: 10,
   },
   shadedBigButtonBackground: {
@@ -147,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.secondaryShade,
   },
   shadedSecondaryText: {
-    color: Theme.contrastTextColor,
+    color: Theme.secondary,
   },
   filledSecondaryBackground: {
     backgroundColor: Theme.secondary,
@@ -183,13 +195,25 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.dangerShade,
   },
   shadedDangerText: {
-    color: Theme.contrastTextColor,
+    color: Theme.danger,
   },
   filledDangerBackground: {
     backgroundColor: Theme.danger,
   },
   filledDangerText: {
     color: Theme.contrastTextColor,
+  },
+  buttonIconBackground: {
+    borderRadius: 16,
+    minHeight: 48,
+    minWidth: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonIconText: {
+    fontSize: 8,
+    fontFamily: 'Poppins',
+    textAlign: 'center',
   },
 });
 

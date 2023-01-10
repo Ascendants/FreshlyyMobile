@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FreshlyyImageStore } from '../utils/firebase';
-import { ref, listAll, getDownloadURL, getStorage } from 'firebase/storage';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
@@ -10,21 +9,23 @@ import Header from '../components/Header';
 import ImageDots from '../components/ImageDots';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
-
+import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 
 export default function ({ route, navigation }) {
   const [imageScroll, setImageScroll] = React.useState(0);
-  const [selectedQuantity, setSelectedQuantity] = React.useState(0.5);
+  const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   const [product, setProduct] = React.useState({
     purl: route.params.purl,
     imageUrls: [],
   });
   function increaseQuantity() {
-    setSelectedQuantity((curr) => curr + 0.5);
+    setSelectedQuantity((curr) => curr + product.minQtyIncrement);
   }
   function decreaseQuantity() {
-    setSelectedQuantity((curr) => Math.max(curr - 0.5, 0.5));
+    setSelectedQuantity((curr) =>
+      Math.max(curr - product.minQtyIncrement, product.minQtyIncrement)
+    );
   }
   function scrollImage(e) {
     const scroll = Math.round(e.nativeEvent.contentOffset.x / 345);
@@ -40,6 +41,7 @@ export default function ({ route, navigation }) {
         setProduct((prev) => {
           return { ...prev, ...res.product };
         });
+        setSelectedQuantity(res.product.minQtyIncrement);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -80,32 +82,38 @@ export default function ({ route, navigation }) {
               <H3 style={styles.productTopic}>{product.title}</H3>
               <View style={styles.actionButtonContainer}>
                 <Button
-                  title={
+                  icon={
                     <Feather
                       name='message-circle'
                       size={24}
                       color={Theme.textColor}
                     />
                   }
-                  size='small'
+                  title='Chat'
+                  type='icon'
+                  size='normal'
                   color='shadedTertiary'
                 />
                 <Button
-                  title={
+                  type='icon'
+                  icon={
                     <Feather name='heart' size={24} color={Theme.textColor} />
                   }
-                  size='small'
+                  title='Wishlist'
+                  size='normal'
                   color='shadedTertiary'
                 />
                 <Button
-                  title={
+                  type='icon'
+                  icon={
                     <Ionicons
                       name='ios-share-outline'
                       size={24}
                       color={Theme.textColor}
                     />
                   }
-                  size='small'
+                  title='Share'
+                  size='normal'
                   color='shadedTertiary'
                 />
               </View>
@@ -206,10 +214,12 @@ const styles = StyleSheet.create({
   },
   productTopic: {
     flex: 4,
+    alignSelf: 'center',
   },
   actionButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
     flex: 3,
   },
   ratingArea: {

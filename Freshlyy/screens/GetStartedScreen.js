@@ -1,11 +1,8 @@
-import { contains } from '@firebase/util';
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { H1, H2 } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
-import theme from '../constants/theme';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 export default function () {
   return (
