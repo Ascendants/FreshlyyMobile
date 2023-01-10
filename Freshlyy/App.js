@@ -22,6 +22,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import ProductHomePageScreen from './screens/ProductHomePageScreen';
 import LoginScreen from './screens/LoginScreen';
 import PasswordCreationScreen from './screens/PasswordCreationScreen';
+import MessageScreen from './screens/MessageScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -31,7 +32,7 @@ export default function App() {
   });
   if (!fonts) return null;
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={null}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
@@ -41,12 +42,20 @@ export default function App() {
               headerShown: false,
             }}
             initialParams={{
-              purl: 'sri_lankan_carrots_63aaf131d5c6be39b45d74b9',
+              purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
+              userEmail: 'harini@freshlyy.com',
             }}
           />
           <Stack.Screen
             name='Payment'
             component={PaymentScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='Message'
+            component={MessageScreen}
             options={{
               headerShown: false,
             }}

@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Image, ScrollView } from 'react-native';
-import { H1, H2, H3, H4, Pr } from '../components/Texts';
+import { StyleSheet, View, Image, ScrollView, StatusBar } from 'react-native';
+import { H3, H4, Pr } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import theme from '../constants/theme';
@@ -10,111 +10,180 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductView from '../components/ProductView';
 import DeliveryView from '../components/DeliveryView';
 import Modal from '../components/Modal';
+import ENV from '../constants/env';
 import LottieView from 'lottie-react-native';
 
 export default function ({ navigation, route }) {
   const [orderData, setOrderData] = React.useState({
     selectedPaymentMethod: 'cod',
   });
+  const [deliveries, setDeliveries] = React.useState({});
   const [confirmOrder, setConfirmOrder] = React.useState(false);
-  function setSelectedPayment(method) {
-    setOrderData((prev) => {
-      return { ...prev, selectedPaymentMethod: method };
-    });
-  }
+  const [subTotal, setSubTotal] = React.useState(0);
+  const [total, setTotal] = React.useState(0);
+  const [cart, setCart] = React.useState([]);
+
   const delay = (time) =>
     new Promise((resolve, reject) => setTimeout(resolve, time));
   async function placeOrder() {
+    const data = {};
     setConfirmOrder(true);
-    await delay(2000);
-    navigation.navigate('Payment', { order: orderData });
-    setConfirmOrder(false);
+    data.deliveryCharges = [];
+    Object.keys(deliveries).forEach((farmer) => {
+      data.deliveryCharges.push({
+        farmer: farmer,
+        delivery: deliveries[farmer],
+      });
+    });
+    fetch(ENV.backend + '/customer/place-order/', {
+      method: 'POST',
+      headers: {
+        userEmail: route.params.userEmail,
+        'Content-Type': 'application/json',
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message != 'Success') throw new Error('Something went wrong');
+        navigation.navigate('Payment', {
+          order: res,
+          userEmail: route.params.userEmail,
+        });
+        setConfirmOrder(false);
+      })
+      .catch((err) => {
+        setConfirmOrder(false);
+        if ((err.message = 'Not Available')) {
+          navigation.navigate('Message', {
+            type: 'fail',
+            messageTitle: 'Order could not be placed :(',
+            messageText: 'One or more items in cart was not available.',
+            goto: 'Cart',
+          });
+          return;
+        }
+        navigation.navigate('Message', {
+          type: 'fail',
+          messageTitle: 'Order could not be placed :(',
+          messageText: 'Something went wrong. Please try again.',
+          goto: 'Checkout',
+        });
+      });
   }
   const user = React.useContext(UserContext);
+  function setDelivery(farmer, value) {
+    setDeliveries((curr) => {
+      const newOb = { ...curr };
+      newOb[farmer] = value;
+      return newOb;
+    });
+  }
+  React.useEffect(() => {
+    setTotal(() => {
+      let total = subTotal;
+      Object.keys(deliveries).forEach((key) => {
+        if (deliveries[key]) {
+          const deliveryItem = cart.find((item) => item.farmer == key);
+          total += deliveryItem.costPerKM * deliveryItem.distance;
+        }
+      });
+      return total;
+    });
+    setSubTotal(
+      cart.reduce(
+        (partial, curr) =>
+          partial + curr.items.reduce((p, c) => p + c.uPrice * c.qty, 0),
+        0
+      )
+    );
+  }, [cart, subTotal, deliveries, total]);
+  React.useEffect(() => {
+    fetch(ENV.backend + '/customer/cart/', {
+      method: 'GET',
+      headers: {
+        userEmail: route.params.userEmail,
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.cart) throw new Error('Malformed Response');
+        setCart(res.cart);
 
+        setDeliveries((curr) => {
+          res.cart.forEach((item) => {
+            curr[item.farmer] = true;
+          });
+          return curr;
+        });
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Modal visible={confirmOrder}>
-          <View style={styles.modalContent}>
-            <LottieView
-              autoPlay
-              style={{
-                width: 200,
-                height: 200,
-              }}
-              source={require('../assets/Freshlyy.json')}
-            />
-            <H3>Placing Order</H3>
-          </View>
-        </Modal>
-        <Header back={true} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.pageContent}>
-            <H3 style={styles.title}>Your Order</H3>
-            <View style={styles.pageArea}>
-              <ProductView
-                product={{
-                  title: 'Sri Lankan Carrots',
-                  farmer: 'Haritha',
-                  qty: 1,
-                  price: 1250.0,
-                  imageUri:
-                    'https://firebasestorage.googleapis.com/v0/b/freshlyyimagestore.appspot.com/o/ProductImages%2FP001_1.jpg?alt=media&token=eb80b75a-b8e9-4b54-9e31-f4e4f40e9faa',
+    <>
+      <StatusBar barStyle='dark-content' />
+      <SafeAreaView>
+        <View style={styles.screen}>
+          <Modal visible={confirmOrder}>
+            <View style={styles.modalContent}>
+              <LottieView
+                autoPlay
+                style={{
+                  width: 200,
+                  height: 200,
                 }}
+                source={require('../assets/Freshlyy.json')}
               />
-              <ProductView
-                product={{
-                  title: 'Green Beans',
-                  farmer: 'Nadun',
-                  qty: 2,
-                  price: 2000.0,
-                  imageUri:
-                    'https://firebasestorage.googleapis.com/v0/b/freshlyyimagestore.appspot.com/o/ProductImages%2Fpexels-antony-trivet-12974525%202.jpg?alt=media&token=e69399ba-fd6c-4b57-80cc-2971e8591200',
-                }}
-              />
+              <H3>Placing Order</H3>
             </View>
-            <View style={styles.pageArea}>
-              <H3>Sub Total</H3>
-              <Pr fontSize={30}>3250.00</Pr>
+          </Modal>
+          <Header back={true} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.pageContent}>
+              <H3 style={styles.title}>Your Order</H3>
+              <View style={styles.pageArea}>
+                {cart.map((farmer) =>
+                  farmer.items.map((item) => (
+                    <ProductView key={item.item} product={item} />
+                  ))
+                )}
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Sub Total</H3>
+                <Pr fontSize={30}>{subTotal.toFixed(2)}</Pr>
+              </View>
+              <View style={styles.pageArea}>
+                <H4 style={styles.title}>Delivery Costs</H4>
+                {cart.map((farmer) => (
+                  <DeliveryView
+                    option={farmer}
+                    key={farmer.farmer}
+                    delivery={deliveries[farmer.farmer]}
+                    setDelivery={(value) => setDelivery(farmer.farmer, value)}
+                  />
+                ))}
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Total</H3>
+                <Pr fontSize={30}>{total.toFixed(2)}</Pr>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  size='big'
+                  color='filledWarning'
+                  title='Confirm Order'
+                  onPress={placeOrder}
+                />
+              </View>
             </View>
-            <View style={styles.pageArea}>
-              <H4 style={styles.title}>Delivery Costs</H4>
-              <DeliveryView
-                option={{
-                  farmer: 'Haritha',
-                  distance: 2.5,
-                  upkm: 100.0,
-                  tprice: 250.0,
-                  getItDelivered: true,
-                }}
-              />
-              <DeliveryView
-                option={{
-                  farmer: 'Nadun',
-                  distance: 3,
-                  upkm: 150.0,
-                  tprice: 450.0,
-                  getItDelivered: false,
-                }}
-              />
-            </View>
-            <View style={styles.pageArea}>
-              <H3>Total</H3>
-              <Pr fontSize={30}>3950.00</Pr>
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                size='big'
-                color='filledWarning'
-                title='Confirm Order'
-                onPress={placeOrder}
-              />
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+    </>
   );
 }
 const styles = StyleSheet.create({
@@ -132,13 +201,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     textAlign: 'center',
     marginBottom: 10,
-  },
-  coupon: {
-    marginVertical: 20,
-    height: 100,
-    backgroundColor: Theme.overlay,
-    width: '100%',
-    borderRadius: 15,
   },
   buttonContainer: {
     justifyContent: 'center',

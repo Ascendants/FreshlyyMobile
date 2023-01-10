@@ -10,25 +10,85 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import PaymentSelector from '../components/PaymentSelector';
 import Modal from '../components/Modal';
 import LottieView from 'lottie-react-native';
+import PlacedOrderView from '../components/PlacedOrderView';
+import { TextInputBox } from '../components/Inputs';
+import ENV from '../constants/env';
 
 export default function ({ navigation, route }) {
   const [orderData, setOrderData] = React.useState({
     selectedPaymentMethod: 'cod',
+    orders: route.params.order.orderDetails,
+    orderTotal: route.params.order.orderDetails.reduce((a, b) => {
+      return a + (b.totalPrice + b.totalDeliveryCharge);
+    }, 0),
   });
+  const [cvv, setCvv] = React.useState('');
   const [confirmPayment, setConfirmPayment] = React.useState(false);
+  const [paymentMethods, setPaymentMethods] = React.useState([]);
   function setSelectedPayment(method) {
     setOrderData((prev) => {
       return { ...prev, selectedPaymentMethod: method };
     });
   }
+  React.useState(() => {
+    fetch(ENV.backend + '/customer/cards/', {
+      method: 'GET',
+      headers: {
+        useremail: route.params.userEmail,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.cards) throw new Error('Malformed Response');
+        setPaymentMethods(res.cards);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const delay = (time) =>
     new Promise((resolve, reject) => setTimeout(resolve, time));
-  async function placeOrder() {
+  async function makePayment() {
     setConfirmPayment(true);
-    await delay(2000);
+    const data = {
+      payFrom: orderData.selectedPaymentMethod,
+      orders: orderData.orders.map((order) => order._id),
+      cvv: cvv,
+    };
+    fetch(ENV.backend + '/customer/payment/', {
+      method: 'POST',
+      headers: {
+        userEmail: route.params.userEmail,
+        'Content-Type': 'application/json',
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setConfirmPayment(false);
+        if (res.message != 'Success') {
+          throw new Error('Something went wrong');
+        }
+        navigation.navigate('Message', {
+          type: 'Success',
+          messageTitle: 'Payment Complete!',
+          messageText: 'The farmers will process your order and let you know!',
+          goto: 'Order Detail',
+          goButtonText: 'View Order',
+        });
+        return;
+      })
+      .catch((err) => {
+        navigation.navigate('Message', {
+          type: 'fail',
+          messageTitle: 'Payment Failed :(',
+          messageText: 'Something went wrong :(',
+        });
+      });
   }
   const user = React.useContext(UserContext);
-
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -47,16 +107,17 @@ export default function ({ navigation, route }) {
         </Modal>
         <Header back={false} />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Image
-            style={styles.successImage}
-            source={require('../assets/success.png')}
-          />
-          <H2 style={styles.bigTitle}>Order Placed!</H2>
-          <H3 style={styles.title}>Payment</H3>
           <View style={styles.pageContent}>
+            <H2 style={styles.bigTitle}>Order Placed!</H2>
+            <H3 style={styles.title}>Payment</H3>
+            <View style={styles.pageArea}>
+              {orderData.orders.map((order) => {
+                return <PlacedOrderView key={order.farmer} order={order} />;
+              })}
+            </View>
             <View style={styles.pageArea}>
               <H3>Total</H3>
-              <Pr fontSize={30}>3950.00</Pr>
+              <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
             </View>
             <View style={styles.pageArea}>
               <H4 style={styles.title}>Apply Coupon Code</H4>
@@ -64,22 +125,36 @@ export default function ({ navigation, route }) {
             </View>
             <View style={styles.pageArea}>
               <H3>Net Total</H3>
-              <Pr fontSize={30}>3950.00</Pr>
+              <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
             </View>
-            <View style={styles.pageArea}>
+            <View style={[styles.pageArea, { alignItems: 'center' }]}>
               <H4 style={styles.title}>Choose a payment option</H4>
               <PaymentSelector
-                methods={user.paymentMethods}
+                methods={paymentMethods}
                 setSelectedPayment={setSelectedPayment}
                 selectedMethod={orderData.selectedPaymentMethod}
+                clearCvv={() => setCvv('')}
               />
+              {orderData.selectedPaymentMethod != 'other' &&
+              orderData.selectedPaymentMethod != 'cod' ? (
+                <TextInputBox
+                  inputlabel='CVV'
+                  placeholder='Enter CVV'
+                  value={cvv}
+                  onChange={(value) => {
+                    setCvv(value);
+                  }}
+                  keyboardType='number-pad'
+                  maxLength={3}
+                />
+              ) : null}
             </View>
             <View style={styles.buttonContainer}>
               <Button
                 size='big'
                 color='filledSecondary'
                 title='Make Payment'
-                onPress={placeOrder}
+                onPress={makePayment}
               />
             </View>
           </View>

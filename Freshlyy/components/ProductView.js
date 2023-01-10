@@ -1,24 +1,23 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { H5, H6, H3, H4, P, Pr } from '../components/Texts';
+import { H6, H3, H4, P, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import Theme from '../constants/theme';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import ListItem from './ListItem';
 
 export default function (props) {
   const product = props.product;
   return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: product.imageUri }} style={styles.image} />
-        </View>
-        <View style={styles.descContainer}>
-          <H5 style={{ fontFamily: 'Poppins' }}>{product.title}</H5>
-          <P>Sold by {product.farmer}</P>
-          <P>{product.qty} KG</P>
-          <Pr>{product.price}</Pr>
-        </View>
+    <ListItem>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: product.imageUri }} style={styles.image} />
+      </View>
+      <View style={styles.descContainer}>
+        <H6 style={{ fontFamily: 'Poppins' }}>{product.title}</H6>
+        <P>Sold by {product.farmerName}</P>
+        <P>{product.qty} KG</P>
+        <Pr>{product.uPrice * product.qty}</Pr>
       </View>
       <View style={styles.actionContainer}>
         <Button
@@ -38,24 +37,11 @@ export default function (props) {
           title='Remove'
         />
       </View>
-    </View>
+    </ListItem>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    height: 100,
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.textColor,
-  },
-  contentContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   imageContainer: {
     marginHorizontal: 5,
     alignItems: 'center',
