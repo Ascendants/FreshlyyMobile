@@ -15,6 +15,7 @@ import ProductDetailScreen from './screens/ProductDetailScreen';
 import DashBoardScreen from './screens/DashBoard';
 import GetStartedScreen from './screens/GetStartedScreen';
 import DashBoard from './screens/DashBoard';
+import MyCartScreen from './screens/MyCartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import HomeScreen from './screens/HomeScreen';
 import PaymentScreen from './screens/PaymentScreen';
