@@ -18,6 +18,7 @@ import ServicesCardDB from '../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
+import { H4 } from '../components/Texts';
 
 export default function () {
 	const [userData, setUserData] = useState([]);
@@ -55,31 +56,33 @@ export default function () {
 				<Header />
 				<ScrollView showsVerticalScrollIndicator={false}>
 					<InfoCardDB user={userData} />
+					<H4 style={styles.headings}>My Orders</H4>
 					<View style={styles.cardContainer}>
 						<TouchableOpacity
 							style={styles.container}
 							onPress={() => handleSnapPress(0)}
 						>
 							<DashBoardCard
-								imageUri={require('../assets/trade.png')}
-								number={10}
-								text="Selling Products"
-							/>
-						</TouchableOpacity>
-						<TouchableOpacity style={styles.container}>
-							<DashBoardCard
 								imageUri={require('../assets/gift.png')}
-								number={5}
-								text="To-Ship Products"
+								number={10}
+								text="New Orders"
 							/>
 						</TouchableOpacity>
-					</View>
-					<View style={styles.cardContainer}>
 						<TouchableOpacity style={styles.container}>
 							<DashBoardCard
 								imageUri={require('../assets/box.png')}
+								number={5}
+								text="Past Orders"
+							/>
+						</TouchableOpacity>
+					</View>
+          <H4 style={styles.headings}>My Listings</H4>
+					<View style={styles.cardContainer}>
+						<TouchableOpacity style={styles.container}>
+							<DashBoardCard
+								imageUri={require('../assets/trade.png')}
 								number={100}
-								text="Sold Products"
+								text="Selling Products"
 							/>
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.container}>
@@ -94,8 +97,8 @@ export default function () {
 						<Button
 							size="big"
 							color="shadedPrimary"
-							title="Add Product"
-							backgroundstyle={styles.button}
+							title="Add new produce listing"
+							// backgroundstyle={styles.button}
 						/>
 					</View>
 					<ServicesCardDB />
@@ -129,18 +132,16 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		justifyContent: 'center',
 	},
+  headings: {
+    margin: 15,
+    paddingHorizontal: 10,
+  },
 	cardContainer: {
-		marginTop: 30,
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
 	},
 	buttonContainer: {
+    margin: 20,
 		alignItems: 'center',
-	},
-	button: {
-		width: '85%',
-		margin: 30,
-		padding: 5,
-		fontSize: 15,
 	},
 });
