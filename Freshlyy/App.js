@@ -26,6 +26,10 @@ import PasswordCreationScreen from './screens/PasswordCreationScreen';
 import BeFarmerScreen from './screens/BeFarmerScreen';
 import FarmerCreateAccountScreen from './screens/FarmerCreateAccountScreen';
 import MessageScreen from './screens/MessageScreen';
+import InsertProductScreen from './screens/InsertProductScreen';
+import ProductAddedScreen from './screens/ProductAddedScreen';
+import ProductUpdatedScreen from './screens/ProductUpdated';
+import ProductDeletedScreen from './screens/ProductDelete';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -40,12 +44,12 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={FarmerCreateAccountScreen}
+            component={ProductDetailScreen}
             options={{
               headerShown: false,
             }}
             initialParams={{
-              purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
+              purl: 'sri_lankan_jackfruit_63bd26cb9bfd69a6d97143fd',
               userEmail: 'harini@freshlyy.com',
             }}
           />
