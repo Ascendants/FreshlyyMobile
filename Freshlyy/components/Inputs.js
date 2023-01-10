@@ -15,7 +15,6 @@ import { BigButton } from './Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CheckBox from '@react-native-community/checkbox';
 
-
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
 
@@ -32,9 +31,8 @@ module.exports.TextInputBox = function (props) {
         onChangeText={(value) => props.onChange(value)}
         value={props.value}
         maxLength={props.maxLength}
-        
       />
-      {props.error && (<Text style={styles.errormsg}>{props.error}</Text>)}
+      {props.error && <Text style={styles.errormsg}>{props.error}</Text>}
     </View>
   );
 };
@@ -48,7 +46,7 @@ module.exports.DropDownPicker = function (props) {
       style={[
         styles.inputcont,
         {
-          zIndex: 100,
+          zIndex: 1000,
         },
       ]}
     >
@@ -102,29 +100,28 @@ module.exports.DropDownPicker = function (props) {
 
 // }
 
-
 // module.exports.DatePicker=function (props)  {
 //   const [datePicker, setDatePicker] = useState(false);
- 
+
 //   const [date, setDate] = useState(new Date());
- 
+
 //   const [timePicker, setTimePicker] = useState(false);
- 
+
 //   const [time, setTime] = useState(new Date(Date.now()));
- 
+
 //   function showDatePicker() {
 //     setDatePicker(true);
 //   };
- 
+
 //   function showTimePicker() {
 //     setTimePicker(true);
 //   };
- 
+
 //   function onDateSelected(event, value) {
 //     setDate(value);
 //     setDatePicker(false);
 //   };
- 
+
 //   function onTimeSelected(event, value) {
 //     setTime(value);
 //     setTimePicker(false);
@@ -132,9 +129,9 @@ module.exports.DropDownPicker = function (props) {
 //   return (
 //     <SafeAreaView style={{ flex: 1 }}>
 //       <View >
-        
+
 //         <Text >Date = {date.toDateString()}</Text>
- 
+
 //         <Text >Time = {time.toLocaleTimeString('en-US')}</Text>
 //         {datePicker && (
 //           <DateTimePicker
@@ -143,15 +140,15 @@ module.exports.DropDownPicker = function (props) {
 //             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
 //             is24Hour={true}
 //             onChange={onDateSelected}
-            
+
 //           />
-          
+
 //         )}
-        
+
 //           {!datePicker && (
 //           <View style={{ margin: 10 }}>
 //             <BigButton title="Show Date Picker" color="green" onPress={showDatePicker} />
-            
+
 //           </View>
 //         )}
 //         </View>
@@ -165,8 +162,8 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     fontFamily: 'Poppins',
   },
-  errormsg:{
-    color:Theme.danger,
+  errormsg: {
+    color: Theme.danger,
   },
   logo: {
     height: 50,
