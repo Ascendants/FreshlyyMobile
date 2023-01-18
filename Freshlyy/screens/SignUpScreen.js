@@ -36,105 +36,109 @@ const SignupSchema = Yup.object().shape({
 export default function () {
   return (
     <SafeAreaView>
-      <Header back={true} />
-      <ScrollView>
-        <View style={styles.screen}>
-          <Image
-            source={require('../assets/signupvector.png')}
-            style={styles.vectorimage}
-          />
-          {/* <DatePicker/> */}
-          <Formik
-            initialValues={{
-              name: '',
-              lname: '',
-              email: '',
-              nic: '',
-            }}
-            validationSchema={SignupSchema}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleSubmit,
-              handleBlur,
-              isValid,
-              setFieldTouched,
-            }) => (
-              <View style={styles.inputcont}>
-                <TextInputBox
-                  inputlabel='First Name'
-                  placeholder='Enter first name'
-                  value={values.name}
-                  onChange={handleChange('name')}
-                  error={errors.name}
-                  onBlur={() => handleBlur('name')}
-                />
+      <View style={styles.screen}>
+        <Header back={true} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.pageContent}>
+            <Image
+              source={require('../assets/signupvector.png')}
+              style={styles.vectorimage}
+            />
+            {/* <DatePicker/> */}
+            <Formik
+              initialValues={{
+                name: '',
+                lname: '',
+                email: '',
+                nic: '',
+              }}
+              validationSchema={SignupSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleSubmit,
+                handleBlur,
+                isValid,
+                setFieldTouched,
+              }) => (
+                <View style={styles.inputcont}>
+                  <TextInputBox
+                    inputlabel='First Name'
+                    placeholder='Enter first name'
+                    value={values.name}
+                    onChange={handleChange('name')}
+                    error={errors.name}
+                    onBlur={() => handleBlur('name')}
+                  />
 
-                <TextInputBox
-                  inputlabel='Last Name'
-                  placeholder='Enter last name '
-                  value={values.lname}
-                  onChange={handleChange('lname')}
-                  error={errors.lname}
-                  onBlur={() => handleBlur('lname')}
-                />
-                <TextInputBox
-                  inputlabel='Email'
-                  placeholder='Enter email'
-                  type='email-address'
-                  value={values.email}
-                  onChange={handleChange('email')}
-                  error={errors.email}
-                  onBlur={() => handleBlur('email')}
-                />
+                  <TextInputBox
+                    inputlabel='Last Name'
+                    placeholder='Enter last name '
+                    value={values.lname}
+                    onChange={handleChange('lname')}
+                    error={errors.lname}
+                    onBlur={() => handleBlur('lname')}
+                  />
+                  <TextInputBox
+                    inputlabel='Email'
+                    placeholder='Enter email'
+                    type='email-address'
+                    value={values.email}
+                    onChange={handleChange('email')}
+                    error={errors.email}
+                    onBlur={() => handleBlur('email')}
+                  />
 
-                <DropDownPicker
-                  inputlabel='Gender'
-                  list={[
-                    { label: 'Male', value: 'm' },
-                    { label: 'Female', value: 'f' },
-                    { label: 'Other', value: 'o' },
-                  ]}
-                />
-                <TextInputBox
-                  inputlabel='NIC Number'
-                  placeholder='Enter NIC'
-                  value={values.nic}
-                  onChange={handleChange('nic')}
-                  error={errors.nic}
-                />
-                <TextInputBox
-                  inputlabel='Street No'
-                  placeholder='Enter street no'
-                />
-                <TextInputBox
-                  inputlabel='Address line 1'
-                  placeholder='Enter address 1'
-                />
-                <TextInputBox
-                  inputlabel='Address line 2'
-                  placeholder='Enter address 2'
-                />
-                <Button title='Next' color='filledSecondary' size='big' />
-              </View>
-            )}
-          </Formik>
-          <View style={styles.inputcont}></View>
-        </View>
-      </ScrollView>
+                  <DropDownPicker
+                    inputlabel='Gender'
+                    list={[
+                      { label: 'Male', value: 'm' },
+                      { label: 'Female', value: 'f' },
+                      { label: 'Other', value: 'o' },
+                    ]}
+                  />
+                  <TextInputBox
+                    inputlabel='NIC Number'
+                    placeholder='Enter NIC'
+                    value={values.nic}
+                    onChange={handleChange('nic')}
+                    error={errors.nic}
+                  />
+                  <TextInputBox
+                    inputlabel='Street No'
+                    placeholder='Enter street no'
+                  />
+                  <TextInputBox
+                    inputlabel='Address line 1'
+                    placeholder='Enter address 1'
+                  />
+                  <TextInputBox
+                    inputlabel='Address line 2'
+                    placeholder='Enter address 2'
+                  />
+                  <Button title='Next' color='filledSecondary' size='big' />
+                </View>
+              )}
+            </Formik>
+            <View style={styles.inputcont}></View>
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    alignItems: 'center',
-    //justifyContent: 'center',
+    height: '100%',
     fontFamily: 'Poppins',
+  },
+  pageContent: {
+    paddingHorizontal: 15,
+    alignItems: 'center',
   },
   logo: {
     height: 50,

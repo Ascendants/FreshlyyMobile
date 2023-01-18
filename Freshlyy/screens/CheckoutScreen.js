@@ -188,7 +188,6 @@ export default function ({ navigation, route }) {
 }
 const styles = StyleSheet.create({
   screen: {
-    fontFamily: 'Poppins',
     height: '100%',
   },
   pageContent: {

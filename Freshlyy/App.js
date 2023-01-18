@@ -30,6 +30,7 @@ import InsertProductScreen from './screens/InsertProductScreen';
 import ProductAddedScreen from './screens/ProductAddedScreen';
 import ProductUpdatedScreen from './screens/ProductUpdated';
 import ProductDeletedScreen from './screens/ProductDelete';
+import EorDproduct from './screens/EorDproduct';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -44,12 +45,12 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={ProductDetailScreen}
+            component={StartScreen}
             options={{
               headerShown: false,
             }}
             initialParams={{
-              purl: 'sri_lankan_jackfruit_63bd26cb9bfd69a6d97143fd',
+              purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               userEmail: 'harini@freshlyy.com',
             }}
           />
