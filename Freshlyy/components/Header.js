@@ -38,6 +38,7 @@ export default function (props) {
           />
         </TouchableOpacity>
       ) : null}
+      {!props.farmer && !props.customer && <View style={{ width: 32 }}></View>}
     </View>
   );
 }
