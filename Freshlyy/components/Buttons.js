@@ -61,6 +61,8 @@ module.exports.Button = function (props) {
       buttonBackground.push(styles.bigButtonBackground);
       buttonText.push(styles.bigButtonText);
   }
+  buttonBackground.push(props.backgroundStyle);
+  buttonText.push(props.textStyle);
   let button = (
     <TouchableOpacity style={buttonBackground} onPress={props.onPress}>
       <Text style={buttonText}>{props.title}</Text>
@@ -73,7 +75,15 @@ module.exports.Button = function (props) {
         onPress={props.onPress}
       >
         {props.icon}
-        <Text style={[buttonText, styles.buttonIconText]}>{props.title}</Text>
+        <Text
+          style={[
+            buttonText,
+            styles.buttonIconText,
+            props.size == 'normal' ? styles.normalButtonIconText : null,
+          ]}
+        >
+          {props.title}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -214,6 +224,9 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontFamily: 'Poppins',
     textAlign: 'center',
+  },
+  normalButtonIconText: {
+    fontSize: 12,
   },
 });
 

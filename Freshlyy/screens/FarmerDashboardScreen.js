@@ -53,7 +53,7 @@ export default function () {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header />
+        <Header farmer={true} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={styles.pageContent}
@@ -61,40 +61,34 @@ export default function () {
           <InfoCardDB user={userData} />
           <H4 style={styles.headings}>My Orders</H4>
           <View style={styles.cardContainer}>
-            <TouchableOpacity
-              style={styles.container}
+            <DashBoardCard
+              imageUri={require('../assets/gift.png')}
+              number={10}
+              text='New Orders'
               onPress={() => handleSnapPress(0)}
-            >
-              <DashBoardCard
-                imageUri={require('../assets/gift.png')}
-                number={10}
-                text='New Orders'
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.container}>
-              <DashBoardCard
-                imageUri={require('../assets/box.png')}
-                number={5}
-                text='Past Orders'
-              />
-            </TouchableOpacity>
+            />
+
+            <DashBoardCard
+              imageUri={require('../assets/box.png')}
+              number={5}
+              text='Past Orders'
+              onPress={() => handleSnapPress(0)}
+            />
           </View>
           <H4 style={styles.headings}>My Listings</H4>
           <View style={styles.cardContainer}>
-            <TouchableOpacity style={styles.container}>
-              <DashBoardCard
-                imageUri={require('../assets/trade.png')}
-                number={100}
-                text='Selling Products'
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.container}>
-              <DashBoardCard
-                imageUri={require('../assets/pending.png')}
-                number={3}
-                text='Pending Approvals'
-              />
-            </TouchableOpacity>
+            <DashBoardCard
+              imageUri={require('../assets/trade.png')}
+              number={100}
+              text='Selling'
+              onPress={() => handleSnapPress(0)}
+            />
+            <DashBoardCard
+              imageUri={require('../assets/pending.png')}
+              number={3}
+              text='Pending'
+              onPress={() => handleSnapPress(0)}
+            />
           </View>
           <View style={styles.buttonContainer}>
             <Button
@@ -104,7 +98,7 @@ export default function () {
               // backgroundstyle={styles.button}
             />
           </View>
-          <ServicesCardDB />
+          <ServicesCardDB farmer={true} />
           <View style={styles.lastChild}></View>
         </ScrollView>
         <BottomSheet
@@ -148,6 +142,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    flexWrap: 'wrap',
   },
   buttonContainer: {
     margin: 20,
