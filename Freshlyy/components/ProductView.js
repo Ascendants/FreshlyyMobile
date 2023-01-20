@@ -25,14 +25,14 @@ export default function (props) {
           icon={
             <MaterialIcons name='mode-edit' size={24} color={Theme.secondary} />
           }
-          size='normal'
+          size='small'
           color='shadedSecondary'
           title='Edit'
         />
         <Button
           type='icon'
           icon={<FontAwesome name='trash-o' size={24} color={Theme.danger} />}
-          size='normal'
+          size='small'
           color='shadedDanger'
           title='Remove'
         />

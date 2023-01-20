@@ -10,13 +10,13 @@ export default function (props) {
     <View style={styles.card}>
       <View style={styles.cardLayout}>
         <View>
-          <H3 style={styles.name}>{props.user.fname}</H3>
-          <H4 style={styles.name}>{props.user.lname}</H4>
-          <P>{props.user.email}</P>
+          <H3 style={styles.name}>{props.user?.fname}</H3>
+          <H4 style={styles.name}>{props.user?.lname}</H4>
+          <P>{props.user?.email}</P>
         </View>
         <View style={styles.cardRight}>
           <Image
-            source={{ uri: props.user.profilePicUrl }}
+            source={{ uri: props.user?.profilePicUrl }}
             style={styles.image}
           />
         </View>

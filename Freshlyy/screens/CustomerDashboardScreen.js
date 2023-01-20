@@ -19,42 +19,24 @@ import ENV from '../constants/env';
 import { H4 } from '../components/Texts';
 import InfoCardDBCust from '../components/InfoCardDBCust';
 
-export default function () {
-  const [userData, setUserData] = useState({
-    fname: 'Haritha',
-    lname: 'Hasathcharu',
-    profilePicUrl:
-      'https://firebasestorage.googleapis.com/v0/b/freshlyyimagestore.appspot.com/o/UserImages%2FCB09D1A1-E3A6-4885-8A1B-1CE381108D68.jpg?alt=media&token=cfeb9bd0-e854-40d0-b926-26be82d8d4c5',
-    email: 'haritha@hasathcharu.com',
-  });
-  const [product, setProduct] = useState([]);
-  const sheetRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const snapPoints = ['60%', '100%'];
-
-  const handleSnapPress = useCallback((index) => {
-    sheetRef.current?.snapToIndex(index);
-    setIsOpen(true);
-  }, []);
-
+export default function ({ navigation, route }) {
+  const [userData, setUserData] = useState({});
   React.useEffect(() => {
-    // fetch(ENV.backend + '/farmer/dashboard', {
-    //   method: 'GET',
-    //   headers: {
-    //     useremail: 'komuthu@freshlyy.com',
-    //   },
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     if (res.message != 'Success') {
-    //       throw new Error('Something went wrong');
-    //     }
-    //     setUserData(res.user);
-    //   })
-    //   .catch((err) => console.log(err));
+    fetch(ENV.backend + '/customer/dashboard', {
+      method: 'GET',
+      headers: {
+        useremail: route.params.userEmail,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message != 'Success') {
+          throw new Error('Something went wrong');
+        }
+        setUserData(res);
+      })
+      .catch((err) => console.log(err));
   }, []);
-
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -63,41 +45,36 @@ export default function () {
           showsVerticalScrollIndicator={false}
           style={styles.pageContent}
         >
-          <InfoCardDBCust user={userData} />
+          <InfoCardDBCust user={userData.user} />
           <View style={styles.cardContainer}>
             <DashBoardCard
               imageUri={require('../assets/topay.png')}
-              number={0}
+              number={userData.toPay}
               text='To Pay'
             />
             <DashBoardCard
               imageUri={require('../assets/processing.png')}
-              number={0}
+              number={userData.toProcess + userData.toShip}
               text='Processing'
             />
             <DashBoardCard
               imageUri={require('../assets/topickup.png')}
-              number={0}
+              number={userData.toPickup}
               text='To Pick Up'
             />
             <DashBoardCard
               imageUri={require('../assets/shipped.png')}
-              number={0}
+              number={userData.toReceive}
               text='Shipped'
             />
             <DashBoardCard
-              imageUri={require('../assets/received.png')}
-              number={0}
-              text='Received'
-            />
-            <DashBoardCard
               imageUri={require('../assets/toreview.png')}
-              number={0}
+              number={userData.toReview}
               text='To Review'
             />
             <DashBoardCard
               imageUri={require('../assets/all.png')}
-              number={0}
+              number={userData.all}
               text='All Orders'
             />
           </View>
