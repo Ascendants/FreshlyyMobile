@@ -51,7 +51,6 @@ export default function App() {
             name='Checkout'
             component={CustomerDashboardScreen}
             initialParams={{
-              // purl: 'sri_lankan_jackfruit_63bd26cb9bfd69a6d97143fd',
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               userEmail: userEmail,
