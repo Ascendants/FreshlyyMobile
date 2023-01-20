@@ -12,9 +12,8 @@ const Stack = createNativeStackNavigator();
 
 import StartScreen from './screens/StartScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
-import DashBoardScreen from './screens/DashBoard';
 import GetStartedScreen from './screens/GetStartedScreen';
-import DashBoard from './screens/DashBoard';
+import DashBoard from './screens/FarmerDashboardScreen';
 import MyCartScreen from './screens/MyCartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -31,6 +30,8 @@ import ProductAddedScreen from './screens/ProductAddedScreen';
 import ProductUpdatedScreen from './screens/ProductUpdated';
 import ProductDeletedScreen from './screens/ProductDelete';
 import EorDproduct from './screens/EorDproduct';
+import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
+import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -38,38 +39,40 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
+  const userEmail = 'harini@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false, animation: 'none' }}
+        >
           <Stack.Screen
             name='Checkout'
-            component={GetStartedScreen}
-            options={{
-              headerShown: false,
-            }}
+            component={CustomerDashboardScreen}
             initialParams={{
               // purl: 'sri_lankan_jackfruit_63bd26cb9bfd69a6d97143fd',
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
-              userEmail: 'harini@freshlyy.com',
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen name='Payment' component={PaymentScreen} />
+          <Stack.Screen
+            name='Farmer Dashboard'
+            component={FarmerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
             }}
           />
           <Stack.Screen
-            name='Payment'
-            component={PaymentScreen}
-            options={{
-              headerShown: false,
+            name='Customer Dashboard'
+            component={CustomerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
             }}
           />
-          <Stack.Screen
-            name='Message'
-            component={MessageScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <Stack.Screen name='Message' component={MessageScreen} />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
         </Stack.Navigator>
       </NavigationContainer>

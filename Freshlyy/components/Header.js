@@ -5,6 +5,12 @@ import Theme from '../constants/theme';
 import { useNavigation } from '@react-navigation/native';
 
 export default function (props) {
+  function switchFarmer() {
+    nav.navigate('Farmer Dashboard');
+  }
+  function switchCustomer() {
+    nav.navigate('Customer Dashboard');
+  }
   const nav = useNavigation();
   return (
     <View style={styles.container}>
@@ -13,16 +19,25 @@ export default function (props) {
           <Ionicons name='ios-chevron-back' size={32} color={Theme.textColor} />
         </TouchableOpacity>
       ) : (
-        <View></View>
+        <View style={{ width: 32 }}></View>
       )}
       <Image source={require('../assets/logo.png')} style={styles.logo} />
-      {props.back ? (
-        <TouchableOpacity>
-          <Ionicons name='ios-menu' size={32} color={Theme.textColor} />
+      {props.customer ? (
+        <TouchableOpacity onPress={switchFarmer}>
+          <Image
+            source={require('../assets/farmericon.png')}
+            style={styles.icon}
+          />
         </TouchableOpacity>
-      ) : (
-        <View></View>
-      )}
+      ) : null}
+      {props.farmer ? (
+        <TouchableOpacity onPress={switchCustomer}>
+          <Image
+            source={require('../assets/usericon.png')}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 }
@@ -34,7 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 0,
     height: 50,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     marginBottom: 10,
   },
   logo: {
@@ -43,5 +58,9 @@ const styles = StyleSheet.create({
     height: 30,
     width: 100,
     resizeMode: 'contain',
+  },
+  icon: {
+    height: 30,
+    width: 30,
   },
 });
