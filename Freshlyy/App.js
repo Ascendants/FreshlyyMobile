@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 import StartScreen from './screens/StartScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
 import GetStartedScreen from './screens/GetStartedScreen';
-import DashBoard from './screens/FarmerDashboardScreen';
+import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
 import MyCartScreen from './screens/MyCartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -32,6 +32,7 @@ import ProductDeletedScreen from './screens/ProductDelete';
 import EorDproduct from './screens/EorDproduct';
 import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
 import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
+import HelpCenterScreen from './screens/HelpCenterScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -49,7 +50,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CustomerDashboardScreen}
+            component={HelpCenterScreen}
             initialParams={{
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
