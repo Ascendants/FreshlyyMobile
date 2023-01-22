@@ -33,6 +33,7 @@ module.exports.TextInputBox = function (props) {
         maxLength={props.maxLength}
       />
       {props.error && <Text style={styles.errormsg}>{props.error}</Text>}
+
     </View>
   );
 };
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   inputcont: {
-    width: '80%',
+    width: '100%',
     marginVertical: 10,
   },
   inputlabel: {
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     color: Theme.textColor,
     padding: 8,
     paddingHorizontal: 10,
-    backgroundColor: Theme.overlay,
+    backgroundColor: Theme.contrastTextColor,
     borderRadius: 10,
   },
   inputFocused: {

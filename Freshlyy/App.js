@@ -33,6 +33,7 @@ import EorDproduct from './screens/EorDproduct';
 import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
 import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
 import HelpCenterScreen from './screens/HelpCenterScreen';
+import CantSignInScreen from './screens/CantSignInScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -72,6 +73,9 @@ export default function App() {
               userEmail: userEmail,
             }}
           />
+          <Stack.Screen name='Help Center' component={HelpCenterScreen}/>
+          <Stack.Screen name='Cant sign in' component={CantSignInScreen}/>
+
           <Stack.Screen name='Message' component={MessageScreen} />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
         </Stack.Navigator>

@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Image,
-  Text,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -14,7 +13,7 @@ import Theme from '../constants/theme';
 import { H3, H4, H5 } from '../components/Texts';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function (){
+export default function ({navigation}){
   return (
     <SafeAreaView>
       <Header back={true}/>
@@ -22,7 +21,7 @@ export default function (){
       <ScrollView>
         <View style={styles.container}>
           <H4 style={{color: Theme.primary}}>FAQs</H4>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Cant sign in')}>
             <View style={styles.barContainer}>
               <H5>Can't sign in</H5>
               <AntDesign name="right" size={24} color={Theme.textColor} />
