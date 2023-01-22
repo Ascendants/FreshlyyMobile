@@ -1,5 +1,5 @@
 import { contains } from '@firebase/util';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,30 +8,140 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { H1, H2 } from '../components/Texts';
+import { H1, H2 ,H7,H6} from '../components/Texts';
 import Theme from '../constants/theme';
 import { FilledBigButton } from '../components/Buttons';
 import theme from '../constants/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import ProductCard from '../components/ProductCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
+import Header from '../components/Header';
+import { AntDesign,Ionicons } from '@expo/vector-icons';
+
 
 export default function () {
-  return <View style={styles.screen}></View>;
+  const [like,setLike]=useState(false)
+  const [likeCount,setLikeCount]=useState(150)
+  function handleLike(){
+          setLike(prevLike=>!prevLike)
+
+  }
+  useEffect(()=>{
+    setLikeCount(prevCount=>(
+      like?prevCount+1:prevCount-1
+    ))
+  },[like])
+
+
+  return (
+    <SafeAreaView>
+      <Header back={true} />
+      
+      <ScrollView>
+      <View style={styles.screen}>
+      <View style={styles.searchCont}>
+        <AntDesign name="search1" size={20} color="black" style={styles.searchico}/>
+        <TextInput placeholder='Search produce' style={styles.searchinput}/>
+      </View>
+      
+      <View style={styles.filterCont} >
+          <TouchableOpacity>
+          <View style={styles.filterSelect}>
+            <AntDesign name="arrowdown" size={24} color="black" />
+            <H6>Best match</H6>
+            </View>
+          </TouchableOpacity>
+          
+          <TouchableOpacity>
+          <View  style={styles.filterSelect}>
+          <Ionicons name="swap-vertical" size={24} color="black" />
+          <H6>Price</H6>
+          </View>
+          </TouchableOpacity>
+        
+          <TouchableOpacity>
+          <View  style={styles.filterSelect} >
+          <Ionicons name="swap-vertical" size={24} color="black" />
+          <H6>Distance</H6> 
+          </View>
+          </TouchableOpacity>
+         
+         <TouchableOpacity>
+         <View style={styles.filterSelect}>
+            <Ionicons name="filter" size={24} color="black" /> 
+          </View>
+         </TouchableOpacity>
+         
+        
+      </View>
+        <View style={styles.prodCont}>
+            <ProductCard cardType='social' handlePress={handleLike} like={like} likeCount={likeCount}/>
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+        </View>
+
+  </View>
+  </ScrollView>
+  </SafeAreaView>
+  )
 }
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     fontFamily: 'Poppins',
   },
+  searchico:{
+     paddingRight:10
+      
+  },
+  searchinput:{
+         width:'87%'
+  },
+  searchCont:{
+      display:'flex',
+      padding:8,
+      flexDirection:'row',
+      alignItems:'center',
+      //paddingLeft:20,
+      backgroundColor:Theme.overlay,
+      width:'90%',
+      borderRadius:20,
+      marginVertical:10
+  },
+  filterCont:{
+      display:'flex',
+      width:'86%',
+      flexDirection:'row',
+      flexWrap:'wrap',
+      justifyContent:'space-between'
+    
+      
+     
+  },
+  filterSelect:{
+     display:'flex',
+     flexDirection:'row',
+     flexWrap:'wrap'
+  },
+
+
+  prodCont:{
+    display:'flex',
+    width:'85%',
+    flexDirection:'row',
+    flexWrap:'wrap',
+    justifyContent:'space-between',
+    
+    
+  }
 });
-{
-  /* <TouchableOpacity>
-<ProductCard />
-</TouchableOpacity>
-<TouchableOpacity>
-<ProductCard />
-</TouchableOpacity> */
-}

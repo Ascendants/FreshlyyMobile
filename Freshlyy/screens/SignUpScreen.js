@@ -33,7 +33,7 @@ const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
 });
 
-export default function () {
+export default function ({navigation}) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -119,7 +119,7 @@ export default function () {
                     inputlabel='Address line 2'
                     placeholder='Enter address 2'
                   />
-                  <Button title='Next' color='filledSecondary' size='big' />
+                  <Button title='Next' color='filledSecondary' size='big' onPress={()=>navigation.navigate('createPassword')}/>
                 </View>
               )}
             </Formik>

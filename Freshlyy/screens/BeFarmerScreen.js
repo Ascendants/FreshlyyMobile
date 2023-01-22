@@ -14,7 +14,7 @@ import { TextInputBox, DropDownPicker } from '../components/Inputs';
 import { H2, H4, H5 } from '../components/Texts';
 import Header from '../components/Header';
 
-export default function () {
+export default function ({navigation}) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -34,7 +34,7 @@ export default function () {
           </View>
 
           <View style={styles.buttoncont}>
-            <Button title=' Later ' color='shadedSecondary' size='big' />
+            <Button title=' Later ' color='shadedSecondary' size='big' onPress={()=>navigation.navigate('homePage')}/>
           </View>
         </View>
       </View>

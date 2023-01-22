@@ -72,6 +72,42 @@ export default function App() {
             }}
           />
           <Stack.Screen name='Message' component={MessageScreen} />
+
+          <Stack.Screen
+            name='signup'
+            component={SignUpScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+              <Stack.Screen
+            name='createPassword'
+            component={PasswordCreationScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+              <Stack.Screen
+            name='beFarmer'
+            component={BeFarmerScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+           <Stack.Screen
+            name='homePage'
+            component={ProductHomePageScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+            <Stack.Screen
+            name='login'
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
         </Stack.Navigator>
       </NavigationContainer>
