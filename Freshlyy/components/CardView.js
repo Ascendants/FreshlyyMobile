@@ -9,20 +9,29 @@ import ListItem from './ListItem';
 export default function (props) {
   const card = props.card;
   let icon;
-  switch (card.CardType) {
+  switch (card.cardType) {
     case 'Master':
       icon = require('../assets/master.png');
+      break;
+    case 'Visa':
+      icon = require('../assets/visa.png');
+      break;
+    case 'Amex':
+      icon = require('../assets/amex.png');
+      break;
   }
   return (
     <ListItem>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: card.imageUri }} style={styles.image} />
+        <Image source={icon} style={styles.image} />
       </View>
       <View style={styles.descContainer}>
-        <H6 style={{ fontFamily: 'Poppins' }}>{card.title}</H6>
-        <P>Sold by {card.farmerName}</P>
-        <P>{card.qty} KG</P>
-        <Pr>{card.uPrice * card.qty}</Pr>
+        <H6 style={{ fontFamily: 'Poppins' }}>{card.cardName}</H6>
+        <P>{card.cardNo}</P>
+        <P>
+          {new Date(card.cardExp).getMonth()}/
+          {new Date(card.cardExp).getFullYear() % 2000}
+        </P>
       </View>
       <View style={styles.actionContainer}>
         <Button
@@ -52,10 +61,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     width: 70,
     height: 70,
-    borderRadius: 18,
   },
   descContainer: {
     flex: 1,

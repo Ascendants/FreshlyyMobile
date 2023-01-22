@@ -33,6 +33,7 @@ import EorDproduct from './screens/EorDproduct';
 import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
 import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
 import CardScreen from './screens/CardScreen';
+import AddCardScreen from './screens/AddCardScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -61,6 +62,20 @@ export default function App() {
           <Stack.Screen
             name='Farmer Dashboard'
             component={FarmerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Card Management'
+            component={CardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Add Card'
+            component={AddCardScreen}
             initialParams={{
               userEmail: userEmail,
             }}

@@ -17,22 +17,29 @@ import CheckBox from '@react-native-community/checkbox';
 
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
-
   return (
     <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
       <TextInput
-        onFocus={() => setState(1)}
-        onBlur={() => setState(0)}
+        onFocus={() => {
+          setState(1);
+        }}
+        onBlur={() => {
+          props.onBlur();
+          setState(0);
+        }}
+        name={props.name}
         style={[styles.input, state ? styles.inputFocused : null]}
         placeholder={props.placeholder}
         textContentType={props.type}
         keyboardType={props.keyboardType}
-        onChangeText={(value) => props.onChange(value)}
+        inputMode={props.inputMode}
+        onChangeText={props.onChangeText}
         value={props.value}
-        maxLength={props.maxLength}
       />
-      {props.error && <Text style={styles.errormsg}>{props.error}</Text>}
+      {props.error && props.touched && (
+        <Text style={styles.errormsg}>{props.error}</Text>
+      )}
     </View>
   );
 };
@@ -165,16 +172,6 @@ const styles = StyleSheet.create({
   errormsg: {
     color: Theme.danger,
   },
-  logo: {
-    height: 50,
-    resizeMode: 'contain',
-    marginTop: 50,
-  },
-  vectorimage: {
-    width: 247,
-    height: 143,
-    marginTop: 30,
-  },
   inputcont: {
     width: '80%',
     marginVertical: 10,
@@ -182,11 +179,12 @@ const styles = StyleSheet.create({
   inputlabel: {
     color: Theme.textColor,
     fontFamily: 'Poppins',
+    fontSize: 15,
   },
   input: {
     fontFamily: 'Poppins',
     color: Theme.textColor,
-    padding: 8,
+    padding: 9,
     paddingHorizontal: 10,
     backgroundColor: Theme.overlay,
     borderRadius: 10,

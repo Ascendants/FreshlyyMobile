@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { H2, H3, Pr } from '../components/Texts';
-import { Button } from '../components/Buttons';
 import Header from '../components/Header';
 import CartCard from '../components/CartCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import CardView from '../components/CardView';
+import { Button } from '../components/Buttons';
 import ENV from '../constants/env';
 
 export default function ({ navigation, route }) {
@@ -30,7 +30,7 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header />
+        <Header back={true} home={true} />
         <H2>Cards</H2>
         <ScrollView
           howsVerticalScrollIndicator={false}
@@ -39,6 +39,14 @@ export default function ({ navigation, route }) {
           {cards.map((item) => (
             <CardView key={item.cardId} card={item} />
           ))}
+          <View style={{ marginBottom: 100 }}></View>
+          <Button
+            backgroundStyle={{ alignSelf: 'center' }}
+            title='Add another card'
+            size='big'
+            color='shadedPrimary'
+            onPress={() => navigation.navigate('Add Card')}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -54,21 +62,5 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 10,
     marginTop: 40,
-  },
-  bottomContainer: {
-    backgroundColor: Theme.overlayShade,
-    height: 130,
-    width: '100%',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  left: {
-    paddingTop: 20,
-    paddingLeft: 20,
-  },
-  right: {
-    justifyContent: 'center',
   },
 });
