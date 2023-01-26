@@ -18,21 +18,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../components/Header';
 import { AntDesign,Ionicons } from '@expo/vector-icons';
+import ENV from '../constants/env';
 
 
 export default function () {
-  const [like,setLike]=useState(false)
-  const [likeCount,setLikeCount]=useState(150)
-  function handleLike(){
-          setLike(prevLike=>!prevLike)
-
-  }
-  useEffect(()=>{
-    setLikeCount(prevCount=>(
-      like?prevCount+1:prevCount-1
-    ))
-  },[like])
-
+  const likeCount=100
+  React.useEffect(() => {
+    fetch(ENV.backend + '/customer/main-page/', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+          console.log(res)
+        })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <SafeAreaView>
@@ -76,16 +76,8 @@ export default function () {
         
       </View>
         <View style={styles.prodCont}>
-            <ProductCard cardType='social' handlePress={handleLike} like={like} likeCount={likeCount}/>
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            <ProductCard cardType='social' like={likeCount}/>
+       
         </View>
 
   </View>

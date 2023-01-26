@@ -28,7 +28,7 @@ module.exports.TextInputBox = function (props) {
         placeholder={props.placeholder}
         textContentType={props.type}
         keyboardType={props.keyboardType}
-        onChangeText={(value) => props.onChange(value)}
+        OnChangeText={(value) => props.onChange(value)}
         value={props.value}
         maxLength={props.maxLength}
       />
