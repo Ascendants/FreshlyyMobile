@@ -93,75 +93,74 @@ module.exports.DropDownPicker = function (props) {
   );
 };
 
-// module.exports.CheckBox=function(props){
-//   const [toggleCheckBox, setToggleCheckBox] = useState(false)
-//   return(
-//     <View>
-//     <CheckBox
-//       disabled={false}
-//       value={toggleCheckBox}
-//       onValueChange={(newValue) => setToggleCheckBox(newValue)}
-//     />
-//   </View>
-//   )
+module.exports.CheckBox = function (props) {
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  return (
+    <View>
+      <CheckBox
+        disabled={false}
+        value={toggleCheckBox}
+        onValueChange={(newValue) => setToggleCheckBox(newValue)}
+      />
+    </View>
+  );
+};
 
-// }
+module.exports.DatePicker = function (props) {
+  const [datePicker, setDatePicker] = useState(false);
 
-// module.exports.DatePicker=function (props)  {
-//   const [datePicker, setDatePicker] = useState(false);
+  const [date, setDate] = useState(new Date());
 
-//   const [date, setDate] = useState(new Date());
+  const [timePicker, setTimePicker] = useState(false);
 
-//   const [timePicker, setTimePicker] = useState(false);
+  const [time, setTime] = useState(new Date(Date.now()));
 
-//   const [time, setTime] = useState(new Date(Date.now()));
+  function showDatePicker() {
+    setDatePicker(true);
+  }
 
-//   function showDatePicker() {
-//     setDatePicker(true);
-//   };
+  function showTimePicker() {
+    setTimePicker(true);
+  }
 
-//   function showTimePicker() {
-//     setTimePicker(true);
-//   };
+  function onDateSelected(event, value) {
+    setDate(value);
+    setDatePicker(false);
+  }
 
-//   function onDateSelected(event, value) {
-//     setDate(value);
-//     setDatePicker(false);
-//   };
+  function onTimeSelected(event, value) {
+    setTime(value);
+    setTimePicker(false);
+  }
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View>
+        <Text>Date = {date.toDateString()}</Text>
 
-//   function onTimeSelected(event, value) {
-//     setTime(value);
-//     setTimePicker(false);
-//   }
-//   return (
-//     <SafeAreaView style={{ flex: 1 }}>
-//       <View >
+        <Text>Time = {time.toLocaleTimeString('en-US')}</Text>
+        {datePicker && (
+          <DateTimePicker
+            value={date}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            is24Hour={true}
+            onChange={onDateSelected}
+          />
+        )}
 
-//         <Text >Date = {date.toDateString()}</Text>
-
-//         <Text >Time = {time.toLocaleTimeString('en-US')}</Text>
-//         {datePicker && (
-//           <DateTimePicker
-//             value={date}
-//             mode={'date'}
-//             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-//             is24Hour={true}
-//             onChange={onDateSelected}
-
-//           />
-
-//         )}
-
-//           {!datePicker && (
-//           <View style={{ margin: 10 }}>
-//             <BigButton title="Show Date Picker" color="green" onPress={showDatePicker} />
-
-//           </View>
-//         )}
-//         </View>
-//         </SafeAreaView>
-//         )
-// }
+        {!datePicker && (
+          <View style={{ margin: 10 }}>
+            <BigButton
+              title='Show Date Picker'
+              color='green'
+              onPress={showDatePicker}
+            />
+          </View>
+        )}
+      </View>
+    </SafeAreaView>
+  );
+};
 const styles = StyleSheet.create({
   screen: {
     flex: 1,

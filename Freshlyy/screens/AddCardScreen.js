@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Image, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
 import { H2 } from '../components/Texts';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import { Formik, validateYupSchema } from 'formik';
@@ -122,7 +121,7 @@ export default function () {
                     onBlur={() => setFieldTouched('CVV', true, true)}
                     touched={touched.CVV}
                   />
-                  <TextInputBox
+                  {/* <TextInputBox
                     inputlabel='Expiry Date'
                     placeholder='-- Select'
                     name='ExpiryDate'
@@ -131,7 +130,8 @@ export default function () {
                     error={errors.ExpiryDate}
                     onBlur={() => setFieldTouched('ExpiryDate', true, true)}
                     touched={touched.ExpiryDate}
-                  />
+                  /> */}
+                  <DatePicker />
                   <Button title='Save Card' color='filledWarning' size='big' />
                 </View>
               )}
