@@ -8,8 +8,7 @@ import { UserContext } from '../context/UserContext';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PaymentSelector from '../components/PaymentSelector';
-import Modal from '../components/Modal';
-import LottieView from 'lottie-react-native';
+import LoadingModal from '../components/LoadingModal';
 import PlacedOrderView from '../components/PlacedOrderView';
 import { TextInputBox } from '../components/Inputs';
 import ENV from '../constants/env';
@@ -92,19 +91,7 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Modal visible={confirmPayment}>
-          <View style={styles.modalContent}>
-            <LottieView
-              autoPlay
-              style={{
-                width: 200,
-                height: 200,
-              }}
-              source={require('../assets/Freshlyy.json')}
-            />
-            <H3>Making Payment</H3>
-          </View>
-        </Modal>
+        <LoadingModal message='Making Payment' visible={confirmPayment} />
         <Header back={false} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.pageContent}>

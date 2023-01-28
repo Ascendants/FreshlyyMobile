@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import { MaskedTextInput } from 'react-native-mask-text';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -44,54 +45,84 @@ module.exports.TextInputBox = function (props) {
   );
 };
 
-module.exports.DropDownPicker = function (props) {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState(props.list);
+module.exports.MaskedTextInputBox = function (props) {
+  const [state, setState] = useState(0);
   return (
-    <View
-      style={[
-        styles.inputcont,
-        {
-          zIndex: 1000,
-        },
-      ]}
-    >
+    <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-      <DropDownPicker
-        placeholder={props.placeholder ? props.placeholder : '-- Select'}
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        listMode='SCROLLVIEW'
-        setItems={setItems}
-        dropDownDirection='BOTTOM'
-        style={{
-          backgroundColor: Theme.overlay,
-          borderWidth: 0,
-          paddingHorizontal: 10,
-          paddingVertical: 7,
-          borderRadius: 10,
-          minHeight: 20,
+      <MaskedTextInput
+        onFocus={() => {
+          setState(1);
         }}
-        textStyle={{
-          fontFamily: 'Poppins',
-          color: Theme.textColor,
+        onBlur={() => {
+          props.onBlur();
+          setState(0);
         }}
-        dropDownContainerStyle={{
-          backgroundColor: Theme.overlay,
-          borderWidth: 0,
-        }}
-        placeholderStyle={{
-          color: Theme.tertiary,
-          // fontFamily:""
-        }}
+        name={props.name}
+        mask={props.mask}
+        style={{ ...styles.input, ...(state ? styles.inputFocused : null) }}
+        placeholder={props.placeholder}
+        textContentType={props.type}
+        keyboardType={props.keyboardType}
+        inputMode={props.inputMode}
+        onChangeText={props.onChangeText}
+        value={props.value}
       />
+      {props.error && props.touched && (
+        <Text style={styles.errormsg}>{props.error}</Text>
+      )}
     </View>
   );
 };
+
+// module.exports.DropDownPicker = function (props) {
+//   const [open, setOpen] = useState(false);
+//   const [value, setValue] = useState(null);
+//   const [items, setItems] = useState(props.list);
+//   return (
+//     <View
+//       style={[
+//         styles.inputcont,
+//         {
+//           zIndex: 1000,
+//         },
+//       ]}
+//     >
+//       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
+//       <DropDownPicker
+//         placeholder={props.placeholder ? props.placeholder : '-- Select'}
+//         open={open}
+//         value={value}
+//         items={items}
+//         setOpen={setOpen}
+//         setValue={setValue}
+//         listMode='SCROLLVIEW'
+//         setItems={setItems}
+//         dropDownDirection='BOTTOM'
+//         style={{
+//           backgroundColor: Theme.overlay,
+//           borderWidth: 0,
+//           paddingHorizontal: 10,
+//           paddingVertical: 7,
+//           borderRadius: 10,
+//           minHeight: 20,
+//         }}
+//         textStyle={{
+//           fontFamily: 'Poppins',
+//           color: Theme.textColor,
+//         }}
+//         dropDownContainerStyle={{
+//           backgroundColor: Theme.overlay,
+//           borderWidth: 0,
+//         }}
+//         placeholderStyle={{
+//           color: Theme.tertiary,
+//           // fontFamily:""
+//         }}
+//       />
+//     </View>
+//   );
+// };
 
 module.exports.CheckBox = function (props) {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);

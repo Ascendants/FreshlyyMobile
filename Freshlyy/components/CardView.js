@@ -28,10 +28,7 @@ export default function (props) {
       <View style={styles.descContainer}>
         <H6 style={{ fontFamily: 'Poppins' }}>{card.cardName}</H6>
         <P>{card.cardNo}</P>
-        <P>
-          {new Date(card.cardExp).getMonth()}/
-          {new Date(card.cardExp).getFullYear() % 2000}
-        </P>
+        <P>{card.cardExp}</P>
       </View>
       <View style={styles.actionContainer}>
         <Button
@@ -42,6 +39,7 @@ export default function (props) {
           size='small'
           color='shadedSecondary'
           title='Edit'
+          onPress={props.editCard}
         />
         <Button
           type='icon'
@@ -49,6 +47,7 @@ export default function (props) {
           size='small'
           color='shadedDanger'
           title='Remove'
+          onPress={props.deleteCard}
         />
       </View>
     </ListItem>
