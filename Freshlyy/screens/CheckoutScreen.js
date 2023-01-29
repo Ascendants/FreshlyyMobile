@@ -9,9 +9,8 @@ import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductView from '../components/ProductView';
 import DeliveryView from '../components/DeliveryView';
-import Modal from '../components/Modal';
+import LoadingModal from '../components/LoadingModal';
 import ENV from '../constants/env';
-import LottieView from 'lottie-react-native';
 
 export default function ({ navigation, route }) {
   const [orderData, setOrderData] = React.useState({
@@ -128,19 +127,7 @@ export default function ({ navigation, route }) {
       <StatusBar barStyle='dark-content' />
       <SafeAreaView>
         <View style={styles.screen}>
-          <Modal visible={confirmOrder}>
-            <View style={styles.modalContent}>
-              <LottieView
-                autoPlay
-                style={{
-                  width: 200,
-                  height: 200,
-                }}
-                source={require('../assets/Freshlyy.json')}
-              />
-              <H3>Placing Order</H3>
-            </View>
-          </Modal>
+          <LoadingModal message='Placing Order' visible={confirmOrder} />
           <Header back={true} />
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pageContent}>
@@ -205,9 +192,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 40,
-  },
-  modalContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
