@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import CardTypeSelector from '../components/CardTypeSelector';
 import ENV from '../constants/env';
 import LoadingModal from '../components/LoadingModal';
-
+// test page
 const cardTypes = {
   visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
   master:
