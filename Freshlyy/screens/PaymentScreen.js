@@ -21,7 +21,6 @@ export default function ({ navigation, route }) {
       return a + (b.totalPrice + b.totalDeliveryCharge);
     }, 0),
   });
-  const [cvv, setCvv] = React.useState('');
   const [confirmPayment, setConfirmPayment] = React.useState(false);
   const [paymentMethods, setPaymentMethods] = React.useState([]);
   function setSelectedPayment(method) {
@@ -48,11 +47,17 @@ export default function ({ navigation, route }) {
   const delay = (time) =>
     new Promise((resolve, reject) => setTimeout(resolve, time));
   async function makePayment() {
+    if (orderData.selectedPaymentMethod == 'other') {
+      navigation.navigate('Add New Card', {
+        orders: orderData.orders.map((order) => order._id),
+      });
+      return;
+    }
     setConfirmPayment(true);
     const data = {
       payFrom: orderData.selectedPaymentMethod,
       orders: orderData.orders.map((order) => order._id),
-      cvv: cvv,
+      saveCard: true,
     };
     fetch(ENV.backend + '/customer/payment/', {
       method: 'POST',
@@ -83,7 +88,9 @@ export default function ({ navigation, route }) {
         navigation.navigate('Message', {
           type: 'fail',
           messageTitle: 'Payment Failed :(',
-          messageText: 'Something went wrong :(',
+          messageText: 'One or more payments failed :(',
+          goto: 'Order Detail',
+          goButtonText: 'View Order',
         });
       });
   }
@@ -120,21 +127,7 @@ export default function ({ navigation, route }) {
                 methods={paymentMethods}
                 setSelectedPayment={setSelectedPayment}
                 selectedMethod={orderData.selectedPaymentMethod}
-                clearCvv={() => setCvv('')}
               />
-              {orderData.selectedPaymentMethod != 'other' &&
-              orderData.selectedPaymentMethod != 'cod' ? (
-                <TextInputBox
-                  inputlabel='CVV'
-                  placeholder='Enter CVV'
-                  value={cvv}
-                  onChange={(value) => {
-                    setCvv(value);
-                  }}
-                  keyboardType='number-pad'
-                  maxLength={3}
-                />
-              ) : null}
             </View>
             <View style={styles.buttonContainer}>
               <Button

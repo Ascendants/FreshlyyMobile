@@ -1,51 +1,68 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  View,
+} from 'react-native';
 
 import Theme from '../constants/theme';
 
 module.exports.Button = function (props) {
   let buttonBackground = [];
   let buttonText = [];
+  let indicatorColor = Theme.textColor;
   switch (props.color) {
     case 'shadedPrimary':
       buttonBackground.push(styles.shadedPrimaryBackground);
       buttonText.push(styles.shadedPrimaryText);
+      indicatorColor = Theme.primary;
       break;
     case 'filledPrimary':
       buttonBackground.push(styles.filledPrimaryBackground);
       buttonText.push(styles.filledPrimaryText);
+      indicatorColor = Theme.contrastTextColor;
       break;
     case 'shadedSecondary':
       buttonBackground.push(styles.shadedSecondaryBackground);
       buttonText.push(styles.shadedSecondaryText);
+      indicatorColor = Theme.secondary;
       break;
     case 'filledSecondary':
       buttonBackground.push(styles.filledSecondaryBackground);
       buttonText.push(styles.filledSecondaryText);
+      indicatorColor = Theme.contrastTextColor;
       break;
     case 'shadedTertiary':
       buttonBackground.push(styles.shadedTertiaryBackground);
       buttonText.push(styles.shadedTertiaryText);
+      indicatorColor = Theme.textColor;
       break;
     case 'filledTertiary':
       buttonBackground.push(styles.filledTertiaryBackground);
       buttonText.push(styles.filledTertiaryText);
+      indicatorColor = Theme.contrastTextColor;
       break;
     case 'shadedWarning':
       buttonBackground.push(styles.shadedWarningBackground);
       buttonText.push(styles.shadedWarningText);
+      indicatorColor = Theme.textColor;
       break;
     case 'filledWarning':
       buttonBackground.push(styles.filledWarningBackground);
       buttonText.push(styles.filledWarningText);
+      indicatorColor = Theme.textColor;
       break;
     case 'shadedDanger':
       buttonBackground.push(styles.shadedDangerBackground);
       buttonText.push(styles.shadedDangerText);
+      indicatorColor = Theme.danger;
       break;
     case 'filledDanger':
       buttonBackground.push(styles.filledDangerBackground);
       buttonText.push(styles.filledBigButtonText);
+      indicatorColor = Theme.contrastTextColor;
       break;
   }
   switch (props.size) {
@@ -65,6 +82,16 @@ module.exports.Button = function (props) {
   buttonText.push(props.textStyle);
   let button = (
     <TouchableOpacity style={buttonBackground} onPress={props.onPress}>
+      {props.loading && (
+        <View
+          style={{
+            paddingHorizontal: 10,
+            justifyContent: 'center',
+          }}
+        >
+          <ActivityIndicator size='small' color={indicatorColor} />
+        </View>
+      )}
       <Text style={buttonText}>{props.title}</Text>
     </TouchableOpacity>
   );
@@ -74,7 +101,12 @@ module.exports.Button = function (props) {
         style={[buttonBackground, styles.buttonIconBackground]}
         onPress={props.onPress}
       >
-        {props.icon}
+        {props.loading && (
+          <View style={styles.activityContainer}>
+            <ActivityIndicator size='small' color={indicatorColor} />
+          </View>
+        )}
+        {!props.loading && props.icon}
         <Text
           style={[
             buttonText,
@@ -99,6 +131,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   bigButtonBackground: {
+    flexDirection: 'row',
     padding: 15,
     margin: 10,
     borderRadius: 18,
@@ -109,6 +142,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
   normalButtonBackground: {
+    flexDirection: 'row',
     padding: 6,
     paddingHorizontal: 8,
     margin: 5,
@@ -120,6 +154,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   smallButtonBackground: {
+    flexDirection: 'row',
     padding: 5,
     margin: 6,
     borderRadius: 10,
@@ -214,6 +249,7 @@ const styles = StyleSheet.create({
     color: Theme.contrastTextColor,
   },
   buttonIconBackground: {
+    flexDirection: 'column',
     borderRadius: 16,
     minHeight: 48,
     minWidth: 48,
@@ -227,6 +263,12 @@ const styles = StyleSheet.create({
   },
   normalButtonIconText: {
     fontSize: 12,
+  },
+  activityContainer: {
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    height: 24,
+    width: 24,
   },
 });
 

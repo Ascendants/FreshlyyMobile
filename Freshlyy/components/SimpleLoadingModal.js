@@ -1,17 +1,16 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import ModalComponent from './ModalComponent';
 import LottieView from 'lottie-react-native';
-import { H5 } from './Texts';
+import { H4 } from './Texts';
 import Theme from '../constants/theme';
+
 export default function (props) {
   return (
     <ModalComponent visible={props.visible}>
       <View style={styles.modalContent}>
-        <View style={{ height: 50, width: 50 }}>
-          <ActivityIndicator size='large' color={Theme.textColor} />
-        </View>
-        <H5>{props.message}</H5>
+        <ActivityIndicator size='large' color={Theme.textColor} />
+        <H4>Loading...</H4>
       </View>
     </ModalComponent>
   );

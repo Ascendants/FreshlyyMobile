@@ -34,6 +34,7 @@ import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
 import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
 import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
+import OtherPaymentScreen from './screens/OtherPaymentScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -54,6 +55,7 @@ export default function App() {
             component={CardScreen}
             initialParams={{
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
+              total: 5000,
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               userEmail: userEmail,
             }}
@@ -76,6 +78,13 @@ export default function App() {
           <Stack.Screen
             name='Add Card'
             component={AddCardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Add New Card'
+            component={OtherPaymentScreen}
             initialParams={{
               userEmail: userEmail,
             }}
