@@ -7,23 +7,23 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import ListItem from './ListItem';
 
 export default function (props) {
-  
-  return(
+  return (
     <ListItem>
       <View style={styles.container}>
-        <H7>From Komuthu Fernando</H7>
-        <H7>Order #63b6b7b160d78bea22456aa8</H7>
-        <H7>Placed on 09.05.2022</H7>
-        <H7>Paid on 09.05.2022</H7>
+        <H7>From {props.farmer}</H7>
+        <H7>Order #{props.orderId}</H7>
+        <H7>Placed on {props.orderDate}</H7>
+        <H7>Paid on {props.paidDate}</H7>
         <View style={styles.bottomContainer}>
-          <H7 style={{color: Theme.primary}}>Delivered</H7>
+          <H7 style={{ color: Theme.primary }}>{props.status}</H7>
           <View style={styles.bottomContainer}>
-            <H6>Total: </H6><Pr>2550.00</Pr>
+            <H6>Total: </H6>
+            <Pr>{parseFloat(props.total).toFixed(2)}</Pr>
           </View>
         </View>
       </View>
     </ListItem>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -34,5 +34,5 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  }
-})
+  },
+});
