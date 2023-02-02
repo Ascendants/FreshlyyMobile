@@ -27,7 +27,7 @@ export default function ({navigation}){
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Select order')}>
             <View style={styles.barContainer}>
               <H5>Help with an order</H5>
               <AntDesign name="right" size={24} color={Theme.textColor} />

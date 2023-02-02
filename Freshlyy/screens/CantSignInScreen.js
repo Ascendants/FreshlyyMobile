@@ -49,7 +49,9 @@ export default class Item extends Component {
 
     return(
       <SafeAreaView>
-        <Header back={true}/>
+        
+          <View style={styles.screen}>
+          <Header back={true}/>
           <H4 style={{textAlign: 'center', color: Theme.primary}}>Can't Sign In</H4>
           <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <TouchableOpacity onPress={this.toggleExpanded}>
@@ -102,22 +104,28 @@ export default class Item extends Component {
                 <TextInputBox
                     inputlabel='Email address where our support team can contact you'
                 />
+                <View style={{width: '40%', alignSelf:'center'}}>
                 <Button 
                   size='normal'
                   color='shadedSecondary'
                   title='submit'
                 />
+                </View>
               </ScrollView>
             </Collapsible>
             {/* <Accordion>
               activeSections={activeSections}
             </Accordion> */}
           </ScrollView>
+          </View>
         </SafeAreaView>
       );
     }
 }
 const styles = StyleSheet.create({
+  screen:{
+    height:"100%",
+  },
   container: {
     // alignItems: 'center',
     margin: 10,

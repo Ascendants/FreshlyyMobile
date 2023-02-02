@@ -116,7 +116,7 @@ export default function () {
             <SwipeOverlay />
           </BottomSheetView>
         </BottomSheet>
-        <Navbar />
+        <Navbar screenName="Cart"/>
       </View>
     </SafeAreaView>
   );

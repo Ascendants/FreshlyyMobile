@@ -34,6 +34,9 @@ import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
 import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
 import HelpCenterScreen from './screens/HelpCenterScreen';
 import CantSignInScreen from './screens/CantSignInScreen';
+import HelpWithanOrderScreen from './screens/HelpWithanOrderScreen';
+import FoodDamagedScreen from './screens/FoodDamagedScreen';
+import SelectTheOrderHC from './screens/SelectTheOrderScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -51,7 +54,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={HelpCenterScreen}
+            component={FarmerDashBoardScreen}
             initialParams={{
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
@@ -75,6 +78,10 @@ export default function App() {
           />
           <Stack.Screen name='Help Center' component={HelpCenterScreen}/>
           <Stack.Screen name='Cant sign in' component={CantSignInScreen}/>
+          <Stack.Screen name='Food Damaged' component={FoodDamagedScreen}/>
+          <Stack.Screen name='Select order' component={SelectTheOrderHC}/>
+          <Stack.Screen name='Help with an order' component={HelpWithanOrderScreen}/>
+          <Stack.Screen name='Cart' component={MyCartScreen}/>
 
           <Stack.Screen name='Message' component={MessageScreen} />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
