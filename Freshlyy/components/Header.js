@@ -5,11 +5,22 @@ import Theme from '../constants/theme';
 import { useNavigation } from '@react-navigation/native';
 
 export default function (props) {
+  const [mode, setMode] = React.useState('customer');
   function switchFarmer() {
     nav.navigate('Farmer Dashboard');
+    setMode('farmer');
   }
   function switchCustomer() {
     nav.navigate('Customer Dashboard');
+    setMode('customer');
+  }
+  function goHome() {
+    if (mode == 'customer') {
+      nav.navigate('Customer Dashboard');
+      return;
+    }
+    nav.navigate('Farmer Dashboard');
+    return;
   }
   const nav = useNavigation();
   return (
@@ -38,7 +49,14 @@ export default function (props) {
           />
         </TouchableOpacity>
       ) : null}
-      {!props.farmer && !props.customer && <View style={{ width: 32 }}></View>}
+      {props.home ? (
+        <TouchableOpacity onPress={goHome}>
+          <Image source={require('../assets/homeh.png')} style={styles.icon} />
+        </TouchableOpacity>
+      ) : null}
+      {!props.farmer && !props.customer && !props.home && (
+        <View style={{ width: 32 }}></View>
+      )}
     </View>
   );
 }

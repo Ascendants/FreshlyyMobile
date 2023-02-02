@@ -37,6 +37,8 @@ import CantSignInScreen from './screens/CantSignInScreen';
 import HelpWithanOrderScreen from './screens/HelpWithanOrderScreen';
 import FoodDamagedScreen from './screens/FoodDamagedScreen';
 import SelectTheOrderHC from './screens/SelectTheOrderScreen';
+import CardScreen from './screens/CardScreen';
+import AddCardScreen from './screens/AddCardScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -54,7 +56,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={FarmerDashBoardScreen}
+            component={CardScreen}
             initialParams={{
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
@@ -65,6 +67,20 @@ export default function App() {
           <Stack.Screen
             name='Farmer Dashboard'
             component={FarmerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Card Management'
+            component={CardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Add Card'
+            component={AddCardScreen}
             initialParams={{
               userEmail: userEmail,
             }}
