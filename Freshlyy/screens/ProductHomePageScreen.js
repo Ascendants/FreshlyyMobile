@@ -12,7 +12,7 @@ import { H1, H2 ,H7,H6} from '../components/Texts';
 import Theme from '../constants/theme';
 import { FilledBigButton } from '../components/Buttons';
 import theme from '../constants/theme';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { findFocusedRoute, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import ProductCard from '../components/ProductCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -22,6 +22,7 @@ import ENV from '../constants/env';
 
 
 export default function () {
+  const [products,setProducts]=useState("")
   const likeCount=100
   React.useEffect(() => {
     fetch(ENV.backend + '/customer/main-page/', {
@@ -29,10 +30,21 @@ export default function () {
     })
       .then((res) => res.json())
       .then((res) => {
-          console.log(res)
+         
+          const data=res.products
+          setProducts(data)
+  
         })
       .catch((err) => console.log(err));
   }, []);
+  
+   const listItems=Object.entries(products).map(prod=>{
+       return <ProductCard type="social" title={prod[1].title} key={prod[1]._id} imageUrl={prod[1].imageUrl} price={prod[1].price} unit={prod[1].unit} overallRating={prod[1].overallRating}/>
+       //console.log(prod[1]._id)
+   })
+          
+
+          
 
   return (
     <SafeAreaView>
@@ -76,8 +88,7 @@ export default function () {
         
       </View>
         <View style={styles.prodCont}>
-            <ProductCard cardType='social' like={likeCount}/>
-       
+         {listItems} 
         </View>
 
   </View>
