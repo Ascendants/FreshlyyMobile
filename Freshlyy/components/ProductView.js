@@ -15,28 +15,34 @@ export default function (props) {
       </View>
       <View style={styles.descContainer}>
         <H6 style={{ fontFamily: 'Poppins' }}>{product.title}</H6>
-        <P>Sold by {product.farmerName}</P>
+        {!props.ordered && <P>Sold by {product.farmerName}</P>}
         <P>{product.qty} KG</P>
         <Pr>{product.uPrice * product.qty}</Pr>
       </View>
-      <View style={styles.actionContainer}>
-        <Button
-          type='icon'
-          icon={
-            <MaterialIcons name='mode-edit' size={24} color={Theme.secondary} />
-          }
-          size='small'
-          color='shadedSecondary'
-          title='Edit'
-        />
-        <Button
-          type='icon'
-          icon={<FontAwesome name='trash-o' size={24} color={Theme.danger} />}
-          size='small'
-          color='shadedDanger'
-          title='Remove'
-        />
-      </View>
+      {!props.ordered && (
+        <View style={styles.actionContainer}>
+          <Button
+            type='icon'
+            icon={
+              <MaterialIcons
+                name='mode-edit'
+                size={24}
+                color={Theme.secondary}
+              />
+            }
+            size='small'
+            color='shadedSecondary'
+            title='Edit'
+          />
+          <Button
+            type='icon'
+            icon={<FontAwesome name='trash-o' size={24} color={Theme.danger} />}
+            size='small'
+            color='shadedDanger'
+            title='Remove'
+          />
+        </View>
+      )}
     </ListItem>
   );
 }

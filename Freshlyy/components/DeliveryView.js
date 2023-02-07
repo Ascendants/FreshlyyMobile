@@ -23,21 +23,22 @@ export default function (props) {
         </P>
       </View>
       <View style={styles.actionContainer}>
-        {props.delivery ? (
-          <Button
-            size='normal'
-            color='filledSecondary'
-            title="I'll Pick Up"
-            onPress={props.setDelivery.bind(this, false)}
-          />
-        ) : (
-          <Button
-            size='normal'
-            color='filledPrimary'
-            title='Get it delivered'
-            onPress={props.setDelivery.bind(this, true)}
-          />
-        )}
+        {!props.ordered &&
+          (props.delivery ? (
+            <Button
+              size='normal'
+              color='filledSecondary'
+              title="I'll Pick Up"
+              onPress={props.setDelivery?.bind(this, false)}
+            />
+          ) : (
+            <Button
+              size='normal'
+              color='filledPrimary'
+              title='Get it delivered'
+              onPress={props.setDelivery?.bind(this, true)}
+            />
+          ))}
       </View>
     </ListItem>
   );

@@ -1,21 +1,43 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { H1, H8, H3, H4, P, Pr } from '../components/Texts';
 import { Entypo } from '@expo/vector-icons';
 import Theme from '../constants/theme';
 import StatusBall from './StatusBall';
 export default function (props) {
-  return (
-    <View style={styles.container}>
-      <View style={styles.statusArea}>
-        <StatusBall status='Payment' first={true} done={true} />
-        <StatusBall status='Processed' done={true} />
-        <StatusBall status='Shipped' done={true} />
-        <StatusBall status='Delivered' done={true} />
-        <StatusBall status='Reviewed' last={true} />
+  const status = props.status;
+  if (status?.cancelled) {
+    return (
+      <View style={styles.container}>
+        <H3>Order was Cancelled.</H3>
       </View>
-    </View>
-  );
+    );
+  }
+  if (props.isDelivery) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.statusArea}>
+          <StatusBall status='Payment' first={status.payment} done={true} />
+          <StatusBall status='Processed' done={status.processed} />
+          <StatusBall status='Shipped' done={status.shipped} />
+          <StatusBall status='Delivered' done={status.delivered} />
+          <StatusBall status='Reviewed' last={true} />
+        </View>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.statusArea}>
+          <StatusBall status='Payment' first={true} done={true} />
+          <StatusBall status='Processed' done={true} />
+          <StatusBall status='Ready' done={true} />
+          <StatusBall status='Picked Up' done={true} />
+          <StatusBall status='Reviewed' last={true} />
+        </View>
+      </View>
+    );
+  }
 }
 const styles = {
   container: {

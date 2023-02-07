@@ -1,23 +1,37 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import { H2, H3, Pr, H7, H6 } from '../components/Texts';
+import { H2, H3, Pr, H7, H6, H4 } from '../components/Texts';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
-import { TextInputBox } from '../components/Inputs';
-import OrderStatus from '../components/OrderStatus';
 
-import { Formik } from 'formik';
+import OrderStatus from '../components/OrderStatus';
 import { Button } from '../components/Buttons';
-import ModalComponent from '../components/ModalComponent';
+import ProductView from '../components/ProductView';
+import DeliveryView from '../components/DeliveryView';
 import ENV from '../constants/env';
-import TabMenu from '../components/TabMenu';
-import OrderedProductView from '../components/OrderedProductView';
+
 export default function ({ navigation, route }) {
-  const [activeTab, setActiveTab] = React.useState(route.params.initialTab);
-  function changeTab(tab) {
-    setActiveTab(tab);
-  }
+  const [order, setOrder] = React.useState({});
+  React.useEffect(() => {
+    const orderId = route.params.orderId;
+    fetch(ENV.backend + '/customer/get-order/' + orderId, {
+      method: 'GET',
+      headers: {
+        useremail: route.params.userEmail,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message != 'Success') {
+          throw new Error('Order not found');
+        }
+        setOrder((prev) => {
+          return { ...prev, ...res.order };
+        });
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -28,42 +42,43 @@ export default function ({ navigation, route }) {
           style={styles.container}
         >
           <View style={styles.ordersContainer}>
-            <H7 style={styles.orderInfo}>#63b6b7b160d78bea22456aa8</H7>
-            <H6 style={styles.orderInfoFarmer}>From Komuthu Fernando</H6>
-            <OrderStatus />
+            <H7 style={styles.orderInfo}>#{order._id}</H7>
+            <H6 style={styles.orderInfoFarmer}>From {order.farmerName}</H6>
+            <OrderStatus
+              status={order.orderUpdate}
+              isDelivery={order.isDelivery}
+            />
             <View style={styles.pageArea}>
-              <OrderedProductView
-                product={{
-                  imageUri:
-                    'https://firebasestorage.googleapis.com/v0/b/freshlyyimagestore.appspot.com/o/ProductImages%2FP001_1.jpg?alt=media&token=eb80b75a-b8e9-4b54-9e31-f4e4f40e9faa',
-                  title: 'Sri Lankan Carrots',
-                  uPrice: 1250,
-                  qty: 2,
-                }}
-              />
-              <OrderedProductView
-                product={{
-                  imageUri:
-                    'https://firebasestorage.googleapis.com/v0/b/freshlyyimagestore.appspot.com/o/ProductImages%2FP001_1.jpg?alt=media&token=eb80b75a-b8e9-4b54-9e31-f4e4f40e9faa',
-                  title: 'Sri Lankan Carrots',
-                  uPrice: 1250,
-                  qty: 2,
-                }}
-              />
-              <OrderedProductView
-                product={{
-                  imageUri:
-                    'https://firebasestorage.googleapis.com/v0/b/freshlyyimagestore.appspot.com/o/ProductImages%2FP001_1.jpg?alt=media&token=eb80b75a-b8e9-4b54-9e31-f4e4f40e9faa',
-                  title: 'Sri Lankan Carrots',
-                  uPrice: 1250,
-                  qty: 2,
-                }}
-              />
+              {order.items?.map((item) => (
+                <ProductView ordered={true} key={item.itemId} product={item} />
+              ))}
             </View>
           </View>
           <View style={styles.pageArea}>
             <H3>Sub Total</H3>
             <Pr fontSize={30}>{2000}</Pr>
+          </View>
+          <View style={styles.pageArea}>
+            <H4 style={styles.title}>Delivery Cost</H4>
+            <DeliveryView
+              option={{ distance: 2, costPerKM: 200 }}
+              ordered={true}
+            />
+          </View>
+          <View style={styles.pageArea}>
+            <H3>Total</H3>
+            <Pr fontSize={30}>{2000}</Pr>
+          </View>
+          <View style={styles.pageArea}>
+            <H3>Applied Code: DIS1000</H3>
+          </View>
+          <View style={styles.pageArea}>
+            <H3>Net Total</H3>
+            <Pr fontSize={30}>{2000}</Pr>
+          </View>
+          <View style={styles.buttonArea}>
+            <Button title='Get Support' color='shadedWarning' size='big' />
+            <Button title='Review' color='shadedSecondary' size='big' />
           </View>
         </ScrollView>
       </View>
@@ -77,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pageArea: {
-    marginBottom: 15,
+    marginBottom: 30,
   },
   container: {
     width: '100%',
@@ -92,5 +107,13 @@ const styles = StyleSheet.create({
   orderInfoFarmer: {
     textAlign: 'center',
     color: Theme.secondary,
+  },
+  title: {
+    textAlign: 'center',
+  },
+  buttonArea: {
+    marginVertical: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
