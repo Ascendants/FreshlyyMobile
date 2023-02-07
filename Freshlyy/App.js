@@ -40,6 +40,7 @@ import SelectTheOrderHC from './screens/SelectTheOrderScreen';
 import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
 import OrderListScreen from './screens/OrderListScreen';
+import OrderStatusScreen from './screens/OrderStatusScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -57,7 +58,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={OrderListScreen}
+            component={OrderStatusScreen}
             initialParams={{
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
@@ -78,6 +79,13 @@ export default function App() {
             initialParams={{
               userEmail: userEmail,
               initialTab: 'All',
+            }}
+          />
+          <Stack.Screen
+            name='Orders Status'
+            component={OrderStatusScreen}
+            initialParams={{
+              userEmail: userEmail,
             }}
           />
           <Stack.Screen
