@@ -83,7 +83,7 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name='Orders Status'
+            name='Order Details'
             component={OrderStatusScreen}
             initialParams={{
               userEmail: userEmail,
