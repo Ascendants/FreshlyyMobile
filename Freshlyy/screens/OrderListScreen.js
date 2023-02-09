@@ -43,7 +43,7 @@ export default function ({ navigation, route }) {
     });
   }
   React.useEffect(() => {
-    getOrderList();
+    getOrderList(route.params.initialTab);
   }, []);
   return (
     <SafeAreaView>

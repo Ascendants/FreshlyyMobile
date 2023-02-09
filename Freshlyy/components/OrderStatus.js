@@ -17,11 +17,11 @@ export default function (props) {
     return (
       <View style={styles.container}>
         <View style={styles.statusArea}>
-          <StatusBall status='Payment' first={status.payment} done={true} />
-          <StatusBall status='Processed' done={status.processed} />
-          <StatusBall status='Shipped' done={status.shipped} />
-          <StatusBall status='Delivered' done={status.delivered} />
-          <StatusBall status='Reviewed' last={true} />
+          <StatusBall status='Payment' first={true} done={status?.payment} />
+          <StatusBall status='Processed' done={status?.processed} />
+          <StatusBall status='Shipped' done={status?.shipped} />
+          <StatusBall status='Delivered' done={status?.delivered} />
+          <StatusBall status='Reviewed' last={true} done={props.reviewed} />
         </View>
       </View>
     );
@@ -29,11 +29,10 @@ export default function (props) {
     return (
       <View style={styles.container}>
         <View style={styles.statusArea}>
-          <StatusBall status='Payment' first={true} done={true} />
-          <StatusBall status='Processed' done={true} />
-          <StatusBall status='Ready' done={true} />
-          <StatusBall status='Picked Up' done={true} />
-          <StatusBall status='Reviewed' last={true} />
+          <StatusBall status='Payment' first={true} done={status?.payment} />
+          <StatusBall status='Processed' done={status?.processed} />
+          <StatusBall status='Picked Up' done={status?.pickedUp} />
+          <StatusBall status='Reviewed' last={true} done={props.reviewed} />
         </View>
       </View>
     );

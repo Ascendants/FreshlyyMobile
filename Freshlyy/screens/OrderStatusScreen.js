@@ -47,6 +47,7 @@ export default function ({ navigation, route }) {
             <OrderStatus
               status={order.orderUpdate}
               isDelivery={order.isDelivery}
+              reviewed={order.farmerRating != -1}
             />
             <View style={styles.pageArea}>
               {order.items?.map((item) => (
@@ -54,32 +55,41 @@ export default function ({ navigation, route }) {
               ))}
             </View>
           </View>
-          <View style={styles.pageArea}>
-            <H3>Sub Total</H3>
-            <Pr fontSize={30}>{parseFloat(order.totalPrice).toFixed(2)}</Pr>
-          </View>
-          <View style={styles.pageArea}>
-            <H4 style={styles.title}>Delivery Cost</H4>
-            <DeliveryView
-              option={{
-                distance: order.deliveryDistance,
-                costPerKM: order.deliveryCostPerKM,
-              }}
-              delivery={order.isDelivery}
-              ordered={true}
-            />
-          </View>
-          <View style={styles.pageArea}>
-            <H3>Total</H3>
-            <Pr fontSize={30}>
-              {parseFloat(order.totalPrice + order.totalDeliveryCharge).toFixed(
-                2
-              )}
-            </Pr>
-          </View>
-          <View style={styles.pageArea}>
-            <H3>Applied Code: DIS1000</H3>
-          </View>
+          {order.isDelivery && (
+            <>
+              <View style={styles.pageArea}>
+                <H3>Sub Total</H3>
+                <Pr fontSize={30}>{parseFloat(order.totalPrice).toFixed(2)}</Pr>
+              </View>
+              <View style={styles.pageArea}>
+                <H4 style={styles.title}>Delivery Cost</H4>
+                <DeliveryView
+                  option={{
+                    distance: order.deliveryDistance,
+                    costPerKM: order.deliveryCostPerKM,
+                  }}
+                  delivery={order.isDelivery}
+                  ordered={true}
+                />
+              </View>
+            </>
+          )}
+          {order.coupon && (
+            <>
+              <View style={styles.pageArea}>
+                <H3>Total</H3>
+                <Pr fontSize={30}>
+                  {parseFloat(
+                    order.totalPrice + order.totalDeliveryCharge
+                  ).toFixed(2)}
+                </Pr>
+              </View>
+
+              <View style={styles.pageArea}>
+                <H3>Applied Code: DIS1000</H3>
+              </View>
+            </>
+          )}
           <View style={styles.pageArea}>
             <H3>Net Total</H3>
             <Pr fontSize={30}>
@@ -90,7 +100,10 @@ export default function ({ navigation, route }) {
           </View>
           <View style={styles.buttonArea}>
             <Button title='Get Support' color='shadedWarning' size='big' />
-            <Button title='Review' color='shadedSecondary' size='big' />
+            {(order?.orderUpdate?.delivered ||
+              order?.orderUpdate?.pickedUp) && (
+              <Button title='Review' color='shadedSecondary' size='big' />
+            )}
           </View>
         </ScrollView>
       </View>

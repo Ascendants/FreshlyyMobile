@@ -18,9 +18,11 @@ export default function (props) {
           <P>/KM</P>
         </Text>
         <Pr>{(option.costPerKM * option.distance).toFixed(2)}</Pr>
-        <P style={{ color: Theme.secondary }}>
-          {props.delivery ? 'Farmer will deliver' : 'You are picking up'}
-        </P>
+        {!props.ordered && (
+          <P style={{ color: Theme.secondary }}>
+            {props.delivery ? 'Farmer will deliver' : 'You are picking up'}
+          </P>
+        )}
       </View>
       <View style={styles.actionContainer}>
         {!props.ordered &&

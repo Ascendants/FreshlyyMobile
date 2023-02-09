@@ -58,12 +58,11 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={OrderStatusScreen}
+            component={CustomerDashboardScreen}
             initialParams={{
               // purl: 'sri_lankan_jackfruit_63bd26cb9bfd69a6d97143fd',
               purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               userEmail: userEmail,
-              orderId: '63ca34b114bb90e4d6c849ec',
             }}
           />
           <Stack.Screen name='Payment' component={PaymentScreen} />
