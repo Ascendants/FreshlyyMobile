@@ -7,6 +7,7 @@ import { P, H1 } from './components/Texts';
 import Header from './components/Header';
 import { UserContext, user } from './context/UserContext';
 import Theme from './constants/theme';
+import { Auth } from 'firebase/auth';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
 import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
 import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
+import ChatScreen from './screens/ChatScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -51,7 +53,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CardScreen}
+            component={ChatScreen}
             initialParams={{
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
