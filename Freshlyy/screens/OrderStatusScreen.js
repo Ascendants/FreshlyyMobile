@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import { H2, H3, Pr, H7, H6, H4 } from '../components/Texts';
+import { H2, H3, Pr, H7, H6, H4, P } from '../components/Texts';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
@@ -49,6 +49,9 @@ export default function ({ navigation, route }) {
               isDelivery={order.isDelivery}
               reviewed={order.farmerRating != -1}
             />
+            {!order?.orderUpdate?.payment && (
+              <Button title='Pay Now' size='big' color='shadedSecondary' />
+            )}
             <View style={styles.pageArea}>
               {order.items?.map((item) => (
                 <ProductView ordered={true} key={item.itemId} product={item} />
@@ -105,6 +108,14 @@ export default function ({ navigation, route }) {
               <Button title='Review' color='shadedSecondary' size='big' />
             )}
           </View>
+          {!order?.orderUpdate?.processed && (
+            <>
+              <Button title='Cancel Order' size='big' color='shadedDanger' />
+            </>
+          )}
+          <P style={styles.infoText}>
+            ⓘ You can only cancel an order before it's processed.
+          </P>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -140,5 +151,8 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  infoText: {
+    textAlign: 'center',
   },
 });

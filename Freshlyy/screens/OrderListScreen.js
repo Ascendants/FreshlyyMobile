@@ -43,7 +43,7 @@ export default function ({ navigation, route }) {
     });
   }
   React.useEffect(() => {
-    getOrderList(route.params.initialTab);
+    getOrderList(route.params.initialTab.replace(/\s+/g, '-').toLowerCase());
   }, []);
   return (
     <SafeAreaView>

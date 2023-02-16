@@ -56,37 +56,37 @@ export default function ({ navigation, route }) {
               imageUri={require('../assets/topay.png')}
               number={userData.toPay}
               text='To Pay'
-              onPress={() => viewOrders('to-pay')}
+              onPress={() => viewOrders('To Pay')}
             />
             <DashBoardCard
               imageUri={require('../assets/processing.png')}
-              number={userData.toProcess + userData.toShip}
+              number={userData.toProcess + userData.toShip || null}
               text='Processing'
-              onPress={() => viewOrders('processing')}
+              onPress={() => viewOrders('Processing')}
             />
             <DashBoardCard
               imageUri={require('../assets/topickup.png')}
               number={userData.toPickup}
               text='To Pick Up'
-              onPress={() => viewOrders('to-pickup')}
+              onPress={() => viewOrders('To Pickup')}
             />
             <DashBoardCard
               imageUri={require('../assets/shipped.png')}
               number={userData.toReceive}
               text='Shipped'
-              onPress={() => viewOrders('shipped')}
+              onPress={() => viewOrders('Shipped')}
             />
             <DashBoardCard
               imageUri={require('../assets/toreview.png')}
               number={userData.toReview}
               text='To Review'
-              onPress={() => viewOrders('to-review')}
+              onPress={() => viewOrders('To Review')}
             />
             <DashBoardCard
               imageUri={require('../assets/all.png')}
               number={userData.all}
               text='All Orders'
-              onPress={() => viewOrders('all')}
+              onPress={() => viewOrders('All')}
             />
           </View>
           <ServicesCardDB />
