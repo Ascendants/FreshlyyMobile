@@ -38,7 +38,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={DashBoardScreen}
+            component={MyCartScreen}
             options={{
               headerShown: false,
             }}
