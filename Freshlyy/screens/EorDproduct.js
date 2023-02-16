@@ -14,7 +14,7 @@ import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
-import { H1, H2,H6 } from '../components/Texts';
+import { H1, H2,H6, Pr} from '../components/Texts';
 
 export default function () {
   return (
@@ -32,8 +32,9 @@ export default function () {
           <View style={styles.DeBox}>
            
            <H2 style={styles.DText}>Available Quantity -: 10Kg</H2>
-           <H2 style={styles.DText}>Price -: LKR 1250/ Kg</H2>
-           <H2 style={styles.DText}>Description -: I dug these carrots from my garden..........</H2>
+           <H2 style={styles.DText}>Price -: </H2><Pr>1250/ Kg</Pr>
+           <H2 style={styles.DText}>Description -: </H2>
+          <H2 style={styles.DText}> I dug these carrots from my garden..........</H2>
           </View>
 
           
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 80,
+    paddingTop: 50,
     width: '80%',
   },
 });

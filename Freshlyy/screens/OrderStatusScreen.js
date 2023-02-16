@@ -42,6 +42,8 @@ export default function () {
               <H4 style={styles.DText}>Current Status: </H4>
               <Button title='Processing' color='shadedTertiary' size='small' />
             </View>
+            </View>
+            </View>
           
           {/* <View style={styles.Check}>
           < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)}  /> <H1> Processing</H1>
@@ -49,14 +51,17 @@ export default function () {
           < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)} leftText="Processing" />
          
           </View> */}
+      
           <View style={styles.buttcont}>
-           
+            <Button title='Process Finished' color='filledPrimary' size='normal' />
+            
+          </View>
            
           </View>
-          </View>
+    
         
-           </View>
-          </View>
+           
+     
 
           
           
@@ -133,10 +138,12 @@ const styles = StyleSheet.create({
 
 buttcont: {
   display: 'flex',
+  justifyContent: 'space-between',
   flexDirection: 'row',
   justifyContent: 'center',
-  // paddingTop: 80,
-  width: '100%',
+  paddingTop: 20,
+  width: '80%',
+  color:'Teritary'
 },
 });
 
