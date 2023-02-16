@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    backgroundColor: Theme.overlay,
+    // backgroundColor: Theme.overlay,
     width: '30%',
     height: 100,
     borderRadius: 10,

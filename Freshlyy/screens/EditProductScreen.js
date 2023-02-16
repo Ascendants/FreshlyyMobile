@@ -22,25 +22,43 @@ export default function () {
       <Header back={true} />
       <ScrollView>
         <View style={styles.screen}>
-        <H1 style={styles.AddText}>Selling Products</H1>
-          <Image
+         
+        <H1 style={styles.AddText}>Edit Details</H1>
+          
+          {/* <DatePicker/> */}
+      
+
+          <TextInputBox
+            inputlabel='Product Name'
+            placeholder='Sri Lankan Carrot'
+          />
+          <TextInputBox
+            inputlabel='Quantity Available'
+            placeholder='10Kg '
+          />
+          <TextInputBox
+            inputlabel='Price of 1Kg'
+            placeholder='LKR 1250'
+          />
+          <TextInputBox
+            inputlabel='Any description'
+            placeholder='I dug these carrot from...'
+          />
+          
+          {/* <Image
             source={require('../assets/carrot.jpg')}
             style={styles.vectorimage}
-          />
-          {/* <DatePicker/> */}
-          <H6 style={styles.PText}>Sri Lankan Carrots</H6>
-          <View style={styles.DeBox}>
+          /> */}
+          <TextInputBox
+            inputlabel='Add product image'/>
            
-           <H2 style={styles.DText}>Available Quantity -: 10Kg</H2>
-           <H2 style={styles.DText}>Price -: LKR 1250/ Kg</H2>
-           <H2 style={styles.DText}>Description -: I dug these carrots from my garden..........</H2>
-          </View>
-
-          
+        
           <View style={styles.buttcont}>
-            <Button title='Edit' color='shadedPrimary' size='normal' />
-            <Button title='Delete' color='shadedDanger' size='normal' />
+            <Button title='Delete image' color='shadedDanger' size='normal' />
+            <Button title='Upload image' color='shadedPrimary' size='normal' />
+            
           </View>
+          <Button title='Upload' color='filledPrimary' size='big' />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -65,46 +83,39 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 20,
   },
+  
   AddText: {
     // color: Theme.primary,
     fontSize: 25,
     paddingTop: 15,
     paddingBottom: 2,
   },
-  PText:{
-    fontSize: 23,
-    paddingTop: 15,
-    paddingBottom: 10,
-    fontWeight: 'bold',
-    
-
-  },
-  DText:{
-    fontSize: 20,
-    paddingBottom:2,
-    
-  }, 
-  DeBox:{
-    color:Theme.primary,
-    display:'flex',
-    justifyContent: 'flex-start',
-    marginLeft: 8,
-    marginRight: 5,
-
-  },
   inputcont: {
     position: 'relative',
-    width: '100%',
+    width: '80%',
   },
-
+  inputlabel: {
+    paddingLeft: 50,
+    color: Theme.textColor,
+    fontFamily: 'Poppins',
+  },
+  input: {
+    position: 'relative',
+    height: 40,
+    width: '100%',
+    fontFamily: 'Poppins',
+    paddingLeft: 10,
+    backgroundColor: Theme.overlay,
+    borderColor: Theme.overlay,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
   buttcont: {
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 80,
     width: '80%',
   },
 });
-
 

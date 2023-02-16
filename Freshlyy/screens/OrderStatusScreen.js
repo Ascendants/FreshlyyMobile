@@ -1,3 +1,5 @@
+
+
 import { React, useState } from 'react';
 import {
   StyleSheet,
@@ -10,13 +12,12 @@ import {
 } from 'react-native';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
-import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
-import { H1, H2,H6 } from '../components/Texts';
+import { H1, H4,H2,H6, Pr } from '../components/Texts';
 
 export default function () {
+    const [isChecked, SetIsChecked] = useState (false);
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -29,19 +30,37 @@ export default function () {
           />
           {/* <DatePicker/> */}
           <H6 style={styles.PText}>Sri Lankan Carrots</H6>
+          <View style={styles.ProContainer}>
           <View style={styles.DeBox}>
            
-           <H2 style={styles.DText}>Available Quantity -: 10Kg</H2>
-           <H2 style={styles.DText}>Price -: LKR 1250/ Kg</H2>
-           <H2 style={styles.DText}>Description -: I dug these carrots from my garden..........</H2>
+            <H4 style={styles.DText}>10KG</H4>
+
+            <H4 style={styles.DText}>Total: <Pr fontSize={20} >100.00</Pr></H4>
+
+            <H4 style={styles.DText}>To Haritha</H4>
+            <View style={styles.statusCont}>
+              <H4 style={styles.DText}>Current Status: </H4>
+              <Button title='Processing' color='shadedTertiary' size='small' />
+            </View>
+          
+          {/* <View style={styles.Check}>
+          < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)}  /> <H1> Processing</H1>
+          < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)} leftText="Processing" />
+          < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)} leftText="Processing" />
+         
+          </View> */}
+          <View style={styles.buttcont}>
+           
+           
+          </View>
+          </View>
+        
+           </View>
           </View>
 
           
-          <View style={styles.buttcont}>
-            <Button title='Edit' color='shadedPrimary' size='normal' />
-            <Button title='Delete' color='shadedDanger' size='normal' />
-          </View>
-        </View>
+          
+       
       </ScrollView>
     </SafeAreaView>
   );
@@ -80,31 +99,44 @@ const styles = StyleSheet.create({
 
   },
   DText:{
-    fontSize: 20,
     paddingBottom:2,
+    // fontWeight:'bold',
     
   }, 
+  statusCont:{
+    flexDirection:'row',
+    alignItems:'baseline'
+  },
+  ProContainer: {
+    padding: 10,
+    backgroundColor: Theme.overlayShade,
+    borderRadius: 20,
+    margin: 10,
+    justifyContent: 'center',
+  },
   DeBox:{
-    color:Theme.primary,
+    color:Theme.overlayShade,
     display:'flex',
     justifyContent: 'flex-start',
+    width:'100%',
     marginLeft: 8,
     marginRight: 5,
 
   },
-  inputcont: {
-    position: 'relative',
-    width: '100%',
-  },
+ CheckleftText:{
+    color: Theme.overlayShade,
+ },
+ inputcont: {
+  position: 'relative',
+  width: '100%',
+},
 
-  buttcont: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 80,
-    width: '80%',
-  },
+buttcont: {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  // paddingTop: 80,
+  width: '100%',
+},
 });
-
 
