@@ -15,12 +15,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import { H4, P } from '../components/Texts';
+import { AntDesign,Ionicons } from '@expo/vector-icons';
+import {LocationCard} from '../components/LocationCard';
+import {GoogleMap, useLoadScript, Marker} from '@react-google-maps/api';
+
 
 export default function () {
     return (
         <SafeAreaView>
             <Header back={true} />
-            
+            <ScrollView>
+            <View style={styles.screen}>
+              <h3>Select your Address</h3>
+              const{}= useLoadScript({
+                //googleMapsApiKey:;
+              })
+            </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -32,37 +43,5 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     fontFamily: 'Poppins',
   },
-  logo: {
-    height: 50,
-    resizeMode: 'contain',
-    marginTop: 50,
-  },
-  vectorimage: {
-    width: 247,
-    height: 143,
-    marginVertical: 30,
-  },
-  inputcont: {
-    position: 'relative',
-    width: '80%',
-  },
-  inputlabel: {
-    paddingLeft: 10,
-    color: Theme.textColor,
-    fontFamily: 'Poppins',
-  },
-  input: {
-    position: 'relative',
-    height: 40,
-    width: '100%',
-    fontFamily: 'Poppins',
-    paddingLeft: 10,
-    backgroundColor: Theme.overlay,
-    borderColor: Theme.overlay,
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  loctext: {
-    alignSelf: 'baseline',
-  },
+  
 });
