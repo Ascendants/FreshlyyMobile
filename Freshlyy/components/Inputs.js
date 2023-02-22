@@ -25,10 +25,10 @@ module.exports.TextInputBox = function (props) {
         onFocus={() => {
           setState(1);
         }}
-        onBlur={() => {
-          props.onBlur();
-          setState(0);
-        }}
+        // onBlur={() => {
+        //   props.onBlur();
+        //   setState(0);
+        // }}
         name={props.name}
         style={[styles.input, state ? styles.inputFocused : null]}
         placeholder={props.placeholder}
