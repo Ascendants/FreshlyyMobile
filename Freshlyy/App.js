@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
@@ -42,7 +42,6 @@ import AddCardScreen from './screens/AddCardScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import OrderStatusScreen from './screens/OrderStatusScreen';
 import OtherPaymentScreen from './screens/OtherPaymentScreen';
-
 export default function App() {
   const [fonts] = useFonts({
     Poppins: require('./assets/fonts/Poppins-Medium.ttf'),
@@ -54,16 +53,17 @@ export default function App() {
   return (
     <UserContext.Provider value={null}>
       <NavigationContainer>
+        <StatusBar barStyle='dark-content' />
         <Stack.Navigator
           screenOptions={{ headerShown: false, animation: 'none' }}
         >
           <Stack.Screen
             name='Checkout'
-            component={CustomerDashboardScreen}
+            component={ProductDetailScreen}
             initialParams={{
-              purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
+              // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
-              // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
+              purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               userEmail: userEmail,
             }}
           />

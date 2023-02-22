@@ -7,6 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import FadeComponent from '../components/FadeComponent';
+import Loading from '../components/Loading';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button } from '../components/Buttons';
 import Header from '../components/Header';
@@ -21,6 +23,7 @@ import ENV from '../constants/env';
 import { H4 } from '../components/Texts';
 
 export default function () {
+  const [loaded, setLoaded] = React.useState(false);
   const [userData, setUserData] = useState([]);
   const [product, setProduct] = useState([]);
   const sheetRef = useRef(null);
@@ -46,6 +49,7 @@ export default function () {
           throw new Error('Something went wrong');
         }
         setUserData(res.user);
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -54,53 +58,58 @@ export default function () {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header farmer={true} />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.pageContent}
-        >
-          <InfoCardDB user={userData} />
-          <H4 style={styles.headings}>My Orders</H4>
-          <View style={styles.cardContainer}>
-            <DashBoardCard
-              imageUri={require('../assets/gift.png')}
-              number={10}
-              text='New Orders'
-              onPress={() => handleSnapPress(0)}
-            />
-
-            <DashBoardCard
-              imageUri={require('../assets/box.png')}
-              number={5}
-              text='Past Orders'
-              onPress={() => handleSnapPress(0)}
-            />
-          </View>
-          <H4 style={styles.headings}>My Listings</H4>
-          <View style={styles.cardContainer}>
-            <DashBoardCard
-              imageUri={require('../assets/trade.png')}
-              number={100}
-              text='Selling'
-              onPress={() => handleSnapPress(0)}
-            />
-            <DashBoardCard
-              imageUri={require('../assets/pending.png')}
-              number={3}
-              text='Pending'
-              onPress={() => handleSnapPress(0)}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              size='big'
-              color='shadedPrimary'
-              title='Add new produce listing'
-              // backgroundstyle={styles.button}
-            />
-          </View>
-          <ServicesCardDB farmer={true} />
-          <View style={styles.lastChild}></View>
-        </ScrollView>
+        {!loaded ? (
+          <Loading />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.pageContent}
+          >
+            <FadeComponent>
+              <InfoCardDB user={userData} />
+              <H4 style={styles.headings}>My Orders</H4>
+              <View style={styles.cardContainer}>
+                <DashBoardCard
+                  imageUri={require('../assets/gift.png')}
+                  number={10}
+                  text='New Orders'
+                  onPress={() => handleSnapPress(0)}
+                />
+                <DashBoardCard
+                  imageUri={require('../assets/box.png')}
+                  number={5}
+                  text='Past Orders'
+                  onPress={() => handleSnapPress(0)}
+                />
+              </View>
+              <H4 style={styles.headings}>My Listings</H4>
+              <View style={styles.cardContainer}>
+                <DashBoardCard
+                  imageUri={require('../assets/trade.png')}
+                  number={100}
+                  text='Selling'
+                  onPress={() => handleSnapPress(0)}
+                />
+                <DashBoardCard
+                  imageUri={require('../assets/pending.png')}
+                  number={3}
+                  text='Pending'
+                  onPress={() => handleSnapPress(0)}
+                />
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  size='big'
+                  color='shadedPrimary'
+                  title='Add new produce listing'
+                  // backgroundstyle={styles.button}
+                />
+              </View>
+              <ServicesCardDB farmer={true} />
+              <View style={styles.lastChild}></View>
+            </FadeComponent>
+          </ScrollView>
+        )}
         <BottomSheet
           ref={sheetRef}
           index={-1}
@@ -116,7 +125,7 @@ export default function () {
             <SwipeOverlay />
           </BottomSheetView>
         </BottomSheet>
-        <Navbar screenName="Cart"/>
+        <Navbar screenName='Cart' />
       </View>
     </SafeAreaView>
   );

@@ -7,8 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { Button } from '../components/Buttons';
+import FadeComponent from '../components/FadeComponent';
+import Loading from '../components/Loading';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import DashBoardCard from '../components/DashBoardCard';
@@ -16,10 +16,10 @@ import ServicesCardDB from '../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
-import { H4 } from '../components/Texts';
 import InfoCardDBCust from '../components/InfoCardDBCust';
 
 export default function ({ navigation, route }) {
+  const [loaded, setLoaded] = React.useState(false);
   const [userData, setUserData] = useState({});
   function viewOrders(type) {
     navigation.navigate('Orders List', {
@@ -39,6 +39,7 @@ export default function ({ navigation, route }) {
           throw new Error('Something went wrong');
         }
         setUserData(res);
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -46,52 +47,58 @@ export default function ({ navigation, route }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header customer={true} />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.pageContent}
-        >
-          <InfoCardDBCust user={userData.user} />
-          <View style={styles.cardContainer}>
-            <DashBoardCard
-              imageUri={require('../assets/topay.png')}
-              number={userData.toPay}
-              text='To Pay'
-              onPress={() => viewOrders('To Pay')}
-            />
-            <DashBoardCard
-              imageUri={require('../assets/processing.png')}
-              number={userData.toProcess + userData.toShip || null}
-              text='Processing'
-              onPress={() => viewOrders('Processing')}
-            />
-            <DashBoardCard
-              imageUri={require('../assets/topickup.png')}
-              number={userData.toPickup}
-              text='To Pick Up'
-              onPress={() => viewOrders('To Pickup')}
-            />
-            <DashBoardCard
-              imageUri={require('../assets/shipped.png')}
-              number={userData.toReceive}
-              text='Shipped'
-              onPress={() => viewOrders('Shipped')}
-            />
-            <DashBoardCard
-              imageUri={require('../assets/toreview.png')}
-              number={userData.toReview}
-              text='To Review'
-              onPress={() => viewOrders('To Review')}
-            />
-            <DashBoardCard
-              imageUri={require('../assets/all.png')}
-              number={userData.all}
-              text='All Orders'
-              onPress={() => viewOrders('All')}
-            />
-          </View>
-          <ServicesCardDB />
-          <View style={styles.lastChild}></View>
-        </ScrollView>
+        {!loaded ? (
+          <Loading />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.pageContent}
+          >
+            <FadeComponent>
+              <InfoCardDBCust user={userData.user} />
+              <View style={styles.cardContainer}>
+                <DashBoardCard
+                  imageUri={require('../assets/topay.png')}
+                  number={userData.toPay}
+                  text='To Pay'
+                  onPress={() => viewOrders('To Pay')}
+                />
+                <DashBoardCard
+                  imageUri={require('../assets/processing.png')}
+                  number={userData.toProcess + userData.toShip || null}
+                  text='Processing'
+                  onPress={() => viewOrders('Processing')}
+                />
+                <DashBoardCard
+                  imageUri={require('../assets/topickup.png')}
+                  number={userData.toPickup}
+                  text='To Pick Up'
+                  onPress={() => viewOrders('To Pickup')}
+                />
+                <DashBoardCard
+                  imageUri={require('../assets/shipped.png')}
+                  number={userData.toReceive}
+                  text='Shipped'
+                  onPress={() => viewOrders('Shipped')}
+                />
+                <DashBoardCard
+                  imageUri={require('../assets/toreview.png')}
+                  number={userData.toReview}
+                  text='To Review'
+                  onPress={() => viewOrders('To Review')}
+                />
+                <DashBoardCard
+                  imageUri={require('../assets/all.png')}
+                  number={userData.all}
+                  text='All Orders'
+                  onPress={() => viewOrders('All')}
+                />
+              </View>
+              <ServicesCardDB />
+              <View style={styles.lastChild}></View>
+            </FadeComponent>
+          </ScrollView>
+        )}
         <Navbar />
       </View>
     </SafeAreaView>

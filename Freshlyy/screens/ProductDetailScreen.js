@@ -11,8 +11,10 @@ import Theme from '../constants/theme';
 import ENV from '../constants/env';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
+import FadeComponent from '../components/FadeComponent';
 
 export default function ({ route, navigation }) {
+  const [loaded, setLoaded] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   const [product, setProduct] = React.useState({
@@ -42,6 +44,7 @@ export default function ({ route, navigation }) {
           return { ...prev, ...res.product };
         });
         setSelectedQuantity(res.product.minQtyIncrement);
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -49,7 +52,11 @@ export default function ({ route, navigation }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header />
+        {/* {!loaded ? (
+          <Loading />
+        ) : ( */}
         <ScrollView showsVerticalScrollIndicator={false}>
+          {/* <FadeComponent> */}
           <View style={styles.pageContent}>
             <View style={styles.productImageContainer}>
               <ScrollView
@@ -170,7 +177,9 @@ export default function ({ route, navigation }) {
               <Button size='big' color='shadedPrimary' title='Add to Cart' />
             </View>
           </View>
+          {/* </FadeComponent> */}
         </ScrollView>
+        {/* )} */}
       </View>
     </SafeAreaView>
   );
