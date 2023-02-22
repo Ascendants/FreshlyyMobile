@@ -7,10 +7,11 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import ListItem from './ListItem';
 
 export default function (props) {
+  const [loadingDelete, setLoadingDelete] = React.useState(false);
   const card = props.card;
-  let icon;
+  let icon = require('../assets/card.png');
   switch (card.cardType) {
-    case 'Master':
+    case 'Mastercard':
       icon = require('../assets/master.png');
       break;
     case 'Visa':
@@ -33,21 +34,16 @@ export default function (props) {
       <View style={styles.actionContainer}>
         <Button
           type='icon'
-          icon={
-            <MaterialIcons name='mode-edit' size={24} color={Theme.secondary} />
-          }
-          size='small'
-          color='shadedSecondary'
-          title='Edit'
-          onPress={props.editCard}
-        />
-        <Button
-          type='icon'
           icon={<FontAwesome name='trash-o' size={24} color={Theme.danger} />}
           size='small'
           color='shadedDanger'
           title='Remove'
-          onPress={props.deleteCard}
+          onPress={async () => {
+            setLoadingDelete(true);
+            await props.deleteCard();
+            setLoadingDelete(false);
+          }}
+          loading={loadingDelete}
         />
       </View>
     </ListItem>
