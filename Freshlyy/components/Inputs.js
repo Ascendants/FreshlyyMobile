@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     color: Theme.danger,
   },
   inputcont: {
-    width: '80%',
+    width: '100%',
     marginVertical: 10,
   },
   inputlabel: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     color: Theme.textColor,
     padding: 9,
     paddingHorizontal: 10,
-    backgroundColor: Theme.overlay,
+    backgroundColor: Theme.contrastTextColor,
     borderRadius: 10,
   },
   inputFocused: {

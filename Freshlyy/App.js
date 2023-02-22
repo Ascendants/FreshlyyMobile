@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 import StartScreen from './screens/StartScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
 import GetStartedScreen from './screens/GetStartedScreen';
-import DashBoard from './screens/FarmerDashboardScreen';
+import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
 import MyCartScreen from './screens/MyCartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -32,8 +32,15 @@ import ProductDeletedScreen from './screens/ProductDelete';
 import EorDproduct from './screens/EorDproduct';
 import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
 import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
+import HelpCenterScreen from './screens/HelpCenterScreen';
+import CantSignInScreen from './screens/CantSignInScreen';
+import HelpWithanOrderScreen from './screens/HelpWithanOrderScreen';
+import FoodDamagedScreen from './screens/FoodDamagedScreen';
+import SelectTheOrderHC from './screens/SelectTheOrderScreen';
 import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
+import OrderListScreen from './screens/OrderListScreen';
+import OrderStatusScreen from './screens/OrderStatusScreen';
 import OtherPaymentScreen from './screens/OtherPaymentScreen';
 
 export default function App() {
@@ -52,7 +59,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CardScreen}
+            component={CustomerDashboardScreen}
             initialParams={{
               purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -64,6 +71,21 @@ export default function App() {
           <Stack.Screen
             name='Farmer Dashboard'
             component={FarmerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Orders List'
+            component={OrderListScreen}
+            initialParams={{
+              userEmail: userEmail,
+              initialTab: 'All',
+            }}
+          />
+          <Stack.Screen
+            name='Order Details'
+            component={OrderStatusScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -96,6 +118,16 @@ export default function App() {
               userEmail: userEmail,
             }}
           />
+          <Stack.Screen name='Help Center' component={HelpCenterScreen} />
+          <Stack.Screen name='Cant sign in' component={CantSignInScreen} />
+          <Stack.Screen name='Food Damaged' component={FoodDamagedScreen} />
+          <Stack.Screen name='Select order' component={SelectTheOrderHC} />
+          <Stack.Screen
+            name='Help with an order'
+            component={HelpWithanOrderScreen}
+          />
+          <Stack.Screen name='Cart' component={MyCartScreen} />
+
           <Stack.Screen name='Message' component={MessageScreen} />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
         </Stack.Navigator>

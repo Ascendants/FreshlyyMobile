@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { H6, H7, H8 } from '../components/Texts';
 import Theme from '../constants/theme';
 
-export default function (props) {
+export default function (props,{navigation}) {
   return (
     <View style={styles.container}>
       {/* <View style={styles.notify}>
@@ -13,7 +13,7 @@ export default function (props) {
         <Image source={require('../assets/message.png')} style={styles.logo} />
         <H8>Messages</H8>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Help Center')}>
         <Image source={require('../assets/question.png')} style={styles.logo} />
         <H8>Help Center</H8>
       </TouchableOpacity>
