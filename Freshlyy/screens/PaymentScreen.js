@@ -84,7 +84,7 @@ export default function ({ navigation, route }) {
           type: 'Success',
           messageTitle: 'Payment Complete!',
           messageText: 'The farmers will process your order and let you know!',
-          goto: 'Order Detail',
+          goto: 'Orders List',
           goButtonText: 'View Order',
         });
         return;

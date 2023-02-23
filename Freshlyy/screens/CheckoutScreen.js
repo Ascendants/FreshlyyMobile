@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    fontFamily: 'Poppins',
     textAlign: 'center',
     marginBottom: 10,
   },

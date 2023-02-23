@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FreshlyyImageStore } from '../utils/firebase';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
@@ -12,6 +11,7 @@ import ENV from '../constants/env';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 import FadeComponent from '../components/FadeComponent';
+import { Blurhash } from 'react-native-blurhash';
 
 export default function ({ route, navigation }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -52,134 +52,148 @@ export default function ({ route, navigation }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header />
-        {/* {!loaded ? (
+        {!loaded ? (
           <Loading />
-        ) : ( */}
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* <FadeComponent> */}
-          <View style={styles.pageContent}>
-            <View style={styles.productImageContainer}>
-              <ScrollView
-                style={styles.productImageSwiper}
-                horizontal={true}
-                decelerationRate={0}
-                snapToInterval={345} //your element width
-                snapToAlignment={'center'}
-                showsHorizontalScrollIndicator={false}
-                onScroll={scrollImage}
-                scrollEventThrottle={300}
-              >
-                {product.imageUrls.map((image) => {
-                  return (
-                    <Image
-                      key={image}
-                      source={{ uri: image }}
-                      style={styles.productImage}
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <FadeComponent>
+              <View style={styles.pageContent}>
+                <View style={styles.productImageContainer}>
+                  <ScrollView
+                    style={styles.productImageSwiper}
+                    horizontal={true}
+                    decelerationRate={0}
+                    snapToInterval={345} //your element width
+                    snapToAlignment={'center'}
+                    showsHorizontalScrollIndicator={false}
+                    onScroll={scrollImage}
+                    scrollEventThrottle={300}
+                  >
+                    {product.imageUrls.map((image) => {
+                      return (
+                        <>
+                          <Blurhash
+                            blurhash='LGFFaXYk^6#M@-5c,1J5@[or[Q6.'
+                            style={{ flex: 1 }}
+                          />
+                          <Image
+                            key={image.imageUrl}
+                            source={{ uri: image.imageUrl }}
+                            style={styles.productImage}
+                          />
+                        </>
+                      );
+                    })}
+                  </ScrollView>
+                  <ImageDots
+                    style={styles.dots}
+                    numOfElem={product.imageUrls.length}
+                    index={imageScroll}
+                  />
+                </View>
+                <View style={styles.actionArea}>
+                  <H3 style={styles.productTopic}>{product.title}</H3>
+                  <View style={styles.actionButtonContainer}>
+                    <Button
+                      icon={
+                        <Feather
+                          name='message-circle'
+                          size={24}
+                          color={Theme.textColor}
+                        />
+                      }
+                      title='Chat'
+                      type='icon'
+                      size='normal'
+                      color='shadedTertiary'
                     />
-                  );
-                })}
-              </ScrollView>
-              <ImageDots
-                style={styles.dots}
-                numOfElem={product.imageUrls.length}
-                index={imageScroll}
-              />
-            </View>
-            <View style={styles.actionArea}>
-              <H3 style={styles.productTopic}>{product.title}</H3>
-              <View style={styles.actionButtonContainer}>
-                <Button
-                  icon={
-                    <Feather
-                      name='message-circle'
-                      size={24}
-                      color={Theme.textColor}
+                    <Button
+                      type='icon'
+                      icon={
+                        <Feather
+                          name='heart'
+                          size={24}
+                          color={Theme.textColor}
+                        />
+                      }
+                      title='Wishlist'
+                      size='normal'
+                      color='shadedTertiary'
                     />
-                  }
-                  title='Chat'
-                  type='icon'
-                  size='normal'
-                  color='shadedTertiary'
-                />
-                <Button
-                  type='icon'
-                  icon={
-                    <Feather name='heart' size={24} color={Theme.textColor} />
-                  }
-                  title='Wishlist'
-                  size='normal'
-                  color='shadedTertiary'
-                />
-                <Button
-                  type='icon'
-                  icon={
-                    <Ionicons
-                      name='ios-share-outline'
-                      size={24}
-                      color={Theme.textColor}
+                    <Button
+                      type='icon'
+                      icon={
+                        <Ionicons
+                          name='ios-share-outline'
+                          size={24}
+                          color={Theme.textColor}
+                        />
+                      }
+                      title='Share'
+                      size='normal'
+                      color='shadedTertiary'
                     />
-                  }
-                  title='Share'
-                  size='normal'
-                  color='shadedTertiary'
-                />
+                  </View>
+                </View>
+                <View style={styles.ratingArea}>
+                  <Rating value={product.overallRating} />
+                  <P>10 Reviews</P>
+                </View>
+                <View style={styles.farmerDetail}>
+                  <Image
+                    source={{ uri: product.farmerImage.imageUrl }}
+                    style={styles.farmerImage}
+                  />
+                  <H4 style={styles.farmerName}>{product.farmerName}</H4>
+                </View>
+                <View style={styles.detail}>
+                  <Pr fontSize={20}>{product.price}</Pr>
+                  <H4>/KG</H4>
+                </View>
+                <View style={styles.detail}>
+                  <H4>{product.distance} KM Away | </H4>
+                  <Pr fontSize={20}>{product.pricePerKm}</Pr>
+                  <H4>/KM</H4>
+                </View>
+                <View style={styles.detail}>
+                  <P>{product.description}</P>
+                </View>
+                <View>
+                  <View style={styles.qtyArea}>
+                    <Button
+                      size='big'
+                      color='shadedPrimary'
+                      title={
+                        <Feather name='minus' size={24} color={Theme.primary} />
+                      }
+                      onPress={decreaseQuantity}
+                    />
+                    <H3 style={{ width: 100, textAlign: 'center' }}>
+                      {selectedQuantity} KG
+                    </H3>
+                    <Button
+                      size='big'
+                      color='filledPrimary'
+                      title={
+                        <Ionicons
+                          name='add-outline'
+                          size={24}
+                          color={Theme.contrastTextColor}
+                        />
+                      }
+                      onPress={increaseQuantity}
+                    />
+                  </View>
+                  <Button
+                    size='big'
+                    color='shadedPrimary'
+                    title='Add to Cart'
+                  />
+                </View>
               </View>
-            </View>
-            <View style={styles.ratingArea}>
-              <Rating value={product.overallRating} />
-              <P>10 Reviews</P>
-            </View>
-            <View style={styles.farmerDetail}>
-              <Image
-                source={{ uri: product.farmerImage }}
-                style={styles.farmerImage}
-              />
-              <H4 style={styles.farmerName}>{product.farmerName}</H4>
-            </View>
-            <View style={styles.detail}>
-              <Pr fontSize={20}>{product.price}</Pr>
-              <H4>/KG</H4>
-            </View>
-            <View style={styles.detail}>
-              <H4>{product.distance} KM Away | </H4>
-              <Pr fontSize={20}>{product.pricePerKm}</Pr>
-              <H4>/KM</H4>
-            </View>
-            <View style={styles.detail}>
-              <P>{product.description}</P>
-            </View>
-            <View>
-              <View style={styles.qtyArea}>
-                <Button
-                  size='big'
-                  color='shadedPrimary'
-                  title={
-                    <Feather name='minus' size={24} color={Theme.primary} />
-                  }
-                  onPress={decreaseQuantity}
-                />
-                <H3 style={{ width: 100, textAlign: 'center' }}>
-                  {selectedQuantity} KG
-                </H3>
-                <Button
-                  size='big'
-                  color='filledPrimary'
-                  title={
-                    <Ionicons
-                      name='add-outline'
-                      size={24}
-                      color={Theme.contrastTextColor}
-                    />
-                  }
-                  onPress={increaseQuantity}
-                />
-              </View>
-              <Button size='big' color='shadedPrimary' title='Add to Cart' />
-            </View>
-          </View>
-          {/* </FadeComponent> */}
-        </ScrollView>
-        {/* )} */}
+            </FadeComponent>
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );

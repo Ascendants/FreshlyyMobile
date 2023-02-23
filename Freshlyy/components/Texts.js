@@ -49,7 +49,7 @@ module.exports.H3 = function (props) {
   return (
     <Text
       style={{
-        fontFamily: 'PoppinsRegular',
+        fontFamily: 'Poppins',
         color: Theme.textColor,
         fontSize: 25,
         ...props.style,

@@ -168,5 +168,6 @@ const styles = StyleSheet.create({
   },
   infoText: {
     textAlign: 'center',
+    marginBottom: 50,
   },
 });
