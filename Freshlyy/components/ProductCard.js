@@ -1,7 +1,7 @@
 import { contains } from '@firebase/util';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { H1, H2,H3,H5,H7,H6,Pr,P} from '../components/Texts';
+import { H1, H2, H3, H5, H7, H6, Pr, P } from '../components/Texts';
 import Theme from '../constants/theme';
 import { FilledBigButton } from '../components/Buttons';
 import theme from '../constants/theme';
@@ -31,12 +31,9 @@ export default function (props,onLikePress) {
       <TouchableOpacity>
       <View style={[styles.card,props.cardType=='social'?{height:280}:{height:255}]} >
         <View style={styles.imgcont}>
-        <Image
-          source={{ uri: props.imageUrl }}
-          style={styles.cardimage}
-        />
+          <Image source={{ uri: props.imageUrl }} style={styles.cardimage} />
         </View>
-       
+
         <View style={styles.desccont}>
         <H7 style={styles.prodname}>{props.title}</H7>
         <View style={styles.reviewCont}> 
@@ -55,7 +52,7 @@ export default function (props,onLikePress) {
        
         </View>
       </View>
-      </TouchableOpacity>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
@@ -71,10 +68,10 @@ const styles = StyleSheet.create({
     marginVertical:15,
     marginHorizontal:10
   },
-  imgcont:{
-    paddingTop:10,    
-    justifyContent:'center',
-    alignItems:'center'
+  imgcont: {
+    paddingTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardimage: {
     width: 135,
@@ -82,19 +79,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     resizeMode:'contain',
   },
-  prodname:{
-    fontWeight:'bold'
+  prodname: {
+    fontWeight: 'bold',
   },
-  reviewCont:{
-     display:'flex',
-     flexDirection:'row'
+  reviewCont: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   desccont:{
     position:'relative',
     width:180,
 
-    paddingHorizontal:10,
-    marginTop:10
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
+  likecont: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 2,
   },
   likecont:{
     display:'flex',
