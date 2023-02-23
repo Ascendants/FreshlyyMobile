@@ -6,7 +6,10 @@ import Theme from '../constants/theme';
 export default function (props) {
   return (
     <TouchableOpacity onPress={props.onPress} style={styles.container}>
-      <Image source={props.imageUri} style={styles.icon} />
+      <Image
+        source={props.imageUri}
+        style={[styles.icon, { backgroundColor: props.imageUri.placeholder }]}
+      />
       <H6 style={styles.number}>{props.number}</H6>
       <H7>{props.text}</H7>
     </TouchableOpacity>
