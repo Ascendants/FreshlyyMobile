@@ -5,14 +5,17 @@ import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import theme from '../constants/theme';
 import { UserContext } from '../context/UserContext';
+import FadeComponent from '../components/FadeComponent';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductView from '../components/ProductView';
 import DeliveryView from '../components/DeliveryView';
 import LoadingModal from '../components/LoadingModal';
 import ENV from '../constants/env';
+import Loading from '../components/Loading';
 
 export default function ({ navigation, route }) {
+  const [loaded, setLoaded] = React.useState(false);
   const [orderData, setOrderData] = React.useState({
     selectedPaymentMethod: 'cod',
   });
@@ -119,6 +122,7 @@ export default function ({ navigation, route }) {
           });
           return curr;
         });
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -129,45 +133,53 @@ export default function ({ navigation, route }) {
         <View style={styles.screen}>
           <LoadingModal message='Placing Order' visible={confirmOrder} />
           <Header back={true} />
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.pageContent}>
-              <H3 style={styles.title}>Your Order</H3>
-              <View style={styles.pageArea}>
-                {cart.map((farmer) =>
-                  farmer.items.map((item) => (
-                    <ProductView key={item.item} product={item} />
-                  ))
-                )}
-              </View>
-              <View style={styles.pageArea}>
-                <H3>Sub Total</H3>
-                <Pr fontSize={30}>{subTotal.toFixed(2)}</Pr>
-              </View>
-              <View style={styles.pageArea}>
-                <H4 style={styles.title}>Delivery Costs</H4>
-                {cart.map((farmer) => (
-                  <DeliveryView
-                    option={farmer}
-                    key={farmer.farmer}
-                    delivery={deliveries[farmer.farmer]}
-                    setDelivery={(value) => setDelivery(farmer.farmer, value)}
-                  />
-                ))}
-              </View>
-              <View style={styles.pageArea}>
-                <H3>Total</H3>
-                <Pr fontSize={30}>{total.toFixed(2)}</Pr>
-              </View>
-              <View style={styles.buttonContainer}>
-                <Button
-                  size='big'
-                  color='filledWarning'
-                  title='Confirm Order'
-                  onPress={placeOrder}
-                />
-              </View>
-            </View>
-          </ScrollView>
+          {!loaded ? (
+            <Loading />
+          ) : (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <FadeComponent>
+                <View style={styles.pageContent}>
+                  <H3 style={styles.title}>Your Order</H3>
+                  <View style={styles.pageArea}>
+                    {cart.map((farmer) =>
+                      farmer.items.map((item) => (
+                        <ProductView key={item.item} product={item} />
+                      ))
+                    )}
+                  </View>
+                  <View style={styles.pageArea}>
+                    <H3>Sub Total</H3>
+                    <Pr fontSize={30}>{subTotal.toFixed(2)}</Pr>
+                  </View>
+                  <View style={styles.pageArea}>
+                    <H4 style={styles.title}>Delivery Costs</H4>
+                    {cart.map((farmer) => (
+                      <DeliveryView
+                        option={farmer}
+                        key={farmer.farmer}
+                        delivery={deliveries[farmer.farmer]}
+                        setDelivery={(value) =>
+                          setDelivery(farmer.farmer, value)
+                        }
+                      />
+                    ))}
+                  </View>
+                  <View style={styles.pageArea}>
+                    <H3>Total</H3>
+                    <Pr fontSize={30}>{total.toFixed(2)}</Pr>
+                  </View>
+                  <View style={styles.buttonContainer}>
+                    <Button
+                      size='big'
+                      color='filledWarning'
+                      title='Confirm Order'
+                      onPress={placeOrder}
+                    />
+                  </View>
+                </View>
+              </FadeComponent>
+            </ScrollView>
+          )}
         </View>
       </SafeAreaView>
     </>
@@ -184,7 +196,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    fontFamily: 'Poppins',
     textAlign: 'center',
     marginBottom: 10,
   },

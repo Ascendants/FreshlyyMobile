@@ -1,20 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, FlatList } from 'react-native';
-import { H2, H3, Pr } from '../components/Texts';
+import { H3, Pr } from '../components/Texts';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
-import { TextInputBox } from '../components/Inputs';
-import CardView from '../components/CardView';
-
-import { Formik } from 'formik';
-import { Button } from '../components/Buttons';
-import ModalComponent from '../components/ModalComponent';
+import FadeComponent from '../components/FadeComponent';
 import ENV from '../constants/env';
 import TabMenu from '../components/TabMenu';
+import Loading from '../components/Loading';
 import OrderView from '../components/OrderView';
-import { set } from 'react-native-reanimated';
+
 export default function ({ navigation, route }) {
+  const [loaded, setLoaded] = React.useState(false);
+
   const [activeTab, setActiveTab] = React.useState(route.params.initialTab);
   const [orders, setOrders] = React.useState([]);
   function changeTab(tab) {
@@ -22,6 +20,7 @@ export default function ({ navigation, route }) {
     getOrderList(tab.replace(/\s+/g, '-').toLowerCase());
   }
   async function getOrderList(type = 'all') {
+    setLoaded(false);
     fetch(ENV.backend + '/customer/get-orders/' + type, {
       method: 'GET',
       headers: {
@@ -34,6 +33,7 @@ export default function ({ navigation, route }) {
           throw new Error('Malformed Response');
         }
         setOrders(res.orders);
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
   }
@@ -49,7 +49,7 @@ export default function ({ navigation, route }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} home={true} />
-        <H2>Orders</H2>
+        <H3>Orders</H3>
         <TabMenu
           tabs={[
             'All',
@@ -63,24 +63,30 @@ export default function ({ navigation, route }) {
           active={activeTab}
           onPress={changeTab}
         />
-        <View style={styles.ordersContainer}>
-          <FlatList
-            data={orders}
-            renderItem={(order) => (
-              <OrderView
-                farmer={order.item.farmerName}
-                key={order.item.orderId}
-                orderId={order.item.orderId}
-                orderDate={order.item.orderPlaced}
-                paidDate={order.item.orderPaid}
-                status={order.item.status}
-                total={order.item.orderTotal}
-                viewOrder={navigateToOrder}
+        {!loaded ? (
+          <Loading />
+        ) : (
+          <View style={styles.ordersContainer}>
+            <FadeComponent>
+              <FlatList
+                data={orders}
+                renderItem={(order) => (
+                  <OrderView
+                    farmer={order.item.farmerName}
+                    key={order.item.orderId}
+                    orderId={order.item.orderId}
+                    orderDate={order.item.orderPlaced}
+                    paidDate={order.item.orderPaid}
+                    status={order.item.status}
+                    total={order.item.orderTotal}
+                    viewOrder={navigateToOrder}
+                  />
+                )}
+                keyExtractor={(order) => order.orderId}
               />
-            )}
-            keyExtractor={(order) => order.orderId}
-          />
-        </View>
+            </FadeComponent>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );

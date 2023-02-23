@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 10,
     borderRadius: 18,
+    justifyContent: 'center',
   },
   normalButtonText: {
     fontSize: 16,
@@ -147,6 +148,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     margin: 5,
     borderRadius: 12,
+    justifyContent: 'center',
   },
   smallButtonText: {
     fontSize: 12,
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 6,
     borderRadius: 10,
+    justifyContent: 'center',
   },
   shadedBigButtonBackground: {
     backgroundColor: Theme.primaryShade,
