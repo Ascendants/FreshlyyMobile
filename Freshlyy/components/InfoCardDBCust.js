@@ -4,8 +4,10 @@ import { P, Pr, H2, H4, H3 } from './Texts';
 import Theme from '../constants/theme';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Button } from '../components/Buttons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function (props) {
+  const nav = useNavigation();
   return (
     <View style={styles.card}>
       <View style={styles.cardLayout}>
@@ -16,8 +18,11 @@ export default function (props) {
         </View>
         <View style={styles.cardRight}>
           <Image
-            source={{ uri: props.user?.profilePicUrl }}
-            style={styles.image}
+            source={{ uri: props.user?.profilePicUrl?.imageUrl }}
+            style={[
+              styles.image,
+              { backgroundColor: props.user?.profilePicUrl?.placeholder },
+            ]}
           />
         </View>
       </View>
@@ -39,6 +44,7 @@ export default function (props) {
         <Button
           title='Cards'
           type='icon'
+          onPress={() => nav.navigate('Card Management')}
           backgroundStyle={styles.buttonBackground}
           size='normal'
           color='filledSecondary'
