@@ -3,7 +3,7 @@ import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
-import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
 import ImageDots from '../components/ImageDots';
 import Theme from '../constants/theme';
@@ -11,7 +11,6 @@ import ENV from '../constants/env';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 import FadeComponent from '../components/FadeComponent';
-import { Blurhash } from 'react-native-blurhash';
 
 export default function ({ route, navigation }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -69,19 +68,13 @@ export default function ({ route, navigation }) {
                     onScroll={scrollImage}
                     scrollEventThrottle={300}
                   >
-                    {product.imageUrls.map((image) => {
+                    {product.imageUrls.map((image, index) => {
                       return (
-                        <>
-                          <Blurhash
-                            blurhash='LGFFaXYk^6#M@-5c,1J5@[or[Q6.'
-                            style={{ flex: 1 }}
-                          />
-                          <Image
-                            key={image.imageUrl}
-                            source={{ uri: image.imageUrl }}
-                            style={styles.productImage}
-                          />
-                        </>
+                        <Image
+                          key={index}
+                          source={{ uri: image.imageUrl }}
+                          style={styles.productImage}
+                        />
                       );
                     })}
                   </ScrollView>
