@@ -41,7 +41,8 @@ import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import OrderStatusScreen from './screens/OrderStatusScreen';
-import OtherPaymentScreen from './screens/OtherPaymentScreen';import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import OtherPaymentScreen from './screens/OtherPaymentScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import VerifyYourEmail from './screens/VerifyYourEmail';
 import CreateNewPassword from './screens/CreateNewPassword';
 import { G } from 'react-native-svg';
@@ -63,7 +64,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CheckoutScreen}
+            component={ProductHomePageScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -141,28 +142,28 @@ export default function App() {
               headerShown: false,
             }}
           />
-              <Stack.Screen
+          <Stack.Screen
             name='createPassword'
             component={PasswordCreationScreen}
             options={{
               headerShown: false,
             }}
           />
-              <Stack.Screen
+          <Stack.Screen
             name='beFarmer'
             component={BeFarmerScreen}
             options={{
               headerShown: false,
             }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name='homePage'
             component={ProductHomePageScreen}
             options={{
               headerShown: false,
             }}
           />
-            <Stack.Screen
+          <Stack.Screen
             name='login'
             component={LoginScreen}
             options={{
