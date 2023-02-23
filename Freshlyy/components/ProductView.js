@@ -13,7 +13,7 @@ export default function (props) {
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: product.imageUri.imageUrl }}
-          style={styles.image}
+          style={[styles.image, { backgroundColor: product.imageUri.placeholder }]}
         />
       </View>
       <View style={styles.descContainer}>
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginHorizontal: 5,
     alignItems: 'center',
+    borderRadius: 18,
   },
   image: {
     resizeMode: 'cover',

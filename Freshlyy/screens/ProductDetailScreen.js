@@ -73,7 +73,13 @@ export default function ({ route, navigation }) {
                         <Image
                           key={index}
                           source={{ uri: image.imageUrl }}
-                          style={styles.productImage}
+                          style={[
+                            styles.productImage,
+                            [
+                              styles.image,
+                              { backgroundColor: image.placeholder },
+                            ],
+                          ]}
                         />
                       );
                     })}
