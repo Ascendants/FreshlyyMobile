@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { H1, P, H3, H4, Pr } from '../components/Texts';
+import { H2, P, H3, H4, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
@@ -11,6 +11,7 @@ import ENV from '../constants/env';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 import FadeComponent from '../components/FadeComponent';
+import ModalComponent from '../components/ModalComponent';
 
 export default function ({ route, navigation }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -47,9 +48,14 @@ export default function ({ route, navigation }) {
       })
       .catch((err) => console.log(err));
   }, []);
+  const [modal, setModal] = React.useState(false);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
+        <ModalComponent visible={modal} closeModal={()=>setModal(false)}>
+          {/* If there is no avlb qyt error should be there */}
+          <Text>Product added to the cart</Text>
+        </ModalComponent>
         <Header />
         {!loaded ? (
           <Loading />
@@ -187,6 +193,7 @@ export default function ({ route, navigation }) {
                     size='big'
                     color='shadedPrimary'
                     title='Add to Cart'
+                    onPress={()=>setModal((prev)=>!prev)}
                   />
                 </View>
               </View>
