@@ -11,7 +11,10 @@ export default function (props) {
   return (
     <ListItem>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: product.imageUri }} style={styles.image} />
+        <Image
+          source={{ uri: product.imageUri.imageUrl }}
+          style={[styles.image, { backgroundColor: product.imageUri.placeholder }]}
+        />
       </View>
       <View style={styles.descContainer}>
         <H6 style={{ fontFamily: 'Poppins' }}>{product.title}</H6>
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginHorizontal: 5,
     alignItems: 'center',
+    borderRadius: 18,
   },
   image: {
     resizeMode: 'cover',

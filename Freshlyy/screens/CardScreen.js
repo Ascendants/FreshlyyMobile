@@ -12,7 +12,8 @@ import { Formik } from 'formik';
 import { Button } from '../components/Buttons';
 import ModalComponent from '../components/ModalComponent';
 import ENV from '../constants/env';
-import SimpleLoadingModal from '../components/SimpleLoadingModal';
+import Loading from '../components/Loading';
+import FadeComponent from '../components/FadeComponent';
 import { useIsFocused } from '@react-navigation/native';
 const NicknameSchema = Yup.object().shape({
   Nickname: Yup.string()
@@ -22,6 +23,7 @@ const NicknameSchema = Yup.object().shape({
 });
 export default function ({ navigation, route }) {
   const isFocused = useIsFocused();
+  const [loaded, setLoaded] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   async function getCards() {
     fetch(ENV.backend + '/customer/cards/', {
@@ -36,10 +38,11 @@ export default function ({ navigation, route }) {
       .then((res) => {
         if (!res.cards) throw new Error('Malformed Response');
         setCards(res.cards);
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
   }
-  React.useState(() => {
+  React.useEffect(() => {
     getCards();
   }, [isFocused]);
   async function deleteCard(cardId) {
@@ -56,7 +59,9 @@ export default function ({ navigation, route }) {
     )
       .then((res) => res.json())
       .then((res) => {
-        if (res.message == 'Success') return true;
+        if (res.message == 'Success') {
+          return true;
+        }
       })
       .catch((err) => console.log(err));
     if (result) await getCards();
@@ -65,28 +70,34 @@ export default function ({ navigation, route }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} home={true} />
-        <H2>Cards</H2>
-        <ScrollView
-          howsVerticalScrollIndicator={false}
-          style={styles.container}
-        >
-          {cards.map((item) => (
-            <CardView
-              key={item.cardId}
-              card={item}
-              deleteCard={() => deleteCard(item.cardId)}
-              editCard={() => openEditModal(item.cardId, item.cardName)}
-            />
-          ))}
-          <View style={{ marginBottom: 100 }}></View>
-          <Button
-            backgroundStyle={{ alignSelf: 'center' }}
-            title='Add another card'
-            size='big'
-            color='shadedPrimary'
-            onPress={() => navigation.navigate('Add Card')}
-          />
-        </ScrollView>
+        <H3>Cards</H3>
+        {!loaded ? (
+          <Loading />
+        ) : (
+          <ScrollView
+            howsVerticalScrollIndicator={false}
+            style={styles.container}
+          >
+            <FadeComponent>
+              {cards.map((item) => (
+                <CardView
+                  key={item.cardId}
+                  card={item}
+                  deleteCard={() => deleteCard(item.cardId)}
+                  editCard={() => openEditModal(item.cardId, item.cardName)}
+                />
+              ))}
+              <View style={{ marginBottom: 100 }}></View>
+              <Button
+                backgroundStyle={{ alignSelf: 'center' }}
+                title='Add another card'
+                size='big'
+                color='shadedPrimary'
+                onPress={() => navigation.navigate('Add Card')}
+              />
+            </FadeComponent>
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );
