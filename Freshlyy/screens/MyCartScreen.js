@@ -22,6 +22,7 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         if (!res.cart) throw new Error('Malformed Response');
         setCart(res.cart);
       })
