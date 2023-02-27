@@ -13,7 +13,7 @@ import Rating from '../components/Rating';
 import FadeComponent from '../components/FadeComponent';
 import ModalComponent from '../components/ModalComponent';
 
-export default function ({ route, navigation }) {
+export default function ({ route, navigation, productId, addToCart }) {
   const [loaded, setLoaded] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
@@ -49,6 +49,10 @@ export default function ({ route, navigation }) {
       .catch((err) => console.log(err));
   }, []);
   const [modal, setModal] = React.useState(false);
+
+  const handleAddToCart = () => {
+    addToCart(productId, quantity);
+  }
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -193,7 +197,7 @@ export default function ({ route, navigation }) {
                     size='big'
                     color='shadedPrimary'
                     title='Add to Cart'
-                    onPress={()=>setModal((prev)=>!prev)}
+                    onPress={()=>{setModal((prev)=>!prev); handleAddToCart}}
                   />
                 </View>
               </View>
