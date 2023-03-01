@@ -1,3 +1,78 @@
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+// import firebase from 'firebase/app';
+// import 'firebase/firestore';
+
+// const db = firebase.firestore();
+
+// function ChatScreen({ route }) {
+//   const [messages, setMessages] = useState([]);
+//   const [text, setText] = useState('');
+
+//   const { farmerId } = route.params;
+
+//   useEffect(() => {
+//     const unsubscribe = db
+//       .collection('chats')
+//       .doc(`${firebase.auth().currentUser.uid}-${farmerId}`)
+//       .collection('messages')
+//       .orderBy('createdAt', 'desc')
+//       .onSnapshot((querySnapshot) => {
+//         const messages = querySnapshot.docs.map((doc) => ({
+//           id: doc.id,
+//           ...doc.data(),
+//         }));
+//         setMessages(messages);
+//       });
+
+//     return unsubscribe;
+//   }, [farmerId]);
+
+//   const handleSend = () => {
+//     const message = {
+//       text,
+//       sender: firebase.auth().currentUser.uid,
+//       receiver: farmerId,
+//       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+//       seen: false,
+//       delivered: false,
+//     };
+
+//     db.collection('chats')
+//       .doc(`${firebase.auth().currentUser.uid}-${farmerId}`)
+//       .collection('messages')
+//       .add(message)
+//       .then(() => {
+//         setText('');
+//       });
+//   };
+
+//   return (
+//     <View style={{ flex: 1 }}>
+//       <FlatList
+//         data={messages}
+//         inverted
+//         keyExtractor={(item) => item.id}
+//         renderItem={({ item }) => (
+//           <View style={{ alignItems: item.sender === firebase.auth().currentUser.uid ? 'flex-end' : 'flex-start' }}>
+//             <Text>{item.text}</Text>
+//             {item.delivered && <Text>Delivered</Text>}
+//             {item.seen && <Text>Seen</Text>}
+//           </View>
+//         )}
+//       />
+//       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//         <TextInput value={text} onChangeText={setText} />
+//         <TouchableOpacity onPress={handleSend}>
+//           <Text>Send</Text>
+//         </TouchableOpacity>
+//       </View>
+//     </View>
+//   );
+// }
+
+// export default ChatScreen;
+
 import React, { useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { TouchableOpacity, Text, View, StyleSheet, Image } from 'react-native';
 import { collection, addDoc, orderBy, query, onSnapshot } from 'firebase/firestore';
@@ -8,7 +83,7 @@ import Header from "../components/Header";
 import Theme from "../constants/theme";
 import { color } from "react-native-reanimated";
 
-export default function Chat() {
+export default function Chat({routes}) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
