@@ -50,8 +50,32 @@ export default function ({ route, navigation, productId, addToCart }) {
   }, []);
   const [modal, setModal] = React.useState(false);
 
-  const handleAddToCart = () => {
-    addToCart(productId, quantity);
+  async function postCart(productId, quantity) {
+    console.log('hiii');
+    const result = await fetch(
+      ENV.backend + '/customer/cart/add',
+      {
+        method: 'POST',
+        headers: {
+          userEmail: route.params.userEmail,
+          //this will be replaced with an http only token
+          //after auth gets set
+        },
+        body: {
+          productId:productId,
+          quantity:quantity
+        }
+
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message == 'Success') {
+          return true;
+        }
+      })
+      .catch((err) => console.log(err));
+    if (result) await postCart();
   }
   return (
     <SafeAreaView>
@@ -197,7 +221,7 @@ export default function ({ route, navigation, productId, addToCart }) {
                     size='big'
                     color='shadedPrimary'
                     title='Add to Cart'
-                    onPress={()=>{setModal((prev)=>!prev); handleAddToCart}}
+                    onPress={postCart}
                   />
                 </View>
               </View>

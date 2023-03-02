@@ -33,6 +33,7 @@ export default function ({ navigation, route }) {
   }, []);
 
   const [modal, setModal] = React.useState(false);
+  
   // const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   // const [product, setProduct] = React.useState({
   //   purl: route.params.purl,
