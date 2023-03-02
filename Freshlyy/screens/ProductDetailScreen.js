@@ -50,26 +50,23 @@ export default function ({ route, navigation, productId, addToCart }) {
   }, []);
   const [modal, setModal] = React.useState(false);
 
-  async function postCart(productId, quantity) {
-    console.log('hiii');
-    const result = await fetch(
-      ENV.backend + '/customer/cart/add',
-      {
-        method: 'POST',
-        headers: {
-          userEmail: route.params.userEmail,
-          //this will be replaced with an http only token
-          //after auth gets set
-        },
-        body: {
-          productId:productId,
-          quantity:quantity
-        }
-
-      }
-    )
+  async function postCart() {
+    const result = await fetch(ENV.backend + '/customer/cart/add', {
+      method: 'POST',
+      headers: {
+        userEmail: route.params.userEmail,
+        'Content-Type': 'application/json',
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+      body: JSON.stringify({
+        productId: product._id,
+        quantity: selectedQuantity,
+      }),
+    })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         if (res.message == 'Success') {
           return true;
         }
@@ -80,7 +77,7 @@ export default function ({ route, navigation, productId, addToCart }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <ModalComponent visible={modal} closeModal={()=>setModal(false)}>
+        <ModalComponent visible={modal} closeModal={() => setModal(false)}>
           {/* If there is no avlb qyt error should be there */}
           <Text>Product added to the cart</Text>
         </ModalComponent>

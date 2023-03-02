@@ -1,3 +1,3 @@
 export default {
-  backend: 'http://192.168.1.9:4000',
+  backend: 'http://harithas-macbook-pro.local:4000',
 };
