@@ -13,6 +13,7 @@ import DeliveryView from '../components/DeliveryView';
 import LoadingModal from '../components/LoadingModal';
 import ENV from '../constants/env';
 import Loading from '../components/Loading';
+import RefreshView from '../components/RefreshView';
 
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -25,8 +26,6 @@ export default function ({ navigation, route }) {
   const [total, setTotal] = React.useState(0);
   const [cart, setCart] = React.useState([]);
 
-  const delay = (time) =>
-    new Promise((resolve, reject) => setTimeout(resolve, time));
   async function placeOrder() {
     const data = {};
     setConfirmOrder(true);
@@ -51,7 +50,7 @@ export default function ({ navigation, route }) {
       .then((res) => {
         if (res.message != 'Success') throw new Error('Something went wrong');
         navigation.navigate('Payment', {
-          order: res,
+          orders: res.orderDetails,
           userEmail: route.params.userEmail,
         });
         setConfirmOrder(false);
@@ -75,7 +74,6 @@ export default function ({ navigation, route }) {
         });
       });
   }
-  const user = React.useContext(UserContext);
   function setDelivery(farmer, value) {
     setDeliveries((curr) => {
       const newOb = { ...curr };
@@ -89,7 +87,11 @@ export default function ({ navigation, route }) {
       Object.keys(deliveries).forEach((key) => {
         if (deliveries[key]) {
           const deliveryItem = cart.find((item) => item.farmer == key);
-          total += deliveryItem.costPerKM * deliveryItem.distance;
+          total += deliveryItem
+            ? deliveryItem.costPerKM
+            : 0 * deliveryItem
+            ? deliveryItem.distance
+            : 0;
         }
       });
       return total;
@@ -102,8 +104,8 @@ export default function ({ navigation, route }) {
       )
     );
   }, [cart, subTotal, deliveries, total]);
-  React.useEffect(() => {
-    fetch(ENV.backend + '/customer/cart/', {
+  const getData = React.useCallback(async () => {
+    return fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
       headers: {
         userEmail: route.params.userEmail,
@@ -125,7 +127,8 @@ export default function ({ navigation, route }) {
         setLoaded(true);
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
+
   return (
     <>
       <StatusBar barStyle='dark-content' />
@@ -133,53 +136,45 @@ export default function ({ navigation, route }) {
         <View style={styles.screen}>
           <LoadingModal message='Placing Order' visible={confirmOrder} />
           <Header back={true} />
-          {!loaded ? (
-            <Loading />
-          ) : (
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <FadeComponent>
-                <View style={styles.pageContent}>
-                  <H3 style={styles.title}>Your Order</H3>
-                  <View style={styles.pageArea}>
-                    {cart.map((farmer) =>
-                      farmer.items.map((item) => (
-                        <ProductView key={item.item} product={item} />
-                      ))
-                    )}
-                  </View>
-                  <View style={styles.pageArea}>
-                    <H3>Sub Total</H3>
-                    <Pr fontSize={30}>{subTotal.toFixed(2)}</Pr>
-                  </View>
-                  <View style={styles.pageArea}>
-                    <H4 style={styles.title}>Delivery Costs</H4>
-                    {cart.map((farmer) => (
-                      <DeliveryView
-                        option={farmer}
-                        key={farmer.farmer}
-                        delivery={deliveries[farmer.farmer]}
-                        setDelivery={(value) =>
-                          setDelivery(farmer.farmer, value)
-                        }
-                      />
-                    ))}
-                  </View>
-                  <View style={styles.pageArea}>
-                    <H3>Total</H3>
-                    <Pr fontSize={30}>{total.toFixed(2)}</Pr>
-                  </View>
-                  <View style={styles.buttonContainer}>
-                    <Button
-                      size='big'
-                      color='filledWarning'
-                      title='Confirm Order'
-                      onPress={placeOrder}
-                    />
-                  </View>
-                </View>
-              </FadeComponent>
-            </ScrollView>
-          )}
+          <RefreshView getData={getData}>
+            <View style={styles.pageContent}>
+              <H3 style={styles.title}>Your Order</H3>
+              <View style={styles.pageArea}>
+                {cart?.map((farmer) =>
+                  farmer.items.map((item) => (
+                    <ProductView key={item.item} product={item} />
+                  ))
+                )}
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Sub Total</H3>
+                <Pr fontSize={30}>{subTotal.toFixed(2)}</Pr>
+              </View>
+              <View style={styles.pageArea}>
+                <H4 style={styles.title}>Delivery Costs</H4>
+                {cart.map((farmer) => (
+                  <DeliveryView
+                    option={farmer}
+                    key={farmer?.farmer}
+                    delivery={deliveries[farmer?.farmer]}
+                    setDelivery={(value) => setDelivery(farmer?.farmer, value)}
+                  />
+                ))}
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Total</H3>
+                <Pr fontSize={30}>{total.toFixed(2)}</Pr>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  size='big'
+                  color='filledWarning'
+                  title='Confirm Order'
+                  onPress={placeOrder}
+                />
+              </View>
+            </View>
+          </RefreshView>
         </View>
       </SafeAreaView>
     </>

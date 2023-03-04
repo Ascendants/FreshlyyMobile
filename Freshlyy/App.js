@@ -42,6 +42,8 @@ import AddCardScreen from './screens/AddCardScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import OrderStatusScreen from './screens/OrderStatusScreen';
 import OtherPaymentScreen from './screens/OtherPaymentScreen';
+import OrderCancelScreen from './screens/OrderCancelScreen';
+import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
 export default function App() {
   const [fonts] = useFonts({
     Poppins: require('./assets/fonts/Poppins-Medium.ttf'),
@@ -59,12 +61,13 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CheckoutScreen}
+            component={CustomerDashboardScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
               purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               userEmail: userEmail,
+              initialTab: 'toPay',
             }}
           />
           <Stack.Screen name='Payment' component={PaymentScreen} />
@@ -73,6 +76,16 @@ export default function App() {
             component={FarmerDashboardScreen}
             initialParams={{
               userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Confirm Pickup'
+            component={ConfirmPickupScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+            options={{
+              animation: 'slide_from_bottom',
             }}
           />
           <Stack.Screen
@@ -118,6 +131,16 @@ export default function App() {
               userEmail: userEmail,
             }}
           />
+          <Stack.Screen
+            name='Order Cancel Screen'
+            component={OrderCancelScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+            options={{
+              animation: 'slide_from_bottom',
+            }}
+          />
           <Stack.Screen name='Help Center' component={HelpCenterScreen} />
           <Stack.Screen name='Cant sign in' component={CantSignInScreen} />
           <Stack.Screen name='Food Damaged' component={FoodDamagedScreen} />
@@ -128,7 +151,13 @@ export default function App() {
           />
           <Stack.Screen name='Cart' component={MyCartScreen} />
 
-          <Stack.Screen name='Message' component={MessageScreen} />
+          <Stack.Screen
+            name='Message'
+            component={MessageScreen}
+            options={{
+              animation: 'slide_from_bottom',
+            }}
+          />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
         </Stack.Navigator>
       </NavigationContainer>
