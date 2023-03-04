@@ -15,16 +15,12 @@ export default function (props) {
       break;
     case 'processing':
       statusElement = <H7 style={{ color: Theme.secondary }}>Processing</H7>;
-      button = <Button color='shadedDanger' size='normal' title='Cancel' />;
       break;
     case 'shipped':
       statusElement = <H7 style={{ color: Theme.primary }}>Shipped</H7>;
       break;
     case 'to-pickup':
       statusElement = <H7 style={{ color: Theme.primary }}>Ready to Pickup</H7>;
-      button = (
-        <Button color='shadedWarning' size='normal' title='Confirm Pickup' />
-      );
       break;
     case 'to-review':
       statusElement = (
@@ -34,6 +30,13 @@ export default function (props) {
       break;
     case 'completed':
       statusElement = <H7 style={{ color: Theme.primary }}>Completed</H7>;
+      break;
+    case 'cancelled':
+      statusElement = (
+        <H7 style={{ color: Theme.danger }}>
+          Cancelled on {props.cancelledDate}
+        </H7>
+      );
       break;
   }
   return (
