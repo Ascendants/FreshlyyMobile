@@ -42,6 +42,11 @@ import AddCardScreen from './screens/AddCardScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import OrderStatusScreen from './screens/OrderStatusScreen';
 import OtherPaymentScreen from './screens/OtherPaymentScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import VerifyYourEmail from './screens/VerifyYourEmail';
+import CreateNewPassword from './screens/CreateNewPassword';
+import { G } from 'react-native-svg';
+
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
 export default function App() {
@@ -61,7 +66,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CustomerDashboardScreen}
+            component={ProductHomePageScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -156,6 +161,42 @@ export default function App() {
             component={MessageScreen}
             options={{
               animation: 'slide_from_bottom',
+            }}
+          />
+
+          <Stack.Screen
+            name='signup'
+            component={SignUpScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='createPassword'
+            component={PasswordCreationScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='beFarmer'
+            component={BeFarmerScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='homePage'
+            component={ProductHomePageScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='login'
+            component={LoginScreen}
+            options={{
+              headerShown: false,
             }}
           />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
