@@ -135,7 +135,7 @@ export default function ({ navigation, route }) {
     setFilterProducts(filtered);
   };
  
-  console.log(products)
+
   
   const sortedProducts = sortByPrice
     ? products.slice().sort((a, b) => a.price - b.price)
@@ -248,7 +248,7 @@ export default function ({ navigation, route }) {
               data={filteredProducts}
               renderItem={({ item }) => (
                 <ProductCard
-                  cardType="social"
+                 
                   prodId={item._id}
                   farmerName={item.farmerName}
                   title={item.title}
