@@ -23,7 +23,7 @@ export default function ({navigation}){
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Order Wrong')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Order is Wrong')}>
             <View style={styles.barContainer}>
               <H5>Order is wrong</H5>
               <AntDesign name="right" size={24} color={Theme.textColor} />
