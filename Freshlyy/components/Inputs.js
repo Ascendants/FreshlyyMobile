@@ -1,20 +1,14 @@
 import { contains } from '@firebase/util';
 import { React, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BigButton } from './Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from 'expo-checkbox';
+import { H6 } from './Texts';
 
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
@@ -125,14 +119,16 @@ module.exports.MaskedTextInputBox = function (props) {
 // };
 
 module.exports.CheckBox = function (props) {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   return (
-    <View>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <CheckBox
         disabled={false}
-        value={toggleCheckBox}
-        onValueChange={(newValue) => setToggleCheckBox(newValue)}
+        value={props.value}
+        onValueChange={(newValue) => props.setCheckBox(newValue)}
+        style={{ margin: 10 }}
+        color={Theme.textColor}
       />
+      <H6 style={{ fontFamily: 'Poppins' }}>{props.label}</H6>
     </View>
   );
 };

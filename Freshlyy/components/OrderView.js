@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { H7, H6, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import Theme from '../constants/theme';
@@ -7,23 +7,58 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import ListItem from './ListItem';
 
 export default function (props) {
-  
-  return(
-    <ListItem>
-      <View style={styles.container}>
-        <H7>From Komuthu Fernando</H7>
-        <H7>Order #63b6b7b160d78bea22456aa8</H7>
-        <H7>Placed on 09.05.2022</H7>
-        <H7>Paid on 09.05.2022</H7>
-        <View style={styles.bottomContainer}>
-          <H7 style={{color: Theme.primary}}>Delivered</H7>
+  let statusElement;
+  let button;
+  switch (props.status) {
+    case 'to-pay':
+      statusElement = <H7 style={{ color: Theme.danger }}>Awaiting Payment</H7>;
+      break;
+    case 'processing':
+      statusElement = <H7 style={{ color: Theme.secondary }}>Processing</H7>;
+      break;
+    case 'shipped':
+      statusElement = <H7 style={{ color: Theme.primary }}>Shipped</H7>;
+      break;
+    case 'to-pickup':
+      statusElement = <H7 style={{ color: Theme.primary }}>Ready to Pickup</H7>;
+      break;
+    case 'to-review':
+      statusElement = (
+        <H7 style={{ color: Theme.secondary }}>Awaiting Review</H7>
+      );
+      button = <Button color='shadedTertiary' size='normal' title='Review' />;
+      break;
+    case 'completed':
+      statusElement = <H7 style={{ color: Theme.primary }}>Completed</H7>;
+      break;
+    case 'cancelled':
+      statusElement = (
+        <H7 style={{ color: Theme.danger }}>
+          Cancelled on {props.cancelledDate}
+        </H7>
+      );
+      break;
+  }
+  return (
+    <TouchableOpacity onPress={() => props.viewOrder(props.orderId)}>
+      <ListItem>
+        <View style={styles.container}>
+          <H7>From {props.farmer}</H7>
+          <H7>Order #{props.orderId}</H7>
+          <H7>Placed on {props.orderDate}</H7>
+          {props.paidDate ? <H7>Paid on {props.paidDate}</H7> : null}
           <View style={styles.bottomContainer}>
-            <H6>Total: </H6><Pr>2550.00</Pr>
+            {statusElement}
+            <View style={styles.bottomContainer}>
+              <H6>Total: </H6>
+              <Pr>{parseFloat(props.total).toFixed(2)}</Pr>
+            </View>
           </View>
+          <View style={styles.action}>{button}</View>
         </View>
-      </View>
-    </ListItem>
-  )
+      </ListItem>
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -34,5 +69,8 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  }
-})
+  },
+  action: {
+    alignItems: 'flex-end',
+  },
+});
