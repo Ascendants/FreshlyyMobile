@@ -65,6 +65,7 @@ export default function ({ navigation, route }) {
             )}
             {!order?.orderUpdate?.cancelled &&
               order?.orderUpdate?.processed &&
+              !order.isDelivery &&
               !order?.orderUpdate.pickedUp && (
                 <Button
                   title='Confirm Pick Up'
