@@ -4,30 +4,34 @@ import { H2, H3, H5, H6, Pr } from './Texts';
 import Theme from '../constants/theme';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-export default function (props){
-  return(
+export default function (props) {
+  return (
     <View style={styles.container}>
       <View styles={styles.image}>
-        <Image source={props.imgUrl} style={styles.image} /> 
+        <Image source={props.imgUrl.imageUrl} style={styles.image} />
       </View>
       <View style={styles.middle}>
-       <H5>{props.title}</H5>
-       <H6>Sold by {props.seller}</H6>
-       <H6>{props.quantity} KG</H6>
-       <Pr>{props.amt}</Pr>
+        <H5>{props.title}</H5>
+        <H6>Sold by {props.seller}</H6>
+        <H6>{props.quantity} KG</H6>
+        <Pr>{props.amt}</Pr>
       </View>
       <View style={[styles.right, styles.rightBackgroundColor1]}>
         <TouchableOpacity style={styles.icon}>
-          <Ionicons name="ios-pencil" size={24} color={Theme.contrastTextColor} />
+          <Ionicons
+            name='ios-pencil'
+            size={24}
+            color={Theme.contrastTextColor}
+          />
         </TouchableOpacity>
       </View>
       <View style={[styles.right, styles.rightBackgroundColor2]}>
         <TouchableOpacity style={styles.icon}>
-          <AntDesign name="delete" size={24} color={Theme.contrastTextColor} />
+          <AntDesign name='delete' size={24} color={Theme.contrastTextColor} />
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -60,5 +64,5 @@ const styles = StyleSheet.create({
   },
   icon: {
     padding: 10,
-  }
-})
+  },
+});

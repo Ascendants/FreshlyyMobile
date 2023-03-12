@@ -1,16 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
+import { StyleSheet, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FreshlyyImageStore } from '../utils/firebase';
 import { H1, P, H3, H4, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
-import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
 import ImageDots from '../components/ImageDots';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
+import RefreshView from '../components/RefreshView';
 
 export default function ({ route, navigation }) {
   const [imageScroll, setImageScroll] = React.useState(0);
@@ -20,20 +20,20 @@ export default function ({ route, navigation }) {
     imageUrls: [],
   });
   function increaseQuantity() {
-    setSelectedQuantity((curr) => curr + product.minQtyIncrement);
+    setSelectedQuantity((curr) => curr + product?.minQtyIncrement);
   }
   function decreaseQuantity() {
     setSelectedQuantity((curr) =>
-      Math.max(curr - product.minQtyIncrement, product.minQtyIncrement)
+      Math.max(curr - product?.minQtyIncrement, product?.minQtyIncrement)
     );
   }
   function scrollImage(e) {
     const scroll = Math.round(e.nativeEvent.contentOffset.x / 345);
     setImageScroll(scroll);
   }
-  React.useEffect(() => {
-    const purl = product.purl;
-    fetch(ENV.backend + '/public/product/' + purl, {
+  const getData = React.useCallback(async () => {
+    const purl = product?.purl;
+    return fetch(ENV.backend + '/public/product/' + purl, {
       method: 'GET',
     })
       .then((res) => res.json())
@@ -41,15 +41,15 @@ export default function ({ route, navigation }) {
         setProduct((prev) => {
           return { ...prev, ...res.product };
         });
-        setSelectedQuantity(res.product.minQtyIncrement);
+        setSelectedQuantity(res.product?.minQtyIncrement);
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header />
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <RefreshView getData={getData}>
           <View style={styles.pageContent}>
             <View style={styles.productImageContainer}>
               <ScrollView
@@ -62,24 +62,27 @@ export default function ({ route, navigation }) {
                 onScroll={scrollImage}
                 scrollEventThrottle={300}
               >
-                {product.imageUrls.map((image) => {
+                {product?.imageUrls.map((image, index) => {
                   return (
                     <Image
-                      key={image}
-                      source={{ uri: image }}
-                      style={styles.productImage}
+                      key={index}
+                      source={{ uri: image.imageUrl }}
+                      style={[
+                        styles.productImage,
+                        [styles.image, { backgroundColor: image.placeholder }],
+                      ]}
                     />
                   );
                 })}
               </ScrollView>
               <ImageDots
                 style={styles.dots}
-                numOfElem={product.imageUrls.length}
+                numOfElem={product?.imageUrls.length}
                 index={imageScroll}
               />
             </View>
             <View style={styles.actionArea}>
-              <H3 style={styles.productTopic}>{product.title}</H3>
+              <H3 style={styles.productTopic}>{product?.title}</H3>
               <View style={styles.actionButtonContainer}>
                 <Button
                   icon={
@@ -119,27 +122,27 @@ export default function ({ route, navigation }) {
               </View>
             </View>
             <View style={styles.ratingArea}>
-              <Rating value={product.overallRating} />
+              <Rating value={product?.overallRating} />
               <P>10 Reviews</P>
             </View>
             <View style={styles.farmerDetail}>
               <Image
-                source={{ uri: product.farmerImage }}
+                source={{ uri: product?.farmerImage?.imageUrl }}
                 style={styles.farmerImage}
               />
-              <H4 style={styles.farmerName}>{product.farmerName}</H4>
+              <H4 style={styles.farmerName}>{product?.farmerName}</H4>
             </View>
             <View style={styles.detail}>
-              <Pr fontSize={20}>{product.price}</Pr>
+              <Pr fontSize={20}>{product?.price}</Pr>
               <H4>/KG</H4>
             </View>
             <View style={styles.detail}>
-              <H4>{product.distance} KM Away | </H4>
-              <Pr fontSize={20}>{product.pricePerKm}</Pr>
+              <H4>{product?.distance} KM Away | </H4>
+              <Pr fontSize={20}>{product?.pricePerKm}</Pr>
               <H4>/KM</H4>
             </View>
             <View style={styles.detail}>
-              <P>{product.description}</P>
+              <P>{product?.description}</P>
             </View>
             <View>
               <View style={styles.qtyArea}>
@@ -170,7 +173,7 @@ export default function ({ route, navigation }) {
               <Button size='big' color='shadedPrimary' title='Add to Cart' />
             </View>
           </View>
-        </ScrollView>
+        </RefreshView>
       </View>
     </SafeAreaView>
   );

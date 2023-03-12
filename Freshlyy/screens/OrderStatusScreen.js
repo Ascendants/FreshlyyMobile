@@ -1,149 +1,204 @@
+import React from "react";
+import { StyleSheet, View, ScrollView, RefreshControl } from "react-native";
+import { H3, Pr, H7, H6, H4, P } from "../components/Texts";
+import Header from "../components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Theme from "../constants/theme";
+import FadeComponent from "../components/FadeComponent";
+import Loading from "../components/Loading";
+import OrderStatus from "../components/OrderStatus";
+import { Button } from "../components/Buttons";
+import ProductView from "../components/ProductView";
+import DeliveryView from "../components/DeliveryView";
+import ENV from "../constants/env";
+import RefreshView from "../components/RefreshView";
 
+export default function ({ navigation, route }) {
+  const [order, setOrder] = React.useState({});
 
-import { React, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from 'react-native';
-import Theme from '../constants/theme';
-import { Button } from '../components/Buttons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../components/Header';
-import { H1, H4,H2,H6, Pr } from '../components/Texts';
-
-export default function () {
-    const [isChecked, SetIsChecked] = useState (false);
+  const getData = React.useCallback(async () => {
+    const orderId = route.params.orderId;
+    return fetch(ENV.backend + "/customer/get-order/" + orderId, {
+      method: "GET",
+      headers: {
+        useremail: route.params.userEmail,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message != "Success") {
+          throw new Error("Order not found");
+        }
+        setOrder((prev) => {
+          return { ...prev, ...res.order };
+        });
+      })
+      .catch((err) => console.log(err));
+  });
   return (
     <SafeAreaView>
-      <Header back={true} />
-      <ScrollView>
-        <View style={styles.screen}>
-        <H1 style={styles.AddText}>Selling Products</H1>
-          <Image
-            source={require('../assets/carrot.jpg')}
-            style={styles.vectorimage}
-          />
-          {/* <DatePicker/> */}
-          <H6 style={styles.PText}>Sri Lankan Carrots</H6>
-          <View style={styles.ProContainer}>
-          <View style={styles.DeBox}>
-           
-            <H4 style={styles.DText}>10KG</H4>
-
-            <H4 style={styles.DText}>Total: <Pr fontSize={20} >100.00</Pr></H4>
-
-            <H4 style={styles.DText}>To Haritha</H4>
-            <View style={styles.statusCont}>
-              <H4 style={styles.DText}>Current Status: </H4>
-              <Button title='Processing' color='shadedTertiary' size='small' />
+      <View style={styles.screen}>
+        <Header back={true} home={true} />
+        <H3>Order</H3>
+        <RefreshView getData={getData}>
+          <View style={styles.ordersContainer}>
+            <H7 style={styles.orderInfo}>#{order?._id}</H7>
+            <H6 style={styles.orderInfoFarmer}>From {order?.farmerName}</H6>
+            <OrderStatus
+              status={order?.orderUpdate}
+              isDelivery={order?.isDelivery}
+              reviewed={order?.farmerRating != -1}
+            />
+            {!order?.orderUpdate?.cancelled && !order?.orderUpdate?.payment && (
+              <Button
+                title="Pay Now"
+                size="big"
+                color="shadedSecondary"
+                onPress={() => {
+                  navigation.navigate("Payment", {
+                    orders: [order],
+                    userEmail: route.params.userEmail,
+                    later: true,
+                  });
+                }}
+              />
+            )}
+            {!order?.orderUpdate?.cancelled &&
+              order?.orderUpdate?.processed &&
+              !order.isDelivery &&
+              !order?.orderUpdate.pickedUp && (
+                <Button
+                  title="Confirm Pick Up"
+                  size="big"
+                  color="shadedWarning"
+                  onPress={() => {
+                    navigation.navigate("Confirm Pickup", {
+                      orderId: order?._id,
+                      farmerName: order?.farmerName,
+                      userEmail: route.params.userEmail,
+                    });
+                  }}
+                />
+              )}
+            <View style={styles.pageArea}>
+              {order?.items?.map((item) => (
+                <ProductView ordered={true} key={item.itemId} product={item} />
+              ))}
             </View>
-            </View>
-            </View>
-          
-          {/* <View style={styles.Check}>
-          < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)}  /> <H1> Processing</H1>
-          < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)} leftText="Processing" />
-          < CheckBox isChecked= {isChecked} onClick={() => SetIsChecked(!isChecked)} leftText="Processing" />
-         
-          </View> */}
-      
-          <View style={styles.buttcont}>
-            <Button title='Process Finished' color='filledPrimary' size='normal' />
-            
           </View>
-           
-          </View>
-    
-        
-           
-     
+          {order?.isDelivery && (
+            <>
+              <View style={styles.pageArea}>
+                <H3>Sub Total</H3>
+                <Pr fontSize={30}>
+                  {parseFloat(order?.totalPrice).toFixed(2)}
+                </Pr>
+              </View>
+              <View style={styles.pageArea}>
+                <H4 style={styles.title}>Delivery Cost</H4>
+                <DeliveryView
+                  option={{
+                    distance: order?.deliveryDistance,
+                    costPerKM: order?.deliveryCostPerKM,
+                  }}
+                  delivery={order?.isDelivery}
+                  ordered={true}
+                />
+              </View>
+            </>
+          )}
+          {order?.coupon && (
+            <>
+              <View style={styles.pageArea}>
+                <H3>Total</H3>
+                <Pr fontSize={30}>
+                  {parseFloat(
+                    order?.totalPrice + order?.totalDeliveryCharge
+                  ).toFixed(2)}
+                </Pr>
+              </View>
 
-          
-          
-       
-      </ScrollView>
+              <View style={styles.pageArea}>
+                <H3>Applied Code: DIS1000</H3>
+              </View>
+            </>
+          )}
+          <View style={styles.pageArea}>
+            <H3>Net Total</H3>
+            <Pr fontSize={30}>
+              {parseFloat(
+                order?.totalPrice + order?.totalDeliveryCharge
+              ).toFixed(2)}
+            </Pr>
+          </View>
+          <View style={styles.buttonArea}>
+            {!order?.orderUpdate?.cancelled && (
+              <Button title="Get Support" color="shadedWarning" size="big" />
+            )}
+            {(order?.orderUpdate?.delivered ||
+              order?.orderUpdate?.pickedUp) && (
+              <Button title="Review" color="shadedSecondary" size="big" />
+            )}
+          </View>
+          {!order?.orderUpdate?.cancelled && !order?.orderUpdate?.processed && (
+            <>
+              <Button
+                title="Cancel Order"
+                size="big"
+                color="shadedDanger"
+                onPress={() =>
+                  navigation.navigate("Order Cancel Screen", {
+                    orderId: order?._id,
+                    farmerName: order?.farmerName,
+                    userEmail: route.params.userEmail,
+                  })
+                }
+              />
+            </>
+          )}
+          {!order?.orderUpdate?.cancelled && (
+            <P style={styles.infoText}>
+              ⓘ You can only cancel an order before it's processed.
+            </P>
+          )}
+        </RefreshView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    alignItems: 'center',
-    //justifyContent: 'center',
-    fontFamily: 'Poppins',
+    height: "100%",
+    alignItems: "center",
   },
-  logo: {
-    height: 50,
-    resizeMode: 'contain',
-    marginTop: 50,
+  pageArea: {
+    marginBottom: 30,
   },
-  vectorimage: {
-    width: 200,
-    height: 200,
-    marginTop: 10,
-    borderRadius: 20,
+  container: {
+    width: "100%",
+    paddingHorizontal: 10,
   },
-  AddText: {
-    // color: Theme.primary,
-    fontSize: 25,
-    paddingTop: 15,
-    paddingBottom: 2,
+  ordersContainer: {
+    marginVertical: 10,
   },
-  PText:{
-    fontSize: 23,
-    paddingTop: 15,
-    paddingBottom: 10,
-    fontWeight: 'bold',
-    
-
+  orderInfo: {
+    textAlign: "center",
   },
-  DText:{
-    paddingBottom:2,
-    // fontWeight:'bold',
-    
-  }, 
-  statusCont:{
-    flexDirection:'row',
-    alignItems:'baseline'
+  orderInfoFarmer: {
+    textAlign: "center",
+    color: Theme.secondary,
   },
-  ProContainer: {
-    padding: 10,
-    backgroundColor: Theme.overlayShade,
-    borderRadius: 20,
-    margin: 10,
-    justifyContent: 'center',
+  title: {
+    textAlign: "center",
   },
-  DeBox:{
-    color:Theme.overlayShade,
-    display:'flex',
-    justifyContent: 'flex-start',
-    width:'100%',
-    marginLeft: 8,
-    marginRight: 5,
-
+  buttonArea: {
+    marginVertical: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
- CheckleftText:{
-    color: Theme.overlayShade,
- },
- inputcont: {
-  position: 'relative',
-  width: '100%',
-},
-
-buttcont: {
-  display: 'flex',
-  justifyContent: 'space-between',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  paddingTop: 20,
-  width: '80%',
-  color:'Teritary'
-},
+  infoText: {
+    textAlign: "center",
+    marginBottom: 50,
+  },
 });
-
