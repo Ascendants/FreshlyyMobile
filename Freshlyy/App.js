@@ -42,10 +42,12 @@ import AddCardScreen from './screens/AddCardScreen';
 import OrderListScreen from './screens/OrderListScreen';
 import OrderStatusScreen from './screens/OrderStatusScreen';
 import OtherPaymentScreen from './screens/OtherPaymentScreen';
+import AddCardScreenBackup from './screens/AddCardScreenBackup';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import VerifyYourEmail from './screens/VerifyYourEmail';
 import CreateNewPassword from './screens/CreateNewPassword';
 import { G } from 'react-native-svg';
+import AddBankAccountScreen from './screens/AddBankAccountScreen';
 
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
@@ -55,7 +57,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'harini@freshlyy.com';
+  const userEmail = 'haritha@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -66,7 +68,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CustomerDashboardScreen}
+            component={AddBankAccountScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -205,13 +207,3 @@ export default function App() {
     </UserContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Poppins',
-  },
-});
