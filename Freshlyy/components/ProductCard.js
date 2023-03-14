@@ -13,7 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export default function (props, onLikePress) {
   const [like, setLike] = useState(false);
-  const [likecount, setLikeCount] = useState(0); //props.likes.length
+  const [likecount, setLikeCount] = useState(props.likes.length); //props.likes.length
   const [liked, setLiked] = useState(false);
 
   // console.log(userID+" "+productID)
@@ -27,12 +27,12 @@ export default function (props, onLikePress) {
   };
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => props.onPress(props.publicUrl)}>
       <View styles={styles.cardBigCont}>
         <View
           style={[
             styles.card,
-            props.cardType == "social" ? { height: 280 } : { height: 255 },
+            props.cardType == "social" ? { height: 310 } :props.distanceAway?{height:280}:{height:260},
           ]}
         > 
         {props.bestMatch && props.cheaper?
@@ -55,7 +55,7 @@ export default function (props, onLikePress) {
           </View>
 
           <View style={styles.desccont}>
-            <H7 style={styles.prodname}>{props.title}</H7>
+            <H6 style={styles.prodname}>{props.title}</H6>
             <View style={styles.reviewCont}>
               <Rating value={props.overallRating} />
               <P>({props.overallRating})</P>
@@ -65,6 +65,7 @@ export default function (props, onLikePress) {
               {props.price}/{props.unit}
             </Pr>
             {props.farmerName?<H6>{props.farmerName}</H6>:null}
+            {props.distanceAway?<H6>{props.distanceAway} Away</H6>:null}
             {props.cardType == "social" && (
               <View style={styles.likecont}>
                 <H6>{likecount} Likes</H6>

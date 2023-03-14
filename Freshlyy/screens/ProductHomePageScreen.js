@@ -43,6 +43,12 @@ export default function ({ navigation, route }) {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const bottomSheetRef = useRef(null);
   const snapPoints = ["60%", "100%"];
+    
+  const sendToProductDetail=async (pubUrl)=>{
+    navigation.navigate('Product Detail', {
+      purl: pubUrl,
+    })
+  }
 
   React.useEffect(() => {
     fetch(ENV.backend + "/customer/main-page/", {
@@ -57,6 +63,7 @@ export default function ({ navigation, route }) {
         const data = res;
         // console.log(res);
         setProducts(Object.values(data));
+        console.log(data)
       })
       .catch((err) => console.log(err));
   }, []);
@@ -248,7 +255,7 @@ export default function ({ navigation, route }) {
               data={filteredProducts}
               renderItem={({ item }) => (
                 <ProductCard
-                 
+                //  cardType='social'
                   prodId={item._id}
                   farmerName={item.farmerName}
                   title={item.title}
@@ -261,6 +268,10 @@ export default function ({ navigation, route }) {
                   onLikePress={handleLikePress}
                   bestMatch={sortByBestMatch}
                   cheaper={item.cheaper}
+                  publicUrl={item.publicUrl}
+                  distanceAway={sortByDistance?item.distanceAway:null}
+                  onPress={sendToProductDetail}
+                  
                 />
               )}
               keyExtractor={(prod, index) => prod._id}
