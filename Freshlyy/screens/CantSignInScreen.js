@@ -7,10 +7,10 @@ import { H4, H5, H8, P } from '../components/Texts';
 import Collapsible from 'react-native-collapsible';
 import { AntDesign } from '@expo/vector-icons';
 import { TextInputBox, } from '../components/Inputs';
-import ImagePicker from 'react-native-image-picker';
-// import { launchImageLibrary } from "react-native-image-picker";
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from '../components/Buttons';
+// import ImagePicker from 'react-native-image-crop-picker';
+
 
 export default class Item extends Component {
   state = {
@@ -29,30 +29,21 @@ export default class Item extends Component {
     });
   };
 
-  // handleChoosePhoto = () => {
-  //   const options = {};
-  //   launchImageLibrary({ mediaType: 'photo', cameraType: 'front' }, (res) => { console.log('my result is', res) })
-  // };
+  addPhoto = () =>{
+    const [image, setImage] = useState('');
 
-  ImageUpload = () => {
-    const [image, setImage] = useState(null);
-
-    const handleChoosePhoto = () => {
-      const options = {
-        noData: true,
-      };
-      ImagePicker.launchImageLibrary(options, response => {
-        if (response.url) {
-          setImage(response);
-        }
+    const uploadImgaeFromLibbray = () => {
+      ImagePicker.openPicker({
+        width: 1200,
+        height: 780,
+        cropping: true
+      }).then(image => {
+        console.log(image);
+        const imageUri = platform.OS === 'ios' ? image.sourceURL : image.path;
+        setImage(imageUri);
       });
-    };
-
-    handleUpload = async () => {
-      
     }
   }
-
   render() {
     return (
       <SafeAreaView>
@@ -101,7 +92,7 @@ export default class Item extends Component {
                   inputlabel='Share details for the issue you are facing while signing in'
                 />
                 <Text style={styles.inputLabel}>Screenshot of the error message while you are trying to sign in</Text>
-                <TouchableOpacity onPress={this.handleChoosePhoto}>
+                <TouchableOpacity>
                   <View style={styles.inputImgBox}>
                     <Ionicons name="image" size={22} color={Theme.tertiary} />
                     <H8 style={{ color: Theme.tertiary }}>Select file</H8>

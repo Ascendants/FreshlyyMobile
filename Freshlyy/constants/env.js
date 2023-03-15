@@ -1,3 +1,3 @@
 export default {
-  backend: 'http://192.168.1.14:4000',
+  backend: 'http://192.168.1.9:4000',
 };

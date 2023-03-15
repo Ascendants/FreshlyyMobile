@@ -1,6 +1,6 @@
 import { contains } from '@firebase/util';
 import { React, useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -117,6 +117,22 @@ module.exports.MaskedTextInputBox = function (props) {
 //     </View>
 //   );
 // };
+
+module.exports.DropDownPicker = function () {
+  const [selectedItem, setSelectedItem] = useState('');
+  return (
+    <DropDownPicker
+      items={items}
+      defaultValue={selectedItem}
+      containerStyle={{ height: 40 }}
+      itemStyle={{ justifyContent: 'flex-start' }}
+      onChangeItem={(item) => {
+        setSelectedItem(item.value);
+        onSelect(item.value);
+      }}
+    />
+  );
+}
 
 module.exports.CheckBox = function (props) {
   return (
