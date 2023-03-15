@@ -40,7 +40,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen
             name='Checkout'
-            component={FarmerCreateAccountScreen}
+            component={SignUpScreen}
             options={{
               headerShown: false,
             }}
