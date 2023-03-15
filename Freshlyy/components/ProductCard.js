@@ -12,19 +12,25 @@ import ENV from "../constants/env";
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function (props, onLikePress) {
-  const [like, setLike] = useState(false);
+  const [isLiked, setIsLiked] = useState(props.likes.includes(props.userEmail));
   const [likecount, setLikeCount] = useState(props.likes.length); //props.likes.length
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(true);
 
   // console.log(userID+" "+productID)
-
-  const handleLikePress = async () => {
-    console.log("helloo");
-    // Update state to indicate that the product has been liked
-    setLiked(true);
-    // Call the onLikePress function passed in as a prop
-    props.onLikePress(props.prodId);
+  const handleLike = () => {
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+    const method = newIsLiked ? 'add' : 'remove';
+    if(method==='add'){
+      setLikeCount(likecount+1)
+    }
+    else{
+      setLikeCount(likecount-1)
+    }
+    props.onLike(props.id,newIsLiked,method)
+    // fetch(`http://example.com/products/${product.id}/likes/${userEmail}`, { method });
   };
+
 
   return (
     <TouchableOpacity onPress={() => props.onPress(props.publicUrl)}>
@@ -32,7 +38,7 @@ export default function (props, onLikePress) {
         <View
           style={[
             styles.card,
-            props.cardType == "social" ? { height: 310 } :props.distanceAway?{height:280}:{height:260},
+            props.cardType == "social" ? { height: 310 } :props.distanceAway?{height:280}:{height:270},
           ]}
         > 
         {props.bestMatch && props.cheaper?
@@ -69,12 +75,12 @@ export default function (props, onLikePress) {
             {props.cardType == "social" && (
               <View style={styles.likecont}>
                 <H6>{likecount} Likes</H6>
-                {liked ? (
+                {isLiked ? (
                   <AntDesign
                     name="like1"
                     size={29}
                     color={Theme.primary}
-                    onPress={handleLikePress}
+                    onPress={handleLike}
                     style={styles.likeIco}
                   />
                 ) : (
@@ -82,8 +88,8 @@ export default function (props, onLikePress) {
                     name="like2"
                     size={29}
                     color="black"
-                    onPress={handleLikePress}
-                    style={styles.likeIco}
+                    onPress={handleLike}
+                   style={styles.likeIco}
                   />
                 )}
               </View>

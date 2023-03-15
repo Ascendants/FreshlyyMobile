@@ -58,6 +58,27 @@ export default function ({ navigation, route }) {
   const [showSocial, setSocial] = useState(true);
   const [activeTab,setActiveTab] = useState('All Products');
 
+  const handleLike = async (productId,newLike,method) => {
+      console.log(productId,method,newLike)
+      fetch(ENV.backend +"/customer/like/"+productId,{
+        method: "POST",
+        headers: {
+          useremail: "harini@freshlyy.com",
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+          method:method,
+          newLike:newLike
+        }),
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => console.log(err));
+
+  };
+
   const sendToProductDetail = async (pubUrl) => {
     navigation.navigate("Product Detail", {
       purl: pubUrl,
@@ -117,7 +138,7 @@ export default function ({ navigation, route }) {
         <Header back={true} />
 
         <View style={styles.screen}>
-          <H2 style={styles.heading}>Social Corner</H2>
+          <H4 style={styles.heading}>Social Corner</H4>
             <SectionList
               sections={products}
               keyExtractor={(item, index) => item + index}
@@ -126,7 +147,7 @@ export default function ({ navigation, route }) {
                 <View style={[
                    section.horizontalScroll? { backgroundColor:Theme.primaryShade } :null,
                 ]}>               
-                  <H3 style={styles.header}>{section.title}</H3>
+                  <H4 style={styles.header}>{section.title}</H4>
                   {/* {section.horizontalScroll?( */}
                   <FlatList
                     horizontal
@@ -135,6 +156,8 @@ export default function ({ navigation, route }) {
                       <ProductCard
                         cardType="social"
                         title={item.title}
+                        id={item._id}
+                        userEmail={route.params.userEmail}
                         imageUrl={item.imageUrl}
                         unit={item.unit}
                         likes={item.likes}
@@ -143,6 +166,7 @@ export default function ({ navigation, route }) {
                         farmerName={item.farmerName}
                         publicUrl={item.publicUrl}
                         onPress={sendToProductDetail}
+                        onLike={handleLike}
                       />
                     )}
                     keyExtractor={(prod, index) => prod._id}
