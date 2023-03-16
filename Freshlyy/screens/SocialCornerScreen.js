@@ -106,7 +106,6 @@ export default function ({ navigation, route }) {
       .then((res) => res.json())
       .then((res) => {
         console.log(res)
-        console.log("hello");
       })
       .catch((err) => console.log(err));
   };

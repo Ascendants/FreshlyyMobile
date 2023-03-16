@@ -21,13 +21,14 @@ export default function (props, onLikePress) {
     const newIsLiked = !isLiked;
     setIsLiked(newIsLiked);
     const method = newIsLiked ? 'add' : 'remove';
+    props.onLike(props.id,newIsLiked,method)
     if(method==='add'){
       setLikeCount(likecount+1)
     }
     else{
       setLikeCount(likecount-1)
     }
-    props.onLike(props.id,newIsLiked,method)
+   
     // fetch(`http://example.com/products/${product.id}/likes/${userEmail}`, { method });
   };
 
@@ -38,7 +39,7 @@ export default function (props, onLikePress) {
         <View
           style={[
             styles.card,
-            props.cardType == "social" ? { height: 310 } :props.distanceAway?{height:280}:{height:270},
+            props.cardType == "social" ? { height: 290 } :props.distanceAway?{height:280}:{height:270},
           ]}
         > 
         {props.bestMatch && props.cheaper?
