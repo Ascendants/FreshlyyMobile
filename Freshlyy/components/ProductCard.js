@@ -11,6 +11,7 @@ import Rating from "../components/Rating";
 import ENV from "../constants/env";
 import LinearGradient from 'react-native-linear-gradient';
 
+
 export default function (props, onLikePress) {
   const [isLiked, setIsLiked] = useState(props.likes.includes(props.userEmail));
   const [likecount, setLikeCount] = useState(props.likes.length); //props.likes.length
@@ -99,6 +100,7 @@ export default function (props, onLikePress) {
         </View>
       </View>
     </TouchableOpacity>
+ 
   );
 }
 const styles = StyleSheet.create({
