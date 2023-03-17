@@ -11,6 +11,7 @@ import Rating from "../components/Rating";
 import ENV from "../constants/env";
 import LinearGradient from 'react-native-linear-gradient';
 
+
 export default function (props, onLikePress) {
   const [like, setLike] = useState(false);
   const [likecount, setLikeCount] = useState(0); //props.likes.length
@@ -27,6 +28,7 @@ export default function (props, onLikePress) {
   };
 
   return (
+   
     <TouchableOpacity>
       <View styles={styles.cardBigCont}>
         <View
@@ -91,6 +93,7 @@ export default function (props, onLikePress) {
         </View>
       </View>
     </TouchableOpacity>
+ 
   );
 }
 const styles = StyleSheet.create({
