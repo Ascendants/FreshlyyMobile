@@ -10,29 +10,47 @@ import {
 import { Button } from './Buttons';
 import Theme from '../constants/theme';
 
+function MenuContainer(props){
+  if(props.center){
+    return <View style={styles.centeredMenu}>{props.children}</View>;
+  }
+  return <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>{props.children}</ScrollView>
+
+}
+
 export default function (props) {
+  let buttonSize = props.buttonSize || 'normal';
+//   ,{    alignItems: props.center? 'center':'flex-start',
+// }
   return (
     <View style={styles.container}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <MenuContainer center={props.center}>
         {props.tabs &&
           props.tabs.map((tab) => (
             <Button
               key={tab}
-              size='normal'
+              size={buttonSize}
               title={tab}
               onPress={() => props.onPress(tab)}
               color={props.active == tab ? 'shadedPrimary' : 'shadedTertiary'}
             />
           ))}
-      </ScrollView>
+      </MenuContainer>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'flex-start',
+    alignContent:"flex-start",
     marginVertical: 10,
-    flexDirection: 'row',
+  
+  },
+  centeredMenu:{
+    alignContent:'center',
+    justifyContent:'center',
+    justifyItems:'center',
+    flexDirection:'row',
+
   },
   dotsContainer: {
     backgroundColor: Theme.overlayShade,
