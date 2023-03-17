@@ -57,7 +57,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'haritha@freshlyy.com';
+  const userEmail = 'harini@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -68,7 +68,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={AddBankAccountScreen}
+            component={CheckoutScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -167,7 +167,7 @@ export default function App() {
           />
 
           <Stack.Screen
-            name='signup'
+            name='Sign Up'
             component={SignUpScreen}
             options={{
               headerShown: false,

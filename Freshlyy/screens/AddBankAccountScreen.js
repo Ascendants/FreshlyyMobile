@@ -155,7 +155,8 @@ export default function ({ navigation, route }) {
                 />
                 <P style={{ color: Theme.danger }}>
                   {!formik.isValid &&
-                  Object.keys(formik.touched).length &&
+                  Object.keys(formik.touched).length ==
+                    Object.keys(formik.values).length &&
                   Object.keys(formik.errors).length
                     ? 'You have entered invalid data'
                     : null}

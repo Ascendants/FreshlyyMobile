@@ -18,12 +18,12 @@ export default function (props) {
             marginBottom: 10,
           }}
         >
-          Order: {order._id}
+          Order: #{order._id}
         </P>
         <P>
           Date: {new Date(order.orderUpdate.placed).toISOString().split('T')[0]}
         </P>
-        <P>2 Items</P>
+        <P>{order?.items?.length} Items</P>
         <P>Sub Total: {order.totalPrice}</P>
         <P>Delivery: {order.totalDeliveryCharge}</P>
         <P style={{ color: Theme.secondary }}>

@@ -5,6 +5,7 @@ import Theme from '../constants/theme';
 module.exports.P = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
@@ -19,6 +20,7 @@ module.exports.P = function (props) {
 module.exports.H1 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
         fontSize: 50,
@@ -33,6 +35,7 @@ module.exports.H1 = function (props) {
 module.exports.H2 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',
         fontSize: 30,
@@ -48,6 +51,7 @@ module.exports.H2 = function (props) {
 module.exports.H3 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
         color: Theme.textColor,
@@ -63,6 +67,7 @@ module.exports.H3 = function (props) {
 module.exports.H4 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
         color: Theme.textColor,
@@ -78,6 +83,7 @@ module.exports.H4 = function (props) {
 module.exports.H5 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
         color: Theme.textColor,
@@ -93,6 +99,7 @@ module.exports.H5 = function (props) {
 module.exports.H6 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
         color: Theme.textColor,
@@ -108,6 +115,7 @@ module.exports.H6 = function (props) {
 module.exports.H7 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',
         color: Theme.textColor,
@@ -124,6 +132,7 @@ module.exports.H7 = function (props) {
 module.exports.H8 = function (props) {
   return (
     <Text
+      selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',
         color: Theme.textColor,

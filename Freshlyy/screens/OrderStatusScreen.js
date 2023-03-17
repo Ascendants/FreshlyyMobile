@@ -14,10 +14,10 @@ import ENV from '../constants/env';
 import RefreshView from '../components/RefreshView';
 import PaymentType from '../components/PaymentType';
 function getPaymentType(order) {
-  if (!order.payment) {
-    return;
+  if (!order.payment?.length) {
+    return null;
   }
-  let types = order.payment.filter((payment) => payment.type !== 'Coupon');
+  let types = order.payment?.filter((payment) => payment.type !== 'Coupon');
   for (let type of types) {
     if (type.type == 'COD') {
       return <PaymentType method='Cash on Delivery' />;
@@ -55,7 +55,9 @@ export default function ({ navigation, route }) {
         <H3>Order</H3>
         <RefreshView getData={getData}>
           <View style={styles.ordersContainer}>
-            <H7 style={styles.orderInfo}>#{order?._id}</H7>
+            <H7 style={styles.orderInfo} selectable={true}>
+              #{order?._id}
+            </H7>
             <H6 style={styles.orderInfoFarmer}>From {order?.farmerName}</H6>
             <OrderStatus
               status={order?.orderUpdate}
@@ -144,7 +146,7 @@ export default function ({ navigation, route }) {
               ).toFixed(2)}
             </Pr>
           </View>
-          {order?.orderUpdate?.payment && order?.payment?.length && (
+          {order?.orderUpdate?.payment && order?.payment?.length != 0 && (
             <View style={styles.pageArea}>
               <H4 style={styles.title}>Payment Method</H4>
               {getPaymentType(order)}
