@@ -44,10 +44,12 @@ import OrderListScreen from './screens/OrderListScreen';
 
 import OrderStatusScreen from './screens/OrderStatusScreen';
 import OtherPaymentScreen from './screens/OtherPaymentScreen';
+import AddCardScreenBackup from './screens/AddCardScreenBackup';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import VerifyYourEmail from './screens/VerifyYourEmail';
 import CreateNewPassword from './screens/CreateNewPassword';
 import { G } from 'react-native-svg';
+import AddBankAccountScreen from './screens/AddBankAccountScreen';
 
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
@@ -167,7 +169,7 @@ export default function App() {
           />
 
           <Stack.Screen
-            name='signup'
+            name='Sign Up'
             component={SignUpScreen}
             options={{
               headerShown: false,
@@ -214,13 +216,3 @@ export default function App() {
     </UserContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Poppins',
-  },
-});

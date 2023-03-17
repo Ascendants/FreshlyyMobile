@@ -17,4 +17,5 @@ export default {
   overlayShadeDarker: '#ffffff50',
   yellow: '#EFCB68',
   blue: '#3666ac',
+  defaultBackground: '#f2f2f2',
 };
