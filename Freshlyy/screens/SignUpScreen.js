@@ -31,51 +31,34 @@ export default function ({navigation}) {
               style={styles.vectorimage}
             />
             {/* <DatePicker/> */}
-            <Formik
-              initialValues={{
-                name: '',
-                lname: '',
-                email: '',
-                nic: '',
-              }}
-              validationSchema={SignupSchema}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleSubmit,
-                handleBlur,
-                isValid,
-                setFieldTouched,
-              }) => (
+           
+            
                 <View style={styles.inputcont}>
                   <TextInputBox
                     inputlabel='First Name'
                     placeholder='Enter first name'
                     value={values.name}
-                    onChange={handleChange('name')}
-                    error={errors.name}
-                    onBlur={() => handleBlur('name')}
+                
+              
+                
                   />
 
                   <TextInputBox
                     inputlabel='Last Name'
                     placeholder='Enter last name '
                     value={values.lname}
-                    onChange={handleChange('lname')}
-                    error={errors.lname}
-                    onBlur={() => handleBlur('lname')}
+          
+                 
+                
                   />
                   <TextInputBox
                     inputlabel='Email'
                     placeholder='Enter email'
                     type='email-address'
                     value={values.email}
-                    onChange={handleChange('email')}
-                    error={errors.email}
-                    onBlur={() => handleBlur('email')}
+          
+             
+                  
                   />
 
                   <DropDownPicker
@@ -90,8 +73,7 @@ export default function ({navigation}) {
                     inputlabel='NIC Number'
                     placeholder='Enter NIC'
                     value={values.nic}
-                    onChange={handleChange('nic')}
-                    error={errors.nic}
+                
                   />
                   <TextInputBox
                     inputlabel='Street No'
@@ -107,8 +89,7 @@ export default function ({navigation}) {
                   />
                   <Button title='Next' color='filledSecondary' size='big' onPress={()=>navigation.navigate('createPassword')}/>
                 </View>
-              )}
-            </Formik>
+         
             <View style={styles.inputcont}></View>
           </View>
         </ScrollView>
