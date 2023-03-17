@@ -18,22 +18,6 @@ import {Formik, validateYupSchema} from 'formik'
 import * as Yup from 'yup'
 
 
-const SignupSchema = Yup.object().shape({
-    name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-    lname: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-    nic:Yup.string()
-        .matches(
-          '^([0-9]{9}[x|X|v|V]|[0-9]{12})$',
-          'Enter Valid NIC number'
-        ),
-  email: Yup.string().email('Invalid email').required('Required'),
-});
 
 export default function () {
   return (
@@ -48,23 +32,15 @@ export default function () {
         source={require('../assets/signupvector.png')}
         style={styles.vectorimage}
       />
-      {/* <DatePicker/> */}
-      <Formik
-       initialValues={{
-         name: '',
-         lname:'',
-         email: '',
-         nic:'',
-       }}
-       validationSchema={SignupSchema}>
+
         
-        {({values, errors, touched,handleChange,handleSubmit,handleBlur,isValid,setFieldTouched })=>(
+      
           <View style={styles.inputcont}>
-         <TextInputBox inputlabel="First Name" placeholder="Enter first name" value={values.name} onChange={handleChange('name')} error={errors.name} onBlur={()=>handleBlur('name')}/>
+         <TextInputBox inputlabel="First Name" placeholder="Enter first name" value={values.name} onChange={handleChange('name')}  onBlur={()=>handleBlur('name')}/>
           
       
-        <TextInputBox inputlabel="Last Name" placeholder="Enter last name " value={values.lname} onChange={handleChange('lname')} error={errors.lname} onBlur={()=>handleBlur('lname')} />
-        <TextInputBox inputlabel="Email" placeholder="Enter email" type="email-address" value={values.email} onChange={handleChange('email')} error={errors.email} onBlur={()=>handleBlur('email')}/>
+        <TextInputBox inputlabel="Last Name" placeholder="Enter last name " value={values.lname} onChange={handleChange('lname')}  onBlur={()=>handleBlur('lname')} />
+        <TextInputBox inputlabel="Email" placeholder="Enter email" type="email-address" value={values.email} onChange={handleChange('email')}  onBlur={()=>handleBlur('email')}/>
 
         <DropDownPicker
         inputlabel='Gender'
@@ -74,10 +50,10 @@ export default function () {
           { label: 'Other', value: 'o' },
         ]}
       />
-       <TextInputBox inputlabel="NIC Number" placeholder="Enter NIC"  value={values.nic} onChange={handleChange('nic')} error={errors.nic} />
+       <TextInputBox inputlabel="NIC Number" placeholder="Enter NIC"  value={values.nic} onChange={handleChange('nic')}  />
         </View>
-      )}
-      </Formik>
+      
+
       <View style={styles.inputcont}>
        <TextInputBox inputlabel="Street No" placeholder="Enter street no" />
        <TextInputBox inputlabel="Address line 1" placeholder="Enter address 1" />
@@ -92,7 +68,6 @@ export default function () {
     
     
   );
-}
 
 const styles = StyleSheet.create({
   screen: {
