@@ -34,6 +34,7 @@ export default function () {
   const [errors, setErrors] = useState({});
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [touched, setTouched] = useState(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,6 +51,11 @@ export default function () {
         // setImage(source);
       }
     }
+  };
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...images];
+    updatedImages.splice(index, 1);
+    setImages(updatedImages);
   };
 
   const uploadImages = async () => {
@@ -81,7 +87,7 @@ export default function () {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(env.backend + "/farmer/insertProduct/", {
+      const response = await fetch(env.backend + "/farmer/insert-product/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +95,7 @@ export default function () {
         body: JSON.stringify({
           title: title,
           price: price,
-          quantity: quantity,
+          qtyAvailable: quantity,
           description: description,
           minQtyIncrement: minQtyIncrement,
         }),
@@ -113,6 +119,13 @@ export default function () {
           ? "Product Name cannot contain numbers"
           : null,
     }));
+  };
+  const handleNameBlur = () => {
+    if (!title.trim()) {
+      setNameError("Name is required");
+    } else {
+      setNameError("");
+    }
   };
 
   const handleProductPriceChange = (text) => {
@@ -155,6 +168,7 @@ export default function () {
 
   const isValid =
     title.length >= 2 &&
+    !title.trim() &&
     price !== "" &&
     !isNaN(Number(price)) &&
     quantity !== "" &&
@@ -179,6 +193,7 @@ export default function () {
             placeholder="Enter product name"
             value={title}
             onChangeText={handleProductNameChange}
+            onBlur={handleNameBlur}
             error={errors.title}
             touched={true}
           />
@@ -247,11 +262,30 @@ export default function () {
           )}
           <View style={styles.imagecont}>
             {images.map((image, index) => (
-              <Image
-                key={index}
-                source={{ uri: image.uri }}
-                style={{ width: 200, height: 200 }}
-              />
+              //   <Image
+              //     key={index}
+              //     source={{ uri: image.uri }}
+              //     style={{
+              //       width: 200,
+              //       height: 200,
+              //       objectFit: "cover",
+              //       borderRadius: 10,
+              //       marginTop: 20,
+              //     }}
+              //   />
+              // ))}
+              <View key={index} style={{ position: "relative" }}>
+                <Image
+                  source={{ uri: image.uri }}
+                  style={{ width: 200, height: 200 }}
+                />
+                <TouchableOpacity
+                  onPress={() => handleDeleteImage(index)}
+                  style={{ position: "absolute", top: 10, right: 10 }}
+                >
+                  <Ionicons name="close-circle" size={24} color="white" />
+                </TouchableOpacity>
+              </View>
             ))}
           </View>
           {/* </View> */}
@@ -292,6 +326,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins",
     height: "100%",
     marginBottom: 80,
+    paddingHorizontal: 20,
   },
   logo: {
     height: 50,
@@ -338,5 +373,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
 });

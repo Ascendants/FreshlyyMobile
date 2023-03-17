@@ -17,25 +17,26 @@ import Header from "../components/Header";
 import { H1, H2, H3, H6, Pr } from "../components/Texts";
 import ENV from "../constants/env";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import firebase from "../utils/firebase";
-import "firebase/storage";
-import { FreshlyyImageStore } from "../utils/firebase";
 
 export default function ({ navigation, route }) {
   const [product, setProduct] = useState({});
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
-    // Initialize Firebase storage
     const storage = getStorage();
-    // console.log(productId);
-    fetch(ENV.backend + "/farmer/getSellingProduct/", {
-      method: "GET",
-      headers: {
-        useremail: route.params.userEmail,
-      },
-      productId: "63f4d385b1a06dad48ec25ba",
-    })
+
+    fetch(
+      ENV.backend + "/farmer/get-selling-product",
+      // "${ENV.backend}/farmer/getSellingProduct/?productId=63f4d385b1a06dad48ec25ba",
+      {
+        method: "GET",
+        headers: {
+          useremail: route.params.userEmail,
+          "Content-Type": "application/json",
+        },
+        productId: "63f4d385b1a06dad48ec25ba",
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         if (res.message != "Success") {
@@ -44,36 +45,33 @@ export default function ({ navigation, route }) {
         const data = res.product;
         console.log(data);
         setProduct(data);
-
-        const storageRef = ref(storage, `FreshlyyImageStore/${data.image}`);
-        getDownloadURL(storageRef)
-          .then((url) => setImageUrl(url))
-          .catch((err) => console.log(err));
       })
 
       .catch((err) => console.log(err));
   }, []);
-
+  // const image = product.imageUrls[0].imageUrl;
+  const image =
+    product.imageUrls && product.imageUrls.length > 0
+      ? product.imageUrls[0].imageUrl
+      : "";
+  console.log(image);
   return (
     <SafeAreaView>
       <Header back={true} />
       <ScrollView>
         <View style={styles.screen}>
           <H1 style={styles.AddText}>Selling Products</H1>
-          {imageUrl ? (
-            <Image source={{ uri: imageUrl }} />
-          ) : (
-            <Image
-              source={require("../assets/carrot.jpg")}
-              style={styles.vectorimage}
-            />
-          )}
+          {/* {imageUrl ? (
+            <Image source={{ uri: image.imageUrl }} />
+          ) : ( */}
+          <Image source={{ uri: image }} style={styles.vectorimage} />
+
           {/* <Image
             source={require("../assets/carrot.jpg")}
             style={styles.vectorimage}
           /> */}
           {/* <DatePicker/> */}
-          <H6 style={styles.PText}>{product?.title}</H6>
+          <H6 style={styles.PText}>{product.title}</H6>
           <View style={styles.DeBox}>
             <H2 style={styles.DText}>Available Quantity -:</H2>
             <H1 style={styles.DText}>
