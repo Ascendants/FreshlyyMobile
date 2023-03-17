@@ -6,75 +6,124 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
-import { TextInputBox, DropDownPicker,DatePicker } from '../components/Inputs';
-import {Ionicons} from '@expo/vector-icons';
+import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
-import {Formik, validateYupSchema} from 'formik'
-import * as Yup from 'yup'
+import { Formik, validateYupSchema } from 'formik';
+import * as Yup from 'yup';
 
+  
 
-
-export default function () {
+export default function ({navigation}) {
   return (
-    <ScrollView>
     <SafeAreaView>
-    
-    <View style={styles.screen}>
-     
-     
-      <Header back={true}/>
-      <Image
-        source={require('../assets/signupvector.png')}
-        style={styles.vectorimage}
-      />
+      <View style={styles.screen}>
+        <Header back={true} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.pageContent}>
+            <Image
+              source={require('../assets/signupvector.png')}
+              style={styles.vectorimage}
+            />
+            {/* <DatePicker/> */}
+            <Formik
+              initialValues={{
+                name: '',
+                lname: '',
+                email: '',
+                nic: '',
+              }}
+              validationSchema={SignupSchema}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleSubmit,
+                handleBlur,
+                isValid,
+                setFieldTouched,
+              }) => (
+                <View style={styles.inputcont}>
+                  <TextInputBox
+                    inputlabel='First Name'
+                    placeholder='Enter first name'
+                    value={values.name}
+                    onChange={handleChange('name')}
+                    error={errors.name}
+                    onBlur={() => handleBlur('name')}
+                  />
 
-        
-      
-          <View style={styles.inputcont}>
-         <TextInputBox inputlabel="First Name" placeholder="Enter first name" value={values.name} onChange={handleChange('name')}  onBlur={()=>handleBlur('name')}/>
-          
-      
-        <TextInputBox inputlabel="Last Name" placeholder="Enter last name " value={values.lname} onChange={handleChange('lname')}  onBlur={()=>handleBlur('lname')} />
-        <TextInputBox inputlabel="Email" placeholder="Enter email" type="email-address" value={values.email} onChange={handleChange('email')}  onBlur={()=>handleBlur('email')}/>
+                  <TextInputBox
+                    inputlabel='Last Name'
+                    placeholder='Enter last name '
+                    value={values.lname}
+                    onChange={handleChange('lname')}
+                    error={errors.lname}
+                    onBlur={() => handleBlur('lname')}
+                  />
+                  <TextInputBox
+                    inputlabel='Email'
+                    placeholder='Enter email'
+                    type='email-address'
+                    value={values.email}
+                    onChange={handleChange('email')}
+                    error={errors.email}
+                    onBlur={() => handleBlur('email')}
+                  />
 
-        <DropDownPicker
-        inputlabel='Gender'
-        list={[
-          { label: 'Male', value: 'm'},
-          { label: 'Female', value: 'f' },
-          { label: 'Other', value: 'o' },
-        ]}
-      />
-       <TextInputBox inputlabel="NIC Number" placeholder="Enter NIC"  value={values.nic} onChange={handleChange('nic')}  />
-        </View>
-      
-
-      <View style={styles.inputcont}>
-       <TextInputBox inputlabel="Street No" placeholder="Enter street no" />
-       <TextInputBox inputlabel="Address line 1" placeholder="Enter address 1" />
-       <TextInputBox inputlabel="Address line 2" placeholder="Enter address 2" />
-       <TouchableOpacity>
-        <Button title="Next" color="filledSecondary" size="normal"/>
-      </TouchableOpacity>
-       </View>
-    </View>
+                  <DropDownPicker
+                    inputlabel='Gender'
+                    list={[
+                      { label: 'Male', value: 'm' },
+                      { label: 'Female', value: 'f' },
+                      { label: 'Other', value: 'o' },
+                    ]}
+                  />
+                  <TextInputBox
+                    inputlabel='NIC Number'
+                    placeholder='Enter NIC'
+                    value={values.nic}
+                    onChange={handleChange('nic')}
+                    error={errors.nic}
+                  />
+                  <TextInputBox
+                    inputlabel='Street No'
+                    placeholder='Enter street no'
+                  />
+                  <TextInputBox
+                    inputlabel='Address line 1'
+                    placeholder='Enter address 1'
+                  />
+                  <TextInputBox
+                    inputlabel='Address line 2'
+                    placeholder='Enter address 2'
+                  />
+                  <Button title='Next' color='filledSecondary' size='big' onPress={()=>navigation.navigate('createPassword')}/>
+                </View>
+              )}
+            </Formik>
+            <View style={styles.inputcont}></View>
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
-      </ScrollView>
-    
-    
   );
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    alignItems: 'center',
-    //justifyContent: 'center',
+    height: '100%',
     fontFamily: 'Poppins',
+  },
+  pageContent: {
+    paddingHorizontal: 15,
+    alignItems: 'center',
   },
   logo: {
     height: 50,
@@ -84,14 +133,14 @@ const styles = StyleSheet.create({
   vectorimage: {
     width: 247,
     height: 143,
-    marginVertical:30
+    marginVertical: 30,
   },
   inputcont: {
     position: 'relative',
     width: '90%',
-    marginVertical:0,
-    justifyContent:'center',
-    alignItems:'center'
+    marginVertical: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputlabel: {
     paddingLeft: 10,
@@ -109,7 +158,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
-
 });
 {
   /* <View>

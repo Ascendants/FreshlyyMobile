@@ -11,32 +11,41 @@ export default function (props) {
   return (
     <ListItem>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: product.imageUri }} style={styles.image} />
+        <Image
+          source={{ uri: product.imageUri.imageUrl }}
+          style={[styles.image, { backgroundColor: product.imageUri.placeholder }]}
+        />
       </View>
       <View style={styles.descContainer}>
         <H6 style={{ fontFamily: 'Poppins' }}>{product.title}</H6>
-        <P>Sold by {product.farmerName}</P>
+        {!props.ordered && <P>Sold by {product.farmerName}</P>}
         <P>{product.qty} KG</P>
         <Pr>{product.uPrice * product.qty}</Pr>
       </View>
-      <View style={styles.actionContainer}>
-        <Button
-          type='icon'
-          icon={
-            <MaterialIcons name='mode-edit' size={24} color={Theme.secondary} />
-          }
-          size='normal'
-          color='shadedSecondary'
-          title='Edit'
-        />
-        <Button
-          type='icon'
-          icon={<FontAwesome name='trash-o' size={24} color={Theme.danger} />}
-          size='normal'
-          color='shadedDanger'
-          title='Remove'
-        />
-      </View>
+      {!props.ordered && (
+        <View style={styles.actionContainer}>
+          <Button
+            type='icon'
+            icon={
+              <MaterialIcons
+                name='mode-edit'
+                size={24}
+                color={Theme.secondary}
+              />
+            }
+            size='small'
+            color='shadedSecondary'
+            title='Edit'
+          />
+          <Button
+            type='icon'
+            icon={<FontAwesome name='trash-o' size={24} color={Theme.danger} />}
+            size='small'
+            color='shadedDanger'
+            title='Remove'
+          />
+        </View>
+      )}
     </ListItem>
   );
 }
@@ -45,6 +54,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginHorizontal: 5,
     alignItems: 'center',
+    borderRadius: 18,
   },
   image: {
     resizeMode: 'cover',

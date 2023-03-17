@@ -3,43 +3,39 @@ import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { H6, H7, H8 } from '../components/Texts';
 import Theme from '../constants/theme';
 
-export default function () {
+export default function (props,{navigation}) {
   return (
     <View style={styles.container}>
-      <H6 style={styles.topic}>My Services</H6>
-      <View style={styles.notify}>
+      {/* <View style={styles.notify}>
         <H7 style={styles.notifyNumber}>20</H7>
-      </View>
-      <View style={styles.iconContainer}>
-        <TouchableOpacity>
+      </View> */}
+      <TouchableOpacity style={styles.button}>
+        <Image source={require('../assets/message.png')} style={styles.logo} />
+        <H8>Messages</H8>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Help Center')}>
+        <Image source={require('../assets/question.png')} style={styles.logo} />
+        <H8>Help Center</H8>
+      </TouchableOpacity>
+
+      {props.farmer && (
+        <TouchableOpacity style={styles.button}>
           <Image
-            source={require('../assets/message.png')}
+            source={require('../assets/insight.png')}
             style={styles.logo}
           />
-          <H8>Messages</H8>
+          <H8>Reports</H8>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Image
-            source={require('../assets/question.png')}
-            style={styles.logo}
-          />
-          <H8>Help Center</H8>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image
-            source={require('../assets/customer-support.png')}
-            style={styles.logo}
-          />
-          <H8>Support Ticket</H8>
-        </TouchableOpacity>
-        <TouchableOpacity>
+      )}
+      {!props.farmer && (
+        <TouchableOpacity style={styles.button}>
           <Image
             source={require('../assets/documents.png')}
             style={styles.logo}
           />
           <H8>Reviews</H8>
         </TouchableOpacity>
-      </View>
+      )}
     </View>
   );
 }
@@ -47,22 +43,19 @@ export default function () {
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: Theme.primaryShadeLighter,
     width: '90%',
-    height: 160,
+    padding: 20,
+    flexDirection: 'row',
     borderRadius: 30,
   },
-  topic: {
-    margin: 20,
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  textContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    paddingTop: 8,
+  button: {
+    margin: 5,
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
     width: 40,

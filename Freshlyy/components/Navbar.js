@@ -1,8 +1,10 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import Theme from '../constants/theme';
+import { useNavigation, NavigationContainer } from '@react-navigation/native';
 
-export default function () {
+export default function ({screenName}) {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <View style={styles.navbar}>
@@ -12,7 +14,7 @@ export default function () {
                 <TouchableOpacity style={styles.iconBehave}>
                     <Image source={require('../assets/social-media.png')} style={styles.navLogo} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconBehave}>
+                <TouchableOpacity style={styles.iconBehave} title={`Go to ${screenName}`} onPress={() => navigation.navigate(screenName)}>
                     <Image source={require('../assets/shopping-cart.png')} style={styles.navLogo} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconBehave}>
