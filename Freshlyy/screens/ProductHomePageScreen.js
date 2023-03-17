@@ -274,7 +274,6 @@ export default function ({ navigation, route }) {
                   likes={item.likes}
                   userID={route.params.userEmail}
                   onLikePress={handleLikePress}
-                  distanceAway={item.distanceAway}
                   bestMatch={sortByBestMatch}
                   cheaper={item.cheaper}
                   publicUrl={item.publicUrl}
