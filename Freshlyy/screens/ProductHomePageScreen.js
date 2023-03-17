@@ -263,7 +263,7 @@ export default function ({ navigation, route }) {
              > 
                 <ProductCard
                   animation={animation}
-                 //  cardType='social'index={index}
+                  cardType='social'
                   prodId={item._id}
                   farmerName={item.farmerName}
                   title={item.title}
