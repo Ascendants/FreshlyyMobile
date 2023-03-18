@@ -155,7 +155,6 @@ export default function ({ navigation }) {
                 color="filledSecondary"
                 size="big"
                 onPress={submit}
-                // onPress={() => navigation.navigate("createPassword")}
               />
             </View>
 

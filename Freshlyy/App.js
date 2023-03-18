@@ -11,8 +11,9 @@ import Theme from './constants/theme';
 const Stack = createNativeStackNavigator();
 
 import StartScreen from './screens/StartScreen';
-import ProductDetailScreen from './screens/ProductDetailScreen';
 import GetStartedScreen from './screens/GetStartedScreen';
+import ProductDetailScreen from './screens/ProductDetailScreen';
+import EmailPhoneVerificationScreen from './screens/EmailPhoneVerificationScreen';
 import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
 import MyCartScreen from './screens/MyCartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
@@ -70,7 +71,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={SignUpScreen}
+            component={EmailPhoneVerificationScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
