@@ -94,10 +94,26 @@ export default function ({ navigation, route }) {
               title='Withdrawable Balance'
               amount={data.withdrawable}
             />
-            {!data.isWithdrawable && (
+            {!data.isWithdrawable && data.withdrawable >= 0 && (
               <P style={styles.infoTextLast}>
-                ⓘ Balance must be more than <Pr>2000</Pr>
+                ⓘ Balance must be more than <Pr>2000</Pr> to withdraw
               </P>
+            )}
+            {!data.isWithdrawable && data.withdrawable < 0 && (
+              <>
+                <P style={styles.infoTextLast}>
+                  ⓘ Please payout the outstanding balance within 30 days to
+                  prevent suspension
+                </P>
+                <Button
+                  title='Settle Account'
+                  color='filledPrimary'
+                  size='big'
+                />
+                <P style={styles.infoTextLast}>
+                  ⓘ Negative since {data.negativeSince}
+                </P>
+              </>
             )}
           </Box>
           {data.hasBankAccount && (
