@@ -15,21 +15,26 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import { Formik, validateYupSchema, useFormik } from "formik";
+import { H3, H4, H5,H6 } from "../components/Texts";
 import * as Yup from "yup";
 import PhoneInput from "react-native-phone-number-input";
 import * as Animatable from "react-native-animatable";
 import { Animations } from "../constants/Animation";
 import { auth } from "../utils/firebase";
+import Loading from "../components/Loading";
+import LoadingModal from "../components/LoadingModal";
 
-export default function ({ navigation }) {
+export default function ({ navigation, route }) {
   const [valid, setValid] = useState(false);
-  const [email, setEmail] = useState("");
+  const[err,setErr]=useState("")
   const [password, setPassword] = useState("123456");
   const [isVerified, setIsVerified] = useState(false);
-  const [sent,setSent]=useState(false)
+  const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSignUp = async () => {
-    
+  const handleSignUp = async (email) => {
+    setSubmitting(true);
+  
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
@@ -37,57 +42,69 @@ export default function ({ navigation }) {
       );
       if (user) {
         await user.sendEmailVerification();
-        setSent(true)
+        setSubmitting(false);
         console.log("Verification email sent!");
+        navigation.navigate("EmailVerify",{message:'Success',userData:route.params.userData});
       }
     } catch (error) {
-      console.log("Error", error.message);
+      setSubmitting(false)
+      console.log(error);
+      setErr("The email address is already in use by another account")
     }
   };
 
-  const handleVerifyEmail = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      try {
-        console.log(user)
-        await user.reload();
-        if (user.emailVerified) {
-          setIsVerified(true);
-          console.log(user);
-          console.log("Success", "Email has been verified!");
-          navigation.navigate("");
-        } else {
-          console.log("Error", "Email has not been verified!");
-        }
-      } catch (error) {
-        console.log("Error", error.message);
-      }
-    }
-  };
+  // const handleVerifyEmail = async () => {
+  //   const user = auth.currentUser;
+  //   if (user) {
+  //     try {
+  //       console.log(user)
+  //       await user.reload();
+  //       if (user.emailVerified) {
+  //         setIsVerified(true);
+  //         console.log(user);
+  //         console.log("Success", "Email has been verified!");
+  //         navigation.navigate("");
+  //       } else {
+  //         console.log("Error", "Email has not been verified!");
+  //       }
+  //     } catch (error) {
+  //       console.log("Error", error.message);
+  //     }
+  //   }
+  // };
 
-  const handleResendVerification = () => {
-    auth.currentUser.sendEmailVerification()
-      .then(() => {
-        console.log('Email verification resent');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const handleResendVerification = () => {
+  //   auth.currentUser.sendEmailVerification()
+  //     .then(() => {
+  //       console.log('Email verification resent');
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email!").required("Email is required!"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long"),
+    cpassword: Yup.string()
+      .required("Confirm Password is required")
+      .oneOf([Yup.ref("password")], "Passwords must match"),
   });
 
   const formik = useFormik({
     initialValues: {
       email: "",
+      password: "",
+      cpassword: "",
     },
 
     validationSchema: validationSchema,
   });
 
-  async function submit() {
+  const submit = async () => {
+    setErr("")
     formik.validateForm();
     Object.keys(formik.values).forEach((value) => {
       formik.setFieldTouched(value);
@@ -95,14 +112,17 @@ export default function ({ navigation }) {
     if (!Object.keys(formik.touched).length) return;
     for (let error in formik.errors) if (error) return;
     const data = formik.values;
-    await setEmail(data.email);
     setValid(true);
-    handleSignUp();
-    console.log(data);
-  }
+    sendToSignup(data.email);
+  };
+  const sendToSignup = (email) => {
+    console.log(email);
+    handleSignUp(email);
+  };
   return (
     <SafeAreaView>
       <View style={styles.screen}>
+        <LoadingModal message="Submitting" visible={submitting} />
         <Header back={true} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <Animatable.View
@@ -112,7 +132,7 @@ export default function ({ navigation }) {
           >
             <View style={styles.pageContent}>
               <Image
-                source={require("../assets/emailVerify.png")}
+                source={require("../assets/signup.png")}
                 style={styles.vectorimage}
               />
               {/* <DatePicker/> */}
@@ -129,22 +149,38 @@ export default function ({ navigation }) {
                   error={formik.errors.email}
                   touched={formik.touched.email}
                 />
+                <TextInputBox
+                  inputlabel="password"
+                  placeholder="password"
+                  type="password"
+                  name="password"
+                  secure={true}
+                  onChangeText={formik.handleChange("password")}
+                  onBlur={() => formik.setFieldTouched("password", true, true)}
+                  value={formik.values.password}
+                  error={formik.errors.password}
+                  touched={formik.touched.password}
+                />
+                <TextInputBox
+                  inputlabel="confirmPassword"
+                  placeholder="Confirm Password"
+                  type="password"
+                  name="cpassword"
+                  secure={true}
+                  onChangeText={formik.handleChange("cpassword")}
+                  onBlur={() => formik.setFieldTouched("cpassword", true, true)}
+                  value={formik.values.cpassword}
+                  error={formik.errors.cpassword}
+                  touched={formik.touched.cpassword}
+                />
+                {err?<H6 style={styles.messageText}> {err}</H6>:null}
 
-                {sent? (
-                  <Button
-                    title="Sign In"
-                    color="filledPrimary"
-                    size="big"
-                    onPress={handleVerifyEmail}
-                  />
-                ) : (
-                  <Button
-                    title="Verify"
-                    color="filledSecondary"
-                    size="big"
-                    onPress={submit}
-                  />
-                )}
+                <Button
+                  title="Submit"
+                  color="filledSecondary"
+                  size="big"
+                  onPress={submit}
+                />
               </View>
 
               <View style={styles.inputcont}></View>
@@ -172,8 +208,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   vectorimage: {
-    width: 270,
-    height: 190,
+    width: 250,
+    height: 200,
     marginVertical: 20,
   },
   inputcont: {
@@ -198,5 +234,10 @@ const styles = StyleSheet.create({
     borderColor: Theme.overlay,
     borderWidth: 1,
     borderRadius: 10,
+  },
+  messageText: {
+    color:Theme.danger,
+    paddingBottom:10,
+    textAlign: 'center',
   },
 });

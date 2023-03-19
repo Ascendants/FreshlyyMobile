@@ -21,15 +21,15 @@ import {Animations} from "../constants/Animation";
 
 export default function ({ navigation }) {
   const [valid,setValid]=useState(false)
+  const [userData,setUserData]=useState({})
 
   const validationSchema = Yup.object().shape({
     FirstName: Yup.string()
-      .min(2, "Name is too short!")
-      .required("Name is required!"),
+      .min(2, "First Name is too short!")
+      .required("First Name is required!"),
     LastName: Yup.string()
-      .min(2, "Name is too short!")
-      .required("Name is required!"),
-    email: Yup.string().email("Invalid email!").required("Email is required!"),
+      .min(2, "Last Name is too short!")
+      .required("Last Name is required!"),
     address: Yup.string().required("Address is required!"),
     // dob: Yup.string()
     //   .matches(
@@ -46,7 +46,6 @@ export default function ({ navigation }) {
     initialValues: {
       FirstName: "",
       LastName: "",
-      email: "",
       address: "",
       // dob: "",
       nic: "",
@@ -63,9 +62,9 @@ export default function ({ navigation }) {
     for (let error in formik.errors) if (error) return;
     const data = formik.values;
     setValid(true)
-    console.log(data)
+    setUserData(data)
     if(valid){
-      navigation.navigate("createPassword",{ type: 'Success',})
+      navigation.navigate("beFarmer",{ type: 'Success',userData:data})
     }
       // setValid(false)
       // navigation.navigate('Message', {
@@ -99,7 +98,7 @@ export default function ({ navigation }) {
             <View style={styles.inputcont}>
               <TextInputBox
                 inputlabel="First Name"
-                placeholder="Enter first name"
+                placeholder="Enter First name"
                 name="FirstName"
                 onChangeText={formik.handleChange("FirstName")}
                 onBlur={() => formik.setFieldTouched("FirstName", true, true)}
@@ -110,25 +109,13 @@ export default function ({ navigation }) {
 
               <TextInputBox
                 inputlabel="Last Name"
-                placeholder="Enter last name "
+                placeholder="Enter Last name "
                 name="LastName"
                 onChangeText={formik.handleChange("LastName")}
                 onBlur={() => formik.setFieldTouched("LastName", true, true)}
                 value={formik.values.LastName}
                 error={formik.errors.LastName}
                 touched={formik.touched.LastName}
-              />
-          
-              <TextInputBox
-                inputlabel="Email"
-                placeholder="Enter email"
-                type="email-address"
-                name="email"
-                onChangeText={formik.handleChange("email")}
-                onBlur={() => formik.setFieldTouched("email", true, true)}
-                value={formik.values.email}
-                error={formik.errors.email}
-                touched={formik.touched.email}
               />
     
               {/* <DropDownPicker

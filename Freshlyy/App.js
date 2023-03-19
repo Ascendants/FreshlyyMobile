@@ -13,7 +13,8 @@ const Stack = createNativeStackNavigator();
 import StartScreen from './screens/StartScreen';
 import GetStartedScreen from './screens/GetStartedScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
-import EmailPhoneVerificationScreen from './screens/EmailPhoneVerificationScreen';
+import EmailVerificationScreen from './screens/EmailVerificationScreen';
+import VerifyEmail from './screens/VerifyEmail';
 import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
 import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
 import MyCartScreen from './screens/MyCartScreen';
@@ -55,6 +56,7 @@ import AddBankAccountScreen from './screens/AddBankAccountScreen';
 
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
+
 export default function App() {
   const [fonts] = useFonts({
     Poppins: require('./assets/fonts/Poppins-Medium.ttf'),
@@ -72,7 +74,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={EmailPhoneVerificationScreen}
+            component={ProductHomePageScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -212,11 +214,25 @@ export default function App() {
               headerShown: true,
             }}
           />
+                  <Stack.Screen
+            name='Email Verification'
+            component={EmailVerificationScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+            <Stack.Screen
+            name='EmailVerify'
+            component={VerifyEmail}
+            options={{
+              headerShown: false,
+            }}
+          />
                <Stack.Screen
             name='Phone Verification'
             component={PhoneVerificationScreen}
             options={{
-              headerShown: true,
+              headerShown: false,
             }}
           />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}

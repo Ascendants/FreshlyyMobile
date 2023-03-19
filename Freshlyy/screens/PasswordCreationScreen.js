@@ -20,10 +20,10 @@ import * as Yup from "yup";
 
 
 
-export default function ({navigation}) {
+export default function ({navigation,route}) {
   const [password, setPassword] = useState('');
    const[valid,setValid]=useState(false)
-
+    console.log(route.params)
   const validationSchema = Yup.object().shape({
     password: Yup.string()
       .required('Password is required')

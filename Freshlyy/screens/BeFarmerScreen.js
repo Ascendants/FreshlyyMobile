@@ -16,7 +16,16 @@ import Header from '../components/Header';
 import * as Animatable from 'react-native-animatable';
 import {Animations} from "../constants/Animation";
 
-export default function ({navigation}) {
+export default function ({navigation,route}) {
+  // setUserData(route.params.userData)
+  const handleNextPress = () => {
+    const updatedUserData = {
+      ...route.params.userData,
+      accessLevel: 'customer'
+    };
+    navigation.navigate('Email Verification', {message:"Success", userData: updatedUserData });
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -41,7 +50,7 @@ export default function ({navigation}) {
           </View>
 
           <View style={styles.buttoncont}>
-            <Button title=' Later ' color='shadedSecondary' size='big' onPress={()=>navigation.navigate('homePage')}/>
+            <Button title=' Later ' color='shadedSecondary' size='big' onPress={handleNextPress}/>
           </View>
         </View>
         </Animatable.View> 
