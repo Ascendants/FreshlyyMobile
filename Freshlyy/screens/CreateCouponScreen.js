@@ -9,9 +9,10 @@ import { TextInputBox,} from '../components/Inputs';
 import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
+import ENV from "../constants/env";
 
 
-export default function ({ navigation }) {
+export default function ({ navigation, route }) {
   const [createDate, setCreateDate] = useState(new Date());
   const [expireDate, setExpireDate] = useState(new Date());
   const [showCreateDatePicker, setShowCreateDatePicker] = useState(false);
@@ -39,6 +40,39 @@ export default function ({ navigation }) {
     // console.log(date);
   };
 
+  const handleSubmit = async() => {
+    try {
+      const response = await fetch(ENV.backend + "/farmer/create-coupon/", {
+        method: 'POST',
+        headers: {
+          useremail:route.params.userEmail,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          presentage: presentage,
+          cCode: code,
+          cDate: createDate,
+          eDate: expireDate,
+        })
+      })
+      setPresentage('');
+      setCode('');
+      setCreateDate(new Date());
+      setExpireDate(new Date());
+      setCreateDateString('--');
+      setExpireDateString('--');
+      // console.log(response.id);
+      navigation.navigate('Message', {
+        type: 'Success',
+        messageTitle: 'Coupon Created Successfully!',
+        messageText: 'An administrator will be in touch with you shortly!',
+        goto: 'Farmer Dashboard',
+        goButtonText: 'Dashboard',
+      });
+    }catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -57,7 +91,7 @@ export default function ({ navigation }) {
             inputlabel='Precentage'
             placeholder=''
             value={presentage}
-            onChange={setPresentage}
+            onChangeText={(text) => setPresentage(text)}
             onBlur = {() => {
               console.log('');
             }}
@@ -66,7 +100,7 @@ export default function ({ navigation }) {
             inputlabel='Coupon Code'
             placeholder=''
             value={code}
-            onChange={setCode}
+            onChangeText={(text) => setCode(text)}
             onBlur = {() => {
               console.log('');
             }}
@@ -102,7 +136,7 @@ export default function ({ navigation }) {
             )}
           </View>
           <View style={styles.bottomContainer}>
-            <Button title='Create Coupon' size='normal' color='shadedSecondary' />
+            <Button title='Create Coupon' size='normal' color='shadedSecondary' onPress={handleSubmit}/>
           </View>
         </ScrollView>
       </View>

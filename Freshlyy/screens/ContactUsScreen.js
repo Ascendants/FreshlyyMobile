@@ -4,19 +4,22 @@ import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import { P, H4,} from '../components/Texts';
-import ENV from "../constants/env";
 import { TextInputBox, } from '../components/Inputs';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { Button } from '../components/Buttons';
 import ModalComponent from "../components/ModalComponent";
+import ENV from "../constants/env";
 
-export default function ({navigation}){
+export default function ({navigation, route}){
 
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [number, setNumber] = useState('');
   const [desc, setDesc] = useState('');
+  const [issue, setIssue] = useState('');
 
-  const [selected, setSelected] = React.useState("");
+  const [selected, setSelected] = useState('');
+
+  const [modal, setModal] = useState(false);
 
   const data = [
     {key:'1', value:'Technical issues'},
@@ -25,7 +28,44 @@ export default function ({navigation}){
     {key:'4', value:'Payment and billing inquiries'},
     {key:'5', value:'Feedback and suggestions'},
     {key:'5', value:'Other'},
-]
+  ]
+
+  const handleSubmit = async() => {
+    try {
+      const response = await fetch(ENV.backend + "/farmer/support-ticket/", {
+        method: 'POST',
+        headers: {
+          useremail:route.params.userEmail,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          number: number,
+          issue: selected,
+          desc: desc,
+        })
+      })
+      setName('');
+      setNumber('');
+      setSelected('');
+      setDesc('');
+      const data = await response.json();
+      const id = data.id;
+      navigation.navigate('Message', {
+        type: 'Success',
+        messageTitle: 'Ticket Sent Successfully!',
+        subjectId: id,
+        messageText: ' is your ticket number. An administrator will be in touch with you shortly!',
+        goto: 'Farmer Dashboard',
+        goButtonText: 'Dashboard',
+      });
+      console.log(data.id);
+    }catch (error) {
+      console.log(error);
+    }
+  }
+
+
 
   return(
     <SafeAreaView>
@@ -42,7 +82,7 @@ export default function ({navigation}){
               inputlabel='Name'
               placeholder=''
               value={name}
-              onChangeText={setName}
+              onChangeText={(text) => setName(text)}
               onBlur = {() => {
                 console.log('');
               }}
@@ -50,8 +90,9 @@ export default function ({navigation}){
             <TextInputBox 
               inputlabel='Contact Number'
               placeholder=''
-              value={phone}
-              onChangeText={setPhone}
+              value={number}
+              onChangeText={(text) => setNumber(text)}
+              keyboardType="numeric"
               onBlur = {() => {
                 console.log('');
               }}
@@ -67,18 +108,19 @@ export default function ({navigation}){
               boxStyles={{borderColor:'white', backgroundColor:'white'}}
               dropdownTextStyles={{color: Theme.textColor,}}
               dropdownStyles={{borderColor:'white',backgroundColor:'white'}}
+              value={issue}
             />
             <TextInputBox 
               inputlabel='Description'
               placeholder=''
               value={desc}
-              onChangeText={setDesc}
+              onChangeText={(text) => setDesc(text)}
               onBlur = {() => {
                 console.log('');
               }}
             />
             <View style={styles.bottomContainer}>
-            <Button title='Submit' size='normal' color='shadedSecondary' />
+            <Button title='Submit' size='normal' color='shadedSecondary' onPress={handleSubmit}/>
           </View>
           {/* <ModalComponent /> */}
           </View>

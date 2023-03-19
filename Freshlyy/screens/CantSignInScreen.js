@@ -13,6 +13,7 @@ import { Button } from '../components/Buttons';
 
 
 export default class Item extends Component {
+
   state = {
     activeSections: [],
     collapsed: true,
@@ -45,6 +46,11 @@ export default class Item extends Component {
     }
   }
   render() {
+    // const [name, setName] = useState('');
+    // const [number, setNumber] = useState('');
+    // const [desc, setDesc] = useState('');
+    // const [issue, setIssue] = useState('');
+
     return (
       <SafeAreaView>
         <View style={styles.screen}>
