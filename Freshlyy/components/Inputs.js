@@ -12,9 +12,11 @@ import { H6 } from './Texts';
 
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
+
   return (
     <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
+     
       <TextInput
         onFocus={() => {
           setState(1);
@@ -27,6 +29,7 @@ module.exports.TextInputBox = function (props) {
         style={[styles.input, state ? styles.inputFocused : null]}
         placeholder={props.placeholder}
         textContentType={props.type}
+        secureTextEntry={props.secure?true:false}
         keyboardType={props.keyboardType}
         inputMode={props.inputMode}
         onChangeText={props.onChangeText}

@@ -14,6 +14,7 @@ import StartScreen from './screens/StartScreen';
 import GetStartedScreen from './screens/GetStartedScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
 import EmailPhoneVerificationScreen from './screens/EmailPhoneVerificationScreen';
+import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
 import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
 import MyCartScreen from './screens/MyCartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
@@ -207,6 +208,13 @@ export default function App() {
             <Stack.Screen
             name='Product Detail'
             component={ProductDetailScreen}
+            options={{
+              headerShown: true,
+            }}
+          />
+               <Stack.Screen
+            name='Phone Verification'
+            component={PhoneVerificationScreen}
             options={{
               headerShown: true,
             }}

@@ -13,12 +13,19 @@ import { Button } from '../components/Buttons';
 import { TextInputBox, DropDownPicker } from '../components/Inputs';
 import { H2, H4, H5 } from '../components/Texts';
 import Header from '../components/Header';
+import * as Animatable from 'react-native-animatable';
+import {Animations} from "../constants/Animation";
 
 export default function ({navigation}) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} />
+        <Animatable.View
+                animation="fadeInUpBig"
+                duration={1000}
+                delay={2*300}
+             > 
         <Image
           source={require('../assets/befarmer.png')}
           style={styles.loginpic}
@@ -37,6 +44,7 @@ export default function ({navigation}) {
             <Button title=' Later ' color='shadedSecondary' size='big' onPress={()=>navigation.navigate('homePage')}/>
           </View>
         </View>
+        </Animatable.View> 
       </View>
     </SafeAreaView>
   );

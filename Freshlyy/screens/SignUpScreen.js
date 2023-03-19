@@ -16,6 +16,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import { Formik, validateYupSchema, useFormik } from "formik";
 import * as Yup from "yup";
+import * as Animatable from 'react-native-animatable';
+import {Animations} from "../constants/Animation";
 
 export default function ({ navigation }) {
   const [valid,setValid]=useState(false)
@@ -75,12 +77,19 @@ export default function ({ navigation }) {
       // });
     
   }
+  const animation=Animations[Math.floor(Math.random()*Animations.length)]
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} />
         <ScrollView showsVerticalScrollIndicator={false}>
+        <Animatable.View
+                animation="fadeInUpBig"
+                duration={1000}
+                delay={2*300}
+             > 
           <View style={styles.pageContent}>
+       
             <Image
               source={require("../assets/signupvector.png")}
               style={styles.vectorimage}
@@ -156,10 +165,10 @@ export default function ({ navigation }) {
                 size="big"
                 onPress={submit}
               />
+           
             </View>
-
-            <View style={styles.inputcont}></View>
           </View>
+          </Animatable.View> 
         </ScrollView>
       </View>
     </SafeAreaView>

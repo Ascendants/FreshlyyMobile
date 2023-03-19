@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,25 +17,73 @@ import Header from "../components/Header";
 import { Formik, validateYupSchema, useFormik } from "formik";
 import * as Yup from "yup";
 import PhoneInput from "react-native-phone-number-input";
- 
-
+import * as Animatable from "react-native-animatable";
+import { Animations } from "../constants/Animation";
+import { auth } from "../utils/firebase";
 
 export default function ({ navigation }) {
   const [valid, setValid] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("123456");
+  const [isVerified, setIsVerified] = useState(false);
+  const [sent,setSent]=useState(false)
+
+  const handleSignUp = async () => {
+    
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      if (user) {
+        await user.sendEmailVerification();
+        setSent(true)
+        console.log("Verification email sent!");
+      }
+    } catch (error) {
+      console.log("Error", error.message);
+    }
+  };
+
+  const handleVerifyEmail = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        console.log(user)
+        await user.reload();
+        if (user.emailVerified) {
+          setIsVerified(true);
+          console.log(user);
+          console.log("Success", "Email has been verified!");
+          navigation.navigate("");
+        } else {
+          console.log("Error", "Email has not been verified!");
+        }
+      } catch (error) {
+        console.log("Error", error.message);
+      }
+    }
+  };
+
+  const handleResendVerification = () => {
+    auth.currentUser.sendEmailVerification()
+      .then(() => {
+        console.log('Email verification resent');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email!").required("Email is required!"),
-    phoneNumber: Yup.string()
-          .matches(/^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\d)\d{6}$/, 'Please enter a valid Sri Lankan phone number ex- +94783112043')
-          .required('Phone number is required'),
   });
 
   const formik = useFormik({
     initialValues: {
       email: "",
-      phoneNumber:"",
     },
-    
+
     validationSchema: validationSchema,
   });
 
@@ -47,73 +95,61 @@ export default function ({ navigation }) {
     if (!Object.keys(formik.touched).length) return;
     for (let error in formik.errors) if (error) return;
     const data = formik.values;
+    await setEmail(data.email);
     setValid(true);
+    handleSignUp();
     console.log(data);
-    if (valid) {
-      navigation.navigate("createPassword", { type: "Success" });
-    }
-    // setValid(false)
-    // navigation.navigate('Message', {
-    //   type: 'fail',
-    //   messageTitle: 'Please check the details and submit again :(',
-    //   messageText: 'Something went wrong.',
-    //   // goto: '',
-    //   // goButtonText: 'Go to Dashboard',
-    // });
   }
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.pageContent}>
-            <Image
-              source={require("../assets/emailVerify.png")}
-              style={styles.vectorimage}
-            />
-            {/* <DatePicker/> */}
+          <Animatable.View
+            animation="fadeInUpBig"
+            duration={1000}
+            delay={2 * 300}
+          >
+            <View style={styles.pageContent}>
+              <Image
+                source={require("../assets/emailVerify.png")}
+                style={styles.vectorimage}
+              />
+              {/* <DatePicker/> */}
 
-            <View style={styles.inputcont}>
-              <TextInputBox
-                inputlabel="Email"
-                placeholder="Enter Email"
-                type="email-address"
-                name="email"
-                onChangeText={formik.handleChange("email")}
-                onBlur={() => formik.setFieldTouched("email", true, true)}
-                value={formik.values.email}
-                error={formik.errors.email}
-                touched={formik.touched.email}
-              />
-              <PhoneInput
-                value={formik.values.phoneNumber}
-                defaultCode="LK"
-                placeholder="Enter Phone NUmber "
-                layout="first"
-                textProps={{ keyboardType: "numeric" }}
-                onChangeText={formik.handleChange("phoneNumber")}
-                onBlur={formik.handleBlur("phoneNumber")}
-                onChangeFormattedText={formik.handleChange("phoneNumber")}
-                withDarkTheme
-                withShadow
-                autoFocus
-              />
-              {formik.errors.phoneNumber && (
-                <Text style={{color: Theme.danger,textAlign:'left' }}>
-                  {formik.errors.phoneNumber}
-                </Text>
-              )}
+              <View style={styles.inputcont}>
+                <TextInputBox
+                  inputlabel="Email"
+                  placeholder="Enter Email"
+                  type="email-address"
+                  name="email"
+                  onChangeText={formik.handleChange("email")}
+                  onBlur={() => formik.setFieldTouched("email", true, true)}
+                  value={formik.values.email}
+                  error={formik.errors.email}
+                  touched={formik.touched.email}
+                />
 
-              <Button
-                title="Next"
-                color="filledSecondary"
-                size="big"
-                onPress={submit}
-              />
+                {sent? (
+                  <Button
+                    title="Sign In"
+                    color="filledPrimary"
+                    size="big"
+                    onPress={handleVerifyEmail}
+                  />
+                ) : (
+                  <Button
+                    title="Verify"
+                    color="filledSecondary"
+                    size="big"
+                    onPress={submit}
+                  />
+                )}
+              </View>
+
+              <View style={styles.inputcont}></View>
             </View>
-
-            <View style={styles.inputcont}></View>
-          </View>
+          </Animatable.View>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -127,6 +163,7 @@ const styles = StyleSheet.create({
   },
   pageContent: {
     paddingHorizontal: 15,
+    marginVertical: 20,
     alignItems: "center",
   },
   logo: {
@@ -135,7 +172,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   vectorimage: {
-    width: 250,
+    width: 270,
     height: 190,
     marginVertical: 20,
   },
