@@ -30,7 +30,12 @@ export default function (props) {
         </View>
       </View>
       <View style={styles.buttonsLayout}>
-        <Button title='More Info' size='normal' color='filledPrimary' />
+        <Button
+          title='More Info'
+          size='normal'
+          color='filledPrimary'
+          onPress={props.goToBalances}
+        />
         <Button title='Edit Profile' size='normal' color='filledSecondary' />
       </View>
     </View>

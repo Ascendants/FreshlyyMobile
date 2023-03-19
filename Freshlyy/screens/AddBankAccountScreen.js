@@ -97,7 +97,7 @@ export default function ({ navigation, route }) {
         <LoadingModal visible={submitting} message='Saving' />
         <SearchableMenu
           select={(item) => setBank(item)}
-          menuItems={banks.map((a) => {
+          menuItems={banks?.map((a) => {
             return {
               value: a.BankName,
               ...a,
