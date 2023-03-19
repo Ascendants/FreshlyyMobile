@@ -91,7 +91,7 @@ export default function ({ navigation, route }) {
           </Box>
           <Box color={data.isWithdrawable ? 'primary' : 'danger'}>
             <PriceItem
-              title='Balance Withdrawable'
+              title='Withdrawable Balance'
               amount={data.withdrawable}
             />
             {!data.isWithdrawable && (
@@ -100,38 +100,59 @@ export default function ({ navigation, route }) {
               </P>
             )}
           </Box>
-          {data.isWithdrawable && (
-            <Button
-              size='big'
-              color='filledPrimary'
-              title='Request Withdrawal'
-            />
+          {data.hasBankAccount && (
+            <>
+              <View style={styles.bankInfo}>
+                <H4 style={{ marginBottom: 10, color: Theme.secondary }}>
+                  Bank Account Information
+                </H4>
+                <H5>{data.bank}</H5>
+                <H6>{data.bankAccountNum}</H6>
+              </View>
+              {data.isWithdrawable && (
+                <Button
+                  size='big'
+                  color='filledPrimary'
+                  title='Request Withdrawal'
+                />
+              )}
+            </>
+          )}
+          {!data.hasBankAccount && data.isWithdrawable && (
+            <>
+              <View style={styles.bankInfo}>
+                <H4
+                  style={{
+                    marginBottom: 10,
+                    color: Theme.secondary,
+                    textAlign: 'center',
+                  }}
+                >
+                  Add a bank account to withdraw!
+                </H4>
+                <Button
+                  size='big'
+                  color='filledPrimary'
+                  title='Add Bank Account'
+                  onPress={() => navigation.navigate('Configure Bank')}
+                />
+              </View>
+            </>
           )}
           <Button size='big' color='shadedSecondary' title='View Invoices' />
-
           <Button size='big' color='shadedWarning' title='Contact Support' />
           {data.hasBankAccount && (
-            <View style={styles.bankInfo}>
-              <H4 style={{ marginBottom: 10, color: Theme.secondary }}>
-                Bank Account Information
-              </H4>
-              <H5>{data.bank}</H5>
-              <H6>{data.bankAccountNum}</H6>
-            </View>
+            <Button
+              size='big'
+              color='shadedTertiary'
+              title='Change Bank Account'
+              onPress={() => navigation.navigate('Configure Bank')}
+            />
           )}
-          <Button
-            size='big'
-            color='shadedTertiary'
-            title={
-              data.hasBankAccount ? 'Change Bank Account' : 'Add Bank Account'
-            }
-            onPress={() => navigation.navigate('Configure Bank')}
-          />
-
           <View style={styles.infoTextCont}>
             <P>Last updated {data.lastUpdate}</P>
             <P style={styles.infoTextLast}>
-              ⓘ Balance updates 72 hours after an order is complete
+              ⓘ Balance updates 3 days after an order is complete
             </P>
           </View>
         </RefreshView>
@@ -159,6 +180,6 @@ const styles = StyleSheet.create({
   },
   bankInfo: {
     margin: 10,
-    marginTop: 50,
+    marginVertical: 30,
   },
 });

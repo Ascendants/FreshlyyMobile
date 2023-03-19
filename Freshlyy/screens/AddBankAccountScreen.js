@@ -73,8 +73,8 @@ export default function ({ navigation, route }) {
           type: 'Success',
           messageTitle: 'Account Saved!',
           messageText: 'The account has been saved securely',
-          goto: 'Farmer Dashboard',
-          goButtonText: 'Go to Dashboard',
+          goto: 'Farmer Earnings',
+          goButtonText: 'Go to Earnings',
         });
         setSubmitting(false);
       })
@@ -84,8 +84,8 @@ export default function ({ navigation, route }) {
           type: 'fail',
           messageTitle: 'Account could not be saved :(',
           messageText: 'Something went wrong.',
-          goto: 'Farmer Dashboard',
-          goButtonText: 'Go to Dashboard',
+          goto: 'Farmer Earnings',
+          goButtonText: 'Go Back',
         });
         console.log(err);
         return;
