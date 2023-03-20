@@ -53,7 +53,7 @@ export default function ({ navigation, route }) {
   }
 
   React.useEffect(() => {
-    fetch(ENV.backend + '/customer/main-page/', {
+    fetch(ENV.backend + '/customer/mainpage/', {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
@@ -64,7 +64,7 @@ export default function ({ navigation, route }) {
       .then((res) => {
         const data = res;
      
-        setProducts(Object.values(data));
+        setProducts(res.mainPageProducts);
         console.log(data)
       })
       .catch((err) => console.log(err));
