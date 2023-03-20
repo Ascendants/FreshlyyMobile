@@ -39,7 +39,7 @@ import FoodDamagedScreen from './screens/FoodDamagedScreen';
 import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
 import SelectOrderScreen from './screens/SelectOrderScreen';
-import OrderIsWrong from './screens/OrderNeverArrivedg';
+import OrderIsWrong from './screens/OrderIsWrong';
 import OrderNeverArrivedg from './screens/OrderNeverArrivedg';
 import OrderListScreen from './screens/OrderListScreen';
 import OrderStatusScreen from './screens/OrderStatusScreen';
@@ -69,7 +69,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={ContactUsScreen}
+            component={CreateCouponScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,

@@ -22,6 +22,8 @@ export default function ({navigation, route}){
   const [refreshing, setRefreshing] = React.useState(false);
   const [orders, setOrders] = React.useState([]);
 
+  const userEmail = route.params.userEmail;
+
   async function getOrderList(refreshing) {
     refreshing ? setRefreshing(true) : setLoaded(false);
     fetch(ENV.backend + '/customer/get-orders/' + 'to-review', {
@@ -42,6 +44,7 @@ export default function ({navigation, route}){
   }
   function navigateToOrder(order) {
     navigation.navigate('Order Details Help Center', {
+      userEmail: userEmail,
       orderId: order,
     });
     // console.log(order);

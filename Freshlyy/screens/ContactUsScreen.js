@@ -19,15 +19,16 @@ export default function ({navigation, route}){
 
   const [selected, setSelected] = useState('');
 
-  const [modal, setModal] = useState(false);
+  const orderId = route.params.orderId;
 
   const data = [
     {key:'1', value:'Technical issues'},
     {key:'2', value:'Account and profile management'},
     {key:'3', value:'Shipping and delivery'},
     {key:'4', value:'Payment and billing inquiries'},
-    {key:'5', value:'Feedback and suggestions'},
-    {key:'5', value:'Other'},
+    {key:'5', value:'Issue with an order'},
+    {key:'6', value:'Feedback and suggestions'},
+    {key:'7', value:'Other'},
   ]
 
   const handleSubmit = async() => {
@@ -43,6 +44,7 @@ export default function ({navigation, route}){
           number: number,
           issue: selected,
           desc: desc,
+          orderId: orderId,
         })
       })
       setName('');
@@ -59,7 +61,7 @@ export default function ({navigation, route}){
         goto: 'Farmer Dashboard',
         goButtonText: 'Dashboard',
       });
-      console.log(data.id);
+      // console.log(data.id);
     }catch (error) {
       console.log(error);
     }
@@ -86,6 +88,9 @@ export default function ({navigation, route}){
               onBlur = {() => {
                 console.log('');
               }}
+              onFocus = {() => {
+                console.log('');
+              }}
             />
             <TextInputBox 
               inputlabel='Contact Number'
@@ -94,6 +99,9 @@ export default function ({navigation, route}){
               onChangeText={(text) => setNumber(text)}
               keyboardType="numeric"
               onBlur = {() => {
+                console.log('');
+              }}
+              onFocus = {() => {
                 console.log('');
               }}
             />
@@ -118,11 +126,13 @@ export default function ({navigation, route}){
               onBlur = {() => {
                 console.log('');
               }}
+              onFocus = {() => {
+                console.log('');
+              }}
             />
             <View style={styles.bottomContainer}>
-            <Button title='Submit' size='normal' color='shadedSecondary' onPress={handleSubmit}/>
-          </View>
-          {/* <ModalComponent /> */}
+              <Button title='Submit' size='normal' color='shadedSecondary' onPress={handleSubmit}/>
+            </View>
           </View>
         </ScrollView>
         </View>

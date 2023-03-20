@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView, TouchableOpacity, Text, } from 'react-native';
 import { Button } from '../components/Buttons';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
-import { P, H4, H6 } from '../components/Texts';
-import { TextInputBox,} from '../components/Inputs';
+import { P, H4, H7, H6 } from '../components/Texts';
+import { TextInputBox, } from '../components/Inputs';
 import { AntDesign } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { format } from 'date-fns';
+import { format, getDate, min } from 'date-fns';
 import ENV from "../constants/env";
 
 
@@ -23,62 +23,98 @@ export default function ({ navigation, route }) {
   const [presentage, setPresentage] = useState('');
   const [code, setCode] = useState('');
 
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+
 
   const handleCreateDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || createDate;
     setCreateDate(currentDate);
     setCreateDateString(format(currentDate, 'yyyy-MM-dd'));
     setShowCreateDatePicker(false);
-    // console.log(createDate);
   };
 
   const handleExpireDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || expireDate;
+    const currentDate = selectedDate;
     setExpireDate(currentDate);
     setExpireDateString(format(currentDate, 'yyyy-MM-dd'));
     setShowExpireDatePicker(false);
     // console.log(date);
   };
 
-  const handleSubmit = async() => {
+  useEffect(() => {
+    const generateSuggestions = () => {
+      let couponCodes = [];
+      for (let i = 0; i < 2; i++) {
+        const couponCode = 'CP' + Math.floor(Math.random() * 10000);
+        couponCodes.push(couponCode);
+      }
+      setSuggestions(couponCodes);
+    }
+    generateSuggestions();
+  }, []);
+
+  const handleSubmit = async () => {
     try {
-      const response = await fetch(ENV.backend + "/farmer/create-coupon/", {
+      const response = await fetch(ENV.backend + '/farmer/verify-coupon-code/', {
         method: 'POST',
         headers: {
-          useremail:route.params.userEmail,
+          useremail: route.params.userEmail,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          presentage: presentage,
           cCode: code,
-          cDate: createDate,
-          eDate: expireDate,
         })
       })
-      setPresentage('');
-      setCode('');
-      setCreateDate(new Date());
-      setExpireDate(new Date());
-      setCreateDateString('--');
-      setExpireDateString('--');
-      // console.log(response.id);
-      navigation.navigate('Message', {
-        type: 'Success',
-        messageTitle: 'Coupon Created Successfully!',
-        messageText: 'An administrator will be in touch with you shortly!',
-        goto: 'Farmer Dashboard',
-        goButtonText: 'Dashboard',
-      });
-    }catch (error) {
+      const result = await response.json();
+      if (result.isExist) {
+        alert(`Coupon code ${code} already exists`);
+      } else {
+        const response = await fetch(ENV.backend + "/farmer/create-coupon/", {
+          method: 'POST',
+          headers: {
+            useremail: route.params.userEmail,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            presentage: presentage,
+            cCode: code,
+            cDate: createDateString,
+            eDate: expireDateString,
+          })
+        })
+        setPresentage('');
+        setCode('');
+        setCreateDate(new Date());
+        setExpireDate(new Date());
+        setCreateDateString('--');
+        setExpireDateString('--');
+        // console.log(response.id);
+        navigation.navigate('Message', {
+          type: 'Success',
+          messageTitle: 'Coupon Created Successfully!',
+          messageText: 'An administrator will be in touch with you shortly!',
+          goto: 'Farmer Dashboard',
+          goButtonText: 'Dashboard',
+        });
+      }
+    } catch (error) {
       console.log(error);
     }
   }
+
+  const minimumDate = new Date();
+  minimumDate.setDate(minimumDate.getDate() + 1);
+
+  const expMinimumDate = createDate;
+  expMinimumDate.setDate(expMinimumDate.getDate() + 1);
+
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} />
         <H4 style={{ textAlign: 'center', color: Theme.primary }}>Create a Coupon</H4>
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} showsHorizontalScrollIndicator={false}>
           <P>Coupons are a promotional tactic used to encourage customers to buy. Coupons can be used to promote your items and enhance sales. </P>
           <P></P>
           <P>To create a coupon, you can follow these steps:</P>
@@ -92,7 +128,10 @@ export default function ({ navigation, route }) {
             placeholder=''
             value={presentage}
             onChangeText={(text) => setPresentage(text)}
-            onBlur = {() => {
+            onFocus={() => {
+              console.log('');
+            }}
+            onBlur={() => {
               console.log('');
             }}
           />
@@ -101,10 +140,26 @@ export default function ({ navigation, route }) {
             placeholder=''
             value={code}
             onChangeText={(text) => setCode(text)}
-            onBlur = {() => {
-              console.log('');
-            }}
+            onFocus={() => setShowInstructions(true)}
+            onBlur={() => setShowInstructions(false)}
           />
+          {showInstructions && suggestions.length > 0 && (
+            <View style={styles.instructionContainer}>
+              <H6>The code should start using "CP" </H6>
+              <H6>Suggestions:</H6>
+              {suggestions.map((suggestion, index) => (
+                <TouchableOpacity key={index} onPress={() => setCode(suggestion)}><H6>{suggestion}</H6></TouchableOpacity>
+              ))}
+            </View>
+          )}
+          {/* {suggestions.length > 0 && (
+                <View>
+                  <H6>Suggestions:</H6>
+                  {suggestions.map((suggestion,index) => (
+                    <TouchableOpacity key={index} onPress={() => setCode(suggestion) }><H6>{suggestion}</H6></TouchableOpacity>
+                  ))}
+                </View>
+           )} */}
           <View style={styles.datePickerContainer}>
             <Text style={styles.inputlabel}>Select Create Date</Text>
             <View style={styles.datePickerBox}>
@@ -116,9 +171,11 @@ export default function ({ navigation, route }) {
                 value={createDate}
                 mode="date"
                 display="spinner"
+                minimumDate={minimumDate}
                 onChange={handleCreateDateChange}
               />
             )}
+
           </View>
           <View style={styles.datePickerContainer}>
             <Text style={styles.inputlabel}>Select Expire Date</Text>
@@ -131,12 +188,13 @@ export default function ({ navigation, route }) {
                 value={expireDate}
                 mode="date"
                 display="spinner"
+                minimumDate={expMinimumDate}
                 onChange={handleExpireDateChange}
               />
             )}
           </View>
           <View style={styles.bottomContainer}>
-            <Button title='Create Coupon' size='normal' color='shadedSecondary' onPress={handleSubmit}/>
+            <Button title='Create Coupon' size='normal' color='shadedSecondary' onPress={handleSubmit} />
           </View>
         </ScrollView>
       </View>
@@ -177,6 +235,14 @@ const styles = StyleSheet.create({
     color: Theme.textColor,
     fontFamily: 'Poppins',
     fontSize: 15,
-  }
+  },
+  instructionContainer: {
+    backgroundColor: 'white',
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    // height: 40,
+    padding: 5,
+    paddingLeft: 10,
+  },
 
 })

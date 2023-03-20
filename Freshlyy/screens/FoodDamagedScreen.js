@@ -11,8 +11,9 @@ import { Button } from '../components/Buttons';
 import firebase from '../utils/firebase';
 import 'firebase/storage';
 import { async } from "@firebase/util";
+import ENV from "../constants/env";
 
-export default function (){
+export default function ({navigation, route}){
 
   // handleChoosePhoto = () => {
   //   const options = {};
@@ -23,49 +24,88 @@ export default function (){
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const selectImage = () => {
-    ImagePicker.launchImageLibrary({ title: 'Select Image' }, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorMessage) {
-        console.log('ImagePicker Error: ', response.errorMessage);
-      } else {
-        setSelectedImage(response.uri);
-      }
-    });
-  };
 
-  const uploadImage = async () => {
-    setUploading(true);
-    setUploadProgress(0);
+  const orderId = route.params.orderId;
+  const userEmail = route.params.userEmail;
 
-    // Get the filename and path of the selected image
-    const filename = selectedImage.substring(selectedImage.lastIndexOf('/') + 1);
-    const path = `images/${filename}`;
+  // const selectImage = () => {
+  //   ImagePicker.launchImageLibrary({ title: 'Select Image' }, (response) => {
+  //     if (response.didCancel) {
+  //       console.log('User cancelled image picker');
+  //     } else if (response.errorMessage) {
+  //       console.log('ImagePicker Error: ', response.errorMessage);
+  //     } else {
+  //       setSelectedImage(response.uri);
+  //     }
+  //   });
+  // };
 
-    // Create a reference to the Firebase storage bucket and upload the image
-    const storageRef = firebase.storage().ref(path);
-    const response = await fetch(selectedImage);
-    const blob = await response.blob();
-    const task = storageRef.put(blob);
+  // const uploadImage = async () => {
+  //   setUploading(true);
+  //   setUploadProgress(0);
 
-    // Update the upload progress as the image uploads
-    task.on('state_changed', (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setUploadProgress(progress);
-    });
+  //   // Get the filename and path of the selected image
+  //   const filename = selectedImage.substring(selectedImage.lastIndexOf('/') + 1);
+  //   const path = `images/${filename}`;
 
-    // Wait for the upload to complete
-    await task;
+  //   // Create a reference to the Firebase storage bucket and upload the image
+  //   const storageRef = firebase.storage().ref(path);
+  //   const response = await fetch(selectedImage);
+  //   const blob = await response.blob();
+  //   const task = storageRef.put(blob);
 
-    // Get the download URL of the uploaded image and log it
-    const downloadURL = await storageRef.getDownloadURL();
-    console.log('Image uploaded to: ', downloadURL);
+  //   // Update the upload progress as the image uploads
+  //   task.on('state_changed', (snapshot) => {
+  //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //     setUploadProgress(progress);
+  //   });
 
-    // Reset the state and clear the selected image
-    setSelectedImage(null);
-    setUploading(false);
-    setUploadProgress(0);
+  //   // Wait for the upload to complete
+  //   await task;
+
+  //   // Get the download URL of the uploaded image and log it
+  //   const downloadURL = await storageRef.getDownloadURL();
+  //   console.log('Image uploaded to: ', downloadURL);
+
+  //   // Reset the state and clear the selected image
+  //   setSelectedImage(null);
+  //   setUploading(false);
+  //   setUploadProgress(0);
+  // }
+  const [name, setName] = useState('');
+  const [desc, setDesc] = useState('');
+  const issue = 'Food Damaged';
+
+  const handleSubmit = async() => {
+    try {
+      console.log(route.params.userEmail);
+      const response = await fetch(ENV.backend + "/farmer/support-ticket/", {
+        method: 'POST',
+        headers: {
+          useremail:route.params.userEmail,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          issue: issue,
+          desc: desc,
+          orderId: orderId,
+        })
+      })
+      const data = await response.json();
+      const id = data.id;
+      navigation.navigate('Message', {
+        type: 'Success',
+        messageTitle: 'Ticket Sent Successfully!',
+        subjectId: id,
+        messageText: ' is your ticket number. An administrator will be in touch with you shortly!',
+        goto: 'Farmer Dashboard',
+        goButtonText: 'Dashboard',
+      });
+      // console.log(data.id);
+    }catch (error) {
+      console.log(error);
+    }
   }
   
   return(
@@ -88,9 +128,18 @@ export default function (){
             <P>Once you've submitted your information we'll assess whether you're eligible for a refund.</P>
           <TextInputBox
             inputlabel='Name(s) of item(s) affected'
+            placeholder=''
+            value={name}
+            onChangeText={(text) => setName(text)}
+            onBlur = {() => {
+              console.log('');
+            }}
+            onFocus = {() => {
+              console.log('');
+            }}
           />
           <Text style={styles.inputLabel}>Screenshot of the error message while you are trying to sign in</Text>
-            <TouchableOpacity onPress={selectImage}>
+            <TouchableOpacity>
               <View style={styles.inputImgBox}>
                 <Ionicons name="image" size={22} color={Theme.tertiary} />
                 <H8 style={{color: Theme.tertiary}}>Select file</H8>
@@ -98,18 +147,23 @@ export default function (){
             </TouchableOpacity>
           <TextInputBox
             inputlabel='Share details'
+            placeholder=''
+            value={desc}
+            onChangeText={(text) => setDesc(text)}
+            onBlur = {() => {
+              console.log('');
+            }}
+            onFocus = {() => {
+              console.log('');
+            }}
           />
           <View style={{ width: '40%', alignSelf: 'center' }}>
-            {selectedImage && (
             <Button
               size='normal'
               color='shadedSecondary'
               title='submit'
-              onPress={uploadImage} 
-              disabled={uploading}
+              onPress={handleSubmit} 
             />
-          )}
-           {uploading && <Text>Uploading: {uploadProgress}%</Text>}
           </View>
       </ScrollView>
       </View>

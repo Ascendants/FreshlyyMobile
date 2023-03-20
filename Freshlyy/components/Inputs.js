@@ -17,6 +17,7 @@ module.exports.TextInputBox = function (props) {
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
       <TextInput
         onFocus={() => {
+          props.onFocus();
           setState(1);
         }}
         onBlur={() => {

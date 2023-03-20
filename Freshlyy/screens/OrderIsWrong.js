@@ -1,13 +1,44 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Text } from 'react-native';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
-import { P, H4, H5 } from '../components/Texts';
+import { P, H4, H5, H8 } from '../components/Texts';
 import { Button } from '../components/Buttons';
+import ENV from "../constants/env";
+import { Ionicons } from '@expo/vector-icons';
 
-export default function ({navigation}){
-  
+export default function ({navigation,route}){
+  const orderId = route.params.orderId;
+  const issue = 'Order Is Wrong';
+  const handleSubmit = async() => {
+    try {
+      const response = await fetch(ENV.backend + "/farmer/support-ticket/", {
+        method: 'POST',
+        headers: {
+          useremail:route.params.userEmail,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          issue: issue,
+          orderId: orderId,
+        })
+      })
+      const data = await response.json();
+      const id = data.id;
+      navigation.navigate('Message', {
+        type: 'Success',
+        messageTitle: 'Ticket Sent Successfully!',
+        subjectId: id,
+        messageText: ' is your ticket number. An administrator will be in touch with you shortly!',
+        goto: 'Farmer Dashboard',
+        goButtonText: 'Dashboard',
+      });
+      // console.log(data.id);
+    }catch (error) {
+      console.log(error);
+    }
+  }
   return(
     <SafeAreaView>
       <View style={styles.screen}>
@@ -15,18 +46,24 @@ export default function ({navigation}){
         <H4 style={{textAlign: 'center', color: Theme.primary}}>Help With an Order</H4>
         <H5 style={{textAlign: 'center', marginVertical: 10}}>Order is wrong</H5>
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-          <P>If you receive an Uber Eats order that's not quite right, don't worry. Here are the steps you can take:</P>
-          <P>- If you're certain that your order is incorrect, use the Uber Eats app to report the issue. Simply go to your order history, select the relevant order, and tap "Help" to report the issue.</P>
-          <P>- Check your doorstep as the delivery partner may have left it there.</P>    
-          <P>- Follow the prompts to explain what's wrong with your order. Be as specific as possible to help us understand what went wrong.</P>
-          <P>- Our customer support team will review your report and reach out to you as soon as possible to resolve the issue.</P>
+          <P>Please let us know if you did not receive your order (it appears you received someone else's order).</P>
+          <P>We'll go over everything and decide what to do next. Please keep in mind that we will be unable to replace your order, but you may be eligible for a refund.</P>
           <P></P>
-          <P>In the meantime, we recommend that you hold onto the incorrect items in case we need to verify the issue. We apologize for any inconvenience and thank you for your patience as we work to make things right.</P>
+          <P>IMAGE UPLOAD</P>
+          <P>Pictures aid in understanding what occurred. Please include a photo of the things you received and/or a receipt for the incorrect order (check the delivery bag for a receipt).</P>
+          <Text style={styles.inputLabel}>Include a Photo</Text>
+            <TouchableOpacity>
+              <View style={styles.inputImgBox}>
+                <Ionicons name="image" size={22} color={Theme.tertiary} />
+                <H8 style={{color: Theme.tertiary}}>Select file</H8>
+              </View>
+            </TouchableOpacity>
           <View style={{ width: '50%', alignSelf: 'center', marginTop:30 }}>
                   <Button
                     size='normal'
                     color='shadedSecondary'
                     title='submit a ticket'
+                    onPress={handleSubmit}
                   />
                 </View>
         </ScrollView>
@@ -43,6 +80,19 @@ const styles = StyleSheet.create({
     margin: 10,
     height: "100%",
     paddingHorizontal: 20,
+  },
+  inputLabel: {
+    color: Theme.textColor,
+    fontFamily: 'Poppins',
+    marginTop: 20,
+  },
+  inputImgBox: {
+    backgroundColor: Theme.contrastTextColor,
+    height: 80,
+    marginVertical: 10,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
 })
