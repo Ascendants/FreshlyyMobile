@@ -276,8 +276,9 @@ export default function ({ navigation, route }) {
                   bestMatch={sortByBestMatch}
                   cheaper={item.cheaper}
                   publicUrl={item.publicUrl}
-                  distanceAway={sortByDistance?item.distanceAway:null}
+                  distanceAway={sortByDistance||sortByBestMatch?item.distanceAway:null}
                   onPress={sendToProductDetail}
+                  
                   
                 />
                 </Animatable.View> 
