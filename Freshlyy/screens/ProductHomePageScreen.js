@@ -53,7 +53,7 @@ export default function ({ navigation, route }) {
   }
 
   React.useEffect(() => {
-    fetch(ENV.backend + "/customer/main-page/", {
+    fetch(ENV.backend + "/customer/mainpage/", {
       //getting data from the backend (all products)
       method: "GET",
       headers: {
@@ -63,9 +63,9 @@ export default function ({ navigation, route }) {
       .then((res) => res.json())
       .then((res) => {
         const data = res;
-     
-        setProducts(Object.values(data));
-        console.log(data)
+        console.log(res)
+        setProducts(res.mainPageProducts);
+       
       })
       .catch((err) => console.log(err));
   }, []);
@@ -183,7 +183,7 @@ export default function ({ navigation, route }) {
       <SafeAreaView>
         <Header back={true} />
 
-        <View style={styles.screen}>
+         <View style={styles.screen}>
           <View style={styles.searchContainer}>
             <View style={styles.searchCont}>
               <AntDesign
@@ -297,7 +297,7 @@ export default function ({ navigation, route }) {
               onClose={handleBottomSheetClose}
             >
               <BottomSheetView>
-                {/* my Bottom Sheet Content */}
+         
                 <View style={styles.bottomSheetContent}>
                   <H3 style={styles.filterText}>Sort BY</H3>
                   <View style={styles.filterCont}>
@@ -453,7 +453,7 @@ export default function ({ navigation, route }) {
               </BottomSheetView>
             </BottomSheet>
           </View>
-        </View>
+        </View> 
       </SafeAreaView>
     </GestureHandlerRootView>
   );
