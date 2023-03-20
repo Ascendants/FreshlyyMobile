@@ -130,6 +130,11 @@ export default function ({ navigation, route }) {
                   size='big'
                   color='filledPrimary'
                   title='Request Withdrawal'
+                  onPress={() =>
+                    navigation.navigate('Payout Request Screen', {
+                      withdrawable: data.withdrawable,
+                    })
+                  }
                 />
               )}
             </>
@@ -155,6 +160,12 @@ export default function ({ navigation, route }) {
               </View>
             </>
           )}
+          <Button
+            size='big'
+            color='shadedSecondary'
+            title='View Payout Requests'
+            onPress={() => navigation.navigate('Farmer Payout Requests')}
+          />
           <Button size='big' color='shadedSecondary' title='View Invoices' />
           <Button size='big' color='shadedWarning' title='Contact Support' />
           {data.hasBankAccount && (
