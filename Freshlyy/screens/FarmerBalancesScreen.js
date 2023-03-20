@@ -166,7 +166,12 @@ export default function ({ navigation, route }) {
             title='View Payout Requests'
             onPress={() => navigation.navigate('Farmer Payout Requests')}
           />
-          <Button size='big' color='shadedSecondary' title='View Invoices' />
+          <Button
+            size='big'
+            color='shadedSecondary'
+            title='View Invoices'
+            onPress={() => navigation.navigate('Farmer Invoices')}
+          />
           <Button size='big' color='shadedWarning' title='Contact Support' />
           {data.hasBankAccount && (
             <Button

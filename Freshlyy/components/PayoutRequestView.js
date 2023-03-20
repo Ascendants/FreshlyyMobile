@@ -19,7 +19,7 @@ export default function (props) {
         <H7>{props.request?.bankAccountName}</H7>
         <H7>{props.request?.bankAccountNum}</H7>
         <H7></H7>
-        <H6>Requested on {props.request.created}</H6>
+        <H6>Requested on {props.request?.created}</H6>
         {props.request?.acknowledged ? (
           <H7 style={{ color: Theme.secondary }}>
             Acknowledged on {props.request?.acknowledged}

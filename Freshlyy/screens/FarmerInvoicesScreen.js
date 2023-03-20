@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, Image } from 'react-native';
-import { H3, Pr } from '../components/Texts';
+import { StyleSheet, View, FlatList, Image, ScrollView } from 'react-native';
+import { H4, H3, Pr, P } from '../components/Texts';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FadeComponent from '../components/FadeComponent';
@@ -8,6 +8,8 @@ import ENV from '../constants/env';
 import TabMenu from '../components/TabMenu';
 import Loading from '../components/Loading';
 import PayoutRequestView from '../components/PayoutRequestView';
+import ListItem from '../components/ListItem';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 function emptyOrders() {
   return (
     <View style={styles.noOrdersContent}>
@@ -15,7 +17,7 @@ function emptyOrders() {
         source={require('../assets/emptyOrders.png')}
         style={styles.messageImage}
       />
-      <H3 style={styles.messageTitle}>No Payout Requests</H3>
+      <H3 style={styles.messageTitle}>No Invoices</H3>
     </View>
   );
 }
@@ -23,11 +25,11 @@ function emptyOrders() {
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [payoutRequests, setPayoutRequests] = React.useState([]);
+  const [invoices, setInvoices] = React.useState([]);
 
-  async function getRequestsList(refreshing) {
+  async function getInvoiceList(refreshing) {
     refreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + '/farmer/payout-requests/', {
+    fetch(ENV.backend + '/farmer/invoices/', {
       method: 'GET',
       headers: {
         useremail: route.params.userEmail,
@@ -38,7 +40,8 @@ export default function ({ navigation, route }) {
         if (res.message != 'Success') {
           throw new Error('Malformed Response');
         }
-        setPayoutRequests(res.payoutRequests);
+
+        setInvoices(res.invoices);
         refreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
@@ -49,13 +52,13 @@ export default function ({ navigation, route }) {
     });
   }
   React.useEffect(() => {
-    getRequestsList(false);
+    getInvoiceList(false);
   }, []);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} home={true} />
-        <H3>Your Payout Requests</H3>
+        <H3>Your Invoices</H3>
         {!loaded ? (
           <Loading />
         ) : (
@@ -64,17 +67,25 @@ export default function ({ navigation, route }) {
               <FlatList
                 style={styles.flatList}
                 ListEmptyComponent={emptyOrders}
-                data={payoutRequests}
+                data={invoices}
                 refreshing={refreshing}
-                onRefresh={() => getRequestsList(true)}
-                renderItem={(request) => (
-                  <PayoutRequestView
-                    request={request.item}
-                    key={request.index}
-                  />
+                onRefresh={() => getInvoiceList(true)}
+                renderItem={(invoice) => (
+                  <TouchableOpacity>
+                    <ListItem key={invoice.index}>
+                      <H4 style={styles.listItemTitle}>
+                        Invoice for{' '}
+                        {(invoice.item.month + 1).toString().padStart(2, 0)}/
+                        {invoice.item.year}
+                      </H4>
+                    </ListItem>
+                  </TouchableOpacity>
                 )}
               />
             </FadeComponent>
+            <P style={styles.infoTextLast}>
+              ⓘ Invoices are generated on the 5th of every month
+            </P>
           </View>
         )}
       </View>
@@ -91,10 +102,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: '100%',
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   flatList: {
-    height: '100%',
+    height: '95%',
   },
   noOrdersContent: {
     paddingHorizontal: 10,
@@ -110,5 +121,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     textAlign: 'center',
     paddingVertical: 50,
+  },
+  listItemTitle: {
+    margin: 10,
+  },
+  infoTextLast: {
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
