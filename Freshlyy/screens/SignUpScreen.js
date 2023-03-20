@@ -38,7 +38,7 @@ export default function ({ navigation }) {
     //   )
     //   .required("Date of birth is required!"),
     nic: Yup.string()
-      .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, "Invalid NIC format! (XXXXXXXXXV)")
+      .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, "Invalid NIC format!")
       .required("NIC is required!"),
   });
 
