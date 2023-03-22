@@ -74,7 +74,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={SignUpScreen}
+            component={StartScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -87,6 +87,13 @@ export default function App() {
           <Stack.Screen
             name='Farmer Dashboard'
             component={FarmerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+           <Stack.Screen
+            name='GetStartedScreen'
+            component={GetStartedScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -189,6 +196,13 @@ export default function App() {
           <Stack.Screen
             name='beFarmer'
             component={BeFarmerScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+              <Stack.Screen
+            name='FarmerCreateAccount'
+            component={FarmerCreateAccountScreen}
             options={{
               headerShown: false,
             }}

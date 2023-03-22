@@ -34,7 +34,7 @@ export default function ({ navigation, route }) {
 
   const handleSignUp = async (email) => {
     setSubmitting(true);
-  
+    console.log(email)
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
@@ -116,7 +116,6 @@ export default function ({ navigation, route }) {
     sendToSignup(data.email);
   };
   const sendToSignup = (email) => {
-    console.log(email);
     handleSignUp(email);
   };
   return (

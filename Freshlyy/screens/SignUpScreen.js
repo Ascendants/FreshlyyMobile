@@ -145,7 +145,7 @@ export default function ({ navigation }) {
                   <H6 style={styles.inputlabel}>Date of Birth</H6>
                     <View style={styles.dateCont}>
                       
-                      <H6 style={{  color: Theme.textColor,}}>
+                      <H6 style={{  color:'#A7A7A7',}}>
                         {selectedDate.toDateString()
                         }
                       </H6>

@@ -18,14 +18,21 @@ import {Animations} from "../constants/Animation";
 
 export default function ({navigation,route}) {
   // setUserData(route.params.userData)
-  const handleNextPress = () => {
+  const handleLaterPress = () => {
     const updatedUserData = {
       ...route.params.userData,
       accessLevel: 'customer'
     };
     navigation.navigate('Email Verification', {message:"Success", userData: updatedUserData });
   };
-
+  
+  const handleBecomeFarmerPress = () => {
+    const updatedUserData = {
+      ...route.params.userData,
+      accessLevel: 'farmer'
+    };
+    navigation.navigate('FarmerCreateAccount', {message:"Success", userData: updatedUserData });
+  };
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -43,14 +50,14 @@ export default function ({navigation,route}) {
         <H4 style={styles.logintext}>Start Selling Today</H4>
         <View>
           <View style={styles.buttoncont}>
-            <Button title='Become a farmer' color='shadedPrimary' size='big' />
+            <Button title='Become a farmer' color='shadedPrimary' size='big' onPress={handleBecomeFarmerPress} />
             <H5 style={styles.desctext}>
               Additional information will be collected
             </H5>
           </View>
 
           <View style={styles.buttoncont}>
-            <Button title=' Later ' color='shadedSecondary' size='big' onPress={handleNextPress}/>
+            <Button title=' Later ' color='shadedSecondary' size='big' onPress={handleLaterPress}/>
           </View>
         </View>
         </Animatable.View> 
