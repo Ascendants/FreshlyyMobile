@@ -17,23 +17,9 @@ import Header from '../components/Header';
 import { Formik, validateYupSchema } from 'formik';
 import * as Yup from 'yup';
 
-const SignupSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  lname: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  nic: Yup.string().matches(
-    '^([0-9]{9}[x|X|v|V]|[0-9]{12})$',
-    'Enter Valid NIC number'
-  ),
-  email: Yup.string().email('Invalid email').required('Required'),
-});
+  
 
-export default function () {
+export default function ({navigation}) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -119,7 +105,7 @@ export default function () {
                     inputlabel='Address line 2'
                     placeholder='Enter address 2'
                   />
-                  <Button title='Next' color='filledSecondary' size='big' />
+                  <Button title='Next' color='filledSecondary' size='big' onPress={()=>navigation.navigate('createPassword')}/>
                 </View>
               )}
             </Formik>

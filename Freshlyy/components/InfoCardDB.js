@@ -21,8 +21,11 @@ export default function (props) {
         </View>
         <View style={styles.cardRight}>
           <Image
-            source={{ uri: props.user.profilePicUrl }}
-            style={styles.image}
+            source={{ uri: props.user.profilePicUrl.imageUrl }}
+            style={[
+              styles.image,
+              { backgroundColor: props.user?.profilePicUrl?.placeholder },
+            ]}
           />
         </View>
       </View>
