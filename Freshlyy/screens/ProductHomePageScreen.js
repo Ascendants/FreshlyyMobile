@@ -27,6 +27,8 @@ import ENV from '../constants/env';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Rate5 } from '../components/Rate5';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as Animatable from 'react-native-animatable';
+import { Animations } from '../constants/Animation';
 
 export default function ({ navigation, route }) {
   const [searchText, setSearchText] = useState('');
@@ -55,8 +57,9 @@ export default function ({ navigation, route }) {
       .then((res) => res.json())
       .then((res) => {
         const data = res;
-        // console.log(res);
+
         setProducts(Object.values(data));
+        console.log(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -165,7 +168,7 @@ export default function ({ navigation, route }) {
   const handleBottomSheetClose = () => {
     setIsBottomSheetVisible(false);
   };
-
+  const animation = Animations[Math.floor(Math.random() * Animations.length)];
   return (
     <GestureHandlerRootView>
       <SafeAreaView>
@@ -250,21 +253,31 @@ export default function ({ navigation, route }) {
               style={{ height: '100%', flex: 1 }}
               numColumns={2}
               data={filteredProducts}
-              renderItem={({ item }) => (
-                <ProductCard
-                  prodId={item._id}
-                  farmerName={item.farmerName}
-                  title={item.title}
-                  imageUrl={item.imageUrl}
-                  price={item.price}
-                  unit={item.unit}
-                  overallRating={item.overallRating}
-                  likes={item.likes}
-                  userID={route.params.userEmail}
-                  onLikePress={handleLikePress}
-                  bestMatch={sortByBestMatch}
-                  cheaper={item.cheaper}
-                />
+              renderItem={({ item, index }) => (
+                <Animatable.View
+                  animation={animation}
+                  duration={1000}
+                  delay={index * 300}
+                >
+                  <ProductCard
+                    prodId={item._id}
+                    farmerName={item.farmerName}
+                    title={item.title}
+                    imageUrl={item.imageUrl}
+                    price={item.price}
+                    unit={item.unit}
+                    overallRating={item.overallRating}
+                    likes={item.likes}
+                    userID={route.params.userEmail}
+                    onLikePress={handleLikePress}
+                    distanceAway={item.distanceAway}
+                    bestMatch={sortByBestMatch}
+                    cheaper={item.cheaper}
+                    publicUrl={item.publicUrl}
+                    distanceAway={sortByDistance ? item.distanceAway : null}
+                    onPress={sendToProductDetail}
+                  />
+                </Animatable.View>
               )}
               keyExtractor={(prod, index) => prod._id}
             />

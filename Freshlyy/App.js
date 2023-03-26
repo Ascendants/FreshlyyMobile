@@ -20,6 +20,7 @@ import HomeScreen from './screens/HomeScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ProductHomePageScreen from './screens/ProductHomePageScreen';
+import SocialCornerScreen from './screens/SocialCornerScreen';
 import LoginScreen from './screens/LoginScreen';
 import PasswordCreationScreen from './screens/PasswordCreationScreen';
 import BeFarmerScreen from './screens/BeFarmerScreen';
@@ -40,6 +41,7 @@ import SelectTheOrderHC from './screens/SelectTheOrderScreen';
 import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
 import OrderListScreen from './screens/OrderListScreen';
+
 import OrderStatusScreen from './screens/OrderStatusScreen';
 import OtherPaymentScreen from './screens/OtherPaymentScreen';
 import AddCardScreenBackup from './screens/AddCardScreenBackup';
@@ -241,6 +243,13 @@ export default function App() {
             component={LoginScreen}
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='Product Detail'
+            component={ProductDetailScreen}
+            options={{
+              headerShown: true,
             }}
           />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
