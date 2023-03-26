@@ -61,7 +61,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'haritha@freshlyy.com';
+  const userEmail = 'harini@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -72,7 +72,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={FarmerBalancesScreen}
+            component={CustomerDashboardScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
