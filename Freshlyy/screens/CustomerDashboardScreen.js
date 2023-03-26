@@ -48,7 +48,7 @@ export default function ({ navigation, route }) {
             />
             <DashBoardCard
               imageUri={require('../assets/processing.png')}
-              number={userData.toProcess + userData.toShip || null}
+              number={userData.toProcess + userData.toShip || 0}
               text='Processing'
               onPress={() => viewOrders('Processing')}
             />
