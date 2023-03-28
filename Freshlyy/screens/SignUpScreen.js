@@ -162,7 +162,7 @@ export default function ({ navigation }) {
                         />
                       ) : null}
                     </View>
-                    {formik.errors.dob ? (
+                    {formik.touched.dob && formik.errors.dob ? (
                       <Text style={styles.errormsg}>{formik.errors.dob}</Text>
                     ) : null}
                   </View>
@@ -176,7 +176,7 @@ export default function ({ navigation }) {
                   onSelect={handleDropdownSelect}
                   defaultValue={selectedGender ?? "Select Gender"}
                   style={styles.dropDownCont}
-                  textStyle={{ fontSize: 16, fontFamily: 'Poppins',color:Theme.textColor,}}
+                  textStyle={{ fontSize: 16, fontFamily: 'Poppins',color:selectedGender?Theme.textColor:'#A7A7A7'}}
                   dropdownStyle={styles.dropDown}
                   dropdownTextHighlightStyle={{backgroundColor:Theme.primaryShade}}
                 />
