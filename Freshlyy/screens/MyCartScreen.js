@@ -13,14 +13,13 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 
 export default function ({ navigation, route }) {
   const [cart, setCart] = React.useState([]);
+  let totalPrice = 0;
   // const [total, setTotal] = React.useState(0);
   React.useState(() => {
     fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
       headers: {
         userEmail: route.params.userEmail,
-        //this will be replaced with an http only token
-        //after auth gets set
       },
     })
       .then((res) => res.json())
@@ -32,7 +31,7 @@ export default function ({ navigation, route }) {
       .catch((err) => console.log(err));
   }, []);
 
-  const [modal, setModal] = React.useState(false);
+  // const [modal, setModal] = React.useState(false);
   
   // const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   // const [product, setProduct] = React.useState({
@@ -41,7 +40,20 @@ export default function ({ navigation, route }) {
   // });
 
   // function increaseQuantity() {
-  //   setSelectedQuantity((curr) => curr + product.minQtyIncrement);
+  //   const newQuantity = selectedQuantity + product.minQtyIncrement;
+  //   fetch(ENV.backend + '/public/product/' + product.purl, {
+  //     method: 'GET',
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       const availableQuantity = res.product.qtyAvailable;
+  //       if (newQuantity <= availableQuantity) {
+  //         setSelectedQuantity(newQuantity);
+  //       } else {
+  //         alert('Not enough quantity available');
+  //       }
+  //   })
+  //   .catch((err) => console.log(err));
   // }
   // function decreaseQuantity() {
   //   setSelectedQuantity((curr) =>
@@ -60,7 +72,6 @@ export default function ({ navigation, route }) {
   //         return { ...prev, ...res.product };
   //       });
   //       setSelectedQuantity(res.product.minQtyIncrement);
-  //       // setLoaded(true);
   //     })
   //     .catch((err) => console.log(err));
   // }, []);
@@ -68,45 +79,7 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <ModalComponent visible={modal} closeModal={()=>setModal(false)}>
-          <CartCard
-              imgUrl={require('../assets/carrot.jpg')}
-              title="Sri Lankan Carrots"
-              seller="Haritha"
-              quantity={1}
-              amt={1250}
-            />
-            {/* <View style={styles.qtyArea}>
-                    <Button
-                      size='big'
-                      color='shadedPrimary'
-                      title={
-                        <Feather name='minus' size={24} color={Theme.primary} />
-                      }
-                      onPress={decreaseQuantity}
-                    />
-                    <H3 style={{ width: 100, textAlign: 'center' }}>
-                      {selectedQuantity} KG
-                    </H3>
-                    <Button
-                      size='big'
-                      color='filledPrimary'
-                      title={
-                        <Ionicons
-                          name='add-outline'
-                          size={24}
-                          color={Theme.contrastTextColor}
-                        />
-                      }
-                      onPress={increaseQuantity}
-                    />
-                  </View>
-                  <Button
-                    size='big'
-                    color='shadedPrimary'
-                    title='Update Cart'
-                  /> */}
-        </ModalComponent>
+
         <Button title='toggle' onPress={()=>setModal((prev)=>!prev)}/>
         <Header />
         <H2>My Cart</H2>
@@ -116,43 +89,15 @@ export default function ({ navigation, route }) {
         >
           {cart.map((farmer) =>
             farmer.items.map((item) => (
+              totalPrice = item.totalPrice,
               <ProductView key={item.item} product={item} />
             ))
           )}
-          {/* <CartCard
-						imgUrl={require('../assets/carrot.jpg')}
-						title="Sri Lankan Carrots"
-						seller="Haritha"
-						quantity={1}
-						amt={1250}
-					/>
-
-					<CartCard
-						imgUrl={require('../assets/carrot.jpg')}
-						title="Sri Lankan Carrots"
-						seller="Haritha"
-						quantity={1}
-						amt={1250}
-					/>
-					<CartCard
-						imgUrl={require('../assets/carrot.jpg')}
-						title="Sri Lankan Carrots"
-						seller="Haritha"
-						quantity={1}
-						amt={1250}
-					/>
-					<CartCard
-						imgUrl={require('../assets/carrot.jpg')}
-						title="Sri Lankan Carrots"
-						seller="Haritha"
-						quantity={1}
-						amt={1250}
-					/> */}
         </ScrollView>
         <View style={styles.bottomContainer}>
           <View style={styles.left}>
             <H3>Total</H3>
-            <Pr fontSize={35}>3550</Pr>
+            <Pr fontSize={35}>{totalPrice}</Pr>
           </View>
           <View style={styles.right}>
             <Button size='big' color='filledPrimary' title='Checkout' />

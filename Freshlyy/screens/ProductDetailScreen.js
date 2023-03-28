@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { H2, P, H3, H4, Pr } from '../components/Texts';
+import { H2, P, H3, H4, H6, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
@@ -14,6 +14,7 @@ import FadeComponent from '../components/FadeComponent';
 import ModalComponent from '../components/ModalComponent';
 
 export default function ({ route, navigation, productId, addToCart }) {
+  const [modal, setModal] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
@@ -22,7 +23,20 @@ export default function ({ route, navigation, productId, addToCart }) {
     imageUrls: [],
   });
   function increaseQuantity() {
-    setSelectedQuantity((curr) => curr + product.minQtyIncrement);
+    const newQuantity = selectedQuantity + product.minQtyIncrement;
+    fetch(ENV.backend + '/public/product/' + product.purl, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const availableQuantity = res.product.qtyAvailable;
+        if (newQuantity <= availableQuantity) {
+          setSelectedQuantity(newQuantity);
+        } else {
+          alert('Not enough quantity available');
+        }
+    })
+    .catch((err) => console.log(err));
   }
   function decreaseQuantity() {
     setSelectedQuantity((curr) =>
@@ -48,7 +62,7 @@ export default function ({ route, navigation, productId, addToCart }) {
       })
       .catch((err) => console.log(err));
   }, []);
-  const [modal, setModal] = React.useState(false);
+  
 
   async function postCart() {
     const result = await fetch(ENV.backend + '/customer/cart/add', {
@@ -72,15 +86,10 @@ export default function ({ route, navigation, productId, addToCart }) {
         }
       })
       .catch((err) => console.log(err));
-    if (result) await postCart();
   }
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <ModalComponent visible={modal} closeModal={() => setModal(false)}>
-          {/* If there is no avlb qyt error should be there */}
-          <Text>Product added to the cart</Text>
-        </ModalComponent>
         <Header />
         {!loaded ? (
           <Loading />
@@ -212,6 +221,7 @@ export default function ({ route, navigation, productId, addToCart }) {
                         />
                       }
                       onPress={increaseQuantity}
+                      disabled={selectedQuantity === product.quantity}
                     />
                   </View>
                   <Button
