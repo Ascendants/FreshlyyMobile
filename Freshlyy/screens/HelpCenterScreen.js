@@ -39,12 +39,12 @@ export default function ({ navigation }) {
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ticket status')}>
+          {/* <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ticket status')}>
             <View style={styles.barContainer}>
               <H5>View my tickets</H5>
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <H5 style={{ margin: 10 }}>Still Have Questions?</H5>
           <Image source={require('../assets/support-ticket.png')} style={styles.image} />
           <View style={styles.bottomContainer}>
