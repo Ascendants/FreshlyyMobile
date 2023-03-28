@@ -33,15 +33,15 @@ export default function ({ navigation }) {
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.button}>
-            <View style={styles.barContainer}>
-              <H5>Delivery and pickup</H5>
-              <AntDesign name="right" size={24} color={Theme.textColor} />
-            </View>
-          </TouchableOpacity> */}
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Create Coupon')}>
             <View style={styles.barContainer}>
               <H5>Create coupon</H5>
+              <AntDesign name="right" size={24} color={Theme.textColor} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ticket status')}>
+            <View style={styles.barContainer}>
+              <H5>View my tickets</H5>
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>

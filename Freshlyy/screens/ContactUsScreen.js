@@ -18,7 +18,7 @@ export default function ({navigation, route}){
   const [issue, setIssue] = useState('');
 
   const [selected, setSelected] = useState('');
-
+  
   const orderId = route.params.orderId;
 
   const data = [
