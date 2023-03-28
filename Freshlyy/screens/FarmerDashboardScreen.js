@@ -20,23 +20,27 @@ import Theme from '../constants/theme';
 import ENV from '../constants/env';
 import { H4 } from '../components/Texts';
 
-export default function () {
+export default function (route) {
   const [userData, setUserData] = useState([]);
-  const [product, setProduct] = useState([]);
-  const sheetRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [sellingProducts, setSellingProducts] = useState('');
+  const [pendingProducts, setPendingProducts] = useState('');
+  const [newOrders, setNewOrders] = useState('');
+  const [pastOrders, setPastOrders] = useState('');
+  // const sheetRef = useRef(null);
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const snapPoints = ['60%', '100%'];
+  // const snapPoints = ['60%', '100%'];
 
-  const handleSnapPress = useCallback((index) => {
-    sheetRef.current?.snapToIndex(index);
-    setIsOpen(true);
-  }, []);
+  // const handleSnapPress = useCallback((index) => {
+  //   sheetRef.current?.snapToIndex(index);
+  //   setIsOpen(true);
+  // }, []);
 
   React.useEffect(() => {
     fetch(ENV.backend + '/farmer/dashboard', {
       method: 'GET',
       headers: {
+        // useremail: route.params.useremail,
         useremail: 'komuthu@freshlyy.com',
       },
     })
@@ -46,6 +50,10 @@ export default function () {
           throw new Error('Something went wrong');
         }
         setUserData(res.user);
+        setSellingProducts(res.liveProducts);
+        setPendingProducts(res.pendingProducts);
+        setNewOrders(res.newOrders);
+        setPastOrders(res.pastOrders);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -63,14 +71,14 @@ export default function () {
           <View style={styles.cardContainer}>
             <DashBoardCard
               imageUri={require('../assets/gift.png')}
-              number={10}
+              number={newOrders}
               text='New Orders'
               onPress={() => handleSnapPress(0)}
             />
 
             <DashBoardCard
               imageUri={require('../assets/box.png')}
-              number={5}
+              number={pastOrders}
               text='Past Orders'
               onPress={() => handleSnapPress(0)}
             />
@@ -79,13 +87,13 @@ export default function () {
           <View style={styles.cardContainer}>
             <DashBoardCard
               imageUri={require('../assets/trade.png')}
-              number={100}
+              number={sellingProducts}
               text='Selling'
               onPress={() => handleSnapPress(0)}
             />
             <DashBoardCard
               imageUri={require('../assets/pending.png')}
-              number={3}
+              number={pendingProducts}
               text='Pending'
               onPress={() => handleSnapPress(0)}
             />
@@ -101,7 +109,7 @@ export default function () {
           <ServicesCardDB farmer={true} />
           <View style={styles.lastChild}></View>
         </ScrollView>
-        <BottomSheet
+        {/* <BottomSheet
           ref={sheetRef}
           index={-1}
           snapPoints={snapPoints}
@@ -115,7 +123,7 @@ export default function () {
           <BottomSheetView>
             <SwipeOverlay />
           </BottomSheetView>
-        </BottomSheet>
+        </BottomSheet> */}
         <Navbar />
       </View>
     </SafeAreaView>
