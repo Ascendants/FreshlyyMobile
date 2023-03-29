@@ -52,6 +52,7 @@ import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
 import CreateCouponScreen from './screens/CreateCouponScreen';
 import ContactUsScreen from './screens/ContactUsScreen';
 import TicketStatusScreen from './screens/TicketStatusScreen';
+import TicketDetailsScreen from './screens/TicketDetailsScreen';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -70,7 +71,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={HelpCenterScreen}
+            component={TicketStatusScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -160,6 +161,7 @@ export default function App() {
           <Stack.Screen name='Order Details Help Center' component={HelpWithanOrderScreen}/>
           <Stack.Screen name='Create Coupon' component={CreateCouponScreen}/>
           <Stack.Screen name='Contact Us' component={ContactUsScreen}/>
+          <Stack.Screen name='Ticket Details' component={TicketDetailsScreen}/>
           
           <Stack.Screen name='Cart' component={MyCartScreen} />
 

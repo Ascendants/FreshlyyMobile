@@ -4,67 +4,70 @@ import { Button } from '../components/Buttons';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
-import { H3, H4, H5 } from '../components/Texts';
+import { H3, H4, H5, H6 } from '../components/Texts';
 import { AntDesign } from '@expo/vector-icons';
 import ENV from "../constants/env";
+import RefreshView from "../components/RefreshView";
 
-export default function ({ navigation }) {
+export default function ({ navigation, route }) {
 
   const [tickets, setTickets] = useState([]);
 
-  useEffect(() => {
-    fetchTickets();
-    const interval = setInterval(() => {
-      fetchTickets();
-    }, 5000);
-    return () => clearInterval(interval);
+  React.useState(() => {
+    fetch(ENV.backend + '/customer/get-support-tickets/', {
+      method: 'GET',
+      headers: {
+        userEmail: route.params.userEmail,
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.tickets) throw new Error('Malformed Response');
+        setTickets(res.tickets);
+      })
+      .catch((err) => console.log(err));
   }, []);
-
-  // const fetchTickets = async () => {
-  //   const response = await fetch(ENV.backend + '/farmer/support-tickets/', {
-  //     method: 'GET',
-  //     headers: {
-  //       useremail: route.params.userEmail,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (res.message != 'Success') throw new Error('Malformed Response');
-  //       setTickets(res.supportTicket);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
 
   return (
     <SafeAreaView>
       <Header back={true} />
-      <H3 style={{ textAlign: 'center' }}>Support Tickets</H3>
-      <ScrollView>
+      <H3 style={{ textAlign: 'center', marginBottom: 25 }}>Support Tickets</H3>
         <View style={styles.container}>
-          {console.log(tickets.length)}
-          {tickets.length === 0 && 
-            <H5 style={{ margin: 10 }}>No tickets found</H5>
-          }
-          {tickets.length > 0 &&
-            tickets.map((ticket, index) => (
-              <TouchableOpacity style={styles.button} key={index} onPress={() => navigation.navigate('Ticket Details', {ticket: ticket})}>
-                <View style={styles.barContainer}>
-                  <H5>{ticket._id}</H5>
-                  <H5>{ticket.issue}</H5>
-                </View>
-              </TouchableOpacity>
-            ))
-          }
+        <ScrollView>
+            {tickets.length === 0 && 
+              <H5 style={{ margin: 10 }}>No tickets found</H5>
+            }
+            {tickets.length > 0 &&
+              tickets.map((ticket, index) => (
+                <TouchableOpacity style={styles.button} key={index} onPress={() => navigation.navigate('Ticket Details', {ticket: ticket._id})}>
+                  <View style={styles.ticketContainer}>
+                    <H6>Ticket ID: #{ticket._id}</H6>
+                    <H6>Issue: {ticket.issue}</H6>
+                    <H6>Date: {ticket.date}</H6>
+                  </View>
+                </TouchableOpacity>
+              ))
+            }
+          </ScrollView>
         </View>
-      </ScrollView>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
     height: "100%",
     paddingHorizontal: 20,
+  },
+  ticketContainer: {
+    // margin: 5,
+    marginBottom: 25,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: Theme.tertiaryShade,
+    borderBottomWidth: 1,
+    borderColor: Theme.tertiary,
   },
 });
