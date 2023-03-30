@@ -18,9 +18,9 @@ export default function () {
         />
         <Text style={styles.productname}>Carrot</Text>
         <View style={styles.rating}>
-        <Rating value={4} ></Rating>
+          <Rating value={4}></Rating>
         </View>
-        
+
         <Text style={styles.productname}>LKR 1250</Text>
       </View>
     </View>
@@ -48,14 +48,13 @@ const styles = StyleSheet.create({
   },
   productname: {
     position: 'relative',
-    marginLeft:20,
+    marginLeft: 20,
     textAlign: 'left',
     fontSize: 15,
     fontWeight: 'bold',
     color: Theme.textColor,
   },
-  rating:{
-    marginLeft:20,
-  }
+  rating: {
+    marginLeft: 20,
+  },
 });
-F

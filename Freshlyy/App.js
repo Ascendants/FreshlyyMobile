@@ -75,7 +75,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={FarmerDetailScreen}
+            component={LocationAddScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -208,7 +208,7 @@ export default function App() {
               headerShown: false,
             }}
           />
-            <Stack.Screen
+          <Stack.Screen
             name='Product Detail'
             component={ProductDetailScreen}
             options={{
