@@ -16,9 +16,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import { H4, P,H3 } from '../components/Texts';
 import {Rating} from '../components/Rating';
-import ProductCard from '../components/ProductCard';
+import ProductDetailCard from '../components/ProductDetailCard';
 
-export default function (props) {
+export default function () {
     return (
         <SafeAreaView>
             <Header back={true} />
@@ -26,14 +26,13 @@ export default function (props) {
             <View style={styles.screen}>
                 <View>
                 <Image
-                    source={{ uri: props.user.profilePicUrl }}
+                    source={require('../assets/kom.jpg')}
                     style={styles.image}
                 />
                 </View>
                 <View style={styles.textName}>
                     <P style={styles.name}>
-                        {props.user.fname} <br/>
-                        {props.user.lname}
+                        Komuthu Fernando
                     </P>
                 </View>
                 <Rating/>
@@ -81,8 +80,7 @@ export default function (props) {
               </View>
               <Button title='Follow' color='primaryShadeLighter' size='big' />
               <H3>Popular Products</H3>
-              <ProductCard/>
-              <ProductCard/>
+             
             </View>
             </ScrollView>
         </SafeAreaView>

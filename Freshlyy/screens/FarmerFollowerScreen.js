@@ -11,11 +11,11 @@ import {
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import { H4, P } from '../components/Texts';
 import { AntDesign,Ionicons } from '@expo/vector-icons';
+import FarmerFollowCard from '../components/FarmerFollowCard';
 
 
 export default function () {
@@ -29,7 +29,8 @@ export default function () {
               <TextInput placeholder='Search' style={styles.searchinput}/>
             </View>
             <View  style={styles.followingList}>
-              
+              <FarmerFollowCard></FarmerFollowCard>
+              <FarmerFollowCard></FarmerFollowCard>
             </View>
             </View>
             </ScrollView>

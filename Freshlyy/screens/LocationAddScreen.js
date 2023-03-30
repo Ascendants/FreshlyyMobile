@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+/* import { React, useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,24 +16,44 @@ import Header from '../components/Header';
 import { H4, P } from '../components/Texts';
 import { AntDesign,Ionicons } from '@expo/vector-icons';
 import {LocationCard} from '../components/LocationCard';
-import {GoogleMap, useLoadScript, Marker} from '@react-google-maps/api';
+import MapView, { Marker } from 'react-native-maps';
 
-
-export default function () {
-    return (
-        <SafeAreaView>
-            <Header back={true} />
-            <ScrollView>
-            <View style={styles.screen}>
-              <h3>Select your Address</h3>
-              const{}= useLoadScript({
-                //googleMapsApiKey:;
-              })
-            </View>
-            </ScrollView>
-        </SafeAreaView>
+const MapScreen = () => {
+  const [currentLocation, setCurrentLocation] = useState(null);
+  // const navigator = MapView.
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation({ latitude, longitude });
+      },
+      error => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-}
+  }, []);
+
+  return (
+    <View style={{ flex: 1 }}>
+      {currentLocation && (
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          <Marker coordinate={currentLocation} />
+        </MapView>
+      )}
+    </View>
+  );
+};
+
+export default MapScreen;
+
+
 
 const styles = StyleSheet.create({
   screen: {
@@ -43,4 +63,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
   
-});
+}); */
