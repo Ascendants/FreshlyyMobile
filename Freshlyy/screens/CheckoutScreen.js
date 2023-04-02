@@ -87,11 +87,9 @@ export default function ({ navigation, route }) {
       Object.keys(deliveries).forEach((key) => {
         if (deliveries[key]) {
           const deliveryItem = cart.find((item) => item.farmer == key);
-          total += deliveryItem
-            ? deliveryItem.costPerKM
-            : 0 * deliveryItem
-            ? deliveryItem.distance
-            : 0;
+          if (deliveryItem) {
+            total += deliveryItem.costPerKM * deliveryItem.distance;
+          }
         }
       });
       return total;

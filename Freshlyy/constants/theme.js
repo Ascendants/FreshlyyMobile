@@ -10,6 +10,9 @@ export default {
   danger: '#AD343E',
   dangerShade: '#AD343E40',
   primaryShadeLighter: '#10AB6820',
+  warningShadeLighter: '#efcb6820',
+  dangerShadeLighter: '#AD343E20',
+  secondaryShadeLighter: '#3666AC20',
   textColor: '#555555',
   contrastTextColor: 'white',
   overlay: '#e0e0e0',
@@ -17,4 +20,5 @@ export default {
   overlayShadeDarker: '#ffffff50',
   yellow: '#EFCB68',
   blue: '#3666ac',
+  defaultBackground: '#f2f2f2',
 };

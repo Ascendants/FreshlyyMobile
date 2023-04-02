@@ -58,7 +58,10 @@ export default function ({ navigation, route }) {
       <View style={styles.screen}>
         <Header farmer={true} />
         <RefreshView getData={getData}>
-          <InfoCardDB user={userData} />
+          <InfoCardDB
+            user={userData}
+            goToBalances={() => navigation.navigate('Farmer Balance')}
+          />
           <H4 style={styles.headings}>My Orders</H4>
           <View style={styles.cardContainer}>
             <DashBoardCard
