@@ -25,7 +25,7 @@ export default function () {
         <View style={styles.screen}>
           <H3>Locations</H3>
           <LocationCard />
-          <Button title='Add Location' color='primaryShadeLighter' size='big' />
+          <Button title='Add Location' color='shadedPrimary' size='normal' />
         </View>
       </ScrollView>
     </SafeAreaView>

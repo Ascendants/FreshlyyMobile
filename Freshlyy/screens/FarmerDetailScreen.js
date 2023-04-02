@@ -16,6 +16,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import { H4, P, H3 } from '../components/Texts';
 import Rating from '../components/Rating';
+import ProductDeatilCard from '../components/ProductDetailCard';
+
+
 
 export default function () {
   return (
@@ -72,9 +75,10 @@ export default function () {
               color='shadedTertiary'
             />
           </View>
-          <Button title='Follow' color='primaryShadeLighter' size='big' />
+          <Button title='Follow' color='shadedPrimary' size='normal' />
           <H3>Popular Products</H3>
         </View>
+        <ProductDeatilCard></ProductDeatilCard>
       </ScrollView>
     </SafeAreaView>
   );
@@ -86,6 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //justifyContent: 'center',
     fontFamily: 'Poppins',
+    margin: 20,
   },
   logo: {
     height: 50,
@@ -104,8 +109,9 @@ const styles = StyleSheet.create({
   Rating: {
     justifyContent: 'center',
   },
-  H4: {
+  H3: {
     alignItems: 'center',
+    
   },
   actionButtonContainer: {
     flexDirection: 'row',

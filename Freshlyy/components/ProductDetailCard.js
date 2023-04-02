@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     height: 220,
     backgroundColor: Theme.overlay,
     borderRadius: 20,
+    margin:10,
     boxShadow: '100px 100px 17px -12px rgba(0,3,0,0.75)',
   },
   cardimage: {
