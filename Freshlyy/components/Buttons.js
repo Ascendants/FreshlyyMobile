@@ -81,7 +81,7 @@ module.exports.Button = function (props) {
   buttonBackground.push(props.backgroundStyle);
   buttonText.push(props.textStyle);
   let button = (
-    <TouchableOpacity style={buttonBackground} onPress={props.onPress}>
+    <TouchableOpacity style={buttonBackground} onPress={props.onPress} disabled={props.disabled}>
       {props.loading && (
         <View
           style={{

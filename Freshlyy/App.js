@@ -40,9 +40,11 @@ import HelpCenterScreen from './screens/HelpCenterScreen';
 import CantSignInScreen from './screens/CantSignInScreen';
 import HelpWithanOrderScreen from './screens/HelpWithanOrderScreen';
 import FoodDamagedScreen from './screens/FoodDamagedScreen';
-import SelectTheOrderHC from './screens/SelectTheOrderScreen';
 import CardScreen from './screens/CardScreen';
 import AddCardScreen from './screens/AddCardScreen';
+import SelectOrderScreen from './screens/SelectOrderScreen';
+import OrderIsWrong from './screens/OrderIsWrong';
+import OrderNeverArrivedg from './screens/OrderNeverArrivedg';
 import OrderListScreen from './screens/OrderListScreen';
 
 import OrderStatusScreen from './screens/OrderStatusScreen';
@@ -63,6 +65,11 @@ import FarmerDetailScreen from './screens/FarmerDetailScreen';
 
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
+import CreateCouponScreen from './screens/CreateCouponScreen';
+import ContactUsScreen from './screens/ContactUsScreen';
+import TicketStatusScreen from './screens/TicketStatusScreen';
+import TicketDetailsScreen from './screens/TicketDetailsScreen';
+
 
 import FarmerBalancesScreen from './screens/FarmerBalancesScreen';
 import ConfirmRequestWithdrawalScreen from './screens/ConfirmRequestWithdrawalScreen';
@@ -85,7 +92,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={LocationAddScreen}
+            component={TicketStatusScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -213,11 +220,15 @@ export default function App() {
           <Stack.Screen name='Help Center' component={HelpCenterScreen} />
           <Stack.Screen name='Cant sign in' component={CantSignInScreen} />
           <Stack.Screen name='Food Damaged' component={FoodDamagedScreen} />
-          <Stack.Screen name='Select order' component={SelectTheOrderHC} />
-          <Stack.Screen
-            name='Help with an order'
-            component={HelpWithanOrderScreen}
-          />
+          <Stack.Screen name='Select the Order' component={SelectOrderScreen} />
+          <Stack.Screen name='Help with an order' component={HelpWithanOrderScreen} />
+          <Stack.Screen name='Order Naver Arrived' component={OrderNeverArrivedg}/>
+          <Stack.Screen name='Order is Wrong' component={OrderIsWrong}/>
+          <Stack.Screen name='Order Details Help Center' component={HelpWithanOrderScreen}/>
+          <Stack.Screen name='Create Coupon' component={CreateCouponScreen}/>
+          <Stack.Screen name='Contact Us' component={ContactUsScreen}/>
+          <Stack.Screen name='Ticket Details' component={TicketDetailsScreen}/>
+          
           <Stack.Screen name='Cart' component={MyCartScreen} />
 
           <Stack.Screen

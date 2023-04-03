@@ -25,7 +25,17 @@ export default function (props) {
         </View>
       </View>
     );
-  } else {
+  } else if (props.isTicket) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.statusArea}>
+          <StatusBall status='Pending' first={true} done={status?.payment} />
+          <StatusBall status='Processing' done={status?.processed} />
+          <StatusBall status='Complete' done={status?.pickedUp} />
+        </View>
+      </View>
+    );
+  }else {
     return (
       <View style={styles.container}>
         <View style={styles.statusArea}>
