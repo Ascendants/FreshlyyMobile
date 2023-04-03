@@ -45,6 +45,7 @@ import OtherPaymentScreen from "./screens/OtherPaymentScreen";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import VerifyYourEmail from "./screens/VerifyYourEmail";
 import CreateNewPassword from "./screens/CreateNewPassword";
+import EditProductScreen from "./screens/EditProductScreen";
 import { G } from "react-native-svg";
 
 import OrderCancelScreen from "./screens/OrderCancelScreen";
@@ -66,7 +67,7 @@ export default function App() {
         >
           <Stack.Screen
             name="Checkout"
-            component={ProductHomePageScreen}
+            component={EditProductScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
@@ -147,6 +148,13 @@ export default function App() {
           <Stack.Screen
             name="productupdated"
             component={ProductUpdatedScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name="productAddedSuccessfully"
+            component={ProductAddedScreen}
             initialParams={{
               userEmail: userEmail,
             }}

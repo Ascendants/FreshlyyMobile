@@ -24,7 +24,7 @@ import { async } from "@firebase/util";
 import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import uuid from "react-native-uuid";
 import { min } from "react-native-reanimated";
-import { getStorage } from "firebase/storage";
+import { getStorage, deleteObject } from "firebase/storage";
 import ENV from "../constants/env";
 
 export default function ({ route, navigation }) {
@@ -38,8 +38,13 @@ export default function ({ route, navigation }) {
   const [uploading, setUploading] = useState(false);
   const [product, setProduct] = useState({});
   const [productId, setProductId] = useState(null);
+  const [numImages, setNumImages] = useState(0);
 
   const pickImage = async () => {
+    if (images.length >= 3) {
+      return; // Do nothing if three images have already been selected
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -54,19 +59,8 @@ export default function ({ route, navigation }) {
         // setImage(source);
       }
     }
+    setNumImages(images.length + 1);
   };
-  // const ProductAddedMessage = () => {
-  //   return (
-  //     <View style={{ flexDirection: "row", alignItems: "center" }}>
-  //       <Image
-  //         source={require("../assets/ProductAdded.png")}
-  //         style={{ width: 20, height: 20, marginRight: 10 }}
-  //       />
-  //       <Text>Product Updated Successfully</Text>
-  //     </View>
-  //   );
-  // };
-
   const uploadImages = async () => {
     // const uploadedImageUrls = [];
     const maxImages = 3;
@@ -84,14 +78,31 @@ export default function ({ route, navigation }) {
         const imageRef = ref(FreshlyyImageStore, fileName);
         // const imageRef = ref(FreshlyyImageStore, "ProductImages/" + blob);
         await uploadBytes(imageRef, blob);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        // } catch (e) {
+        //   console.log(e);
+        console.error(error);
+        throw new Error("An error occurred while uploading images.");
       }
       setUploading(false);
+      return true;
     });
-    await Promise.all(uploadPromises);
+    const results = await Promise.all(uploadPromises);
+    const allImagesUploaded = results.every((result) => result === true); // Check if all images are uploaded successfully
     setImages([]);
-    // Alert.alert("Success", "Images uploaded successfully!");
+
+    // return allImagesUploaded;
+    // Return a boolean value indicating whether all images are uploaded successfully or not
+    if (!allImagesUploaded) {
+      throw new Error("Not all images were uploaded successfully.");
+    }
+
+    return true;
+  };
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...images];
+    updatedImages.splice(index, 1);
+    setImages(updatedImages);
   };
 
   const handleProductNameChange = (text) => {
@@ -180,7 +191,7 @@ export default function ({ route, navigation }) {
     const storage = getStorage();
 
     fetch(
-      ENV.backend + "/farmer/get-selling-product",
+      ENV.backend + "/farmer/selling-product/" + "63b6b7b160d78bea22456aa8",
       // "${ENV.backend}/farmer/getSellingProduct/?productId=63f4d385b1a06dad48ec25ba",
       {
         method: "GET",
@@ -210,9 +221,11 @@ export default function ({ route, navigation }) {
   const handleUpdate = async () => {
     const productId = "63f4d385b1a06dad48ec25ba";
     try {
+      await uploadImages();
       // Fetch existing product data
       const response = await fetch(
-        env.backend + "/farmer/get-product/" + productId
+        env.backend + "/farmer/selling-product/" + "63b6b7b160d78bea22456aa8"
+        // "/farmer/get-product/" + productId
       );
       const existingData = await response.json();
 
@@ -228,7 +241,7 @@ export default function ({ route, navigation }) {
 
       // Update product data in the database
       const updateResponse = await fetch(
-        env.backend + "/farmer/update-product/" + productId,
+        env.backend + "/farmer/update-product/" + "63b6b7b160d78bea22456aa8",
         {
           method: "POST",
           headers: {
@@ -246,13 +259,38 @@ export default function ({ route, navigation }) {
     }
   };
 
+  const image =
+    product.imageUrls?.length > 0 ? product.imageUrls[0].imageUrl : "";
+  console.log(image);
+
+  const handleClose = async () => {
+    try {
+      // Get Firebase Storage reference
+      const storage = getStorage();
+      const storageRef = ref(storage, "FreshlyyImagestore");
+
+      // Delete image from Firebase Storage
+      if (product.imageUrls?.length > 0) {
+        const fileName = product.imageUrls[0].imageUrl.split("/").pop();
+        const imageRef = ref(storageRef, fileName);
+        await deleteObject(imageRef);
+        console.log("Image deleted successfully");
+      }
+
+      // Remove image from component state
+      setProduct((prevProduct) => ({ ...prevProduct, imageUrls: [] }));
+    } catch (error) {
+      console.log("Error deleting image:", error);
+    }
+    setProduct((prevProduct) => ({ ...prevProduct, imageUrls: [] }));
+  };
+  console.log(images.length);
   return (
     <SafeAreaView>
       <Header />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.screen}>
           <H1 style={styles.AddText}>Edit your product</H1>
-
           <TextInputBox
             inputlabel="Product Name"
             value={product?.title}
@@ -291,7 +329,6 @@ export default function ({ route, navigation }) {
               touched={true}
             />
           )}
-
           {product && product.price !== undefined && (
             <TextInputBox
               inputlabel="Price of 1Kg (Rs)"
@@ -302,7 +339,6 @@ export default function ({ route, navigation }) {
               touched={true}
             />
           )}
-
           <TextInputBox
             inputlabel="Any description"
             value={product.description}
@@ -310,47 +346,75 @@ export default function ({ route, navigation }) {
             error={errors.description}
             touched={true}
           />
-          {/* <TextInputBox
-            inputlabel="Add product image"
-            placeholder="add 3 images here"
-          /> */}
 
           {!isValid && (
             <Text style={{ color: "red" }}>
-              Please fill in all fields correctly
+              You can upload maximum three images of a product
             </Text>
           )}
-          {images.length < 3 && (
+          <View style={styles.previmage}>
+            {image && (
+              <>
+                <Image source={{ uri: image }} style={styles.fillimage} />
+                <TouchableOpacity
+                  onPress={handleClose}
+                  style={{ position: "absolute", top: 10, right: 10 }}
+                >
+                  <Ionicons name="close-circle" size={24} color="white" />
+                </TouchableOpacity>
+              </>
+            )}
+          </View>
+          <View style={styles.maincont}>
             <View style={styles.buttcont}>
-              <Button
-                title="Add Image"
-                type="icon"
-                icon={
-                  <Ionicons name="add-circle" size={48} color={Theme.primary} />
-                }
-                color="shadedPrimary"
-                size="normal"
-                onPress={pickImage}
-                disabled={images.length >= 3}
-              />
+              {images.length < 3 && (
+                <Button
+                  title="Add Image"
+                  type="icon"
+                  icon={
+                    <Ionicons
+                      name="add-circle"
+                      size={48}
+                      color={Theme.primary}
+                    />
+                  }
+                  color="shadedPrimary"
+                  size="normal"
+                  onPress={pickImage}
+                  disabled={numImages >= 3} // use the numImages state variable
+                />
+              )}
             </View>
-          )}
-          <View style={styles.imagecont}>
-            {images.map((image, index) => (
-              <Image
-                key={index}
-                source={{ uri: image.uri }}
-                style={{ width: 200, height: 200 }}
-              />
-            ))}
+
+            <View style={styles.imageCon}>
+              {/* {images.map((image, index) => (
+              
+                  <Image key={index} source={image} style={styles.newimage} />
+                  
+                  <TouchableOpacity
+                    onPress={() => handleDeleteImage(index)}
+                    style={{ position: "absolute", top: 10, right: 10 }}
+                  >
+                    <Ionicons name="close-circle" size={24} color="white" />
+                  </TouchableOpacity>
+                
+              ))} */}
+              {images.map((image, index) => (
+                <View key={index}>
+                  <Image source={image} style={styles.newimage} />
+                  <TouchableOpacity
+                    onPress={() => handleDeleteImage(index)}
+                    style={{ position: "absolute", top: 10, right: 10 }}
+                  >
+                    <Ionicons name="close-circle" size={24} color="white" />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
           </View>
-          <View style={styles.buttco}>
-            <Button title="Delete image" color="shadedDanger" size="normal" />
-            <Button title="Upload image" color="shadedPrimary" size="normal" />
-          </View>
-          {/* </View> */}
+
           <Button
-            title="Upload"
+            title="Update"
             color="filledPrimary"
             size="big"
             onPress={() => handleUpdate(navigation.navigate("productupdated"))}
@@ -410,7 +474,7 @@ const styles = StyleSheet.create({
   },
   buttcont: {
     // justifyContent: 'space-between',
-    width: "80%",
+    width: 200,
   },
 
   imagecont: {
@@ -424,5 +488,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "80%",
+  },
+  fillimage: {
+    width: 200,
+    height: 200,
+    marginTop: 10,
+    borderRadius: 20,
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+  maincont: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageCon: {
+    flexDirection: "column",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: -5,
+  },
+  newimage: {
+    width: 150,
+    height: 150,
+    marginHorizontal: 5,
+    marginVertical: 10,
+    borderRadius: 5,
   },
 });

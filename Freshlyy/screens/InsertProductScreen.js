@@ -25,7 +25,7 @@ import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import uuid from "react-native-uuid";
 import { min } from "react-native-reanimated";
 
-export default function () {
+export default function ({ navigation }) {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -75,14 +75,26 @@ export default function () {
         const imageRef = ref(FreshlyyImageStore, fileName);
         // const imageRef = ref(FreshlyyImageStore, "ProductImages/" + blob);
         await uploadBytes(imageRef, blob);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        // } catch (e) {
+        //   console.log(e);
+        console.error(error);
+        throw new Error("An error occurred while uploading images.");
       }
       setUploading(false);
+      return true;
     });
-    await Promise.all(uploadPromises);
+    const results = await Promise.all(uploadPromises);
+    const allImagesUploaded = results.every((result) => result === true); // Check if all images are uploaded successfully
     setImages([]);
-    // Alert.alert("Success", "Images uploaded successfully!");
+
+    // return allImagesUploaded;
+    // Return a boolean value indicating whether all images are uploaded successfully or not
+    if (!allImagesUploaded) {
+      throw new Error("Not all images were uploaded successfully.");
+    }
+
+    return true;
   };
 
   const handleSubmit = async () => {
@@ -102,8 +114,50 @@ export default function () {
       });
       const data = await response.json();
       console.log(data);
+      return true;
     } catch (error) {
       console.error(error);
+      throw error;
+    }
+  };
+
+  const handleFormSubmit = async () => {
+    if (
+      !title ||
+      !price ||
+      !quantity ||
+      !minQtyIncrement ||
+      images.length === 0
+    ) {
+      Alert.alert(
+        "Error",
+        "Please fill all the required details and select at least one image.",
+        [{ text: "OK" }]
+      );
+      return;
+    }
+
+    try {
+      const isDataValid = await handleSubmit();
+      const areImagesUploaded = await uploadImages();
+
+      if (isDataValid && areImagesUploaded) {
+        console.log("Form submitted successfully.");
+        navigation.navigate("productAddedSuccessfully");
+      } else {
+        Alert.alert(
+          "Error",
+          "An error occurred while submitting the form. Please try again later.",
+          [{ text: "OK" }]
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        "Error",
+        "An error occurred while submitting the form. Please try again later.",
+        [{ text: "OK" }]
+      );
     }
   };
 
@@ -262,22 +316,15 @@ export default function () {
           )}
           <View style={styles.imagecont}>
             {images.map((image, index) => (
-              //   <Image
-              //     key={index}
-              //     source={{ uri: image.uri }}
-              //     style={{
-              //       width: 200,
-              //       height: 200,
-              //       objectFit: "cover",
-              //       borderRadius: 10,
-              //       marginTop: 20,
-              //     }}
-              //   />
-              // ))}
               <View key={index} style={{ position: "relative" }}>
                 <Image
                   source={{ uri: image.uri }}
-                  style={{ width: 200, height: 200 }}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
                 />
                 <TouchableOpacity
                   onPress={() => handleDeleteImage(index)}
@@ -293,23 +340,36 @@ export default function () {
             title="Submit"
             color="filledPrimary"
             size="big"
-            // onPress={() => {
-            //   handleSubmit();
-            //   uploadImages();
+            // onPress={async () => {
+            //   const formValid = await handleSubmit();
+            //   const imagesValid = uploadImages();
+            //   if (formValid && imagesValid) {
+            //     // Submit the form
+            //   } else {
+            //     Alert.alert(
+            //       "Error",
+            //       "Please fill all the details and select 3 images.",
+            //       [{ text: "OK" }]
+            //     );
+            //   }
             // }}
-            onPress={async () => {
-              const formValid = await handleSubmit();
-              const imagesValid = uploadImages();
-              if (formValid && imagesValid) {
-                // Submit the form
-              } else {
-                Alert.alert(
-                  "Error",
-                  "Please fill all the details and select 3 images.",
-                  [{ text: "OK" }]
-                );
-              }
-            }}
+
+            // onPress={async () => {
+            //   const [isDataValid, areImagesUploaded] = await Promise.all([
+            //     handleSubmit(),
+            //     uploadImages(),
+            //   ]);
+            //   if (isDataValid && areImagesUploaded) {
+            //     // Submit the form to backend
+            //   } else {
+            //     Alert.alert(
+            //       "Error",
+            //       "Please fill all the details and select 3 images.",
+            //       [{ text: "OK" }]
+            //     );
+            //   }
+            // }}
+            onPress={handleFormSubmit}
             disabled={images.length === 0 || !isValid}
           />
         </View>

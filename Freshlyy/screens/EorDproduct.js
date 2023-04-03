@@ -26,7 +26,7 @@ export default function ({ navigation, route }) {
     const storage = getStorage();
 
     fetch(
-      ENV.backend + "/farmer/get-selling-product",
+      ENV.backend + "/farmer/selling-product/" + "63b6b7b160d78bea22456aa8",
       // "${ENV.backend}/farmer/getSellingProduct/?productId=63f4d385b1a06dad48ec25ba",
       {
         method: "GET",
@@ -34,7 +34,6 @@ export default function ({ navigation, route }) {
           useremail: route.params.userEmail,
           "Content-Type": "application/json",
         },
-        productId: "63f4d385b1a06dad48ec25ba",
       }
     )
       .then((res) => res.json())
