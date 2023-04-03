@@ -10,77 +10,77 @@ import Theme from "./constants/theme";
 
 const Stack = createNativeStackNavigator();
 
-import StartScreen from './screens/StartScreen';
-import GetStartedScreen from './screens/GetStartedScreen';
-import ProductDetailScreen from './screens/ProductDetailScreen';
-import EmailVerificationScreen from './screens/EmailVerificationScreen';
-import VerifyEmail from './screens/VerifyEmail';
-import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
-import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
-import MyCartScreen from './screens/MyCartScreen';
-import CheckoutScreen from './screens/CheckoutScreen';
-import HomeScreen from './screens/HomeScreen';
-import PaymentScreen from './screens/PaymentScreen';
-import SignUpScreen from './screens/SignUpScreen';
-import ProductHomePageScreen from './screens/ProductHomePageScreen';
-import SocialCornerScreen from './screens/SocialCornerScreen';
-import LoginScreen from './screens/LoginScreen';
-import PasswordCreationScreen from './screens/PasswordCreationScreen';
-import BeFarmerScreen from './screens/BeFarmerScreen';
-import FarmerCreateAccountScreen from './screens/FarmerCreateAccountScreen';
-import MessageScreen from './screens/MessageScreen';
-import InsertProductScreen from './screens/InsertProductScreen';
-import ProductAddedScreen from './screens/ProductAddedScreen';
-import ProductUpdatedScreen from './screens/ProductUpdated';
-import ProductDeletedScreen from './screens/ProductDelete';
-import EorDproduct from './screens/EorDproduct';
-import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
-import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
-import HelpCenterScreen from './screens/HelpCenterScreen';
-import CantSignInScreen from './screens/CantSignInScreen';
-import HelpWithanOrderScreen from './screens/HelpWithanOrderScreen';
-import FoodDamagedScreen from './screens/FoodDamagedScreen';
-import CardScreen from './screens/CardScreen';
-import AddCardScreen from './screens/AddCardScreen';
-import SelectOrderScreen from './screens/SelectOrderScreen';
-import OrderIsWrong from './screens/OrderIsWrong';
-import OrderNeverArrivedg from './screens/OrderNeverArrivedg';
-import OrderListScreen from './screens/OrderListScreen';
+import StartScreen from "./screens/StartScreen";
+import GetStartedScreen from "./screens/GetStartedScreen";
+import ProductDetailScreen from "./screens/ProductDetailScreen";
+import EmailVerificationScreen from "./screens/EmailVerificationScreen";
+import VerifyEmail from "./screens/VerifyEmail";
+import PhoneVerificationScreen from "./screens/PhoneVerificationScreen";
+import FarmerDashBoardScreen from "./screens/FarmerDashboardScreen";
+import MyCartScreen from "./screens/MyCartScreen";
+import CheckoutScreen from "./screens/CheckoutScreen";
+import HomeScreen from "./screens/HomeScreen";
+import PaymentScreen from "./screens/PaymentScreen";
+import SignUpScreen from "./screens/SignUpScreen";
+import ProductHomePageScreen from "./screens/ProductHomePageScreen";
+import SocialCornerScreen from "./screens/SocialCornerScreen";
+import LoginScreen from "./screens/LoginScreen";
+import PasswordCreationScreen from "./screens/PasswordCreationScreen";
+import BeFarmerScreen from "./screens/BeFarmerScreen";
+import FarmerCreateAccountScreen from "./screens/FarmerCreateAccountScreen";
+import MessageScreen from "./screens/MessageScreen";
+import InsertProductScreen from "./screens/InsertProductScreen";
+import ProductAddedScreen from "./screens/ProductAddedScreen";
+import ProductUpdatedScreen from "./screens/ProductUpdated";
+import ProductDeletedScreen from "./screens/ProductDelete";
+import EorDproduct from "./screens/EorDproduct";
+import CustomerDashboardScreen from "./screens/CustomerDashboardScreen";
+import FarmerDashboardScreen from "./screens/FarmerDashboardScreen";
+import HelpCenterScreen from "./screens/HelpCenterScreen";
+import CantSignInScreen from "./screens/CantSignInScreen";
+import HelpWithanOrderScreen from "./screens/HelpWithanOrderScreen";
+import FoodDamagedScreen from "./screens/FoodDamagedScreen";
+import CardScreen from "./screens/CardScreen";
+import AddCardScreen from "./screens/AddCardScreen";
+import SelectOrderScreen from "./screens/SelectOrderScreen";
+import OrderIsWrong from "./screens/OrderIsWrong";
+import OrderNeverArrivedg from "./screens/OrderNeverArrivedg";
+import OrderListScreen from "./screens/OrderListScreen";
 
-import OrderStatusScreen from './screens/OrderStatusScreen';
-import OtherPaymentScreen from './screens/OtherPaymentScreen';
-import AddCardScreenBackup from './screens/AddCardScreenBackup';
-import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
-import VerifyYourEmail from './screens/VerifyYourEmail';
-import CreateNewPassword from './screens/CreateNewPassword';
-import { G } from 'react-native-svg';
-import AddBankAccountScreen from './screens/AddBankAccountScreen';
+import OrderStatusScreen from "./screens/OrderStatusScreen";
+import OtherPaymentScreen from "./screens/OtherPaymentScreen";
+import AddCardScreenBackup from "./screens/AddCardScreenBackup";
+import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
+import VerifyYourEmail from "./screens/VerifyYourEmail";
+import CreateNewPassword from "./screens/CreateNewPassword";
+import { G } from "react-native-svg";
+import AddBankAccountScreen from "./screens/AddBankAccountScreen";
+import EditProductScreen from "./screens/EditProductScreen";
+import FarmerFollowerScreen from "./screens/FarmerFollowerScreen";
+import LocationScreen from "./screens/LocationScreen";
+import OrderReviewScreen from "./screens/OrderReviewScreen";
+import ReviewedOrderScreen from "./screens/ReviewedOrderScreen";
+import LocationAddScreen from "./screens/LocationAddScreen";
+import FarmerDetailScreen from "./screens/FarmerDetailScreen";
 
-import FarmerFollowerScreen from './screens/FarmerFollowerScreen';
-import LocationScreen from './screens/LocationScreen';
-import OrderReviewScreen from './screens/OrderReviewScreen';
-import ReviewedOrderScreen from './screens/ReviewedOrderScreen';
-import LocationAddScreen from './screens/LocationAddScreen';
-import FarmerDetailScreen from './screens/FarmerDetailScreen';
+import OrderCancelScreen from "./screens/OrderCancelScreen";
+import ConfirmPickupScreen from "./screens/ConfirmPickupScreen";
+import CreateCouponScreen from "./screens/CreateCouponScreen";
+import ContactUsScreen from "./screens/ContactUsScreen";
+import TicketStatusScreen from "./screens/TicketStatusScreen";
+import TicketDetailsScreen from "./screens/TicketDetailsScreen";
 
-import OrderCancelScreen from './screens/OrderCancelScreen';
-import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
-import CreateCouponScreen from './screens/CreateCouponScreen';
-import ContactUsScreen from './screens/ContactUsScreen';
-import TicketStatusScreen from './screens/TicketStatusScreen';
-import TicketDetailsScreen from './screens/TicketDetailsScreen';
-
-import FarmerBalancesScreen from './screens/FarmerBalancesScreen';
-import ConfirmRequestWithdrawalScreen from './screens/ConfirmRequestWithdrawalScreen';
-import PayoutRequestListScreen from './screens/PayoutRequestListScreen';
-import FarmerInvoicesScreen from './screens/FarmerInvoicesScreen';
+import FarmerBalancesScreen from "./screens/FarmerBalancesScreen";
+import ConfirmRequestWithdrawalScreen from "./screens/ConfirmRequestWithdrawalScreen";
+import PayoutRequestListScreen from "./screens/PayoutRequestListScreen";
+import FarmerInvoicesScreen from "./screens/FarmerInvoicesScreen";
 export default function App() {
   const [fonts] = useFonts({
     Poppins: require("./assets/fonts/Poppins-Medium.ttf"),
     PoppinsRegular: require("./assets/fonts/Poppins-Regular.ttf"),
     PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
   });
-  const userEmail = "harini@freshlyy.com";
+  const userEmail = "haritha@freshlyy.com";
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -90,8 +90,8 @@ export default function App() {
           screenOptions={{ headerShown: false, animation: "none" }}
         >
           <Stack.Screen
-            name='Checkout'
-            component={FarmerDashBoardScreen}
+            name="Checkout"
+            component={InsertProductScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
@@ -109,21 +109,21 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name='Farmer Balance'
+            name="Farmer Balance"
             component={FarmerBalancesScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
-            name='Configure Bank'
+            name="Configure Bank"
             component={AddBankAccountScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
-            name='GetStartedScreen'
+            name="GetStartedScreen"
             component={GetStartedScreen}
             initialParams={{
               userEmail: userEmail,
@@ -149,28 +149,14 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name='Farmer Payout Requests'
+            name="Farmer Payout Requests"
             component={PayoutRequestListScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
-            name='Farmer Invoices'
-            component={FarmerInvoicesScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
-          />
-          <Stack.Screen
-            name='Farmer Payout Requests'
-            component={PayoutRequestListScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
-          />
-          <Stack.Screen
-            name='Farmer Invoices'
+            name="Farmer Invoices"
             component={FarmerInvoicesScreen}
             initialParams={{
               userEmail: userEmail,
@@ -243,13 +229,13 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name='Payout Request Screen'
+            name="Payout Request Screen"
             component={ConfirmRequestWithdrawalScreen}
             initialParams={{
               userEmail: userEmail,
             }}
             options={{
-              animation: 'slide_from_bottom',
+              animation: "slide_from_bottom",
             }}
           />
           <Stack.Screen name="Help Center" component={HelpCenterScreen} />
@@ -261,17 +247,17 @@ export default function App() {
             component={HelpWithanOrderScreen}
           />
           <Stack.Screen
-            name='Order Naver Arrived'
+            name="Order Naver Arrived"
             component={OrderNeverArrivedg}
           />
-          <Stack.Screen name='Order is Wrong' component={OrderIsWrong} />
+          <Stack.Screen name="Order is Wrong" component={OrderIsWrong} />
           <Stack.Screen
-            name='Order Details Help Center'
+            name="Order Details Help Center"
             component={HelpWithanOrderScreen}
           />
-          <Stack.Screen name='Create Coupon' component={CreateCouponScreen} />
-          <Stack.Screen name='Contact Us' component={ContactUsScreen} />
-          <Stack.Screen name='Ticket Details' component={TicketDetailsScreen} />
+          <Stack.Screen name="Create Coupon" component={CreateCouponScreen} />
+          <Stack.Screen name="Contact Us" component={ContactUsScreen} />
+          <Stack.Screen name="Ticket Details" component={TicketDetailsScreen} />
 
           <Stack.Screen name="Cart" component={MyCartScreen} />
 
@@ -284,7 +270,7 @@ export default function App() {
           />
 
           <Stack.Screen
-            name='Sign Up'
+            name="Sign Up"
             component={SignUpScreen}
             options={{
               headerShown: false,
@@ -305,14 +291,7 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name='FarmerCreateAccount'
-            component={FarmerCreateAccountScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name='FarmerCreateAccount'
+            name="FarmerCreateAccount"
             component={FarmerCreateAccountScreen}
             options={{
               headerShown: false,
@@ -333,28 +312,28 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name='Product Detail'
+            name="Product Detail"
             component={ProductDetailScreen}
             options={{
               headerShown: true,
             }}
           />
           <Stack.Screen
-            name='Email Verification'
+            name="Email Verification"
             component={EmailVerificationScreen}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
-            name='EmailVerify'
+            name="EmailVerify"
             component={VerifyEmail}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
-            name='Phone Verification'
+            name="Phone Verification"
             component={PhoneVerificationScreen}
             options={{
               headerShown: false,
