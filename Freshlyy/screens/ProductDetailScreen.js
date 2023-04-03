@@ -209,7 +209,12 @@ export default function ({ route, navigation, productId, addToCart }) {
                   onPress={increaseQuantity}
                 />
               </View>
-              <Button size='big' color='shadedPrimary' title='Add to Cart' />
+              <Button
+                size='big'
+                color='shadedPrimary'
+                title='Add to Cart'
+                onPress={postCart}
+              />
             </View>
           </View>
         </RefreshView>
