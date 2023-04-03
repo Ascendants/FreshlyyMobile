@@ -17,25 +17,25 @@ export default function (props) {
       visible={props.visible}
       onRequestClose={props.closeModal}
     >
-      <TouchableOpacity style={styles.container} onPress={props.closeModal}>
-        <TouchableWithoutFeedback>
-          <View style={styles.closeContent}>
-            {props.closeModal ? (
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={props.closeModal}
-              >
-                <Ionicons
-                  name='ios-close-circle'
-                  size={32}
-                  color={Theme.tertiary}
-                />
-              </TouchableOpacity>
-            ) : null}
-            <View style={styles.content}>{props.children}</View>
-          </View>
-        </TouchableWithoutFeedback>
-      </TouchableOpacity>
+      <View style={styles.container} onPress={props.closeModal}>
+        {/* <TouchableWithoutFeedback> */}
+        <View style={styles.closeContent}>
+          {props.closeModal ? (
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={props.closeModal}
+            >
+              <Ionicons
+                name='ios-close-circle'
+                size={40}
+                color={Theme.tertiary}
+              />
+            </TouchableOpacity>
+          ) : null}
+          <View style={styles.content}>{props.children}</View>
+        </View>
+        {/* </TouchableWithoutFeedback> */}
+      </View>
     </Modal>
   );
 }
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.contrastTextColor,
+    backgroundColor: Theme.defaultBackground,
   },
   content: {
     padding: 20,
