@@ -73,8 +73,8 @@ export default function ({ navigation, route }) {
           type: 'Success',
           messageTitle: 'Account Saved!',
           messageText: 'The account has been saved securely',
-          goto: 'Farmer Dashboard',
-          goButtonText: 'Go to Dashboard',
+          goto: 'Farmer Earnings',
+          goButtonText: 'Go to Earnings',
         });
         setSubmitting(false);
       })
@@ -84,8 +84,8 @@ export default function ({ navigation, route }) {
           type: 'fail',
           messageTitle: 'Account could not be saved :(',
           messageText: 'Something went wrong.',
-          goto: 'Farmer Dashboard',
-          goButtonText: 'Go to Dashboard',
+          goto: 'Farmer Earnings',
+          goButtonText: 'Go Back',
         });
         console.log(err);
         return;
@@ -97,7 +97,7 @@ export default function ({ navigation, route }) {
         <LoadingModal visible={submitting} message='Saving' />
         <SearchableMenu
           select={(item) => setBank(item)}
-          menuItems={banks.map((a) => {
+          menuItems={banks?.map((a) => {
             return {
               value: a.BankName,
               ...a,

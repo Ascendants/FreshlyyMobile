@@ -168,7 +168,10 @@ module.exports.Pr = function (props) {
           ...props.style,
         }}
       >
-        &nbsp;{props.children}
+        &nbsp;
+        {isNaN(props.children)
+          ? props.children
+          : parseFloat(props.children)?.toFixed(2)}
       </Text>
     </Text>
   );

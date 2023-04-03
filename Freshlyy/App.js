@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import { P, H1 } from './components/Texts';
+import { P, H1, H3, H4 } from './components/Texts';
 import Header from './components/Header';
 import { UserContext, user } from './context/UserContext';
 import Theme from './constants/theme';
@@ -57,6 +57,10 @@ import AddBankAccountScreen from './screens/AddBankAccountScreen';
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
 
+import FarmerBalancesScreen from './screens/FarmerBalancesScreen';
+import ConfirmRequestWithdrawalScreen from './screens/ConfirmRequestWithdrawalScreen';
+import PayoutRequestListScreen from './screens/PayoutRequestListScreen';
+import FarmerInvoicesScreen from './screens/FarmerInvoicesScreen';
 export default function App() {
   const [fonts] = useFonts({
     Poppins: require('./assets/fonts/Poppins-Medium.ttf'),
@@ -74,7 +78,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={SocialCornerScreen}
+            component={CustomerDashboardScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -87,6 +91,20 @@ export default function App() {
           <Stack.Screen
             name='Farmer Dashboard'
             component={FarmerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Farmer Balance'
+            component={FarmerBalancesScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Configure Bank'
+            component={AddBankAccountScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -114,6 +132,20 @@ export default function App() {
             initialParams={{
               userEmail: userEmail,
               initialTab: 'All',
+            }}
+          />
+          <Stack.Screen
+            name='Farmer Payout Requests'
+            component={PayoutRequestListScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Farmer Invoices'
+            component={FarmerInvoicesScreen}
+            initialParams={{
+              userEmail: userEmail,
             }}
           />
           <Stack.Screen
@@ -154,6 +186,16 @@ export default function App() {
           <Stack.Screen
             name='Order Cancel Screen'
             component={OrderCancelScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+            options={{
+              animation: 'slide_from_bottom',
+            }}
+          />
+          <Stack.Screen
+            name='Payout Request Screen'
+            component={ConfirmRequestWithdrawalScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -221,7 +263,7 @@ export default function App() {
               headerShown: false,
             }}
           />
-            <Stack.Screen
+          <Stack.Screen
             name='Product Detail'
             component={ProductDetailScreen}
             options={{

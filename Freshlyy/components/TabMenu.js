@@ -10,18 +10,23 @@ import {
 import { Button } from './Buttons';
 import Theme from '../constants/theme';
 
-function MenuContainer(props){
-  if(props.center){
+function MenuContainer(props) {
+  if (props.center) {
     return <View style={styles.centeredMenu}>{props.children}</View>;
   }
-  return <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>{props.children}</ScrollView>
-
+  return (
+    <ScrollView
+      // contentContainerStyle={styles.container}
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+    >
+      {props.children}
+    </ScrollView>
+  );
 }
 
 export default function (props) {
   let buttonSize = props.buttonSize || 'normal';
-//   ,{    alignItems: props.center? 'center':'flex-start',
-// }
   return (
     <View style={styles.container}>
       <MenuContainer center={props.center}>
@@ -41,16 +46,16 @@ export default function (props) {
 }
 const styles = StyleSheet.create({
   container: {
-    alignContent:"flex-start",
+    alignContent: 'flex-start',
+    alignItems: 'center',
     marginVertical: 10,
-  
+    flexDirection: 'row',
   },
-  centeredMenu:{
-    alignContent:'center',
-    justifyContent:'center',
-    justifyItems:'center',
-    flexDirection:'row',
-
+  centeredMenu: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    justifyItems: 'center',
+    flexDirection: 'row',
   },
   dotsContainer: {
     backgroundColor: Theme.overlayShade,
