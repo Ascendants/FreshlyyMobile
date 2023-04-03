@@ -5,14 +5,18 @@ import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import theme from '../constants/theme';
 import { UserContext } from '../context/UserContext';
+import FadeComponent from '../components/FadeComponent';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductView from '../components/ProductView';
 import DeliveryView from '../components/DeliveryView';
 import LoadingModal from '../components/LoadingModal';
 import ENV from '../constants/env';
+import Loading from '../components/Loading';
+import RefreshView from '../components/RefreshView';
 
 export default function ({ navigation, route }) {
+  const [loaded, setLoaded] = React.useState(false);
   const [orderData, setOrderData] = React.useState({
     selectedPaymentMethod: 'cod',
   });
@@ -22,8 +26,6 @@ export default function ({ navigation, route }) {
   const [total, setTotal] = React.useState(0);
   const [cart, setCart] = React.useState([]);
 
-  const delay = (time) =>
-    new Promise((resolve, reject) => setTimeout(resolve, time));
   async function placeOrder() {
     const data = {};
     setConfirmOrder(true);
@@ -48,7 +50,7 @@ export default function ({ navigation, route }) {
       .then((res) => {
         if (res.message != 'Success') throw new Error('Something went wrong');
         navigation.navigate('Payment', {
-          order: res,
+          orders: res.orderDetails,
           userEmail: route.params.userEmail,
         });
         setConfirmOrder(false);
@@ -72,7 +74,6 @@ export default function ({ navigation, route }) {
         });
       });
   }
-  const user = React.useContext(UserContext);
   function setDelivery(farmer, value) {
     setDeliveries((curr) => {
       const newOb = { ...curr };
@@ -86,7 +87,9 @@ export default function ({ navigation, route }) {
       Object.keys(deliveries).forEach((key) => {
         if (deliveries[key]) {
           const deliveryItem = cart.find((item) => item.farmer == key);
-          total += deliveryItem.costPerKM * deliveryItem.distance;
+          if (deliveryItem) {
+            total += deliveryItem.costPerKM * deliveryItem.distance;
+          }
         }
       });
       return total;
@@ -99,8 +102,8 @@ export default function ({ navigation, route }) {
       )
     );
   }, [cart, subTotal, deliveries, total]);
-  React.useEffect(() => {
-    fetch(ENV.backend + '/customer/cart/', {
+  const getData = React.useCallback(async () => {
+    return fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
       headers: {
         userEmail: route.params.userEmail,
@@ -119,9 +122,11 @@ export default function ({ navigation, route }) {
           });
           return curr;
         });
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
+
   return (
     <>
       <StatusBar barStyle='dark-content' />
@@ -129,11 +134,11 @@ export default function ({ navigation, route }) {
         <View style={styles.screen}>
           <LoadingModal message='Placing Order' visible={confirmOrder} />
           <Header back={true} />
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <RefreshView getData={getData}>
             <View style={styles.pageContent}>
               <H3 style={styles.title}>Your Order</H3>
               <View style={styles.pageArea}>
-                {cart.map((farmer) =>
+                {cart?.map((farmer) =>
                   farmer.items.map((item) => (
                     <ProductView key={item.item} product={item} />
                   ))
@@ -148,9 +153,9 @@ export default function ({ navigation, route }) {
                 {cart.map((farmer) => (
                   <DeliveryView
                     option={farmer}
-                    key={farmer.farmer}
-                    delivery={deliveries[farmer.farmer]}
-                    setDelivery={(value) => setDelivery(farmer.farmer, value)}
+                    key={farmer?.farmer}
+                    delivery={deliveries[farmer?.farmer]}
+                    setDelivery={(value) => setDelivery(farmer?.farmer, value)}
                   />
                 ))}
               </View>
@@ -167,7 +172,7 @@ export default function ({ navigation, route }) {
                 />
               </View>
             </View>
-          </ScrollView>
+          </RefreshView>
         </View>
       </SafeAreaView>
     </>
@@ -184,7 +189,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    fontFamily: 'Poppins',
     textAlign: 'center',
     marginBottom: 10,
   },

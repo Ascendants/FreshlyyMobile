@@ -21,13 +21,21 @@ export default function (props) {
         </View>
         <View style={styles.cardRight}>
           <Image
-            source={{ uri: props.user.profilePicUrl }}
-            style={styles.image}
+            source={{ uri: props.user?.profilePicUrl?.imageUrl }}
+            style={[
+              styles.image,
+              { backgroundColor: props.user?.profilePicUrl?.placeholder },
+            ]}
           />
         </View>
       </View>
       <View style={styles.buttonsLayout}>
-        <Button title='More Info' size='normal' color='filledPrimary' />
+        <Button
+          title='More Info'
+          size='normal'
+          color='filledPrimary'
+          onPress={props.goToBalances}
+        />
         <Button title='Edit Profile' size='normal' color='filledSecondary' />
       </View>
     </View>

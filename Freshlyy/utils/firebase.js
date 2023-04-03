@@ -5,6 +5,9 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 // import 'firebase/firestore';
 
+
+import 'firebase/compat/auth';
+import firebase from 'firebase/compat/app';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,7 +22,13 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const FreshlyyImageStore = getStorage(app);
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+export const auth = firebase.auth();
+export const app = firebase.app();
 export const database = getFirestore(app);
 export const auth = getAuth(app);
+

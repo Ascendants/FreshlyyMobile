@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Loading from '../components/Loading';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button } from '../components/Buttons';
 import Header from '../components/Header';
@@ -19,10 +20,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
 import { H4 } from '../components/Texts';
+import RefreshView from '../components/RefreshView';
 
-export default function () {
+export default function ({ navigation, route }) {
+  const [loaded, setLoaded] = React.useState(false);
   const [userData, setUserData] = useState([]);
-  const [product, setProduct] = useState([]);
+  const [sellingProducts, setSellingProducts] = useState('');
+  const [pendingProducts, setPendingProducts] = useState('');
+  const [newOrders, setNewOrders] = useState('');
+  const [pastOrders, setPastOrders] = useState('');
   const sheetRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,12 +38,11 @@ export default function () {
     sheetRef.current?.snapToIndex(index);
     setIsOpen(true);
   }, []);
-
-  React.useEffect(() => {
-    fetch(ENV.backend + '/farmer/dashboard', {
+  const getData = React.useCallback(async () => {
+    return fetch(ENV.backend + '/farmer/dashboard', {
       method: 'GET',
       headers: {
-        useremail: 'komuthu@freshlyy.com',
+        useremail: route.params.userEmail,
       },
     })
       .then((res) => res.json())
@@ -46,31 +51,35 @@ export default function () {
           throw new Error('Something went wrong');
         }
         setUserData(res.user);
+        setSellingProducts(res.liveProducts);
+        setPendingProducts(res.pendingProducts);
+        setNewOrders(res.newOrders);
+        setPastOrders(res.pastOrders);
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
 
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header farmer={true} />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.pageContent}
-        >
-          <InfoCardDB user={userData} />
+        <RefreshView getData={getData}>
+          <InfoCardDB
+            user={userData}
+            goToBalances={() => navigation.navigate('Farmer Balance')}
+          />
           <H4 style={styles.headings}>My Orders</H4>
           <View style={styles.cardContainer}>
             <DashBoardCard
               imageUri={require('../assets/gift.png')}
-              number={10}
+              number={newOrders}
               text='New Orders'
               onPress={() => handleSnapPress(0)}
             />
-
             <DashBoardCard
               imageUri={require('../assets/box.png')}
-              number={5}
+              number={pastOrders}
               text='Past Orders'
               onPress={() => handleSnapPress(0)}
             />
@@ -79,13 +88,13 @@ export default function () {
           <View style={styles.cardContainer}>
             <DashBoardCard
               imageUri={require('../assets/trade.png')}
-              number={100}
+              number={sellingProducts}
               text='Selling'
               onPress={() => handleSnapPress(0)}
             />
             <DashBoardCard
               imageUri={require('../assets/pending.png')}
-              number={3}
+              number={pendingProducts}
               text='Pending'
               onPress={() => handleSnapPress(0)}
             />
@@ -100,7 +109,7 @@ export default function () {
           </View>
           <ServicesCardDB farmer={true} />
           <View style={styles.lastChild}></View>
-        </ScrollView>
+        </RefreshView>
         <BottomSheet
           ref={sheetRef}
           index={-1}
@@ -116,7 +125,7 @@ export default function () {
             <SwipeOverlay />
           </BottomSheetView>
         </BottomSheet>
-        <Navbar />
+        <Navbar screenName='Cart' />
       </View>
     </SafeAreaView>
   );

@@ -1,22 +1,17 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import ModalComponent from './ModalComponent';
 import LottieView from 'lottie-react-native';
-import { H3 } from './Texts';
-
+import { H5 } from './Texts';
+import Theme from '../constants/theme';
 export default function (props) {
   return (
     <ModalComponent visible={props.visible}>
       <View style={styles.modalContent}>
-        <LottieView
-          autoPlay
-          style={{
-            width: 200,
-            height: 200,
-          }}
-          source={require('../assets/Freshlyy.json')}
-        />
-        <H3>{props.message}</H3>
+        <View style={{ height: 50, width: 50 }}>
+          <ActivityIndicator size='large' color={Theme.textColor} />
+        </View>
+        <H5>{props.message}</H5>
       </View>
     </ModalComponent>
   );
