@@ -16,6 +16,7 @@ export default function (props, onLikePress) {
   const [isLiked, setIsLiked] = useState(props.likes.includes(props.userEmail));
   const [likecount, setLikeCount] = useState(props.likes.length); //props.likes.length
   const [liked, setLiked] = useState(true);
+  
 
   // console.log(userID+" "+productID)
   const handleLike = () => {
@@ -40,7 +41,7 @@ export default function (props, onLikePress) {
         <View
           style={[
             styles.card,
-            props.cardType == "social" ? { height: 290 } :props.distanceAway?{height:280}:{height:270},
+            props.cardType == "social" ? { height: 290 } :props.distanceAway?{height:290}:{height:270},
           ]}
         > 
         {props.bestMatch && props.cheaper?
@@ -73,7 +74,7 @@ export default function (props, onLikePress) {
               {props.price}/{props.unit}
             </Pr>
             {props.farmerName?<H6>{props.farmerName}</H6>:null}
-            {props.distanceAway?<H6>{props.distanceAway} Away</H6>:null}
+             {props.distanceAway!=null?<H6>{props.distanceAway} Away</H6>:null}
             {props.cardType == "social" && (
               <View style={styles.likecont}>
                 <H6>{likecount} Likes</H6>

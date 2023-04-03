@@ -13,7 +13,7 @@ export default function ({navigation}) {
         style={styles.startImage}
       />
       <H1 style={styles.logoText}>Welcome!</H1>
-      <Button title='Create Your Account' color='filledPrimary' size='big'  onPress={()=>navigation.navigate('signup')} />
+      <Button title='Create Your Account' color='filledPrimary' size='big'  onPress={()=>navigation.navigate('Sign Up')} />
       <Text style={styles.noAccText}>Already have an account?</Text>
 
       <TouchableOpacity>

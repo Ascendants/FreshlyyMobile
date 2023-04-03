@@ -1,6 +1,9 @@
 import { getStorage } from 'firebase/storage';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
+
+import 'firebase/compat/auth';
+import firebase from 'firebase/compat/app';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,5 +18,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const FreshlyyImageStore = getStorage(app);
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+export const auth = firebase.auth();
+export const app = firebase.app();
+
