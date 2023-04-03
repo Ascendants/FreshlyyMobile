@@ -3,26 +3,24 @@ import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import { H1, H2, H3, H4, Pr } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
-import theme from '../constants/theme';
 import { UserContext } from '../context/UserContext';
 import Header from '../components/Header';
+import Loading from '../components/Loading';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PaymentSelector from '../components/PaymentSelector';
-import Modal from '../components/Modal';
-import LottieView from 'lottie-react-native';
+import LoadingModal from '../components/LoadingModal';
 import PlacedOrderView from '../components/PlacedOrderView';
-import { TextInputBox } from '../components/Inputs';
 import ENV from '../constants/env';
 
 export default function ({ navigation, route }) {
+  const [loaded, setLoaded] = React.useState(false);
   const [orderData, setOrderData] = React.useState({
     selectedPaymentMethod: 'cod',
-    orders: route.params.order.orderDetails,
-    orderTotal: route.params.order.orderDetails.reduce((a, b) => {
+    orders: route.params.orders,
+    orderTotal: route.params.orders.reduce((a, b) => {
       return a + (b.totalPrice + b.totalDeliveryCharge);
     }, 0),
   });
-  const [cvv, setCvv] = React.useState('');
   const [confirmPayment, setConfirmPayment] = React.useState(false);
   const [paymentMethods, setPaymentMethods] = React.useState([]);
   function setSelectedPayment(method) {
@@ -41,6 +39,7 @@ export default function ({ navigation, route }) {
       .then((res) => {
         if (!res.cards) throw new Error('Malformed Response');
         setPaymentMethods(res.cards);
+        setLoaded(true);
       })
       .catch((error) => {
         console.log(error);
@@ -49,11 +48,17 @@ export default function ({ navigation, route }) {
   const delay = (time) =>
     new Promise((resolve, reject) => setTimeout(resolve, time));
   async function makePayment() {
+    if (orderData.selectedPaymentMethod == 'other') {
+      navigation.navigate('Add New Card', {
+        orders: orderData.orders.map((order) => order._id),
+      });
+      return;
+    }
     setConfirmPayment(true);
     const data = {
       payFrom: orderData.selectedPaymentMethod,
       orders: orderData.orders.map((order) => order._id),
-      cvv: cvv,
+      saveCard: true,
     };
     fetch(ENV.backend + '/customer/payment/', {
       method: 'POST',
@@ -75,7 +80,7 @@ export default function ({ navigation, route }) {
           type: 'Success',
           messageTitle: 'Payment Complete!',
           messageText: 'The farmers will process your order and let you know!',
-          goto: 'Order Detail',
+          goto: 'Orders List',
           goButtonText: 'View Order',
         });
         return;
@@ -84,7 +89,9 @@ export default function ({ navigation, route }) {
         navigation.navigate('Message', {
           type: 'fail',
           messageTitle: 'Payment Failed :(',
-          messageText: 'Something went wrong :(',
+          messageText: 'One or more payments failed :(',
+          goto: 'Order Detail',
+          goButtonText: 'View Order',
         });
       });
   }
@@ -92,73 +99,53 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Modal visible={confirmPayment}>
-          <View style={styles.modalContent}>
-            <LottieView
-              autoPlay
-              style={{
-                width: 200,
-                height: 200,
-              }}
-              source={require('../assets/Freshlyy.json')}
-            />
-            <H3>Making Payment</H3>
-          </View>
-        </Modal>
+        <LoadingModal message='Making Payment' visible={confirmPayment} />
         <Header back={false} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.pageContent}>
-            <H2 style={styles.bigTitle}>Order Placed!</H2>
-            <H3 style={styles.title}>Payment</H3>
-            <View style={styles.pageArea}>
-              {orderData.orders.map((order) => {
-                return <PlacedOrderView key={order.farmer} order={order} />;
-              })}
-            </View>
-            <View style={styles.pageArea}>
-              <H3>Total</H3>
-              <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
-            </View>
-            <View style={styles.pageArea}>
-              <H4 style={styles.title}>Apply Coupon Code</H4>
-              <View style={styles.coupon}></View>
-            </View>
-            <View style={styles.pageArea}>
-              <H3>Net Total</H3>
-              <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
-            </View>
-            <View style={[styles.pageArea, { alignItems: 'center' }]}>
-              <H4 style={styles.title}>Choose a payment option</H4>
-              <PaymentSelector
-                methods={paymentMethods}
-                setSelectedPayment={setSelectedPayment}
-                selectedMethod={orderData.selectedPaymentMethod}
-                clearCvv={() => setCvv('')}
-              />
-              {orderData.selectedPaymentMethod != 'other' &&
-              orderData.selectedPaymentMethod != 'cod' ? (
-                <TextInputBox
-                  inputlabel='CVV'
-                  placeholder='Enter CVV'
-                  value={cvv}
-                  onChange={(value) => {
-                    setCvv(value);
-                  }}
-                  keyboardType='number-pad'
-                  maxLength={3}
+        {!loaded ? (
+          <Loading />
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.pageContent}>
+              <H3 style={styles.bigTitle}>
+                {route.params.later ? 'Pay for your order' : 'Order Placed!'}
+              </H3>
+              <H3 style={styles.title}>Payment</H3>
+              <View style={styles.pageArea}>
+                {orderData.orders.map((order) => {
+                  return <PlacedOrderView key={order.farmer} order={order} />;
+                })}
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Total</H3>
+                <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
+              </View>
+              <View style={styles.pageArea}>
+                <H4 style={styles.title}>Apply Coupon Code</H4>
+                <View style={styles.coupon}></View>
+              </View>
+              <View style={styles.pageArea}>
+                <H3>Net Total</H3>
+                <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
+              </View>
+              <View style={[styles.pageArea, { alignItems: 'center' }]}>
+                <H4 style={styles.title}>Choose a payment option</H4>
+                <PaymentSelector
+                  methods={paymentMethods}
+                  setSelectedPayment={setSelectedPayment}
+                  selectedMethod={orderData.selectedPaymentMethod}
                 />
-              ) : null}
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  size='big'
+                  color='filledSecondary'
+                  title='Make Payment'
+                  onPress={makePayment}
+                />
+              </View>
             </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                size='big'
-                color='filledSecondary'
-                title='Make Payment'
-                onPress={makePayment}
-              />
-            </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -175,13 +162,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    fontFamily: 'Poppins',
     textAlign: 'center',
     marginBottom: 10,
   },
   bigTitle: {
     marginBottom: 20,
-    fontFamily: 'Poppins',
     textAlign: 'center',
   },
   coupon: {

@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Loading from '../components/Loading';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button } from '../components/Buttons';
 import Header from '../components/Header';
@@ -19,8 +20,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
 import { H4 } from '../components/Texts';
+import RefreshView from '../components/RefreshView';
 
-export default function (route) {
+export default function ({ navigation, route }) {
+  const [loaded, setLoaded] = React.useState(false);
   const [userData, setUserData] = useState([]);
   const [sellingProducts, setSellingProducts] = useState('');
   const [pendingProducts, setPendingProducts] = useState('');
@@ -31,17 +34,15 @@ export default function (route) {
 
   // const snapPoints = ['60%', '100%'];
 
-  // const handleSnapPress = useCallback((index) => {
-  //   sheetRef.current?.snapToIndex(index);
-  //   setIsOpen(true);
-  // }, []);
-
-  React.useEffect(() => {
-    fetch(ENV.backend + '/farmer/dashboard', {
+  const handleSnapPress = useCallback((index) => {
+    sheetRef.current?.snapToIndex(index);
+    setIsOpen(true);
+  }, []);
+  const getData = React.useCallback(async () => {
+    return fetch(ENV.backend + '/farmer/dashboard', {
       method: 'GET',
       headers: {
-        // useremail: route.params.useremail,
-        useremail: 'komuthu@freshlyy.com',
+        useremail: route.params.userEmail,
       },
     })
       .then((res) => res.json())
@@ -54,19 +55,20 @@ export default function (route) {
         setPendingProducts(res.pendingProducts);
         setNewOrders(res.newOrders);
         setPastOrders(res.pastOrders);
+        setLoaded(true);
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
 
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header farmer={true} />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.pageContent}
-        >
-          <InfoCardDB user={userData} />
+        <RefreshView getData={getData}>
+          <InfoCardDB
+            user={userData}
+            goToBalances={() => navigation.navigate('Farmer Balance')}
+          />
           <H4 style={styles.headings}>My Orders</H4>
           <View style={styles.cardContainer}>
             <DashBoardCard
@@ -75,7 +77,6 @@ export default function (route) {
               text='New Orders'
               onPress={() => handleSnapPress(0)}
             />
-
             <DashBoardCard
               imageUri={require('../assets/box.png')}
               number={pastOrders}
@@ -108,8 +109,8 @@ export default function (route) {
           </View>
           <ServicesCardDB farmer={true} />
           <View style={styles.lastChild}></View>
-        </ScrollView>
-        {/* <BottomSheet
+        </RefreshView>
+        <BottomSheet
           ref={sheetRef}
           index={-1}
           snapPoints={snapPoints}
@@ -123,8 +124,8 @@ export default function (route) {
           <BottomSheetView>
             <SwipeOverlay />
           </BottomSheetView>
-        </BottomSheet> */}
-        <Navbar />
+        </BottomSheet>
+        <Navbar screenName='Cart' />
       </View>
     </SafeAreaView>
   );

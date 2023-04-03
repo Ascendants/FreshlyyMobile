@@ -5,7 +5,7 @@ import { Button } from '../components/Buttons';
 
 import Theme from '../constants/theme';
 
-export default function () {
+export default function ({navigation,route}) {
   return (
     <View style={styles.screen}>
       <ImageBackground
@@ -25,7 +25,7 @@ export default function () {
             <H4 style={{ ...styles.text, ...styles.description }}>
               Fresh Produce. To the Doorstep.
             </H4>
-            <Button size='big' color='filledPrimary' title='Get Started' />
+            <Button size='big' color='filledPrimary' title='Get Started' onPress={()=>navigation.navigate("GetStartedScreen")}/>
           </View>
         </View>
       </ImageBackground>

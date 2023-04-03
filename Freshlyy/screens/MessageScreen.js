@@ -30,7 +30,7 @@ export default function ({ navigation, route }) {
             style={styles.messageImage}
           />
           <H3 style={styles.messageTitle}>{route.params.messageTitle}</H3>
-          <H5 style={styles.messageText}>{route.params.messageText}</H5>
+          <H5 style={styles.messageText}>{route.params.subjectId}{route.params.messageText}</H5>
           <Button
             title={
               route.params.goButtonText ? route.params.goButtonText : 'Go Back'
