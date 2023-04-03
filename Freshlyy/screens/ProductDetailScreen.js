@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { H1, P, H3, H4, Pr } from '../components/Texts';
+import { H2, P, H3, H4, H6, Pr } from '../components/Texts';
 import { Button } from '../components/Buttons';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../components/Header';
@@ -11,8 +11,10 @@ import ENV from '../constants/env';
 import Loading from '../components/Loading';
 import Rating from '../components/Rating';
 import RefreshView from '../components/RefreshView';
+import ModalComponent from '../components/ModalComponent';
 
-export default function ({ route, navigation }) {
+export default function ({ route, navigation, productId, addToCart }) {
+  const [modal, setModal] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   const [product, setProduct] = React.useState({
@@ -20,7 +22,20 @@ export default function ({ route, navigation }) {
     imageUrls: [],
   });
   function increaseQuantity() {
-    setSelectedQuantity((curr) => curr + product?.minQtyIncrement);
+    const newQuantity = selectedQuantity + product.minQtyIncrement;
+    fetch(ENV.backend + '/public/product/' + product.purl, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const availableQuantity = res.product?.qtyAvailable;
+        if (newQuantity <= availableQuantity) {
+          setSelectedQuantity(newQuantity);
+        } else {
+          alert('Not enough quantity available');
+        }
+      })
+      .catch((err) => console.log(err));
   }
   function decreaseQuantity() {
     setSelectedQuantity((curr) =>
@@ -45,6 +60,30 @@ export default function ({ route, navigation }) {
       })
       .catch((err) => console.log(err));
   });
+
+  async function postCart() {
+    const result = await fetch(ENV.backend + '/customer/cart/add', {
+      method: 'POST',
+      headers: {
+        userEmail: route.params.userEmail,
+        'Content-Type': 'application/json',
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+      body: JSON.stringify({
+        productId: product._id,
+        quantity: selectedQuantity,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message == 'Success') {
+          return true;
+        }
+      })
+      .catch((err) => console.log(err));
+  }
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -170,7 +209,12 @@ export default function ({ route, navigation }) {
                   onPress={increaseQuantity}
                 />
               </View>
-              <Button size='big' color='shadedPrimary' title='Add to Cart' />
+              <Button
+                size='big'
+                color='shadedPrimary'
+                title='Add to Cart'
+                onPress={postCart}
+              />
             </View>
           </View>
         </RefreshView>

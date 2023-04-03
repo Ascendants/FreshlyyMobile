@@ -70,7 +70,6 @@ import ContactUsScreen from './screens/ContactUsScreen';
 import TicketStatusScreen from './screens/TicketStatusScreen';
 import TicketDetailsScreen from './screens/TicketDetailsScreen';
 
-
 import FarmerBalancesScreen from './screens/FarmerBalancesScreen';
 import ConfirmRequestWithdrawalScreen from './screens/ConfirmRequestWithdrawalScreen';
 import PayoutRequestListScreen from './screens/PayoutRequestListScreen';
@@ -92,7 +91,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={TicketStatusScreen}
+            component={MyCartScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
@@ -123,7 +122,7 @@ export default function App() {
               userEmail: userEmail,
             }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name='GetStartedScreen'
             component={GetStartedScreen}
             initialParams={{
@@ -221,14 +220,23 @@ export default function App() {
           <Stack.Screen name='Cant sign in' component={CantSignInScreen} />
           <Stack.Screen name='Food Damaged' component={FoodDamagedScreen} />
           <Stack.Screen name='Select the Order' component={SelectOrderScreen} />
-          <Stack.Screen name='Help with an order' component={HelpWithanOrderScreen} />
-          <Stack.Screen name='Order Naver Arrived' component={OrderNeverArrivedg}/>
-          <Stack.Screen name='Order is Wrong' component={OrderIsWrong}/>
-          <Stack.Screen name='Order Details Help Center' component={HelpWithanOrderScreen}/>
-          <Stack.Screen name='Create Coupon' component={CreateCouponScreen}/>
-          <Stack.Screen name='Contact Us' component={ContactUsScreen}/>
-          <Stack.Screen name='Ticket Details' component={TicketDetailsScreen}/>
-          
+          <Stack.Screen
+            name='Help with an order'
+            component={HelpWithanOrderScreen}
+          />
+          <Stack.Screen
+            name='Order Naver Arrived'
+            component={OrderNeverArrivedg}
+          />
+          <Stack.Screen name='Order is Wrong' component={OrderIsWrong} />
+          <Stack.Screen
+            name='Order Details Help Center'
+            component={HelpWithanOrderScreen}
+          />
+          <Stack.Screen name='Create Coupon' component={CreateCouponScreen} />
+          <Stack.Screen name='Contact Us' component={ContactUsScreen} />
+          <Stack.Screen name='Ticket Details' component={TicketDetailsScreen} />
+
           <Stack.Screen name='Cart' component={MyCartScreen} />
 
           <Stack.Screen
@@ -260,7 +268,7 @@ export default function App() {
               headerShown: false,
             }}
           />
-              <Stack.Screen
+          <Stack.Screen
             name='FarmerCreateAccount'
             component={FarmerCreateAccountScreen}
             options={{
@@ -288,21 +296,21 @@ export default function App() {
               headerShown: true,
             }}
           />
-                  <Stack.Screen
+          <Stack.Screen
             name='Email Verification'
             component={EmailVerificationScreen}
             options={{
               headerShown: false,
             }}
           />
-            <Stack.Screen
+          <Stack.Screen
             name='EmailVerify'
             component={VerifyEmail}
             options={{
               headerShown: false,
             }}
           />
-               <Stack.Screen
+          <Stack.Screen
             name='Phone Verification'
             component={PhoneVerificationScreen}
             options={{

@@ -17,7 +17,7 @@ export default function (props) {
         <Pr>{props.amt}</Pr>
       </View>
       <View style={[styles.right, styles.rightBackgroundColor1]}>
-        <TouchableOpacity style={styles.icon}>
+        {/* <TouchableOpacity style={styles.icon}>
           <Ionicons
             name='ios-pencil'
             size={24}
@@ -28,7 +28,7 @@ export default function (props) {
       <View style={[styles.right, styles.rightBackgroundColor2]}>
         <TouchableOpacity style={styles.icon}>
           <AntDesign name='delete' size={24} color={Theme.contrastTextColor} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
