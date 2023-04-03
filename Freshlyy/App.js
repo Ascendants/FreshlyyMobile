@@ -54,6 +54,13 @@ import CreateNewPassword from './screens/CreateNewPassword';
 import { G } from 'react-native-svg';
 import AddBankAccountScreen from './screens/AddBankAccountScreen';
 
+import FarmerFollowerScreen from './screens/FarmerFollowerScreen';
+import LocationScreen from './screens/LocationScreen';
+import OrderReviewScreen from './screens/OrderReviewScreen';
+import ReviewedOrderScreen from './screens/ReviewedOrderScreen';
+import LocationAddScreen from './screens/LocationAddScreen';
+import FarmerDetailScreen from './screens/FarmerDetailScreen';
+
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
 
@@ -78,7 +85,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={CustomerDashboardScreen}
+            component={LocationAddScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
