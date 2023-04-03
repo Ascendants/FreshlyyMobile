@@ -57,10 +57,10 @@ const styles = {
   },
   line: {
     position: 'absolute',
-    top: 13,
+    top: 12,
     width: '150%',
     backgroundColor: Theme.textColor,
-    height: 3,
+    height: 4,
   },
   firstLine: {
     left: '50%',

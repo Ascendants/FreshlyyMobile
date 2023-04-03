@@ -25,7 +25,17 @@ export default function (props) {
         </View>
       </View>
     );
-  } else {
+  } else if (props.isTicket) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.statusArea}>
+          <StatusBall status='Pending' first={true} done={status?.payment} />
+          <StatusBall status='Processing' done={status?.processed} />
+          <StatusBall status='Complete' done={status?.pickedUp} />
+        </View>
+      </View>
+    );
+  }else {
     return (
       <View style={styles.container}>
         <View style={styles.statusArea}>
@@ -52,51 +62,3 @@ const styles = {
     width: '100%',
   },
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     justifyContent: 'space-around',
-//     alignItems: 'center',
-//     width: '100%',
-//     padding: 20,
-//   },
-//   ballStatusArea: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'red',
-//   },
-//   line: {
-//     height: 2,
-//     margin: 10,
-//     width: '100%',
-//     backgroundColor: Theme.textColor,
-//   },
-//   ballArea: {
-//     position: 'absolute',
-//     top: -14,
-//     height: 30,
-//     width: '100%',
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//   },
-//   ball: {
-//     height: 20,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     width: 20,
-//     borderRadius: 10,
-//     backgroundColor: Theme.textColor,
-//   },
-//   filledBall: {
-//     height: 28,
-//     width: 28,
-//     borderRadius: 15,
-//     backgroundColor: Theme.primary,
-//   },
-//   textArea: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     width: '100%',
-//   },
-// });

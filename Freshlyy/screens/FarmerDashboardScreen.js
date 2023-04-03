@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import FadeComponent from '../components/FadeComponent';
 import Loading from '../components/Loading';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button } from '../components/Buttons';
@@ -21,8 +20,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import ENV from '../constants/env';
 import { H4 } from '../components/Texts';
+import RefreshView from '../components/RefreshView';
 
-export default function () {
+export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
   const [userData, setUserData] = useState([]);
   const [product, setProduct] = useState([]);
@@ -35,12 +35,11 @@ export default function () {
     sheetRef.current?.snapToIndex(index);
     setIsOpen(true);
   }, []);
-
-  React.useEffect(() => {
-    fetch(ENV.backend + '/farmer/dashboard', {
+  const getData = React.useCallback(async () => {
+    return fetch(ENV.backend + '/farmer/dashboard', {
       method: 'GET',
       headers: {
-        useremail: 'komuthu@freshlyy.com',
+        useremail: route.params.userEmail,
       },
     })
       .then((res) => res.json())
@@ -52,64 +51,58 @@ export default function () {
         setLoaded(true);
       })
       .catch((err) => console.log(err));
-  }, []);
+  });
 
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header farmer={true} />
-        {!loaded ? (
-          <Loading />
-        ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles.pageContent}
-          >
-            <FadeComponent>
-              <InfoCardDB user={userData} />
-              <H4 style={styles.headings}>My Orders</H4>
-              <View style={styles.cardContainer}>
-                <DashBoardCard
-                  imageUri={require('../assets/gift.png')}
-                  number={10}
-                  text='New Orders'
-                  onPress={() => handleSnapPress(0)}
-                />
-                <DashBoardCard
-                  imageUri={require('../assets/box.png')}
-                  number={5}
-                  text='Past Orders'
-                  onPress={() => handleSnapPress(0)}
-                />
-              </View>
-              <H4 style={styles.headings}>My Listings</H4>
-              <View style={styles.cardContainer}>
-                <DashBoardCard
-                  imageUri={require('../assets/trade.png')}
-                  number={100}
-                  text='Selling'
-                  onPress={() => handleSnapPress(0)}
-                />
-                <DashBoardCard
-                  imageUri={require('../assets/pending.png')}
-                  number={3}
-                  text='Pending'
-                  onPress={() => handleSnapPress(0)}
-                />
-              </View>
-              <View style={styles.buttonContainer}>
-                <Button
-                  size='big'
-                  color='shadedPrimary'
-                  title='Add new produce listing'
-                  // backgroundstyle={styles.button}
-                />
-              </View>
-              <ServicesCardDB farmer={true} />
-              <View style={styles.lastChild}></View>
-            </FadeComponent>
-          </ScrollView>
-        )}
+        <RefreshView getData={getData}>
+          <InfoCardDB
+            user={userData}
+            goToBalances={() => navigation.navigate('Farmer Balance')}
+          />
+          <H4 style={styles.headings}>My Orders</H4>
+          <View style={styles.cardContainer}>
+            <DashBoardCard
+              imageUri={require('../assets/gift.png')}
+              number={10}
+              text='New Orders'
+              onPress={() => handleSnapPress(0)}
+            />
+            <DashBoardCard
+              imageUri={require('../assets/box.png')}
+              number={5}
+              text='Past Orders'
+              onPress={() => handleSnapPress(0)}
+            />
+          </View>
+          <H4 style={styles.headings}>My Listings</H4>
+          <View style={styles.cardContainer}>
+            <DashBoardCard
+              imageUri={require('../assets/trade.png')}
+              number={100}
+              text='Selling'
+              onPress={() => handleSnapPress(0)}
+            />
+            <DashBoardCard
+              imageUri={require('../assets/pending.png')}
+              number={3}
+              text='Pending'
+              onPress={() => handleSnapPress(0)}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              size='big'
+              color='shadedPrimary'
+              title='Add new produce listing'
+              // backgroundstyle={styles.button}
+            />
+          </View>
+          <ServicesCardDB farmer={true} />
+          <View style={styles.lastChild}></View>
+        </RefreshView>
         <BottomSheet
           ref={sheetRef}
           index={-1}

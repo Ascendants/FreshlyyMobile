@@ -1,26 +1,37 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Image } from 'react-native';
 import { H3, Pr } from '../components/Texts';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Theme from '../constants/theme';
 import FadeComponent from '../components/FadeComponent';
 import ENV from '../constants/env';
 import TabMenu from '../components/TabMenu';
 import Loading from '../components/Loading';
 import OrderView from '../components/OrderView';
 
+function emptyOrders() {
+  return (
+    <View style={styles.noOrdersContent}>
+      <Image
+        source={require('../assets/emptyOrders.png')}
+        style={styles.messageImage}
+      />
+      <H3 style={styles.messageTitle}>No orders here!</H3>
+    </View>
+  );
+}
+
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
-
+  const [refreshing, setRefreshing] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(route.params.initialTab);
   const [orders, setOrders] = React.useState([]);
   function changeTab(tab) {
     setActiveTab(tab);
-    getOrderList(tab.replace(/\s+/g, '-').toLowerCase());
+    getOrderList(false, tab.replace(/\s+/g, '-').toLowerCase());
   }
-  async function getOrderList(type = 'all') {
-    setLoaded(false);
+  async function getOrderList(refreshing, type = 'all') {
+    refreshing ? setRefreshing(true) : setLoaded(false);
     fetch(ENV.backend + '/customer/get-orders/' + type, {
       method: 'GET',
       headers: {
@@ -33,7 +44,7 @@ export default function ({ navigation, route }) {
           throw new Error('Malformed Response');
         }
         setOrders(res.orders);
-        setLoaded(true);
+        refreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
   }
@@ -43,7 +54,10 @@ export default function ({ navigation, route }) {
     });
   }
   React.useEffect(() => {
-    getOrderList(route.params.initialTab.replace(/\s+/g, '-').toLowerCase());
+    getOrderList(
+      false,
+      route.params.initialTab.replace(/\s+/g, '-').toLowerCase()
+    );
   }, []);
   return (
     <SafeAreaView>
@@ -59,6 +73,7 @@ export default function ({ navigation, route }) {
             'To Pickup',
             'To Review',
             'Completed',
+            'Cancelled',
           ]}
           active={activeTab}
           onPress={changeTab}
@@ -69,13 +84,23 @@ export default function ({ navigation, route }) {
           <View style={styles.ordersContainer}>
             <FadeComponent>
               <FlatList
+                style={styles.flatList}
+                ListEmptyComponent={emptyOrders}
                 data={orders}
+                refreshing={refreshing}
+                onRefresh={() =>
+                  getOrderList(
+                    true,
+                    activeTab.replace(/\s+/g, '-').toLowerCase()
+                  )
+                }
                 renderItem={(order) => (
                   <OrderView
                     farmer={order.item.farmerName}
                     key={order.item.orderId}
                     orderId={order.item.orderId}
                     orderDate={order.item.orderPlaced}
+                    cancelledDate={order.item.orderCancelled}
                     paidDate={order.item.orderPaid}
                     status={order.item.status}
                     total={order.item.orderTotal}
@@ -102,5 +127,23 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     paddingHorizontal: 10,
+  },
+  flatList: {
+    height: '100%',
+  },
+  noOrdersContent: {
+    paddingHorizontal: 10,
+    minHeight: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  messageImage: {
+    height: 200,
+    resizeMode: 'contain',
+  },
+  messageTitle: {
+    fontFamily: 'Poppins',
+    textAlign: 'center',
+    paddingVertical: 50,
   },
 });
