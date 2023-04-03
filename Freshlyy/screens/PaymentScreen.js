@@ -162,13 +162,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    fontFamily: 'Poppins',
     textAlign: 'center',
     marginBottom: 10,
   },
   bigTitle: {
     marginBottom: 20,
-    fontFamily: 'Poppins',
     textAlign: 'center',
   },
   coupon: {

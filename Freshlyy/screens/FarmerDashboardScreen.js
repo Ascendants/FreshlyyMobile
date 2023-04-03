@@ -25,7 +25,10 @@ import RefreshView from '../components/RefreshView';
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
   const [userData, setUserData] = useState([]);
-  const [product, setProduct] = useState([]);
+  const [sellingProducts, setSellingProducts] = useState('');
+  const [pendingProducts, setPendingProducts] = useState('');
+  const [newOrders, setNewOrders] = useState('');
+  const [pastOrders, setPastOrders] = useState('');
   const sheetRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -48,6 +51,10 @@ export default function ({ navigation, route }) {
           throw new Error('Something went wrong');
         }
         setUserData(res.user);
+        setSellingProducts(res.liveProducts);
+        setPendingProducts(res.pendingProducts);
+        setNewOrders(res.newOrders);
+        setPastOrders(res.pastOrders);
         setLoaded(true);
       })
       .catch((err) => console.log(err));
@@ -58,18 +65,21 @@ export default function ({ navigation, route }) {
       <View style={styles.screen}>
         <Header farmer={true} />
         <RefreshView getData={getData}>
-          <InfoCardDB user={userData} />
+          <InfoCardDB
+            user={userData}
+            goToBalances={() => navigation.navigate('Farmer Balance')}
+          />
           <H4 style={styles.headings}>My Orders</H4>
           <View style={styles.cardContainer}>
             <DashBoardCard
               imageUri={require('../assets/gift.png')}
-              number={10}
+              number={newOrders}
               text='New Orders'
               onPress={() => handleSnapPress(0)}
             />
             <DashBoardCard
               imageUri={require('../assets/box.png')}
-              number={5}
+              number={pastOrders}
               text='Past Orders'
               onPress={() => handleSnapPress(0)}
             />
@@ -78,13 +88,13 @@ export default function ({ navigation, route }) {
           <View style={styles.cardContainer}>
             <DashBoardCard
               imageUri={require('../assets/trade.png')}
-              number={100}
+              number={sellingProducts}
               text='Selling'
               onPress={() => handleSnapPress(0)}
             />
             <DashBoardCard
               imageUri={require('../assets/pending.png')}
-              number={3}
+              number={pendingProducts}
               text='Pending'
               onPress={() => handleSnapPress(0)}
             />
