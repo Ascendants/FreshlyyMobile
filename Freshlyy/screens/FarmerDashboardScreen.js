@@ -29,10 +29,10 @@ export default function ({ navigation, route }) {
   const [pendingProducts, setPendingProducts] = useState('');
   const [newOrders, setNewOrders] = useState('');
   const [pastOrders, setPastOrders] = useState('');
-  // const sheetRef = useRef(null);
-  // const [isOpen, setIsOpen] = useState(false);
+  const sheetRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-  // const snapPoints = ['60%', '100%'];
+  const snapPoints = ['60%', '100%'];
 
   const handleSnapPress = useCallback((index) => {
     sheetRef.current?.snapToIndex(index);
