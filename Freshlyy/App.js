@@ -74,7 +74,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={StartScreen}
+            component={SocialCornerScreen}
             initialParams={{
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
               total: 5000,
