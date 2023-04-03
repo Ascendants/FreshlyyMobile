@@ -11,8 +11,11 @@ import Theme from './constants/theme';
 const Stack = createNativeStackNavigator();
 
 import StartScreen from './screens/StartScreen';
-import ProductDetailScreen from './screens/ProductDetailScreen';
 import GetStartedScreen from './screens/GetStartedScreen';
+import ProductDetailScreen from './screens/ProductDetailScreen';
+import EmailVerificationScreen from './screens/EmailVerificationScreen';
+import VerifyEmail from './screens/VerifyEmail';
+import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
 import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
 import MyCartScreen from './screens/MyCartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
@@ -53,6 +56,7 @@ import AddBankAccountScreen from './screens/AddBankAccountScreen';
 
 import OrderCancelScreen from './screens/OrderCancelScreen';
 import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
+
 import FarmerBalancesScreen from './screens/FarmerBalancesScreen';
 import ConfirmRequestWithdrawalScreen from './screens/ConfirmRequestWithdrawalScreen';
 import PayoutRequestListScreen from './screens/PayoutRequestListScreen';
@@ -101,6 +105,13 @@ export default function App() {
           <Stack.Screen
             name='Configure Bank'
             component={AddBankAccountScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+           <Stack.Screen
+            name='GetStartedScreen'
+            component={GetStartedScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -231,6 +242,13 @@ export default function App() {
               headerShown: false,
             }}
           />
+              <Stack.Screen
+            name='FarmerCreateAccount'
+            component={FarmerCreateAccountScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name='homePage'
             component={ProductHomePageScreen}
@@ -250,6 +268,27 @@ export default function App() {
             component={ProductDetailScreen}
             options={{
               headerShown: true,
+            }}
+          />
+                  <Stack.Screen
+            name='Email Verification'
+            component={EmailVerificationScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+            <Stack.Screen
+            name='EmailVerify'
+            component={VerifyEmail}
+            options={{
+              headerShown: false,
+            }}
+          />
+               <Stack.Screen
+            name='Phone Verification'
+            component={PhoneVerificationScreen}
+            options={{
+              headerShown: false,
             }}
           />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}

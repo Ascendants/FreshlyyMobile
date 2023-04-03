@@ -12,9 +12,11 @@ import { H6 } from './Texts';
 
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
+
   return (
     <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
+     
       <TextInput
         onFocus={() => {
           setState(1);
@@ -27,6 +29,7 @@ module.exports.TextInputBox = function (props) {
         style={[styles.input, state ? styles.inputFocused : null]}
         placeholder={props.placeholder}
         textContentType={props.type}
+        secureTextEntry={props.secure?true:false}
         keyboardType={props.keyboardType}
         inputMode={props.inputMode}
         onChangeText={props.onChangeText}
@@ -133,61 +136,37 @@ module.exports.CheckBox = function (props) {
   );
 };
 
-module.exports.DatePicker = function (props) {
-  const [datePicker, setDatePicker] = useState(false);
+// module.exports.DatePicker = function (props) {
+//   const [date, setDate] = useState(new Date());
+//   const [showDatePicker, setShowDatePicker] = useState(false);
+//   const [selectedDate, setSelectedDate] = useState(new Date());
+//   return(
+//     <TouchableOpacity
+//     onPress={() => setShowDatePicker(!showDatePicker)}
+//   >
+//     <View style={styles.dateFullCont}>
+//     <View style={styles.dateCont}>
+//       <H6>Date of Birth</H6>
+//       <H7>{selectedDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</H7>
 
-  const [date, setDate] = useState(new Date());
-
-  const [timePicker, setTimePicker] = useState(false);
-
-  const [time, setTime] = useState(new Date(Date.now()));
-
-  function showDatePicker() {
-    setDatePicker(true);
-  }
-
-  function showTimePicker() {
-    setTimePicker(true);
-  }
-
-  function onDateSelected(event, value) {
-    setDate(value);
-    setDatePicker(false);
-  }
-
-  function onTimeSelected(event, value) {
-    setTime(value);
-    setTimePicker(false);
-  }
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <Text>Date = {date.toDateString()}</Text>
-
-        <Text>Time = {time.toLocaleTimeString('en-US')}</Text>
-        {datePicker && (
-          <DateTimePicker
-            value={date}
-            mode={'date'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={true}
-            onChange={onDateSelected}
-          />
-        )}
-
-        {!datePicker && (
-          <View style={{ margin: 10 }}>
-            <BigButton
-              title='Show Date Picker'
-              color='green'
-              onPress={showDatePicker}
-            />
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
-  );
-};
+//       {showDatePicker ? (
+//         <DateTimePicker
+//           name="dob"
+//           mode="date"
+//           value={date}
+//           display="date"
+//           minimumDate={new Date(1950, 0, 1)}
+//           onChange={handleDateChange}
+//         />
+//       ) : null}
+//     </View>
+//     {formik.errors.dob ? (
+//       <Text style={styles.errormsg}>{formik.errors.dob}</Text>
+//     ) : null}
+//     </View>
+//   </TouchableOpacity>
+//   )
+// };
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
