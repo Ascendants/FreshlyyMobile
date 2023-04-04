@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,49 +6,98 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
-import { TextInputBox, DropDownPicker,DatePicker } from '../components/Inputs';
-import {Ionicons} from '@expo/vector-icons';
+import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
-import { H1, H2 } from '../components/Texts';
+import { H1, H2, H3, H6, Pr } from '../components/Texts';
+import ENV from '../constants/env';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-export default function () {
+export default function ({ navigation, route }) {
+  const [product, setProduct] = useState({});
+  const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(() => {
+    fetch(
+      ENV.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8',
+      {
+        method: 'GET',
+        headers: {
+          useremail: route.params.userEmail,
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message != 'Success') {
+          throw new Error('Malformed Response');
+        }
+        const data = res.product;
+        setProduct(data);
+      })
+
+      .catch((err) => console.log(err));
+  }, []);
+  // const image = product.imageUrls[0].imageUrl;
   return (
     <SafeAreaView>
-    <ScrollView>
-    <View style={styles.screen}>
-      <Header back={true}/>
-      <H1 style={styles.AddText}>Selling Products</H1>
-      <Image
-        source={require('../assets/InsertProduct.png')}
-        style={styles.vectorimage}
-      />
-      <H1 style={styles.AddText}>Sri Lankan Carrot</H1>
-      <H2 style={styles.Desc}>Available Quantity -: 10Kg 
-      Price -: LKR 1250/1Kg
-      Description -: I dug these bad boys up just today morning</H2> 
-     
-      {/* <DatePicker/> */}
+      <Header back={true} />
+      <ScrollView>
+        <View style={styles.screen}>
+          <H1 style={styles.AddText}>Selling Products</H1>
+          {/* {imageUrl ? (
+            <Image source={{ uri: image.imageUrl }} />
+          ) : ( */}
+          {product.imageUrls?.length && (
+            <Image
+              source={{ uri: product?.imageUrls[0].imageUrl }}
+              style={styles.vectorimage}
+            />
+          )}
 
-      
+          {/* <Image
+            source={require("../assets/carrot.jpg")}
+            style={styles.vectorimage}
+          /> */}
+          {/* <DatePicker/> */}
+          <H6 style={styles.PText}>{product.title}</H6>
+          <View style={styles.DeBox}>
+            <H2 style={styles.DText}>Available Quantity -:</H2>
+            <H1 style={styles.DText}>
+              {product?.qtyAvailable}
+              {product?.unit}
+            </H1>
+            <H2 style={styles.DText}>Minimum Quantity -:</H2>
+            <H1 style={styles.DText}>
+              {' '}
+              {product.minQtyIncrement}
+              {product.unit}
+            </H1>
+            <H2 style={styles.DText}>Price -: </H2>
+            <Pr>
+              <H1 style={styles.DText}>{product.price} </H1>
+            </Pr>
+            <H2 style={styles.DText}>Description -: </H2>
+            <H1 style={styles.DText}>{product.description}</H1>
+          </View>
 
-      <TextInputBox inputlabel="Product Name" placeholder="Enter product name"  />
-      <TextInputBox inputlabel="Quantity Available" placeholder="Enter quantity available "  />
-      <TextInputBox inputlabel="Price of 1Kg" placeholder="Enter price of 1Kg" />
-      <TextInputBox inputlabel="Any description" placeholder="Enter description if you need" /> 
-       <TextInputBox inputlabel="Add product image" placeholder="add 3 images here" />
-      <View style={styles.buttcont}>
-        <Button title="Upload" color="shadedPrimary" size="normal"/>
-        <Button title="Delete image" color="shadedDanger" size="normal"/>
-      </View>
-        <Button title="Submit" color="filledPrimary" size="big"/>
-      
-    </View>
-    </ScrollView>
+          <View style={styles.buttcont}>
+            <Button
+              title='Edit'
+              color='shadedPrimary'
+              size='big'
+              onPress={() => navigation.navigate('editScreen')}
+            />
+            <Button title='Delete' color='shadedDanger' size='big' />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -66,56 +115,51 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   vectorimage: {
-    width: 247,
-    height: 143,
+    width: 200,
+    height: 200,
     marginTop: 10,
-    
+    borderRadius: 20,
   },
   AddText: {
-   
+    // color: Theme.primary,
     fontSize: 25,
     paddingTop: 15,
     paddingBottom: 2,
   },
-  Desc: {
-   
-    fontSize: 20,
+  PText: {
+    fontSize: 23,
     paddingTop: 15,
+    paddingBottom: 10,
+    fontWeight: 'bold',
+  },
+  DText: {
+    fontSize: 20,
     paddingBottom: 2,
-    margin: 20,
+  },
+  DeBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginLeft: 5,
+    marginRight: -10,
+    backgroundColor: Theme.overlayShade,
+    padding: 10,
+    borderRadius: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    width: '80%',
   },
   inputcont: {
     position: 'relative',
+    width: '100%',
+  },
+
+  buttcont: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 20,
+    paddingBottom: 80,
     width: '80%',
   },
-  inputlabel: {
-    paddingLeft: 50,
-    color: Theme.textColor,
-    fontFamily: 'Poppins',
-  },
-  input: {
-    position: 'relative',
-    height: 40,
-    width: '100%',
-    fontFamily: 'Poppins',
-    paddingLeft: 10,
-    backgroundColor: Theme.overlay,
-    borderColor: Theme.overlay,
-    borderWidth: 1,
-    borderRadius: 10,
-  },
- buttcont: {
-   display: 'flex',
-   justifyContent:'space-between',
-   flexDirection: 'row',
-   justifyContent:'space-between',
-   width:'80%'
-  
- 
-
- }
-    
-
-  
-
 });

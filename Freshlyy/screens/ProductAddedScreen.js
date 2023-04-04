@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Theme from "../constants/theme";
 import { Button } from "../components/Buttons";
 import { TextInputBox, DropDownPicker } from "../components/Inputs";
-import {  H2,H4,H5} from "../components/Texts";
+import { H2, H4, H5 } from "../components/Texts";
 import Header from "../components/Header";
 
 export default function () {
@@ -20,7 +20,7 @@ export default function () {
       <View style={styles.screen}>
         <Header back={true} />
         <Image
-          source={require("../assets/ProductAdded.png")}
+          source={require("../assets/AddingProduct.png")}
           style={styles.loginpic}
         />
         <H2 style={styles.logintext}>Product Added</H2>
@@ -28,14 +28,15 @@ export default function () {
           source={require("../assets/checked.png")}
           style={styles.okaypic}
         />
-        
+
         <View>
           <View style={styles.buttoncont}>
-            <Button title="View Product List" color="filledPrimary" size="big" />
-            
+            <Button
+              title="View Product List"
+              color="filledPrimary"
+              size="big"
+            />
           </View>
-         
-
         </View>
       </View>
     </SafeAreaView>
@@ -51,26 +52,26 @@ const styles = StyleSheet.create({
   loginpic: {
     width: 300,
     height: 300,
-    marginTop:0,
+    marginTop: 0,
     marginBottom: 0,
   },
   logintext: {
-    marginTop:-10,
+    marginTop: 10,
     color: Theme.textColor,
 
     fontFamily: "Poppins",
   },
   buttoncont: {
     display: "flex",
-    justifyContent:'center',
+    justifyContent: "center",
     alignItems: "center",
-    marginVertical:20,
+    marginVertical: 20,
   },
 
   okaypic: {
     width: 100,
     height: 100,
-    marginTop:0,
+    marginTop: 0,
     marginBottom: 0,
   },
 });

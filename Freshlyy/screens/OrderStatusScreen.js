@@ -31,16 +31,16 @@ export default function ({ navigation, route }) {
 
   const getData = React.useCallback(async () => {
     const orderId = route.params.orderId;
-    return fetch(ENV.backend + '/customer/get-order/' + orderId, {
-      method: 'GET',
+    return fetch(ENV.backend + "/customer/get-order/" + orderId, {
+      method: "GET",
       headers: {
         useremail: route.params.userEmail,
       },
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.message != 'Success') {
-          throw new Error('Order not found');
+        if (res.message != "Success") {
+          throw new Error("Order not found");
         }
         setOrder((prev) => {
           return { ...prev, ...res.order };
@@ -66,11 +66,11 @@ export default function ({ navigation, route }) {
             />
             {!order?.orderUpdate?.cancelled && !order?.orderUpdate?.payment && (
               <Button
-                title='Pay Now'
-                size='big'
-                color='shadedSecondary'
+                title="Pay Now"
+                size="big"
+                color="shadedSecondary"
                 onPress={() => {
-                  navigation.navigate('Payment', {
+                  navigation.navigate("Payment", {
                     orders: [order],
                     userEmail: route.params.userEmail,
                     later: true,
@@ -83,11 +83,11 @@ export default function ({ navigation, route }) {
               !order.isDelivery &&
               !order?.orderUpdate.pickedUp && (
                 <Button
-                  title='Confirm Pick Up'
-                  size='big'
-                  color='shadedWarning'
+                  title="Confirm Pick Up"
+                  size="big"
+                  color="shadedWarning"
                   onPress={() => {
-                    navigation.navigate('Confirm Pickup', {
+                    navigation.navigate("Confirm Pickup", {
                       orderId: order?._id,
                       farmerName: order?.farmerName,
                       userEmail: route.params.userEmail,
@@ -156,17 +156,17 @@ export default function ({ navigation, route }) {
             <Button title='Get Support' color='shadedWarning' size='big' />
             {(order?.orderUpdate?.delivered ||
               order?.orderUpdate?.pickedUp) && (
-              <Button title='Review' color='shadedSecondary' size='big' />
+              <Button title="Review" color="shadedSecondary" size="big" />
             )}
           </View>
           {!order?.orderUpdate?.cancelled && !order?.orderUpdate?.processed && (
             <>
               <Button
-                title='Cancel Order'
-                size='big'
-                color='shadedDanger'
+                title="Cancel Order"
+                size="big"
+                color="shadedDanger"
                 onPress={() =>
-                  navigation.navigate('Order Cancel Screen', {
+                  navigation.navigate("Order Cancel Screen", {
                     orderId: order?._id,
                     farmerName: order?.farmerName,
                     userEmail: route.params.userEmail,
@@ -188,36 +188,36 @@ export default function ({ navigation, route }) {
 
 const styles = StyleSheet.create({
   screen: {
-    height: '100%',
-    alignItems: 'center',
+    height: "100%",
+    alignItems: "center",
   },
   pageArea: {
     marginBottom: 30,
   },
   container: {
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 10,
   },
   ordersContainer: {
     marginVertical: 10,
   },
   orderInfo: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   orderInfoFarmer: {
-    textAlign: 'center',
+    textAlign: "center",
     color: Theme.secondary,
   },
   title: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   buttonArea: {
     marginVertical: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   infoText: {
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 50,
   },
 });

@@ -55,7 +55,7 @@ import VerifyYourEmail from './screens/VerifyYourEmail';
 import CreateNewPassword from './screens/CreateNewPassword';
 import { G } from 'react-native-svg';
 import AddBankAccountScreen from './screens/AddBankAccountScreen';
-
+import EditProductScreen from './screens/EditProductScreen';
 import FarmerFollowerScreen from './screens/FarmerFollowerScreen';
 import LocationScreen from './screens/LocationScreen';
 import OrderReviewScreen from './screens/OrderReviewScreen';
@@ -80,7 +80,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'komuthu@freshlyy.com';
+  const userEmail = 'haritha@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -91,10 +91,10 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={FarmerDashBoardScreen}
+            component={CustomerDashboardScreen}
             initialParams={{
+              // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
-              total: 5000,
               purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               userEmail: userEmail,
               initialTab: 'toPay',
@@ -129,6 +129,7 @@ export default function App() {
               userEmail: userEmail,
             }}
           />
+
           <Stack.Screen
             name='Confirm Pickup'
             component={ConfirmPickupScreen}
@@ -197,6 +198,27 @@ export default function App() {
             }}
           />
           <Stack.Screen
+            name='editScreen'
+            component={EditProductScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='productupdated'
+            component={ProductUpdatedScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='productAddedSuccessfully'
+            component={ProductAddedScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
             name='Order Cancel Screen'
             component={OrderCancelScreen}
             initialParams={{
@@ -237,7 +259,13 @@ export default function App() {
           <Stack.Screen name='Contact Us' component={ContactUsScreen} />
           <Stack.Screen name='Ticket Details' component={TicketDetailsScreen} />
 
-          <Stack.Screen name='Cart' component={MyCartScreen} />
+          <Stack.Screen
+            name='Cart'
+            component={MyCartScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
 
           <Stack.Screen
             name='Message'

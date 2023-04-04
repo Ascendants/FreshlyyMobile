@@ -14,7 +14,7 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 export default function ({ navigation, route }) {
   const [cart, setCart] = React.useState([]);
   let totalPrice = 0;
-  // const [total, setTotal] = React.useState(0);
+  const [total, setTotal] = React.useState(0);
   React.useState(() => {
     fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
@@ -24,15 +24,22 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         if (!res.cart) throw new Error('Malformed Response');
         setCart(res.cart);
       })
       .catch((err) => console.log(err));
   }, []);
-
+  React.useEffect(() => {
+    let ctotal = 0;
+    cart.map((farmer) =>
+      farmer.items.map((item) => {
+        return (ctotal += item.uPrice * item.qty);
+      })
+    );
+    setTotal(ctotal);
+  }, [cart]);
   // const [modal, setModal] = React.useState(false);
-  
+
   // const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   // const [product, setProduct] = React.useState({
   //   purl: route.params.purl,
@@ -79,8 +86,7 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-
-        <Button title='toggle' onPress={()=>setModal((prev)=>!prev)}/>
+        <Button title='toggle' onPress={() => setModal((prev) => !prev)} />
         <Header />
         <H2>My Cart</H2>
         <ScrollView
@@ -88,19 +94,23 @@ export default function ({ navigation, route }) {
           style={styles.container}
         >
           {cart.map((farmer) =>
-            farmer.items.map((item) => (
-              totalPrice = item.totalPrice,
-              <ProductView key={item.item} product={item} />
-            ))
+            farmer.items.map((item) => {
+              return <ProductView key={item.item} product={item} />;
+            })
           )}
         </ScrollView>
         <View style={styles.bottomContainer}>
           <View style={styles.left}>
             <H3>Total</H3>
-            <Pr fontSize={35}>{totalPrice}</Pr>
+            <Pr fontSize={35}>{total}</Pr>
           </View>
           <View style={styles.right}>
-            <Button size='big' color='filledPrimary' title='Checkout' />
+            <Button
+              size='big'
+              color='filledPrimary'
+              title='Checkout'
+              onPress={() => navigation.navigate('Checkout')}
+            />
           </View>
         </View>
       </View>
