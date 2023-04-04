@@ -13,7 +13,7 @@ import { Button } from '../components/Buttons';
 import { TextInputBox, DropDownPicker, CheckBox } from '../components/Inputs';
 import Header from '../components/Header';
 
-import { H1, H2, H4,H3} from '../components/Texts';
+import { H1, H2, H4, H3 } from '../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function () {
@@ -26,11 +26,12 @@ export default function () {
           source={require('../assets/verifyEmail.png')}
           style={styles.loginpic}
         />
-        <H4 style={styles.desc}>Please enter the 4 digit code sent to nadunrupasinghe@gmail.com</H4>
-        
+        <H4 style={styles.desc}>
+          Please enter the 4 digit code sent to nadunrupasinghe@gmail.com
+        </H4>
+
         <View></View>
         <Button title='Verify' color='shadedPrimary' size='big' />
-
       </View>
     </SafeAreaView>
   );
@@ -51,11 +52,11 @@ const styles = StyleSheet.create({
   },
   desc: {
     marginVertical: 10,
-    textAlign:'center'
+    textAlign: 'center',
   },
   inputcont: {
     width: '80%',
     alignItems: 'center',
-    marginBottom:70
+    marginBottom: 70,
   },
 });

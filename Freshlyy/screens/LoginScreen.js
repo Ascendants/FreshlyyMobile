@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import { TextInputBox, DropDownPicker } from '../components/Inputs';
-import { H1, H2, H4 ,H7} from '../components/Texts';
+import { H1, H2, H4, H7 } from '../components/Texts';
 import Header from '../components/Header';
 
 export default function () {
@@ -29,7 +29,7 @@ export default function () {
           <TextInputBox inputlabel='Password' type='password' />
         </View>
         <Button color='shadedPrimary' size='big' title='Log In' />
-        <H7 style={{color:Theme.secondary}}>Forgot Password</H7>
+        <H7 style={{ color: Theme.secondary }}>Forgot Password</H7>
       </View>
     </SafeAreaView>
   );

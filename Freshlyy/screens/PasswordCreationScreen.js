@@ -15,30 +15,28 @@ import Header from '../components/Header';
 
 import { H1, H2, H4 } from '../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Formik, validateYupSchema, useFormik } from "formik";
-import * as Yup from "yup";
+import { Formik, validateYupSchema, useFormik } from 'formik';
+import * as Yup from 'yup';
 
-
-
-export default function ({navigation,route}) {
+export default function ({ navigation, route }) {
   const [password, setPassword] = useState('');
-   const[valid,setValid]=useState(false)
-    console.log(route.params)
+  const [valid, setValid] = useState(false);
+  console.log(route.params);
   const validationSchema = Yup.object().shape({
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Password must be at least 8 characters long'),
     cpassword: Yup.string()
       .required('Confirm Password is required')
-      .oneOf([Yup.ref('password')], 'Passwords must match')
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
   });
 
   const formik = useFormik({
     initialValues: {
-      password:"",
-      cpassword: "",
+      password: '',
+      cpassword: '',
     },
-    
+
     validationSchema: validationSchema,
   });
 
@@ -52,10 +50,9 @@ export default function ({navigation,route}) {
     const data = formik.values;
     setValid(true);
     console.log(data);
-    if(valid){
-      navigation.navigate("beFarmer", { type: "Success" });
+    if (valid) {
+      navigation.navigate('beFarmer', { type: 'Success' });
     }
-  
   }
 
   return (
@@ -63,41 +60,45 @@ export default function ({navigation,route}) {
       <View style={styles.screen}>
         <Header back={true} />
         <ScrollView showsVerticalScrollIndicator={false}>
+          <Image
+            source={require('../assets/passwordvec.png')}
+            style={styles.loginpic}
+          />
+          <View style={styles.inputcont}>
+            <TextInputBox
+              inputlabel='password'
+              placeholder='password'
+              type='password'
+              name='password'
+              secure={true}
+              onChangeText={formik.handleChange('password')}
+              onBlur={() => formik.setFieldTouched('password', true, true)}
+              value={formik.values.password}
+              error={formik.errors.password}
+              touched={formik.touched.password}
+            />
+            <TextInputBox
+              inputlabel='confirmPassword'
+              placeholder='Confirm Password'
+              type='password'
+              name='cpassword'
+              secure={true}
+              onChangeText={formik.handleChange('cpassword')}
+              onBlur={() => formik.setFieldTouched('cpassword', true, true)}
+              value={formik.values.cpassword}
+              error={formik.errors.cpassword}
+              touched={formik.touched.cpassword}
+            />
+          </View>
+          <View></View>
+          <Button
+            title='Next'
+            color='filledSecondary'
+            size='big'
+            onPress={submit}
+          />
 
-        <Image
-          source={require('../assets/passwordvec.png')}
-          style={styles.loginpic}
-        />
-        <View style={styles.inputcont}>
-        <TextInputBox
-                inputlabel="password"
-                placeholder="password"
-                type="password"
-                name="password"
-                secure={true}
-                onChangeText={formik.handleChange("password")}
-                onBlur={() => formik.setFieldTouched("password", true, true)}
-                value={formik.values.password}
-                error={formik.errors.password}
-                touched={formik.touched.password}
-              />
-          <TextInputBox
-                inputlabel="confirmPassword"
-                placeholder="Confirm Password"
-                type="password"
-                name="cpassword"
-                secure={true}
-                onChangeText={formik.handleChange("cpassword")}
-                onBlur={() => formik.setFieldTouched("cpassword", true, true)}
-                value={formik.values.cpassword}
-                error={formik.errors.cpassword}
-                touched={formik.touched.cpassword}
-              />
-        </View>
-        <View></View>
-        <Button title='Next' color='filledSecondary' size='big' onPress={submit} />
-
-        {/* <CheckBox /> */}
+          {/* <CheckBox /> */}
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     color: Theme.primary,
   },
   inputcont: {
-     paddingHorizontal: 15,
-    alignItems: "center",
+    paddingHorizontal: 15,
+    alignItems: 'center',
   },
 });

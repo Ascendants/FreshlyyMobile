@@ -13,31 +13,30 @@ import { Button } from '../components/Buttons';
 import { TextInputBox, DropDownPicker, CheckBox } from '../components/Inputs';
 import Header from '../components/Header';
 
-import { H1, H2, H4,H3} from '../components/Texts';
+import { H1, H2, H4, H3 } from '../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function () {
   return (
     <SafeAreaView>
       <ScrollView>
-      <Header back={true} />
-      <View style={styles.screen}>
-      
-        
-        <H3 style={styles.heading}>Create New Password</H3>
-      
-        <Image
-          source={require('../assets/createNewPassword.png')}
-          style={styles.loginpic}
-        />
-        <H4 style={styles.desc}>Your new password must be different from previously used password</H4>
-        <View style={styles.inputcont}>
-          <TextInputBox inputlabel='New Password' type='password' />
-          <TextInputBox inputlabel='Confirm Password' type='password' />
+        <Header back={true} />
+        <View style={styles.screen}>
+          <H3 style={styles.heading}>Create New Password</H3>
+
+          <Image
+            source={require('../assets/createNewPassword.png')}
+            style={styles.loginpic}
+          />
+          <H4 style={styles.desc}>
+            Your new password must be different from previously used password
+          </H4>
+          <View style={styles.inputcont}>
+            <TextInputBox inputlabel='New Password' type='password' />
+            <TextInputBox inputlabel='Confirm Password' type='password' />
+          </View>
+          <Button title='Submit' color='shadedPrimary' size='big' />
         </View>
-        <Button title='Submit' color='shadedPrimary' size='big' />
-        
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -53,16 +52,16 @@ const styles = StyleSheet.create({
   loginpic: {
     width: 300,
     height: 250,
-    marginTop:0,
+    marginTop: 0,
     marginBottom: 20,
   },
   desc: {
     marginVertical: 10,
-    textAlign:'center'
+    textAlign: 'center',
   },
   inputcont: {
     width: '80%',
     alignItems: 'center',
-    marginBottom:30
+    marginBottom: 30,
   },
 });

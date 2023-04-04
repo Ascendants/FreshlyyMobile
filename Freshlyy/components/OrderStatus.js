@@ -35,7 +35,7 @@ export default function (props) {
         </View>
       </View>
     );
-  }else {
+  } else {
     return (
       <View style={styles.container}>
         <View style={styles.statusArea}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -21,22 +21,31 @@ export default function ({ navigation }) {
       <ScrollView>
         <View style={styles.container}>
           <H4 style={{ color: Theme.primary }}>FAQs</H4>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Cant sign in')}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Cant sign in')}
+          >
             <View style={styles.barContainer}>
               <H5>Can't sign in</H5>
-              <AntDesign name="right" size={24} color={Theme.textColor} />
+              <AntDesign name='right' size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Select the Order')}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Select the Order')}
+          >
             <View style={styles.barContainer}>
               <H5>Help with an order</H5>
-              <AntDesign name="right" size={24} color={Theme.textColor} />
+              <AntDesign name='right' size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Create Coupon')}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Create Coupon')}
+          >
             <View style={styles.barContainer}>
               <H5>Create coupon</H5>
-              <AntDesign name="right" size={24} color={Theme.textColor} />
+              <AntDesign name='right' size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
           {/* <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ticket status')}>
@@ -46,20 +55,28 @@ export default function ({ navigation }) {
             </View>
           </TouchableOpacity> */}
           <H5 style={{ margin: 10 }}>Still Have Questions?</H5>
-          <Image source={require('../assets/support-ticket.png')} style={styles.image} />
+          <Image
+            source={require('../assets/support-ticket.png')}
+            style={styles.image}
+          />
           <View style={styles.bottomContainer}>
-            <Button title='Contact Us' size='normal' color='filledPrimary' onPress={() => navigation.navigate('Contact Us')} />
+            <Button
+              title='Contact Us'
+              size='normal'
+              color='filledPrimary'
+              onPress={() => navigation.navigate('Contact Us')}
+            />
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     margin: 10,
-    height: "100%",
+    height: '100%',
     paddingHorizontal: 20,
   },
   button: {
@@ -81,6 +98,6 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: '40%',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
-})
+});

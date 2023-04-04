@@ -9,15 +9,15 @@ import Theme from '../constants/theme';
 import Loading from '../components/Loading';
 import FadeComponent from '../components/FadeComponent';
 
-function emptyOrders(){
-  return(
+function emptyOrders() {
+  return (
     <View style={styles.noOrdersContent}>
       <H3>Dont have any orders!</H3>
     </View>
-  )
+  );
 }
 
-export default function ({navigation, route}){
+export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [orders, setOrders] = React.useState([]);
@@ -32,15 +32,15 @@ export default function ({navigation, route}){
         useremail: route.params.userEmail,
       },
     })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.message != 'Success') {
-        throw new Error('Malformed Response');
-      }
-      setOrders(res.orders);
-      refreshing ? setRefreshing(false) : setLoaded(true);
-    })
-    .catch((err) => console.log(err));
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message != 'Success') {
+          throw new Error('Malformed Response');
+        }
+        setOrders(res.orders);
+        refreshing ? setRefreshing(false) : setLoaded(true);
+      })
+      .catch((err) => console.log(err));
   }
   function navigateToOrder(order) {
     navigation.navigate('Order Details Help Center', {
@@ -55,38 +55,42 @@ export default function ({navigation, route}){
       route.params.initialTab.replace(/\s+/g, '-').toLowerCase()
     );
   }, []);
-  return(
+  return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header back={true}/>
-        <H4 style={{textAlign: 'center', color: Theme.primary}}>Help With an Order</H4>
-        <H5 style={{textAlign: 'center', marginVertical: 10}}>Select the Order</H5>
-          <View style={styles.ordersContainer}>
-            <FadeComponent>
-              <FlatList
-                style={styles.flatList}
-                ListEmptyComponent={emptyOrders}
-                data={orders}
-                renderItem={(order) => (
-                  <OrderView
-                    farmer={order.item.farmerName}
-                    key={order.item.orderId}
-                    orderId={order.item.orderId}
-                    orderDate={order.item.orderPlaced}
-                    cancelledDate={order.item.orderCancelled}
-                    paidDate={order.item.orderPaid}
-                    status={order.item.status}
-                    total={order.item.orderTotal}
-                    viewOrder={navigateToOrder}
-                  />
-                )}
-                keyExtractor={(order) => order.orderId}
-              />
-            </FadeComponent>
-          </View>
+        <Header back={true} />
+        <H4 style={{ textAlign: 'center', color: Theme.primary }}>
+          Help With an Order
+        </H4>
+        <H5 style={{ textAlign: 'center', marginVertical: 10 }}>
+          Select the Order
+        </H5>
+        <View style={styles.ordersContainer}>
+          <FadeComponent>
+            <FlatList
+              style={styles.flatList}
+              ListEmptyComponent={emptyOrders}
+              data={orders}
+              renderItem={(order) => (
+                <OrderView
+                  farmer={order.item.farmerName}
+                  key={order.item.orderId}
+                  orderId={order.item.orderId}
+                  orderDate={order.item.orderPlaced}
+                  cancelledDate={order.item.orderCancelled}
+                  paidDate={order.item.orderPaid}
+                  status={order.item.status}
+                  total={order.item.orderTotal}
+                  viewOrder={navigateToOrder}
+                />
+              )}
+              keyExtractor={(order) => order.orderId}
+            />
+          </FadeComponent>
+        </View>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
   },
   container: {
     margin: 10,
-    height: "100%",
+    height: '100%',
     paddingHorizontal: 20,
   },
   noOrdersContent: {
@@ -113,5 +117,4 @@ const styles = StyleSheet.create({
   flatList: {
     height: '100%',
   },
-
-})
+});

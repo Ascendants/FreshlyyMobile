@@ -16,20 +16,20 @@ import theme from '../constants/theme';
 import {
   findFocusedRoute,
   getFocusedRouteNameFromRoute,
-} from "@react-navigation/native";
-import ProductCard from "../components/ProductCard";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
-import Header from "../components/Header";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import Rating from "../components/Rating";
-import ENV from "../constants/env";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { Rate5 } from "../components/Rate5";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import * as Animatable from "react-native-animatable";
-import { Animations } from "../constants/Animation";
-import Loading from "../components/Loading";
+} from '@react-navigation/native';
+import ProductCard from '../components/ProductCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
+import Header from '../components/Header';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+import Rating from '../components/Rating';
+import ENV from '../constants/env';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { Rate5 } from '../components/Rate5';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as Animatable from 'react-native-animatable';
+import { Animations } from '../constants/Animation';
+import Loading from '../components/Loading';
 
 export default function ({ navigation, route }) {
   const [searchText, setSearchText] = useState('');
@@ -47,16 +47,16 @@ export default function ({ navigation, route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const bottomSheetRef = useRef(null);
-  const snapPoints = ["60%", "100%"];
+  const snapPoints = ['60%', '100%'];
 
   const sendToProductDetail = async (pubUrl) => {
-    navigation.navigate("Product Detail", {
+    navigation.navigate('Product Detail', {
       purl: pubUrl,
     });
   };
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + "/customer/mainpage/", {
+    fetch(ENV.backend + '/customer/mainpage/', {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
@@ -209,12 +209,12 @@ export default function ({ navigation, route }) {
             <TouchableOpacity onPress={handleBestMatchSort}>
               <View style={styles.filterSelect}>
                 <AntDesign
-                  name="arrowdown"
+                  name='arrowdown'
                   size={24}
                   style={
                     sortByBestMatch
                       ? { color: Theme.primary }
-                      : { color: "black" }
+                      : { color: 'black' }
                   }
                 />
                 <H6 style={sortByBestMatch ? { color: Theme.primary } : {}}>
@@ -261,51 +261,50 @@ export default function ({ navigation, route }) {
               </View>
             </TouchableOpacity>
           </View>
-         
+
           <View style={styles.productsContainer}>
-          {!loaded ? (
-          <Loading />
+            {!loaded ? (
+              <Loading />
             ) : (
-            <FlatList
-              style={{ height: '100%', flex: 1 }}
-              numColumns={2}
-              data={filteredProducts}
-              refreshing={refreshing}
-              onRefresh={getData}
-              renderItem={({ item, index }) => (
-                <Animatable.View
-                  animation={animation}
-                  duration={1000}
-                  delay={index * 300}
-                >
-                  <ProductCard
+              <FlatList
+                style={{ height: '100%', flex: 1 }}
+                numColumns={2}
+                data={filteredProducts}
+                refreshing={refreshing}
+                onRefresh={getData}
+                renderItem={({ item, index }) => (
+                  <Animatable.View
                     animation={animation}
-                    prodId={item._id}
-                    farmerName={item.farmerName}
-                    title={item.title}
-                    imageUrl={item.imageUrl}
-                    price={item.price}
-                    unit={item.unit}
-                    overallRating={item.overallRating}
-                    likes={item.likes}
-                    userID={route.params.userEmail}
-                    onLikePress={handleLikePress}
-                    bestMatch={sortByBestMatch}
-                    cheaper={item.cheaper}
-                    publicUrl={item.publicUrl}
-                    distanceAway={
-                      sortByDistance || sortByBestMatch
-                        ? item.distanceAway
-                        : null
-                    }
-                    onPress={sendToProductDetail}
-                  />
-                </Animatable.View>
-              
-              )}
-              keyExtractor={(prod, index) => prod._id}
-            />
-          )}
+                    duration={1000}
+                    delay={index * 300}
+                  >
+                    <ProductCard
+                      animation={animation}
+                      prodId={item._id}
+                      farmerName={item.farmerName}
+                      title={item.title}
+                      imageUrl={item.imageUrl}
+                      price={item.price}
+                      unit={item.unit}
+                      overallRating={item.overallRating}
+                      likes={item.likes}
+                      userID={route.params.userEmail}
+                      onLikePress={handleLikePress}
+                      bestMatch={sortByBestMatch}
+                      cheaper={item.cheaper}
+                      publicUrl={item.publicUrl}
+                      distanceAway={
+                        sortByDistance || sortByBestMatch
+                          ? item.distanceAway
+                          : null
+                      }
+                      onPress={sendToProductDetail}
+                    />
+                  </Animatable.View>
+                )}
+                keyExtractor={(prod, index) => prod._id}
+              />
+            )}
             <BottomSheet
               ref={bottomSheetRef}
               index={-1}
@@ -324,12 +323,12 @@ export default function ({ navigation, route }) {
                     <TouchableOpacity onPress={handleBestMatchSort}>
                       <View style={styles.filterSelect}>
                         <AntDesign
-                          name="arrowdown"
+                          name='arrowdown'
                           size={24}
                           style={
                             sortByBestMatch
                               ? { color: Theme.primary }
-                              : { color: "black" }
+                              : { color: 'black' }
                           }
                         />
                         <H6
@@ -513,13 +512,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   filterCont: {
-    display: "flex",
-    width: "100%",
+    display: 'flex',
+    width: '100%',
     paddingVertical: 0,
     paddingHorizontal: 20,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     marginVertical: 5,
   },
   filterSelect: {

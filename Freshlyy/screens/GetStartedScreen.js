@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image ,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { H1, H2 } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 
-export default function ({navigation}) {
+export default function ({ navigation }) {
   return (
     <View style={styles.screen}>
       <Image source={require('../assets/logo.png')} style={styles.startLogo} />
@@ -13,14 +13,22 @@ export default function ({navigation}) {
         style={styles.startImage}
       />
       <H1 style={styles.logoText}>Welcome!</H1>
-      <Button title='Create Your Account' color='filledPrimary' size='big'  onPress={()=>navigation.navigate('Sign Up')} />
+      <Button
+        title='Create Your Account'
+        color='filledPrimary'
+        size='big'
+        onPress={() => navigation.navigate('Sign Up')}
+      />
       <Text style={styles.noAccText}>Already have an account?</Text>
 
       <TouchableOpacity>
-      <Text style={styles.signInText}  onPress={()=>navigation.navigate('login')}>Sign in here!</Text>
+        <Text
+          style={styles.signInText}
+          onPress={() => navigation.navigate('login')}
+        >
+          Sign in here!
+        </Text>
       </TouchableOpacity>
-        
-      
     </View>
   );
 }

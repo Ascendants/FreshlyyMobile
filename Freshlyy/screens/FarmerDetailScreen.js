@@ -18,8 +18,6 @@ import { H4, P, H3 } from '../components/Texts';
 import Rating from '../components/Rating';
 import ProductDeatilCard from '../components/ProductDetailCard';
 
-
-
 export default function () {
   return (
     <SafeAreaView>
@@ -111,7 +109,6 @@ const styles = StyleSheet.create({
   },
   H3: {
     alignItems: 'center',
-    
   },
   actionButtonContainer: {
     flexDirection: 'row',

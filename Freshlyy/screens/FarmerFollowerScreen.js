@@ -14,28 +14,32 @@ import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
 import { H4, P } from '../components/Texts';
-import { AntDesign,Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import FarmerFollowCard from '../components/FarmerFollowCard';
 
-
 export default function () {
-    return (
-        <SafeAreaView>
-            <Header back={true} />
-            <ScrollView>
-            <View style={styles.screen}>
-            <View style={styles.searchCont}>
-              <AntDesign name="search1" size={20} color="black" style={styles.searchico}/>
-              <TextInput placeholder='Search' style={styles.searchinput}/>
-            </View>
-            <View  style={styles.followingList}>
-              <FarmerFollowCard></FarmerFollowCard>
-              <FarmerFollowCard></FarmerFollowCard>
-            </View>
-            </View>
-            </ScrollView>
-        </SafeAreaView>
-    );
+  return (
+    <SafeAreaView>
+      <Header back={true} />
+      <ScrollView>
+        <View style={styles.screen}>
+          <View style={styles.searchCont}>
+            <AntDesign
+              name='search1'
+              size={20}
+              color='black'
+              style={styles.searchico}
+            />
+            <TextInput placeholder='Search' style={styles.searchinput} />
+          </View>
+          <View style={styles.followingList}>
+            <FarmerFollowCard></FarmerFollowCard>
+            <FarmerFollowCard></FarmerFollowCard>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -78,25 +82,22 @@ const styles = StyleSheet.create({
   loctext: {
     alignSelf: 'baseline',
   },
-  searchico:{
-    paddingRight:10
-     
+  searchico: {
+    paddingRight: 10,
   },
-  searchinput:{
-    width:'87%'
+  searchinput: {
+    width: '87%',
   },
-  searchCont:{
-    display:'flex',
-    padding:8,
-    flexDirection:'row',
-    alignItems:'center',
+  searchCont: {
+    display: 'flex',
+    padding: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
     //paddingLeft:20,
-    backgroundColor:Theme.overlay,
-    width:'90%',
-    borderRadius:20,
-    marginVertical:10
- },
-  followingList:{
-
- }
+    backgroundColor: Theme.overlay,
+    width: '90%',
+    borderRadius: 20,
+    marginVertical: 10,
+  },
+  followingList: {},
 });

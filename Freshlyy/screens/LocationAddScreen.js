@@ -14,7 +14,7 @@ import { Button } from '../components/Buttons';
 import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/Header';
-import { H4, P ,H6} from '../components/Texts';
+import { H4, P, H6 } from '../components/Texts';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LocationCard } from '../components/LocationCard';
 import MapView, { Marker, Callout } from 'react-native-maps';
@@ -26,7 +26,6 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [locationName, setLocationName] = useState('');
-
 
   useEffect(() => {
     (async () => {
@@ -43,7 +42,7 @@ export default function App() {
 
   const getAddress = async (latitude, longitude) => {
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw"}`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${'AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw'}`
     );
     const data = await response.json();
     return data.results[0].formatted_address;
@@ -82,40 +81,38 @@ export default function App() {
       <SafeAreaView>
         <ScrollView>
           <Header back={true} />
-      <View style={styles.screen}>
-        <H4>Select your Address</H4>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: 7.8731,
-            longitude: 80.7718,
-            latitudeDelta: 5,
-            longitudeDelta: 5,
-          }}
-          onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
-        >
-          {selectedLocation && (
-            <Marker coordinate={selectedLocation}>
-              <Callout>
-              <View style={styles.callout}>
-                  <Text>{selectedLocation.address}</Text>
-                  <H6>Your location</H6>
-                  <TextInput
-                    style={styles.textInput}
-                    placeholder="Enter location name"
-                    value={locationName}
-                    onChangeText={handleLocationNameChange}
-                  />
-                  <H6>Flat/Building/Street</H6>
-                  <TextInput
-                    style={styles.textInput}
-                  />
-                  </View>
-              </Callout>
-            </Marker>
-          )}
-        </MapView>
-      </View>
+          <View style={styles.screen}>
+            <H4>Select your Address</H4>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: 7.8731,
+                longitude: 80.7718,
+                latitudeDelta: 5,
+                longitudeDelta: 5,
+              }}
+              onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
+            >
+              {selectedLocation && (
+                <Marker coordinate={selectedLocation}>
+                  <Callout>
+                    <View style={styles.callout}>
+                      <Text>{selectedLocation.address}</Text>
+                      <H6>Your location</H6>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder='Enter location name'
+                        value={locationName}
+                        onChangeText={handleLocationNameChange}
+                      />
+                      <H6>Flat/Building/Street</H6>
+                      <TextInput style={styles.textInput} />
+                    </View>
+                  </Callout>
+                </Marker>
+              )}
+            </MapView>
+          </View>
         </ScrollView>
       </SafeAreaView>
     );
@@ -135,14 +132,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    margin:10,
-    border:10,
-    width:  Dimensions.get('window').width,
+    margin: 10,
+    border: 10,
+    width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
   callout: {
     width: 200,
-    height:200,
+    height: 200,
   },
   textInput: {
     borderWidth: 1,
