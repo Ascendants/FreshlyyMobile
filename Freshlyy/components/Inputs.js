@@ -1,6 +1,6 @@
 import { contains } from '@firebase/util';
 import { React, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -16,21 +16,20 @@ module.exports.TextInputBox = function (props) {
   return (
     <View style={styles.inputcont}>
       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-     
+
       <TextInput
         onFocus={() => {
-          props.onFocus();
           setState(1);
         }}
-        // onBlur={() => {
-        //   props.onBlur();
-        //   setState(0);
-        // }}
+        onBlur={() => {
+          props.onBlur();
+          setState(0);
+        }}
         name={props.name}
         style={[styles.input, state ? styles.inputFocused : null]}
         placeholder={props.placeholder}
         textContentType={props.type}
-        secureTextEntry={props.secure?true:false}
+        secureTextEntry={props.secure ? true : false}
         keyboardType={props.keyboardType}
         inputMode={props.inputMode}
         onChangeText={props.onChangeText}
@@ -136,7 +135,7 @@ module.exports.DropDownPicker = function () {
       }}
     />
   );
-}
+};
 
 module.exports.CheckBox = function (props) {
   return (

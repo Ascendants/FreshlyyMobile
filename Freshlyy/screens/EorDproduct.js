@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,53 +7,44 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-} from "react-native";
-import Theme from "../constants/theme";
-import { Button } from "../components/Buttons";
-import { TextInputBox, DropDownPicker, DatePicker } from "../components/Inputs";
-import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../components/Header";
-import { H1, H2, H3, H6, Pr } from "../components/Texts";
-import ENV from "../constants/env";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+} from 'react-native';
+import Theme from '../constants/theme';
+import { Button } from '../components/Buttons';
+import { TextInputBox, DropDownPicker, DatePicker } from '../components/Inputs';
+import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
+import { H1, H2, H3, H6, Pr } from '../components/Texts';
+import ENV from '../constants/env';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 export default function ({ navigation, route }) {
   const [product, setProduct] = useState({});
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
-    const storage = getStorage();
-
     fetch(
-      ENV.backend + "/farmer/selling-product/" + "63b6b7b160d78bea22456aa8",
-      // "${ENV.backend}/farmer/getSellingProduct/?productId=63f4d385b1a06dad48ec25ba",
+      ENV.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8',
       {
-        method: "GET",
+        method: 'GET',
         headers: {
           useremail: route.params.userEmail,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       }
     )
       .then((res) => res.json())
       .then((res) => {
-        if (res.message != "Success") {
-          throw new Error("Malformed Response");
+        if (res.message != 'Success') {
+          throw new Error('Malformed Response');
         }
         const data = res.product;
-        console.log(data);
         setProduct(data);
       })
 
       .catch((err) => console.log(err));
   }, []);
   // const image = product.imageUrls[0].imageUrl;
-  const image =
-    product.imageUrls && product.imageUrls.length > 0
-      ? product.imageUrls[0].imageUrl
-      : "";
-  console.log(image);
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -63,7 +54,12 @@ export default function ({ navigation, route }) {
           {/* {imageUrl ? (
             <Image source={{ uri: image.imageUrl }} />
           ) : ( */}
-          <Image source={{ uri: image }} style={styles.vectorimage} />
+          {product.imageUrls?.length && (
+            <Image
+              source={{ uri: product?.imageUrls[0].imageUrl }}
+              style={styles.vectorimage}
+            />
+          )}
 
           {/* <Image
             source={require("../assets/carrot.jpg")}
@@ -79,7 +75,7 @@ export default function ({ navigation, route }) {
             </H1>
             <H2 style={styles.DText}>Minimum Quantity -:</H2>
             <H1 style={styles.DText}>
-              {" "}
+              {' '}
               {product.minQtyIncrement}
               {product.unit}
             </H1>
@@ -93,12 +89,12 @@ export default function ({ navigation, route }) {
 
           <View style={styles.buttcont}>
             <Button
-              title="Edit"
-              color="shadedPrimary"
-              size="big"
-              onPress={() => navigation.navigate("editScreen")}
+              title='Edit'
+              color='shadedPrimary'
+              size='big'
+              onPress={() => navigation.navigate('editScreen')}
             />
-            <Button title="Delete" color="shadedDanger" size="big" />
+            <Button title='Delete' color='shadedDanger' size='big' />
           </View>
         </View>
       </ScrollView>
@@ -109,13 +105,13 @@ export default function ({ navigation, route }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     //justifyContent: 'center',
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
   },
   logo: {
     height: 50,
-    resizeMode: "contain",
+    resizeMode: 'contain',
     marginTop: 50,
   },
   vectorimage: {
@@ -134,15 +130,15 @@ const styles = StyleSheet.create({
     fontSize: 23,
     paddingTop: 15,
     paddingBottom: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   DText: {
     fontSize: 20,
     paddingBottom: 2,
   },
   DeBox: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     marginLeft: 5,
     marginRight: -10,
     backgroundColor: Theme.overlayShade,
@@ -150,20 +146,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 15,
     paddingRight: 15,
-    width: "80%",
+    width: '80%',
   },
   inputcont: {
-    position: "relative",
-    width: "100%",
+    position: 'relative',
+    width: '100%',
   },
 
   buttcont: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingTop: 20,
     paddingBottom: 80,
-    width: "80%",
+    width: '80%',
   },
 });
