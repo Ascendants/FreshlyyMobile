@@ -55,7 +55,7 @@ export default function ({ navigation, route }) {
         type: 'Success',
         messageTitle: 'Payment Complete!',
         messageText: 'The farmers will process your order and let you know!',
-        goto: 'Order Detail',
+        goto: 'Orders List',
         goButtonText: 'View Order',
       });
     } catch (error) {
@@ -64,7 +64,7 @@ export default function ({ navigation, route }) {
         type: 'fail',
         messageTitle: 'Payment Failed :(',
         messageText: 'One or more payments failed :(',
-        goto: 'Order Detail',
+        goto: 'Orders List',
         goButtonText: 'View Order',
       });
     }
