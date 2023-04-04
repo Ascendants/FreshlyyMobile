@@ -73,7 +73,7 @@ export default function ({ navigation, route }) {
           type: 'Success',
           messageTitle: 'Account Saved!',
           messageText: 'The account has been saved securely',
-          goto: 'Farmer Earnings',
+          goto: 'Farmer Balance',
           goButtonText: 'Go to Earnings',
         });
         setSubmitting(false);

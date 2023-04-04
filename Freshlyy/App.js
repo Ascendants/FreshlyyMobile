@@ -91,7 +91,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={EorDproduct}
+            component={CustomerDashboardScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
@@ -259,7 +259,13 @@ export default function App() {
           <Stack.Screen name='Contact Us' component={ContactUsScreen} />
           <Stack.Screen name='Ticket Details' component={TicketDetailsScreen} />
 
-          <Stack.Screen name='Cart' component={MyCartScreen} />
+          <Stack.Screen
+            name='Cart'
+            component={MyCartScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
 
           <Stack.Screen
             name='Message'
