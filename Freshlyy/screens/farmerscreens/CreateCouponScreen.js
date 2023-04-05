@@ -11,9 +11,8 @@ import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import { P, H4, H7, H6 } from '../../components/Texts';
-import { TextInputBox } from '../../components/Inputs';
+import { TextInputBox, DatePicker } from '../../components/Inputs';
 import { AntDesign } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { format, getDate, min } from 'date-fns';
 import ENV from '../../constants/env';
 import { Formik } from 'formik';
@@ -120,16 +119,22 @@ export default function ({ navigation, route }) {
   expMinimumDate.setDate(expMinimumDate.getDate() + 1);
 
   const couponCodeSchema = Yup.object().shape({
-    presentage: Yup.number()
-      .min(1, 'Coupon presentage must be at least 1%')
-      .max(100, 'Coupon presentage must be at most 100%')
-      .required('Coupon presentage is required'),
+    percentage: Yup.number()
+      .min(1, 'Coupon percentage must be at least 1%')
+      .max(100, 'Coupon percentage must be at most 100%')
+      .required('Coupon percentage is required'),
     code: Yup.string()
       .matches(
         couponRegex,
         "Coupon code must start with 'CP' and end with 4 digits"
       )
       .required('Coupon code is required'),
+    createDate: Yup.date()
+      .min(new Date(), 'Activation will take at least 2 days.')
+      .required('Create date is required'),
+    expireDate: Yup.date()
+      .min(new Date(), 'Activation will take at least 2 days.')
+      .required('Expire date is required'),
   });
 
   return (
@@ -164,7 +169,16 @@ export default function ({ navigation, route }) {
           </P>
           <P></P>
           <Formik
-            initialValues={{ presentage: '', code: '' }}
+            initialValues={{
+              percentage: '',
+              code: '',
+              createDate: new Date(
+                new Date().setDate(new Date().getDate() + 2)
+              ),
+              expireDate: new Date(
+                new Date().setDate(new Date().getDate() + 3)
+              ),
+            }}
             validationSchema={couponCodeSchema}
             onSubmit={async () => {
               try {
@@ -222,29 +236,29 @@ export default function ({ navigation, route }) {
               touched,
               handleChange,
               setFieldTouched,
+              setFieldValue,
               handleSubmit,
               isValid,
             }) => (
               <View>
                 <TextInputBox
-                  inputlabel='Precentage'
+                  inputlabel='Percentage'
                   placeholder=''
-                  value={values.presentage}
+                  value={values.percentage}
                   keyBoardType='numeric'
-                  onChangeText={handleChange('presentage')}
+                  onChangeText={handleChange('percentage')}
                   onFocus={() => {
                     console.log('');
                   }}
                   onBlur={() => {
-                    setFieldTouched('presentage');
+                    setFieldTouched('percentage');
                   }}
+                  error={errors.percentage}
+                  touched={touched.percentage}
                 />
-                {errors.presentage && touched.presentage && (
-                  <H7 style={{ color: 'red' }}>{errors.presentage}</H7>
-                )}
                 <TextInputBox
                   inputlabel='Coupon Code'
-                  placeholder=''
+                  placeholder='CPXXXX'
                   value={values.code}
                   onChangeText={handleChange('code')}
                   onFocus={() => setShowInstructions(true)}
@@ -252,10 +266,9 @@ export default function ({ navigation, route }) {
                     setShowInstructions(false);
                     setFieldTouched('code');
                   }}
+                  error={errors.code}
+                  touched={touched.code}
                 />
-                {errors.code && touched.code && (
-                  <H7 style={{ color: 'red' }}>{errors.code}</H7>
-                )}
                 {showInstructions && suggestions.length > 0 && (
                   <View style={styles.instructionContainer}>
                     <H6>Code format -- "CP" and 4 digit code.</H6>
@@ -270,46 +283,28 @@ export default function ({ navigation, route }) {
                     ))}
                   </View>
                 )}
-                <View style={styles.datePickerContainer}>
-                  <Text style={styles.inputlabel}>Select Create Date</Text>
-                  <View style={styles.datePickerBox}>
-                    <H6>{createDateString}</H6>
-                    <TouchableOpacity
-                      onPress={() => setShowCreateDatePicker(true)}
-                    >
-                      <AntDesign name='calendar' size={24} color='black' />
-                    </TouchableOpacity>
-                  </View>
-                  {showCreateDatePicker && (
-                    <DateTimePicker
-                      value={createDate}
-                      mode='date'
-                      display='datepicker'
-                      minimumDate={minimumDate}
-                      onChange={handleCreateDateChange}
-                    />
-                  )}
-                </View>
-                <View style={styles.datePickerContainer}>
-                  <Text style={styles.inputlabel}>Select Expire Date</Text>
-                  <View style={styles.datePickerBox}>
-                    <H6>{expireDateString}</H6>
-                    <TouchableOpacity
-                      onPress={() => setShowExpireDatePicker(true)}
-                    >
-                      <AntDesign name='calendar' size={24} color='black' />
-                    </TouchableOpacity>
-                  </View>
-                  {showExpireDatePicker && (
-                    <DateTimePicker
-                      value={expireDate}
-                      mode='date'
-                      display='datepicker'
-                      // minimumDate={expMinimumDate}
-                      onChange={handleExpireDateChange}
-                    />
-                  )}
-                </View>
+                <DatePicker
+                  inputlabel={'Activates On'}
+                  name='Activates On'
+                  onChange={(date) => setFieldValue('createDate', date)}
+                  onPress={() => setFieldTouched('createDate')}
+                  value={values.createDate}
+                  touched={touched.createDate}
+                  error={errors.createDate}
+                  minimumDate={
+                    new Date(new Date().setDate(new Date().getDate() + 2))
+                  }
+                />
+                <DatePicker
+                  inputlabel={'Expires On'}
+                  name='Expires On'
+                  onChange={(date) => setFieldValue('expireDate', date)}
+                  onPress={() => setFieldTouched('expireDate')}
+                  value={values.expireDate}
+                  touched={touched.expireDate}
+                  error={errors.expireDate}
+                  minimumDate={values.createDate}
+                />
                 <View style={styles.bottomContainer}>
                   <Button
                     title='Create Coupon'

@@ -1,14 +1,24 @@
-import { contains } from '@firebase/util';
 import { React, useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { BigButton } from './Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CheckBox from 'expo-checkbox';
-import { H6 } from './Texts';
+import { H5 } from './Texts';
+import { Button } from './Buttons';
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from '@react-native-community/datetimepicker';
+
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
@@ -34,6 +44,7 @@ module.exports.TextInputBox = function (props) {
         inputMode={props.inputMode}
         onChangeText={props.onChangeText}
         value={props.value}
+        placeholderTextColor={Theme.placeholderText}
       />
       {props.error && props.touched && (
         <Text style={styles.errormsg}>{props.error}</Text>
@@ -64,6 +75,7 @@ module.exports.MaskedTextInputBox = function (props) {
         inputMode={props.inputMode}
         onChangeText={props.onChangeText}
         value={props.value}
+        placeholderTextColor={Theme.placeholderText}
       />
       {props.error && props.touched && (
         <Text style={styles.errormsg}>{props.error}</Text>
@@ -71,55 +83,6 @@ module.exports.MaskedTextInputBox = function (props) {
     </View>
   );
 };
-
-// module.exports.DropDownPicker = function (props) {
-//   const [open, setOpen] = useState(false);
-//   const [value, setValue] = useState(null);
-//   const [items, setItems] = useState(props.list);
-//   return (
-//     <View
-//       style={[
-//         styles.inputcont,
-//         {
-//           zIndex: 1000,
-//         },
-//       ]}
-//     >
-//       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-//       <DropDownPicker
-//         placeholder={props.placeholder ? props.placeholder : '-- Select'}
-//         open={open}
-//         value={value}
-//         items={items}
-//         setOpen={setOpen}
-//         setValue={setValue}
-//         listMode='SCROLLVIEW'
-//         setItems={setItems}
-//         dropDownDirection='BOTTOM'
-//         style={{
-//           backgroundColor: Theme.overlay,
-//           borderWidth: 0,
-//           paddingHorizontal: 10,
-//           paddingVertical: 7,
-//           borderRadius: 10,
-//           minHeight: 20,
-//         }}
-//         textStyle={{
-//           fontFamily: 'Poppins',
-//           color: Theme.textColor,
-//         }}
-//         dropDownContainerStyle={{
-//           backgroundColor: Theme.overlay,
-//           borderWidth: 0,
-//         }}
-//         placeholderStyle={{
-//           color: Theme.tertiary,
-//           // fontFamily:""
-//         }}
-//       />
-//     </View>
-//   );
-// };
 
 module.exports.DropDownPicker = function () {
   const [selectedItem, setSelectedItem] = useState('');
@@ -151,47 +114,108 @@ module.exports.CheckBox = function (props) {
     </View>
   );
 };
+module.exports.DatePicker = function (props) {
+  let showDatePicker = null;
+  let showMode = null;
+  if (Platform.OS === 'android') {
+    showMode = (currentMode) => {
+      DateTimePickerAndroid.open({
+        value: props.value,
+        onChange,
+        mode: currentMode,
+        is24Hour: true,
+        minimumDate: props.minimumDate,
+        maximumDate: props.maximumDate,
+      });
+    };
+
+    showDatePicker = () => {
+      showMode('date');
+    };
+  }
+  function onChange(event, date) {
+    props.onPress();
+    date !== undefined ? props.onChange(date) : null;
+  }
+  return (
+    <View style={styles.inputcont}>
+      <TouchableWithoutFeedback onPress={props.onPress}>
+        <View style={styles.dateCont}>
+          <H5
+            style={{
+              color: Theme.textColor,
+            }}
+          >
+            {props.inputlabel}
+          </H5>
+          {Platform.OS === 'ios' ? (
+            <DateTimePicker
+              themeVariant='light'
+              name={props.name}
+              mode='date'
+              value={props.value}
+              accentColor={Theme.primary}
+              minimumDate={props.minimumDate}
+              onChange={onChange}
+              maximumDate={props.maximumDate}
+            />
+          ) : (
+            <Button
+              size='normal'
+              color='shadedTertiary'
+              onPress={showDatePicker}
+              title={
+                props.value instanceof Date
+                  ? props.value.toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
+                  : 'Pick Date'
+              }
+            />
+          )}
+        </View>
+        {props.touched && props.error ? (
+          <Text style={styles.errormsg}>{props.error}</Text>
+        ) : null}
+      </TouchableWithoutFeedback>
+    </View>
+  );
+};
 
 // module.exports.DatePicker = function (props) {
-//   const [date, setDate] = useState(new Date());
-//   const [showDatePicker, setShowDatePicker] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState(new Date());
-//   return(
-//     <TouchableOpacity
-//     onPress={() => setShowDatePicker(!showDatePicker)}
-//   >
-//     <View style={styles.dateFullCont}>
-//     <View style={styles.dateCont}>
-//       <H6>Date of Birth</H6>
-//       <H7>{selectedDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</H7>
+//   const [date, setDate] = useState(new Date(1598051730000));
+//   const onChange = (event, selectedDate) => {
+//     const currentDate = selectedDate;
+//     setDate(currentDate);
+//   };
 
-//       {showDatePicker ? (
-//         <DateTimePicker
-//           name="dob"
-//           mode="date"
-//           value={date}
-//           display="date"
-//           minimumDate={new Date(1950, 0, 1)}
-//           onChange={handleDateChange}
-//         />
-//       ) : null}
+//   return (
+//     <View>
+//       <Button
+//         size='big'
+//         color='shadedPrimary'
+//         onPress={showDatepicker}
+//         title='Show date picker!'
+//       />
+//       <Text>selected: {date.toLocaleString()}</Text>
 //     </View>
-//     {formik.errors.dob ? (
-//       <Text style={styles.errormsg}>{formik.errors.dob}</Text>
-//     ) : null}
-//     </View>
-//   </TouchableOpacity>
-//   )
+//   );
 // };
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center',
-    //justifyContent: 'center',
     fontFamily: 'Poppins',
   },
   errormsg: {
     color: Theme.danger,
+    fontFamily: 'Poppins',
+    marginVertical: 5,
+    marginHorizontal: 4,
+    fontSize: 14,
   },
   inputcont: {
     width: '100%',
@@ -200,7 +224,7 @@ const styles = StyleSheet.create({
   inputlabel: {
     color: Theme.textColor,
     fontFamily: 'Poppins',
-    fontSize: 15,
+    fontSize: 16,
   },
   input: {
     fontFamily: 'Poppins',
@@ -209,8 +233,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: Theme.contrastTextColor,
     borderRadius: 10,
+    fontSize: 18,
   },
   inputFocused: {
     backgroundColor: Theme.primaryShade,
+  },
+  dateCont: {
+    padding: 10,
+    paddingHorizontal: 10,
+    marginVertical: 0,
+    borderRadius: 10,
+    backgroundColor: Theme.contrastTextColor,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

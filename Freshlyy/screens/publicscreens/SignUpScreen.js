@@ -22,33 +22,15 @@ import { Formik, validateYupSchema, useFormik } from 'formik';
 import * as Yup from 'yup';
 import * as Animatable from 'react-native-animatable';
 import { Animations } from '../../constants/Animation';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import Dropdown from 'react-native-modal-dropdown';
 import { H2, H4, H5, H6, H7, H8 } from '../../components/Texts';
 
 export default function ({ navigation }) {
   const [valid, setValid] = useState(false);
   const [userData, setUserData] = useState({});
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedGender, setSelectedGender] = useState(null);
   const genders = ['Male', 'Female'];
 
-  function handleDateChange(event, date) {
-    setShowDatePicker(false);
-    if (date !== undefined) {
-      setSelectedDate(date);
-      formik.setFieldValue(
-        'dob',
-        date.toLocaleDateString('en-GB', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        })
-      ); // save date in ISO string format
-    }
-  }
   const handleDropdownSelect = (index, value) => {
     setSelectedGender(value);
     formik.setFieldValue('gender', value);
@@ -73,19 +55,18 @@ export default function ({ navigation }) {
       .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, 'Invalid NIC format!')
       .required('NIC is required!'),
   });
-
   const formik = useFormik({
     initialValues: {
       FirstName: '',
       LastName: '',
       address: '',
-      dob: '',
+      dob: new Date(),
       gender: '',
       nic: '',
     },
     validationSchema: validationSchema,
   });
-
+  console.log(formik.errors);
   async function submit() {
     formik.validateForm();
     Object.keys(formik.values).forEach((value) => {
@@ -101,7 +82,6 @@ export default function ({ navigation }) {
       navigation.navigate('beFarmer', { type: 'Success', userData: data });
     }
   }
-  const animation = Animations[Math.floor(Math.random() * Animations.length)];
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -126,7 +106,7 @@ export default function ({ navigation }) {
                   name='FirstName'
                   onChangeText={formik.handleChange('FirstName')}
                   onBlur={() => formik.setFieldTouched('FirstName', true, true)}
-                  value={formik.values.FisrtName}
+                  value={formik.values.FirstName}
                   error={formik.errors.FirstName}
                   touched={formik.touched.FirstName}
                 />
@@ -141,36 +121,16 @@ export default function ({ navigation }) {
                   error={formik.errors.LastName}
                   touched={formik.touched.LastName}
                 />
-
-                <TouchableOpacity
-                  onPress={() => setShowDatePicker(!showDatePicker)}
-                >
-                  <View style={styles.dateFullCont}>
-                    <H6 style={styles.inputlabel}>Date of Birth</H6>
-                    <View style={styles.dateCont}>
-                      <H6 style={{ color: '#A7A7A7' }}>
-                        {selectedDate.toDateString()}
-                      </H6>
-
-                      {showDatePicker ? (
-                        <DateTimePicker
-                          name='dob'
-                          mode='date'
-                          value={date}
-                          display='date'
-                          accentColor={Theme.primaryShade}
-                          minimumDate={new Date(1950, 0, 1)}
-                          onChange={handleDateChange}
-                        />
-                      ) : null}
-                    </View>
-                    {formik.touched.dob && formik.errors.dob ? (
-                      <Text style={styles.errormsg}>{formik.errors.dob}</Text>
-                    ) : null}
-                  </View>
-                </TouchableOpacity>
-
-                <View style={styles.datFullCont}>
+                <DatePicker
+                  inputlabel={'Date of Birth'}
+                  name='Date of Birth'
+                  onChange={(date) => formik.setFieldValue('dob', date)}
+                  onPress={() => formik.setFieldTouched('dob', true, true)}
+                  value={formik.values.dob}
+                  touched={formik.touched.dob}
+                  error={formik.errors.dob}
+                />
+                <View style={styles.dateFullCont}>
                   <H6 style={styles.inputlabel}>Gender</H6>
                   <Dropdown
                     options={genders}
@@ -271,18 +231,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
-  dateCont: {
-    width: 320,
-    padding: 9,
-    paddingHorizontal: 10,
-    marginVertical: 0,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-  },
+
   errormsg: {
     color: Theme.danger,
   },
