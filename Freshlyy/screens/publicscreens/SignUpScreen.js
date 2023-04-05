@@ -59,7 +59,6 @@ export default function ({ navigation }) {
     },
     validationSchema: validationSchema,
   });
-  console.log(formik.errors);
   async function submit() {
     formik.validateForm();
     Object.keys(formik.values).forEach((value) => {
@@ -133,7 +132,8 @@ export default function ({ navigation }) {
                   onChange={(value) => formik.setFieldValue('gender', value)}
                   touched={formik.touched.gender}
                   error={formik.errors.gender}
-                  onPress={() => formik.setFieldTouched('gender', true, true)}
+                  onClose={() => formik.setFieldTouched('gender', true, true)}
+                  placeholder='Choose gender'
                 />
 
                 <TextInputBox

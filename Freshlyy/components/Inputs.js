@@ -94,52 +94,53 @@ module.exports.DropDownPicker = function (props) {
     props.onChange(value);
   }, [value]);
   return (
-    <View style={[styles.inputcont, styles.pickerCont]}>
-      <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-      <DropDownPicker
-        onPress={props.onPress}
-        items={items}
-        value={value}
-        open={open}
-        setOpen={setIsOpen}
-        setValue={setValue}
-        setItems={setItems}
-        listMode={props.listMode ? props.listMode : 'SCROLLVIEW'}
-        style={styles.picker}
-        containerStyle={styles.pickerContainer}
-        dropDownContainerStyle={styles.dropDownContainer}
-        textStyle={styles.pickerText}
-        arrowIconStyle={styles.pickerArrow}
-        ArrowDownIconComponent={({ style }) => (
-          <Entypo
-            style={style}
-            name='chevron-down'
-            size={24}
-            color={Theme.textColor}
-          />
-        )}
-        arrowIconContainerStyle={styles.pickerArrowContainer}
-        ArrowUpIconComponent={({ style }) => (
-          <Entypo
-            style={style}
-            name='chevron-up'
-            size={24}
-            color={Theme.textColor}
-          />
-        )}
-        TickIconComponent={({ style }) => (
-          <Entypo
-            style={style}
-            name='check'
-            size={22}
-            color={Theme.textColor}
-          />
-        )}
-      />
+    <>
+      <View style={[styles.inputcont, styles.pickerCont]}>
+        <Text style={styles.inputlabel}>{props.inputlabel}</Text>
+        <DropDownPicker
+          listMode='SCROLLVIEW'
+          {...props}
+          items={items}
+          value={value}
+          open={open}
+          setOpen={setIsOpen}
+          setValue={setValue}
+          setItems={setItems}
+          style={styles.picker}
+          containerStyle={styles.pickerContainer}
+          dropDownContainerStyle={styles.dropDownContainer}
+          textStyle={styles.pickerText}
+          ArrowDownIconComponent={({ style }) => (
+            <Entypo
+              style={style}
+              name='chevron-down'
+              size={24}
+              color={Theme.textColor}
+            />
+          )}
+          arrowIconContainerStyle={styles.pickerArrowContainer}
+          ArrowUpIconComponent={({ style }) => (
+            <Entypo
+              style={style}
+              name='chevron-up'
+              size={24}
+              color={Theme.textColor}
+            />
+          )}
+          TickIconComponent={({ style }) => (
+            <Entypo
+              style={style}
+              name='check'
+              size={22}
+              color={Theme.textColor}
+            />
+          )}
+        />
+      </View>
       {props.error && props.touched && (
-        <Text style={styles.errormsg}>{props.error}</Text>
+        <Text style={[styles.errormsg, styles.pickerError]}>{props.error}</Text>
       )}
-    </View>
+    </>
   );
 };
 
@@ -279,7 +280,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   pickerCont: {
-    zIndex: 10000,
+    zIndex: 999,
+    marginBottom: 0,
+  },
+  pickerError: {
+    zIndex: 900,
+    textAlign: 'left',
+    alignSelf: 'flex-start',
+    marginBottom: 10,
   },
   inputlabel: {
     color: Theme.textColor,
@@ -294,6 +302,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.contrastTextColor,
     borderRadius: 10,
     fontSize: 18,
+    minHeight: 50,
   },
   inputFocused: {
     backgroundColor: Theme.primaryShade,
@@ -326,11 +335,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.overlay,
     borderRadius: 10,
     borderColor: Theme.overlay,
-    elevation: 20,
-    shadowColor: '#52006A',
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    zIndex: 10000,
   },
   pickerArrowContainer: {
     justifyContent: 'center',

@@ -170,7 +170,7 @@ export default function ({ navigation, route }) {
                   onChange={(value) => formik.setFieldValue('vehicle', value)}
                   touched={formik.touched.vehicle}
                   error={formik.errors.vehicle}
-                  onPress={() => formik.setFieldTouched('vehicle', true, true)}
+                  onClose={() => formik.setFieldTouched('vehicle', true, true)}
                 />
                 <TextInputBox
                   inputlabel='Address'
