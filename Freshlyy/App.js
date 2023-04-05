@@ -13,7 +13,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'harini@freshlyy.com';
+  const userEmail = 'haritha@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -24,7 +24,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={Screens.CreateCouponScreen}
+            component={Screens.AddBankAccountScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',

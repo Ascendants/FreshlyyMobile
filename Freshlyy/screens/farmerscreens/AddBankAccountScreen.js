@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Image, ScrollView, Settings } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import { TextInputBox, MaskedTextInputBox } from '../../components/Inputs';
+import { TextInputBox, SelectList } from '../../components/Inputs';
 import { H3, P } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
@@ -11,7 +11,6 @@ import * as Yup from 'yup';
 import CardTypeSelector from '../../components/CardTypeSelector';
 import ENV from '../../constants/env';
 import LoadingModal from '../../components/LoadingModal';
-import SearchableMenu from '../../components/SearchableMenu';
 
 export default function ({ navigation, route }) {
   const [submitting, setSubmitting] = React.useState(false);
@@ -95,17 +94,6 @@ export default function ({ navigation, route }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <LoadingModal visible={submitting} message='Saving' />
-        <SearchableMenu
-          select={(item) => setBank(item)}
-          menuItems={banks?.map((a) => {
-            return {
-              value: a.BankName,
-              ...a,
-            };
-          })}
-          visible={pickingBank}
-          closeModal={() => setPickingBank(false)}
-        />
         <Header back={true} home={true} />
         <H3 style={{ textAlign: 'center' }}>Bank Details</H3>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -114,12 +102,28 @@ export default function ({ navigation, route }) {
               source={require('../../assets/vault.png')}
               style={styles.vectorimage}
             />
-            <Button
-              title='Select Bank'
-              size='big'
-              color='shadedSecondary'
-              onPress={() => setPickingBank(true)}
-            />
+            <View style={{ width: '100%' }}>
+              <SelectList
+                setSelected={(item) => {
+                  const b = banks.find((a) => a._id == item);
+                  if (b) {
+                    setBank(b);
+                  }
+                }}
+                data={banks?.map((a) => {
+                  return {
+                    value: a.BankName,
+                    key: a._id,
+                    ...a,
+                  };
+                })}
+                save='key'
+                value={bank}
+                placeholder='-- Select Bank'
+                notFoundText='No bank found'
+                searchPlaceholder='Search bank...'
+              />
+            </View>
             <H3 style={styles.bankName}>{bank.BankName}</H3>
             {bank.BankName && (
               <>

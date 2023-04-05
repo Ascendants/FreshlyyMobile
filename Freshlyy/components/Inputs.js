@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,6 +8,8 @@ import {
   Platform,
 } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { Entypo } from '@expo/vector-icons';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -84,18 +86,93 @@ module.exports.MaskedTextInputBox = function (props) {
   );
 };
 
-module.exports.DropDownPicker = function () {
-  const [selectedItem, setSelectedItem] = useState('');
+module.exports.DropDownPicker = function (props) {
+  const [open, setIsOpen] = useState(false);
+  const [value, setValue] = useState(props.value || null);
+  const [items, setItems] = useState(props.items || []);
+  React.useEffect(() => {
+    props.onChange(value);
+  }, [value]);
   return (
-    <DropDownPicker
-      items={items}
-      defaultValue={selectedItem}
-      containerStyle={{ height: 40 }}
-      itemStyle={{ justifyContent: 'flex-start' }}
-      onChangeItem={(item) => {
-        setSelectedItem(item.value);
-        onSelect(item.value);
+    <View style={[styles.inputcont, styles.pickerCont]}>
+      <Text style={styles.inputlabel}>{props.inputlabel}</Text>
+      <DropDownPicker
+        onPress={props.onPress}
+        items={items}
+        value={value}
+        open={open}
+        setOpen={setIsOpen}
+        setValue={setValue}
+        setItems={setItems}
+        listMode={props.listMode ? props.listMode : 'SCROLLVIEW'}
+        style={styles.picker}
+        containerStyle={styles.pickerContainer}
+        dropDownContainerStyle={styles.dropDownContainer}
+        textStyle={styles.pickerText}
+        arrowIconStyle={styles.pickerArrow}
+        ArrowDownIconComponent={({ style }) => (
+          <Entypo
+            style={style}
+            name='chevron-down'
+            size={24}
+            color={Theme.textColor}
+          />
+        )}
+        arrowIconContainerStyle={styles.pickerArrowContainer}
+        ArrowUpIconComponent={({ style }) => (
+          <Entypo
+            style={style}
+            name='chevron-up'
+            size={24}
+            color={Theme.textColor}
+          />
+        )}
+        TickIconComponent={({ style }) => (
+          <Entypo
+            style={style}
+            name='check'
+            size={22}
+            color={Theme.textColor}
+          />
+        )}
+      />
+      {props.error && props.touched && (
+        <Text style={styles.errormsg}>{props.error}</Text>
+      )}
+    </View>
+  );
+};
+
+module.exports.SelectList = function (props) {
+  return (
+    <SelectList
+      placeholder='--Select'
+      searchPlaceholder='Search...'
+      save='value'
+      {...props}
+      fontFamily='Poppins'
+      inputStyles={{
+        color: Theme.textColor,
+        fontSize: 18,
+        minHeight: 30,
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
       }}
+      boxStyles={{
+        borderColor: Theme.contrastTextColor,
+        backgroundColor: Theme.contrastTextColor,
+        alignItems: 'center',
+        alignContent: 'center',
+      }}
+      dropdownTextStyles={{ color: Theme.textColor, fontSize: 16 }}
+      dropdownStyles={{
+        borderColor: 'white',
+        backgroundColor: 'white',
+      }}
+      arrowicon={
+        <Entypo name='chevron-down' size={24} color={Theme.textColor} />
+      }
     />
   );
 };
@@ -184,26 +261,6 @@ module.exports.DatePicker = function (props) {
   );
 };
 
-// module.exports.DatePicker = function (props) {
-//   const [date, setDate] = useState(new Date(1598051730000));
-//   const onChange = (event, selectedDate) => {
-//     const currentDate = selectedDate;
-//     setDate(currentDate);
-//   };
-
-//   return (
-//     <View>
-//       <Button
-//         size='big'
-//         color='shadedPrimary'
-//         onPress={showDatepicker}
-//         title='Show date picker!'
-//       />
-//       <Text>selected: {date.toLocaleString()}</Text>
-//     </View>
-//   );
-// };
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -220,6 +277,9 @@ const styles = StyleSheet.create({
   inputcont: {
     width: '100%',
     marginVertical: 10,
+  },
+  pickerCont: {
+    zIndex: 10000,
   },
   inputlabel: {
     color: Theme.textColor,
@@ -247,5 +307,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  picker: {
+    backgroundColor: Theme.contrastTextColor,
+    borderColor: Theme.contrastTextColor,
+    borderRadius: 10,
+  },
+  pickerText: {
+    fontSize: 18,
+    fontFamily: 'Poppins',
+    color: Theme.textColor,
+  },
+  pickerContainer: {
+    borderColor: Theme.contrastTextColor,
+    borderRadius: 10,
+  },
+  dropDownContainer: {
+    backgroundColor: Theme.overlay,
+    borderRadius: 10,
+    borderColor: Theme.overlay,
+    elevation: 20,
+    shadowColor: '#52006A',
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  pickerArrowContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+    width: 40,
   },
 });

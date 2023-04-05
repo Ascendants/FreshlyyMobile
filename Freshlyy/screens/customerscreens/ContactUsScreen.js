@@ -4,8 +4,7 @@ import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import { P, H4 } from '../../components/Texts';
-import { TextInputBox } from '../../components/Inputs';
-import { SelectList } from 'react-native-dropdown-select-list';
+import { TextInputBox, SelectList } from '../../components/Inputs';
 import { Button } from '../../components/Buttons';
 import ModalComponent from '../../components/ModalComponent';
 import ENV from '../../constants/env';
@@ -133,17 +132,9 @@ export default function ({ navigation, route }) {
             <SelectList
               setSelected={(val) => setSelected(val)}
               data={data}
-              save='value'
-              placeholder='--'
-              fontFamily='Poppins'
-              inputStyles={{ color: Theme.textColor }}
-              boxStyles={{ borderColor: 'white', backgroundColor: 'white' }}
-              dropdownTextStyles={{ color: Theme.textColor }}
-              dropdownStyles={{
-                borderColor: 'white',
-                backgroundColor: 'white',
-              }}
               value={issue}
+              notFoundText='No Subject Found'
+              searchPlaceholder='Search subject...'
             />
             <TextInputBox
               inputlabel='Description'

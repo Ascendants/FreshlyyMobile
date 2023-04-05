@@ -28,13 +28,6 @@ import { H2, H4, H5, H6, H7, H8 } from '../../components/Texts';
 export default function ({ navigation }) {
   const [valid, setValid] = useState(false);
   const [userData, setUserData] = useState({});
-  const [selectedGender, setSelectedGender] = useState(null);
-  const genders = ['Male', 'Female'];
-
-  const handleDropdownSelect = (index, value) => {
-    setSelectedGender(value);
-    formik.setFieldValue('gender', value);
-  };
 
   const validationSchema = Yup.object().shape({
     FirstName: Yup.string()
@@ -49,7 +42,7 @@ export default function ({ navigation }) {
         'You must be at least 15 years old to register.'
       )
       .required('Date of birth is required!'),
-    gender: Yup.string().required('Gender is required!'),
+    gender: Yup.string().nullable().required('Gender is required'),
     address: Yup.string().required('Address is required!'),
     nic: Yup.string()
       .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, 'Invalid NIC format!')
@@ -130,29 +123,18 @@ export default function ({ navigation }) {
                   touched={formik.touched.dob}
                   error={formik.errors.dob}
                 />
-                <View style={styles.dateFullCont}>
-                  <H6 style={styles.inputlabel}>Gender</H6>
-                  <Dropdown
-                    options={genders}
-                    onSelect={handleDropdownSelect}
-                    defaultValue={selectedGender ?? 'Select Gender'}
-                    style={styles.dropDownCont}
-                    textStyle={{
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      color: selectedGender ? Theme.textColor : '#A7A7A7',
-                    }}
-                    dropdownStyle={styles.dropDown}
-                    dropdownTextHighlightStyle={{
-                      backgroundColor: Theme.primaryShade,
-                    }}
-                  />
-                  {formik.touched.gender && formik.errors.gender ? (
-                    <Text style={{ color: Theme.danger }}>
-                      {formik.errors.gender}
-                    </Text>
-                  ) : null}
-                </View>
+                <DropDownPicker
+                  inputlabel='Gender'
+                  items={[
+                    { label: 'Male', value: 'Male' },
+                    { label: 'Female', value: 'Female' },
+                  ]}
+                  value={formik.values.gender}
+                  onChange={(value) => formik.setFieldValue('gender', value)}
+                  touched={formik.touched.gender}
+                  error={formik.errors.gender}
+                  onPress={() => formik.setFieldTouched('gender', true, true)}
+                />
 
                 <TextInputBox
                   inputlabel='NIC Number'

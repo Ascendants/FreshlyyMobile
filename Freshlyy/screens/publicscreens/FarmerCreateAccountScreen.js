@@ -61,9 +61,9 @@ export default function ({ navigation, route }) {
     ),
     delCharge: Yup.string().required('Delivery Charge per Km is required!'),
 
-    hasVehicle: Yup.string().required(
-      'Vehicle accessabilty details are required!'
-    ),
+    hasVehicle: Yup.string()
+      .nullable()
+      .required('Vehicle accessabilty details are required'),
     address: Yup.string().required('Address is required!'),
     nic: Yup.string()
       .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, 'Invalid NIC format!')
@@ -154,30 +154,24 @@ export default function ({ navigation, route }) {
                   touched={formik.touched.delCharge}
                 />
 
-                <View style={styles.datFullCont}>
-                  <H6 style={styles.inputlabel}>Vehicle Accessability</H6>
-                  <Dropdown
-                    options={vehicle}
-                    onSelect={handleDropdownSelect}
-                    defaultValue={hasVehicle ?? '-----Select-----'}
-                    style={styles.dropDownCont}
-                    textStyle={{
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
-                      color: hasVehicle ? Theme.textColor : '#A7A7A7',
-                    }}
-                    dropdownStyle={styles.dropDown}
-                    dropdownTextHighlightStyle={{
-                      backgroundColor: Theme.primaryShade,
-                    }}
-                  />
-                  {formik.touched.hasVehicle && formik.errors.hasVehicle ? (
-                    <Text style={{ color: Theme.danger }}>
-                      {formik.errors.hasVehicle}
-                    </Text>
-                  ) : null}
-                </View>
-
+                <DropDownPicker
+                  inputlabel='Do you have a vehicle?'
+                  items={[
+                    {
+                      label: 'Has a vehicle to deliver',
+                      value: 'Has a vehicle to deliver',
+                    },
+                    {
+                      label: 'No vehicle to deliver',
+                      value: 'No vehicle to deliver',
+                    },
+                  ]}
+                  value={formik.values.vehicle}
+                  onChange={(value) => formik.setFieldValue('vehicle', value)}
+                  touched={formik.touched.vehicle}
+                  error={formik.errors.vehicle}
+                  onPress={() => formik.setFieldTouched('vehicle', true, true)}
+                />
                 <TextInputBox
                   inputlabel='Address'
                   placeholder='Enter Address'
