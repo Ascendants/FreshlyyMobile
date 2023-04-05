@@ -238,7 +238,6 @@ export default function ({ navigation }) {
     }
     setIsValid(true);
   }, [errors]);
-  console.log('Valid: ', isValid);
   return (
     <SafeAreaView>
       <Header />

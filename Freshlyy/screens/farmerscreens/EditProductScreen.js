@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -38,6 +38,7 @@ export default function ({ route, navigation }) {
   const [description, setDescription] = useState('');
   const [minQtyIncrement, setMinQuantity] = useState('');
   const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [product, setProduct] = useState({});
@@ -181,19 +182,17 @@ export default function ({ route, navigation }) {
     }));
   };
 
-  const isValid =
-    title.length >= 2 &&
-    price !== '' &&
-    !isNaN(Number(price)) &&
-    quantity !== '' &&
-    !isNaN(Number(quantity)) &&
-    minQtyIncrement !== '' &&
-    !isNaN(Number(minQtyIncrement)) &&
-    Number(minQtyIncrement) <= Number(quantity);
+  React.useEffect(() => {
+    for (let key in errors) {
+      if (errors[key] !== null) {
+        setIsValid(false);
+        return;
+      }
+    }
+    setIsValid(true);
+  }, [errors]);
 
   useEffect(() => {
-    const storage = getStorage();
-
     fetch(
       ENV.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8',
       // "${ENV.backend}/farmer/getSellingProduct/?productId=63f4d385b1a06dad48ec25ba",
@@ -203,11 +202,11 @@ export default function ({ route, navigation }) {
           useremail: route.params.userEmail,
           'Content-Type': 'application/json',
         },
-        productId: '63f4d385b1a06dad48ec25ba',
       }
     )
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         if (res.message != 'Success') {
           throw new Error('Malformed Response');
         }
@@ -288,7 +287,6 @@ export default function ({ route, navigation }) {
     }
     setProduct((prevProduct) => ({ ...prevProduct, imageUrls: [] }));
   };
-  console.log(images.length);
   return (
     <SafeAreaView>
       <Header />
@@ -302,6 +300,7 @@ export default function ({ route, navigation }) {
             onChangeText={handleProductNameChange}
             error={errors.title}
             touched={true}
+            onBlur={() => null}
           />
           {product && product.qtyAvailable !== undefined && (
             <TextInputBox
@@ -316,6 +315,7 @@ export default function ({ route, navigation }) {
               keyboardType='numeric'
               error={errors.quantity}
               touched={true}
+              onBlur={() => null}
             />
           )}
           {product && product.minQtyIncrement !== undefined && (
@@ -331,6 +331,7 @@ export default function ({ route, navigation }) {
               keyboardType='numeric'
               error={errors.minQtyIncrement}
               touched={true}
+              onBlur={() => null}
             />
           )}
           {product && product.price !== undefined && (
@@ -341,6 +342,7 @@ export default function ({ route, navigation }) {
               keyboardType='numeric'
               error={errors.price}
               touched={true}
+              onBlur={() => null}
             />
           )}
           <TextInputBox
@@ -349,6 +351,7 @@ export default function ({ route, navigation }) {
             onChangeText={handleDescription}
             error={errors.description}
             touched={true}
+            onBlur={() => null}
           />
 
           {!isValid && (
