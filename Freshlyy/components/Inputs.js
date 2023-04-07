@@ -1,14 +1,26 @@
-import { contains } from '@firebase/util';
-import { React, useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { Entypo } from '@expo/vector-icons';
 import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { BigButton } from './Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CheckBox from 'expo-checkbox';
-import { H6 } from './Texts';
+import { H5 } from './Texts';
+import { Button } from './Buttons';
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from '@react-native-community/datetimepicker';
+
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 module.exports.TextInputBox = function (props) {
   const [state, setState] = useState(0);
@@ -34,6 +46,7 @@ module.exports.TextInputBox = function (props) {
         inputMode={props.inputMode}
         onChangeText={props.onChangeText}
         value={props.value}
+        placeholderTextColor={Theme.placeholderText}
       />
       {props.error && props.touched && (
         <Text style={styles.errormsg}>{props.error}</Text>
@@ -64,6 +77,7 @@ module.exports.MaskedTextInputBox = function (props) {
         inputMode={props.inputMode}
         onChangeText={props.onChangeText}
         value={props.value}
+        placeholderTextColor={Theme.placeholderText}
       />
       {props.error && props.touched && (
         <Text style={styles.errormsg}>{props.error}</Text>
@@ -72,67 +86,94 @@ module.exports.MaskedTextInputBox = function (props) {
   );
 };
 
-// module.exports.DropDownPicker = function (props) {
-//   const [open, setOpen] = useState(false);
-//   const [value, setValue] = useState(null);
-//   const [items, setItems] = useState(props.list);
-//   return (
-//     <View
-//       style={[
-//         styles.inputcont,
-//         {
-//           zIndex: 1000,
-//         },
-//       ]}
-//     >
-//       <Text style={styles.inputlabel}>{props.inputlabel}</Text>
-//       <DropDownPicker
-//         placeholder={props.placeholder ? props.placeholder : '-- Select'}
-//         open={open}
-//         value={value}
-//         items={items}
-//         setOpen={setOpen}
-//         setValue={setValue}
-//         listMode='SCROLLVIEW'
-//         setItems={setItems}
-//         dropDownDirection='BOTTOM'
-//         style={{
-//           backgroundColor: Theme.overlay,
-//           borderWidth: 0,
-//           paddingHorizontal: 10,
-//           paddingVertical: 7,
-//           borderRadius: 10,
-//           minHeight: 20,
-//         }}
-//         textStyle={{
-//           fontFamily: 'Poppins',
-//           color: Theme.textColor,
-//         }}
-//         dropDownContainerStyle={{
-//           backgroundColor: Theme.overlay,
-//           borderWidth: 0,
-//         }}
-//         placeholderStyle={{
-//           color: Theme.tertiary,
-//           // fontFamily:""
-//         }}
-//       />
-//     </View>
-//   );
-// };
-
-module.exports.DropDownPicker = function () {
-  const [selectedItem, setSelectedItem] = useState('');
+module.exports.DropDownPicker = function (props) {
+  const [open, setIsOpen] = useState(false);
+  const [value, setValue] = useState(props.value || null);
+  const [items, setItems] = useState(props.items || []);
+  React.useEffect(() => {
+    props.onChange(value);
+  }, [value]);
   return (
-    <DropDownPicker
-      items={items}
-      defaultValue={selectedItem}
-      containerStyle={{ height: 40 }}
-      itemStyle={{ justifyContent: 'flex-start' }}
-      onChangeItem={(item) => {
-        setSelectedItem(item.value);
-        onSelect(item.value);
+    <>
+      <View style={[styles.inputcont, styles.pickerCont]}>
+        <Text style={styles.inputlabel}>{props.inputlabel}</Text>
+        <DropDownPicker
+          listMode='SCROLLVIEW'
+          {...props}
+          items={items}
+          value={value}
+          open={open}
+          setOpen={setIsOpen}
+          setValue={setValue}
+          setItems={setItems}
+          style={styles.picker}
+          containerStyle={styles.pickerContainer}
+          dropDownContainerStyle={styles.dropDownContainer}
+          textStyle={styles.pickerText}
+          ArrowDownIconComponent={({ style }) => (
+            <Entypo
+              style={style}
+              name='chevron-down'
+              size={24}
+              color={Theme.textColor}
+            />
+          )}
+          arrowIconContainerStyle={styles.pickerArrowContainer}
+          ArrowUpIconComponent={({ style }) => (
+            <Entypo
+              style={style}
+              name='chevron-up'
+              size={24}
+              color={Theme.textColor}
+            />
+          )}
+          TickIconComponent={({ style }) => (
+            <Entypo
+              style={style}
+              name='check'
+              size={22}
+              color={Theme.textColor}
+            />
+          )}
+        />
+      </View>
+      {props.error && props.touched && (
+        <Text style={[styles.errormsg, styles.pickerError]}>{props.error}</Text>
+      )}
+    </>
+  );
+};
+
+module.exports.SelectList = function (props) {
+  return (
+    <SelectList
+      placeholder='--Select'
+      searchPlaceholder='Search...'
+      save='value'
+      {...props}
+      fontFamily='Poppins'
+      inputStyles={{
+        color: Theme.textColor,
+        fontSize: 18,
+        minHeight: 30,
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
       }}
+      boxStyles={{
+        borderColor: Theme.contrastTextColor,
+        backgroundColor: Theme.contrastTextColor,
+        alignItems: 'center',
+        alignContent: 'center',
+      }}
+      dropdownTextStyles={{ color: Theme.textColor, fontSize: 16 }}
+      dropdownStyles={{
+        borderColor: 'white',
+        backgroundColor: 'white',
+      }}
+      arrowicon={
+        <Entypo name='chevron-down' size={24} color={Theme.textColor} />
+      }
     />
   );
 };
@@ -151,56 +192,107 @@ module.exports.CheckBox = function (props) {
     </View>
   );
 };
+module.exports.DatePicker = function (props) {
+  let showDatePicker = null;
+  let showMode = null;
+  if (Platform.OS === 'android') {
+    showMode = (currentMode) => {
+      DateTimePickerAndroid.open({
+        value: props.value,
+        onChange,
+        mode: currentMode,
+        is24Hour: true,
+        minimumDate: props.minimumDate,
+        maximumDate: props.maximumDate,
+      });
+    };
 
-// module.exports.DatePicker = function (props) {
-//   const [date, setDate] = useState(new Date());
-//   const [showDatePicker, setShowDatePicker] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState(new Date());
-//   return(
-//     <TouchableOpacity
-//     onPress={() => setShowDatePicker(!showDatePicker)}
-//   >
-//     <View style={styles.dateFullCont}>
-//     <View style={styles.dateCont}>
-//       <H6>Date of Birth</H6>
-//       <H7>{selectedDate.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</H7>
+    showDatePicker = () => {
+      showMode('date');
+    };
+  }
+  function onChange(event, date) {
+    props.onPress();
+    date !== undefined ? props.onChange(date) : null;
+  }
+  return (
+    <View style={styles.inputcont}>
+      <TouchableWithoutFeedback onPress={props.onPress}>
+        <View style={styles.dateCont}>
+          <H5
+            style={{
+              color: Theme.textColor,
+            }}
+          >
+            {props.inputlabel}
+          </H5>
+          {Platform.OS === 'ios' ? (
+            <DateTimePicker
+              themeVariant='light'
+              name={props.name}
+              mode='date'
+              value={props.value}
+              accentColor={Theme.primary}
+              minimumDate={props.minimumDate}
+              onChange={onChange}
+              maximumDate={props.maximumDate}
+            />
+          ) : (
+            <Button
+              size='normal'
+              color='shadedTertiary'
+              onPress={showDatePicker}
+              title={
+                props.value instanceof Date
+                  ? props.value.toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
+                  : 'Pick Date'
+              }
+            />
+          )}
+        </View>
+        {props.touched && props.error ? (
+          <Text style={styles.errormsg}>{props.error}</Text>
+        ) : null}
+      </TouchableWithoutFeedback>
+    </View>
+  );
+};
 
-//       {showDatePicker ? (
-//         <DateTimePicker
-//           name="dob"
-//           mode="date"
-//           value={date}
-//           display="date"
-//           minimumDate={new Date(1950, 0, 1)}
-//           onChange={handleDateChange}
-//         />
-//       ) : null}
-//     </View>
-//     {formik.errors.dob ? (
-//       <Text style={styles.errormsg}>{formik.errors.dob}</Text>
-//     ) : null}
-//     </View>
-//   </TouchableOpacity>
-//   )
-// };
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center',
-    //justifyContent: 'center',
     fontFamily: 'Poppins',
   },
   errormsg: {
     color: Theme.danger,
+    fontFamily: 'Poppins',
+    marginVertical: 5,
+    marginHorizontal: 4,
+    fontSize: 14,
   },
   inputcont: {
     width: '100%',
     marginVertical: 10,
   },
+  pickerCont: {
+    zIndex: 999,
+    marginBottom: 0,
+  },
+  pickerError: {
+    zIndex: 900,
+    textAlign: 'left',
+    alignSelf: 'flex-start',
+    marginBottom: 10,
+  },
   inputlabel: {
     color: Theme.textColor,
     fontFamily: 'Poppins',
-    fontSize: 15,
+    fontSize: 16,
   },
   input: {
     fontFamily: 'Poppins',
@@ -209,8 +301,46 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: Theme.contrastTextColor,
     borderRadius: 10,
+    fontSize: 18,
+    minHeight: 50,
   },
   inputFocused: {
     backgroundColor: Theme.primaryShade,
+  },
+  dateCont: {
+    padding: 10,
+    paddingHorizontal: 10,
+    marginVertical: 0,
+    borderRadius: 10,
+    backgroundColor: Theme.contrastTextColor,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  picker: {
+    backgroundColor: Theme.contrastTextColor,
+    borderColor: Theme.contrastTextColor,
+    borderRadius: 10,
+  },
+  pickerText: {
+    fontSize: 18,
+    fontFamily: 'Poppins',
+    color: Theme.textColor,
+  },
+  pickerContainer: {
+    borderColor: Theme.contrastTextColor,
+    borderRadius: 10,
+  },
+  dropDownContainer: {
+    backgroundColor: Theme.overlay,
+    borderRadius: 10,
+    borderColor: Theme.overlay,
+    zIndex: 10000,
+  },
+  pickerArrowContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+    width: 40,
   },
 });
