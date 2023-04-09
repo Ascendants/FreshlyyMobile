@@ -47,7 +47,7 @@ export default function ({ navigation, route }) {
         await user.sendEmailVerification();
         setSubmitting(false);
         console.log("Verification email sent!");
-        navigation.navigate("EmailVerify",{message:'Success',userData:route.params.userData});
+        navigation.navigate("EmailVerify",{message:'Success',userData:JSON.stringify(route.params.userData)});
       }
       else{
         setSubmitting(false)
@@ -55,8 +55,16 @@ export default function ({ navigation, route }) {
       }
     } catch (error) {
       setSubmitting(false)
-      console.log(error);
-      setErr("Error occured! Try again!")
+      console.log(error)
+      if(error.code==='auth/email-already-in-use'){
+        setErr("User account already exists!");
+        return;
+      }
+      if(error.code==='auth/internal-error'){
+        setErrors("Try again later!");
+        return;
+      }
+     
     }
   };
 

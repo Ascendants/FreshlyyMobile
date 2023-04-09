@@ -71,7 +71,7 @@ export default function ({ navigation }) {
     setUserData(data);
     console.log(userData);
     if (valid) {
-      navigation.navigate('beFarmer', { type: 'Success', userData: data });
+      navigation.navigate('beFarmer', { type: 'Success', userData:JSON.stringify(data) });
     }
   }
   return (

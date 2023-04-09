@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { H3, H5 } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-
+import ENV from '../../constants/env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import * as Yup from 'yup';
@@ -22,6 +22,7 @@ export default function ({ navigation, route }) {
   const [idToken,SetIdToken]=useState()
   const [validUser, setValidUser] = useState();
   console.log(route.params.userData);
+
   const handleVerifyEmail = async () => {
     const user = auth.currentUser;
     user
@@ -32,6 +33,10 @@ export default function ({ navigation, route }) {
         SetIdToken(token)
       })
       .catch((error) => {
+        if(error.code==='auth/user-token-expired'){
+          setErrors("User account already exists!");
+          return;
+        }
         console.error("Error getting ID token:", error);
       });
     if (user) {
@@ -39,38 +44,51 @@ export default function ({ navigation, route }) {
       try {
         await user.reload();
         if (user.emailVerified) {
+          setErrors('')
           console.log("Success", "Email has been verified!");
           await SendToRegister(idToken);
-        } else {
-          setErrors("Email has not been verified!");
-          console.log("Error", "Email has not been verified!");
+        } 
+        else{
+          setErrors("Email has not benn verified!")
         }
       } catch (error) {
-        setErrors(error.message);
+        if(error.code==='auth/internal-error'){
+          setErrors("Try again later!");
+          return;
+        }
+       
+        if(error.code==='auth/email-already-exists'){
+          setErrors("User account already exists!");
+          return;
+        }
+        if(error.code==='auth/user-token-expired'){
+          setErrors("User account already exists!");
+          return;
+        }
+        
         console.log("Error", error.message);
       }
     }
   };
 
   const SendToRegister = (idToken) => {
-    
-    const updatedUserData = {
-      ...route.params.userData,
-      token:idToken,
-    };
-    console.log(updatedUserData)
-    fetch(ENV.backend + "/public/signup", {
+    fetch(ENV.backend + "/customer/signup", {
       method: "POST",
       headers: {
         useremail: "harini@freshlyy.com",
+        Authorization:idToken,
         "Content-Type": "application/json",
       },
-      body:JSON.stringify(updatedUserData),
+      body:route.params.userData,
     })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
         setEmailVerified(true);
+        if(res.message==='Success'){
+          const email=res.email
+          navigation.navigate("Customer Dashboard",{message:'Success',userEmail:email});
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -85,8 +103,10 @@ export default function ({ navigation, route }) {
       })
       .catch((error) => {
         setReSend(false);
-        console.log(error);
-        setErrors("Error Occured! Try again!");
+       if(error.code==='auth/email-already-in-use'){
+          setErrors("User account already exists!");
+          return;
+        }
       });
   };
 
