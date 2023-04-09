@@ -87,7 +87,7 @@ export default function ({ navigation, route }) {
         setEmailVerified(true);
         if(res.message==='Success'){
           const email=res.email
-          navigation.navigate("Customer Dashboard",{message:'Success',userEmail:email});
+          navigation.navigate("Customer Dashboard",{message:'Success',userEmail:email,token:idToken});
         }
       })
       .catch((err) => console.log(err));
