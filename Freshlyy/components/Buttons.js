@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   normalButtonIconText: {
-    fontSize: 12,
+    fontSize: 10,
   },
   activityContainer: {
     paddingHorizontal: 10,

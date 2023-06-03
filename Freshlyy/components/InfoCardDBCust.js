@@ -2,7 +2,12 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { P, Pr, H2, H4, H3 } from './Texts';
 import Theme from '../constants/theme';
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import LoyaltyArea from './LoyaltyArea';
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
 import { Button } from '../components/Buttons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,6 +31,9 @@ export default function (props) {
           />
         </View>
       </View>
+      <View style={styles.loyaltyLayout}>
+        <LoyaltyArea user={props.user} />
+      </View>
       <View style={styles.buttonsLayout}>
         <Button
           title='Locations'
@@ -36,7 +44,7 @@ export default function (props) {
           icon={
             <FontAwesome5
               name='location-arrow'
-              size={30}
+              size={28}
               color={Theme.textColor}
             />
           }
@@ -51,7 +59,22 @@ export default function (props) {
           icon={
             <Ionicons
               name='card-outline'
-              size={30}
+              size={28}
+              color={Theme.contrastTextColor}
+            />
+          }
+        />
+        <Button
+          title='Coupons'
+          type='icon'
+          onPress={() => nav.navigate('Card Management')}
+          backgroundStyle={styles.buttonBackground}
+          size='normal'
+          color='filledSecondary'
+          icon={
+            <Ionicons
+              name='card-outline'
+              size={28}
               color={Theme.contrastTextColor}
             />
           }
@@ -65,7 +88,7 @@ export default function (props) {
           icon={
             <FontAwesome5
               name='user-circle'
-              size={30}
+              size={28}
               color={Theme.contrastTextColor}
             />
           }
@@ -87,6 +110,11 @@ const styles = StyleSheet.create({
   cardLayout: {
     flexDirection: 'row',
     padding: 15,
+    flex: 1,
+  },
+  loyaltyLayout: {
+    padding: 15,
+    paddingTop: 0,
     flex: 1,
   },
   cardRight: {
@@ -112,9 +140,8 @@ const styles = StyleSheet.create({
   buttonsLayout: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
   },
   buttonBackground: {
-    width: 80,
+    width: 70,
   },
 });
