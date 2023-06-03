@@ -5,22 +5,14 @@ import Theme from '../constants/theme';
 import { useNavigation } from '@react-navigation/native';
 
 export default function (props) {
-  const [mode, setMode] = React.useState('customer');
   function switchFarmer() {
     nav.navigate('Farmer Dashboard');
-    setMode('farmer');
   }
   function switchCustomer() {
     nav.navigate('Customer Dashboard');
-    setMode('customer');
   }
   function goHome() {
-    if (mode == 'customer') {
-      nav.navigate('Customer Dashboard');
-      return;
-    }
-    nav.navigate('Farmer Dashboard');
-    return;
+    nav.navigate('Customer Dashboard');
   }
   const nav = useNavigation();
   return (
@@ -31,7 +23,11 @@ export default function (props) {
         </TouchableOpacity>
       ) : props.notification ? (
         <>
-          <TouchableOpacity onPress={() => nav.navigate('Notifications')}>
+          <TouchableOpacity
+            onPress={() =>
+              nav.navigate('Notifications', { mode: props.notifMode })
+            }
+          >
             <Ionicons
               name='ios-notifications-outline'
               size={32}

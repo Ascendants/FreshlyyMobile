@@ -66,6 +66,7 @@ export default function ({ navigation, route }) {
         <Header
           farmer={true}
           notification={true}
+          notifMode={'farmer'}
           hasNotifications={userData?.notifications}
         />
         <RefreshView getData={getData}>

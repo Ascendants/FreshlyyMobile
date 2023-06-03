@@ -1,17 +1,31 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, FlatList, Image } from 'react-native';
 import { H2, H3, Pr } from '../../components/Texts';
 import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import NotificationView from '../../components/NotificationView';
-import { Button } from '../../components/Buttons';
 import ENV from '../../constants/env';
-import RefreshView from '../../components/RefreshView';
+import Loading from '../../components/Loading';
+import FadeComponent from '../../components/FadeComponent';
+function emptyNotifs() {
+  return (
+    <View style={styles.noNotifsContent}>
+      <Image
+        source={require('../../assets/emptyOrders.png')}
+        style={styles.messageImage}
+      />
+      <H3 style={styles.messageTitle}>No updates yet!</H3>
+    </View>
+  );
+}
 
 export default function ({ navigation, route }) {
   const [notifications, setNotifications] = React.useState([]);
-  const getNotifications = React.useCallback(async () => {
+  const [loaded, setLoaded] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const getNotifications = React.useCallback(async (refreshing) => {
+    refreshing ? setRefreshing(true) : setLoaded(false);
     return fetch(ENV.backend + `/${route.params.mode}/notifications`, {
       method: 'GET',
       headers: {
@@ -24,20 +38,36 @@ export default function ({ navigation, route }) {
       .then((res) => {
         if (!res.notifications) throw new Error('Malformed Response');
         setNotifications(res.notifications);
+        refreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
   });
+  React.useEffect(() => {
+    getNotifications(false);
+  }, []);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header back={true} home={true} />
+        <Header back={true} />
         <H3>Notifications</H3>
-        <RefreshView getData={getNotifications}>
-          {notifications?.map((item) => (
-            <NotificationView key={item._id} notification={item} />
-          ))}
-          <View style={{ marginBottom: 100 }}></View>
-        </RefreshView>
+        {!loaded ? (
+          <Loading />
+        ) : (
+          <View style={styles.notifsContainer}>
+            <FadeComponent>
+              <FlatList
+                style={styles.flatList}
+                ListEmptyComponent={emptyNotifs}
+                data={notifications}
+                refreshing={refreshing}
+                onRefresh={() => getNotifications(true)}
+                renderItem={(item) => (
+                  <NotificationView key={item.id} notification={item.item} />
+                )}
+              />
+            </FadeComponent>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -56,5 +86,29 @@ const styles = StyleSheet.create({
   modalEdit: {
     width: 200,
     alignItems: 'center',
+  },
+  notifsContainer: {
+    marginVertical: 10,
+    width: '100%',
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  flatList: {
+    height: '100%',
+  },
+  noNotifsContent: {
+    paddingHorizontal: 10,
+    height: '100%',
+    minHeight: 600,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  messageImage: {
+    height: 200,
+    resizeMode: 'contain',
+  },
+  messageTitle: {
+    textAlign: 'center',
+    paddingVertical: 50,
   },
 });
