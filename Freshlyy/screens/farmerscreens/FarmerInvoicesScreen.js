@@ -1,15 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, Image, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { H4, H3, Pr, P } from '../../components/Texts';
 import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FadeComponent from '../../components/FadeComponent';
 import ENV from '../../constants/env';
-import TabMenu from '../../components/TabMenu';
 import Loading from '../../components/Loading';
-import PayoutRequestView from '../../components/PayoutRequestView';
 import ListItem from '../../components/ListItem';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 function emptyOrders() {
   return (
     <View style={styles.noOrdersContent}>
@@ -46,11 +49,7 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   }
-  function navigateToOrder(order) {
-    navigation.navigate('Order Details', {
-      orderId: order,
-    });
-  }
+
   React.useEffect(() => {
     getInvoiceList(false);
   }, []);
@@ -71,7 +70,13 @@ export default function ({ navigation, route }) {
                 refreshing={refreshing}
                 onRefresh={() => getInvoiceList(true)}
                 renderItem={(invoice) => (
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('Farmer Invoice', {
+                        invoiceId: invoice.item.id,
+                      });
+                    }}
+                  >
                     <ListItem key={invoice.index}>
                       <H4 style={styles.listItemTitle}>
                         Invoice for{' '}

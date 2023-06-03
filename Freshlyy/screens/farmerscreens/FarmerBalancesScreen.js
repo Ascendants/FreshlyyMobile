@@ -22,7 +22,12 @@ function PriceItem(props) {
   return (
     <View style={styles.priceItemContainer}>
       <H5 style={color}>{props.title}</H5>
-      <Pr style={{ textAlign: 'right' }} fontSize={20}>
+      <Pr
+        style={{
+          textAlign: 'right',
+        }}
+        fontSize={20}
+      >
         {props.amount}
       </Pr>
     </View>

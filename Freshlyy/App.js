@@ -13,7 +13,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'hasathcharu@icloud.com';
+  const userEmail = 'haritha@hasathcharu.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -24,7 +24,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={Screens.CustomerDashboardScreen}
+            component={Screens.FarmerDashboardScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
@@ -46,6 +46,14 @@ export default function App() {
             component={Screens.FarmerBalancesScreen}
             initialParams={{
               userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Farmer Invoice'
+            component={Screens.FarmerInvoiceScreen}
+            initialParams={{
+              userEmail: userEmail,
+              invoiceId: 'null',
             }}
           />
           <Stack.Screen

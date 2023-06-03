@@ -65,3 +65,4 @@ export { default as PayoutRequestListScreen } from './farmerscreens/PayoutReques
 export { default as ProductDeleteScreen } from './farmerscreens/ProductDeleteScreen';
 export { default as ProductAddedScreen } from './farmerscreens/ProductAddedScreen';
 export { default as ProductUpdatedScreen } from './farmerscreens/ProductUpdatedScreen';
+export { default as FarmerInvoiceScreen } from './farmerscreens/FarmerViewInvoiceScreen';

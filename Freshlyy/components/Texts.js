@@ -148,14 +148,13 @@ module.exports.H8 = function (props) {
 
 module.exports.Pr = function (props) {
   return (
-    <Text>
+    <Text style={{ ...props.style }}>
       <Text
         style={{
           fontFamily: 'Poppins',
           color: Theme.textColor,
           fontSize: Math.floor((props.fontSize ? props.fontSize : 16) * 0.6),
           fontWeight: 'light',
-          ...props.style,
         }}
       >
         LKR
@@ -165,7 +164,6 @@ module.exports.Pr = function (props) {
           fontFamily: 'Poppins',
           color: Theme.textColor,
           fontSize: props.fontSize ? props.fontSize : 16,
-          ...props.style,
         }}
       >
         &nbsp;
