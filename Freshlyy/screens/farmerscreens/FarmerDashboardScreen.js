@@ -63,7 +63,11 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header farmer={true} />
+        <Header
+          farmer={true}
+          notification={true}
+          hasNotifications={userData?.notifications}
+        />
         <RefreshView getData={getData}>
           <InfoCardDB
             user={userData}

@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { H3, H5 } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import ProductHomePageScreen from '../customerscreens/ProductHomePageScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 

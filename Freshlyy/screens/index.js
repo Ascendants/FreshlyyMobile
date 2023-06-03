@@ -1,5 +1,6 @@
 //Utility Screens
 export { default as MessageScreen } from './util/MessageScreen';
+export { default as NotificationScreen } from './util/NotificationScreen';
 
 //Public Screens
 export { default as BeFarmerScreen } from './publicscreens/BeFarmerScreen';

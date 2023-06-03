@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Octicons, Ionicons } from '@expo/vector-icons';
 import Theme from '../constants/theme';
 import { useNavigation } from '@react-navigation/native';
 
@@ -29,6 +29,24 @@ export default function (props) {
         <TouchableOpacity onPress={nav.goBack}>
           <Ionicons name='ios-chevron-back' size={32} color={Theme.textColor} />
         </TouchableOpacity>
+      ) : props.notification ? (
+        <>
+          <TouchableOpacity onPress={() => nav.navigate('Notifications')}>
+            <Ionicons
+              name='ios-notifications-outline'
+              size={32}
+              color={Theme.primary}
+            />
+            {props.hasNotifications && (
+              <Octicons
+                name='dot-fill'
+                size={24}
+                color={Theme.danger}
+                style={{ position: 'absolute', top: -5, right: 3 }}
+              />
+            )}
+          </TouchableOpacity>
+        </>
       ) : (
         <View style={{ width: 32 }}></View>
       )}

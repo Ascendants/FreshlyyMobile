@@ -33,10 +33,15 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   });
+  console.log(userData);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header customer={true} />
+        <Header
+          customer={true}
+          notification={true}
+          hasNotifications={userData.user?.notifications}
+        />
         <RefreshView getData={getData}>
           <InfoCardDBCust user={userData.user} />
           <View style={styles.cardContainer}>

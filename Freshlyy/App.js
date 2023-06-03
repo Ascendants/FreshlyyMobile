@@ -299,6 +299,18 @@ export default function App() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name='Notifications'
+            component={Screens.NotificationScreen}
+            options={{
+              headerShown: false,
+              animation: 'slide_from_bottom',
+            }}
+            initialParams={{
+              mode: 'customer',
+              userEmail: userEmail,
+            }}
+          />
           {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
         </Stack.Navigator>
       </NavigationContainer>

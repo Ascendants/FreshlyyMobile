@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   messageTitle: {
-    fontFamily: 'Poppins',
     textAlign: 'center',
     paddingVertical: 20,
   },
