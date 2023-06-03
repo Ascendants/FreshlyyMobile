@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, ScrollView, Settings } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
 import { TextInputBox, MaskedTextInputBox } from '../../components/Inputs';
-import { H2, P } from '../../components/Texts';
+import { H3, P } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { Formik, useFormik } from 'formik';
@@ -78,7 +78,7 @@ export default function ({ navigation, route }) {
         <View style={styles.screen}>
           <LoadingModal message='Saving Card' visible={saving} />
           <Header back={true} home={true} />
-          <H2 style={{ textAlign: 'center' }}>Add Card</H2>
+          <H3 style={{ textAlign: 'center' }}>Add Card</H3>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pageContent}>
               <Image

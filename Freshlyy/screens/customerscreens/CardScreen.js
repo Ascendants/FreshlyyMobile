@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { H2, H3, Pr } from '../../components/Texts';
 import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -54,22 +54,33 @@ export default function ({ navigation, route }) {
         <Header back={true} home={true} />
         <H3>Cards</H3>
         <RefreshView getData={getCards}>
-          {cards?.map((item) => (
-            <CardView
-              key={item.cardId}
-              card={item}
-              deleteCard={() => deleteCard(item.cardId)}
-              editCard={() => openEditModal(item.cardId, item.cardName)}
+          <View>
+            {cards?.map((item) => (
+              <CardView
+                key={item.cardId}
+                card={item}
+                deleteCard={() => deleteCard(item.cardId)}
+                editCard={() => openEditModal(item.cardId, item.cardName)}
+              />
+            ))}
+            {cards.length == 0 && (
+              <View style={styles.noCardsContent}>
+                <Image
+                  source={require('../../assets/emptyOrders.png')}
+                  style={styles.messageImage}
+                />
+                <H3 style={styles.messageTitle}>No cards yet!</H3>
+              </View>
+            )}
+            <View style={{ marginBottom: 100 }}></View>
+            <Button
+              backgroundStyle={{ alignSelf: 'center' }}
+              title={cards.length != 0 ? 'Add another card' : 'Add a card'}
+              size='big'
+              color='shadedPrimary'
+              onPress={() => navigation.navigate('Add Card')}
             />
-          ))}
-          <View style={{ marginBottom: 100 }}></View>
-          <Button
-            backgroundStyle={{ alignSelf: 'center' }}
-            title='Add another card'
-            size='big'
-            color='shadedPrimary'
-            onPress={() => navigation.navigate('Add Card')}
-          />
+          </View>
         </RefreshView>
       </View>
     </SafeAreaView>
@@ -81,13 +92,18 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
   },
-  container: {
-    width: '100%',
-    paddingHorizontal: 10,
-    marginTop: 40,
-  },
-  modalEdit: {
+  messageImage: {
+    height: 200,
     width: 200,
+    resizeMode: 'contain',
+  },
+  messageTitle: {
+    textAlign: 'center',
+    paddingVertical: 20,
+  },
+  noCardsContent: {
+    minHeight: 400,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });
