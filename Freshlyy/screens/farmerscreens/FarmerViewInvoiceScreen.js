@@ -73,7 +73,7 @@ export default function ({ route, navigation }) {
                   <>
                     <H3 style={styles.invoiceInfo}>Invoice</H3>
                     <H7 style={styles.invoiceInfo} selectable={true}>
-                      For the month ended {invoice?.date}
+                      For the month {invoice?.date}
                     </H7>
                     <H6 style={styles.invoiceInfoFarmer}>
                       {invoice?.farmerName}

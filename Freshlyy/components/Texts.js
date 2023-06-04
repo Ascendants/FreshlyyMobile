@@ -5,6 +5,7 @@ import Theme from '../constants/theme';
 module.exports.P = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',
@@ -20,6 +21,7 @@ module.exports.P = function (props) {
 module.exports.H1 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
@@ -35,6 +37,7 @@ module.exports.H1 = function (props) {
 module.exports.H2 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',
@@ -51,6 +54,7 @@ module.exports.H2 = function (props) {
 module.exports.H3 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
@@ -67,6 +71,7 @@ module.exports.H3 = function (props) {
 module.exports.H4 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
@@ -83,6 +88,7 @@ module.exports.H4 = function (props) {
 module.exports.H5 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
@@ -99,6 +105,7 @@ module.exports.H5 = function (props) {
 module.exports.H6 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'Poppins',
@@ -115,6 +122,7 @@ module.exports.H6 = function (props) {
 module.exports.H7 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',
@@ -132,6 +140,7 @@ module.exports.H7 = function (props) {
 module.exports.H8 = function (props) {
   return (
     <Text
+      numberOfLines={props.numberOfLines}
       selectable={props.selectable}
       style={{
         fontFamily: 'PoppinsRegular',

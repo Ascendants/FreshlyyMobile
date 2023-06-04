@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { H2, P, H3, H4, H6, Pr } from '../../components/Texts';
+import { H2, P, H3, H4, H5, Pr } from '../../components/Texts';
 import { Button } from '../../components/Buttons';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from '../../components/Header';
@@ -120,8 +120,22 @@ export default function ({ route, navigation, productId, addToCart }) {
                 index={imageScroll}
               />
             </View>
+            <H4 style={styles.productTopic}>{product?.title}</H4>
+
+            <View style={styles.ratingArea}>
+              <Rating value={product?.overallRating} />
+              <P>10 Reviews</P>
+            </View>
             <View style={styles.actionArea}>
-              <H3 style={styles.productTopic}>{product?.title}</H3>
+              <View style={styles.farmerDetail}>
+                <Image
+                  source={{ uri: product?.farmerImage?.imageUrl }}
+                  style={styles.farmerImage}
+                />
+                <H5 numberOfLines={1} style={styles.farmerName}>
+                  {product?.farmerName}
+                </H5>
+              </View>
               <View style={styles.actionButtonContainer}>
                 <Button
                   icon={
@@ -160,17 +174,7 @@ export default function ({ route, navigation, productId, addToCart }) {
                 />
               </View>
             </View>
-            <View style={styles.ratingArea}>
-              <Rating value={product?.overallRating} />
-              <P>10 Reviews</P>
-            </View>
-            <View style={styles.farmerDetail}>
-              <Image
-                source={{ uri: product?.farmerImage?.imageUrl }}
-                style={styles.farmerImage}
-              />
-              <H4 style={styles.farmerName}>{product?.farmerName}</H4>
-            </View>
+
             <View style={styles.detail}>
               <Pr fontSize={20}>{product?.price}</Pr>
               <H4>/KG</H4>
@@ -236,7 +240,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     flex: 1,
-    // width: 350,
   },
   productImageSwiper: {
     width: 345,
@@ -254,14 +257,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 5,
   },
-  actionArea: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
+
   productTopic: {
-    flex: 4,
-    alignSelf: 'center',
+    wordWrap: 'break-word',
+  },
+
+  ratingArea: {
+    flexDirection: 'row',
+    marginBottom: 10,
   },
   actionButtonContainer: {
     flexDirection: 'row',
@@ -269,17 +272,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 3,
   },
-  ratingArea: {
+  actionArea: {
     flexDirection: 'row',
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    marginBottom: 5,
   },
   farmerDetail: {
+    wordWrap: 'break-word',
     backgroundColor: Theme.overlay,
     flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
-    alignSelf: 'flex-start',
     borderRadius: 15,
-    marginBottom: 10,
+    marginVertical: 5,
+    flex: 2,
   },
   farmerImage: {
     width: 30,
@@ -288,7 +294,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   farmerName: {
+    wordWrap: 'break-word',
+    textAlignVertical: 'center',
     color: Theme.primary,
+    lineHeight: 30,
   },
   detail: {
     flexDirection: 'row',
