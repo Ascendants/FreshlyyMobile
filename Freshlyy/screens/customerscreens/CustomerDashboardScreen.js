@@ -18,13 +18,14 @@ export default function ({ navigation, route }) {
     });
   }
   const getData = React.useCallback(async () => {
-    console.log(route.params.token)
+   // console.log(route.params.token)
     return fetch(ENV.backend + '/customer/dashboard', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
-        Authorization:route.params.token,
-        "Content-Type": "application/json",
+        //useremail:'harini@freshlyy.com'
+       useremail: route.params.userEmail,
+       // Authorization:route.params.token,
+      //  "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())

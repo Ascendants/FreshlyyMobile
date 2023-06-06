@@ -128,7 +128,9 @@ export default function ({ navigation, route }) {
     for (let error in formik.errors) if (error) return;
     const data = formik.values;
     setValid(true);
+    console.log(data.password,data.email)
     sendToSignup(data.email,data.password);
+   
   };
   const sendToSignup = (email,password) => {
     handleSignUp(email,password);

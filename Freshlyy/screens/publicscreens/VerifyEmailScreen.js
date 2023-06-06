@@ -30,6 +30,7 @@ export default function ({ navigation, route }) {
       .then((token) => {
         // Send the idToken to the backend for authentication and database storage
         console.log("ID token:",token);
+        console.log(user.toJSON().stsTokenManager.accessToken)
         SetIdToken(token)
       })
       .catch((error) => {
@@ -87,7 +88,7 @@ export default function ({ navigation, route }) {
         setEmailVerified(true);
         if(res.message==='Success'){
           const email=res.email
-          navigation.navigate("Customer Dashboard",{message:'Success',userEmail:email,token:idToken});
+          navigation.navigate("login",{message:'Success',userEmail:email,token:idToken});
         }
       })
       .catch((err) => console.log(err));

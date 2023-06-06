@@ -56,17 +56,21 @@ export default function ({ navigation, route }) {
   };
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
+    
     fetch(ENV.backend + '/customer/mainpage/', {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
         useremail: 'harini@freshlyy.com',
+        Authorization:route.params.token,
+        "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
       .then((res) => {
         const data = res;
         console.log(res);
+        console.log('helllo')
         setProducts(res.mainPageProducts);
         isRefreshing ? setRefreshing(false) : setLoaded(true);
       })
