@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, ScrollView, Settings } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
 import { TextInputBox, MaskedTextInputBox } from '../../components/Inputs';
-import { H3, P } from '../../components/Texts';
+import { H3, P, H6 } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { Formik, useFormik } from 'formik';

@@ -54,55 +54,50 @@ export default function ({ navigation, route }) {
     getInvoiceList(false);
   }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} home={true} />
-        <H3>Your Invoices</H3>
-        {!loaded ? (
-          <Loading />
-        ) : (
-          <View style={styles.ordersContainer}>
-            <FadeComponent>
-              <FlatList
-                style={styles.flatList}
-                ListEmptyComponent={emptyOrders}
-                data={invoices}
-                refreshing={refreshing}
-                onRefresh={() => getInvoiceList(true)}
-                renderItem={(invoice) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('Farmer Invoice', {
-                        invoiceId: invoice.item.id,
-                      });
-                    }}
-                  >
-                    <ListItem key={invoice.index}>
-                      <H4 style={styles.listItemTitle}>
-                        Invoice for{' '}
-                        {(invoice.item.month + 1).toString().padStart(2, 0)}/
-                        {invoice.item.year}
-                      </H4>
-                    </ListItem>
-                  </TouchableOpacity>
-                )}
-              />
-            </FadeComponent>
-            <P style={styles.infoTextLast}>
-              ⓘ Invoices are generated on the 5th of every month
-            </P>
-          </View>
-        )}
-      </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header back={true} home={true} />
+      <H3 style={{ textAlign: 'center' }}>Your Invoices</H3>
+      {!loaded ? (
+        <Loading />
+      ) : (
+        <View style={styles.ordersContainer}>
+          <FadeComponent>
+            <FlatList
+              style={{ flex: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+              ListEmptyComponent={emptyOrders}
+              data={invoices}
+              refreshing={refreshing}
+              onRefresh={() => getInvoiceList(true)}
+              renderItem={(invoice) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Farmer Invoice', {
+                      invoiceId: invoice.item.id,
+                    });
+                  }}
+                >
+                  <ListItem key={invoice.index}>
+                    <H4 style={styles.listItemTitle}>
+                      Invoice for{' '}
+                      {(invoice.item.month + 1).toString().padStart(2, 0)}/
+                      {invoice.item.year}
+                    </H4>
+                  </ListItem>
+                </TouchableOpacity>
+              )}
+            />
+          </FadeComponent>
+          <P style={styles.infoTextLast}>
+            ⓘ Invoices are generated on the 5th of every month
+          </P>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    height: '100%',
-    alignItems: 'center',
-  },
   ordersContainer: {
     marginVertical: 10,
     width: '100%',

@@ -49,49 +49,53 @@ export default function ({ navigation, route }) {
     if (result) await getCards();
   }
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} home={true} />
-        <H3>Cards</H3>
-        <RefreshView getData={getCards}>
-          <View>
-            {cards?.map((item) => (
-              <CardView
-                key={item.cardId}
-                card={item}
-                deleteCard={() => deleteCard(item.cardId)}
-                editCard={() => openEditModal(item.cardId, item.cardName)}
-              />
-            ))}
-            {cards.length == 0 && (
-              <View style={styles.noCardsContent}>
-                <Image
-                  source={require('../../assets/emptyOrders.png')}
-                  style={styles.messageImage}
-                />
-                <H3 style={styles.messageTitle}>No cards yet!</H3>
-              </View>
-            )}
-            <View style={{ marginBottom: 100 }}></View>
-            <Button
-              backgroundStyle={{ alignSelf: 'center' }}
-              title={cards.length != 0 ? 'Add another card' : 'Add a card'}
-              size='big'
-              color='shadedPrimary'
-              onPress={() => navigation.navigate('Add Card')}
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header back={true} home={true} />
+      <H3 style={{ textAlign: 'center' }}>Cards</H3>
+      <RefreshView getData={getCards}>
+        <View>
+          {cards?.map((item) => (
+            <CardView
+              key={item.cardId}
+              card={item}
+              deleteCard={() => deleteCard(item.cardId)}
+              editCard={() => openEditModal(item.cardId, item.cardName)}
             />
-          </View>
-        </RefreshView>
-      </View>
+          ))}
+          {cards.length == 0 ? (
+            <View style={styles.noCardsContent}>
+              <Image
+                source={require('../../assets/emptyOrders.png')}
+                style={styles.messageImage}
+              />
+              <H3 style={styles.messageTitle}>No cards yet!</H3>
+              <Button
+                backgroundStyle={{ alignSelf: 'center' }}
+                title={'Add a card'}
+                size='big'
+                color='shadedPrimary'
+                onPress={() => navigation.navigate('Add Card')}
+              />
+            </View>
+          ) : (
+            <View>
+              <View style={{ marginBottom: 50 }}></View>
+              <Button
+                backgroundStyle={{ alignSelf: 'center' }}
+                title={'Add another card'}
+                size='big'
+                color='shadedPrimary'
+                onPress={() => navigation.navigate('Add Card')}
+              />
+            </View>
+          )}
+        </View>
+      </RefreshView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    height: '100%',
-    alignItems: 'center',
-  },
   messageImage: {
     height: 200,
     width: 200,
@@ -102,7 +106,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   noCardsContent: {
-    minHeight: 400,
+    flexGrow: 1,
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },

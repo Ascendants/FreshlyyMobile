@@ -13,18 +13,18 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'haritha@hasathcharu.com';
+  const userEmail = 'nadun@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
       <NavigationContainer>
-        <StatusBar barStyle='dark-content' />
+        {/* <StatusBar barStyle='dark-content' /> */}
         <Stack.Navigator
           screenOptions={{ headerShown: false, animation: 'none' }}
         >
           <Stack.Screen
             name='Checkout'
-            component={Screens.ProductDetailScreen}
+            component={Screens.FarmerDashboardScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
@@ -37,6 +37,13 @@ export default function App() {
           <Stack.Screen
             name='Farmer Dashboard'
             component={Screens.FarmerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Settle Account'
+            component={Screens.SettleAccountScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -125,8 +132,15 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name='Add New Card'
+            name='Other Payment'
             component={Screens.OtherPaymentScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='Other Farmer Payment'
+            component={Screens.OtherFarmerPaymentScreen}
             initialParams={{
               userEmail: userEmail,
             }}

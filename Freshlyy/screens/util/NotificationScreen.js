@@ -46,40 +46,34 @@ export default function ({ navigation, route }) {
     getNotifications(false);
   }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} />
-        <H3>Notifications</H3>
-        {!loaded ? (
-          <Loading />
-        ) : (
-          <View style={styles.notifsContainer}>
-            <FadeComponent>
-              <FlatList
-                style={styles.flatList}
-                ListEmptyComponent={emptyNotifs}
-                data={notifications}
-                refreshing={refreshing}
-                onRefresh={() => getNotifications(true)}
-                renderItem={(item) => (
-                  <NotificationView key={item.id} notification={item.item} />
-                )}
-              />
-            </FadeComponent>
-          </View>
-        )}
-      </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header back={true} />
+      <H3 style={{ textAlign: 'center' }}>Notifications</H3>
+      {!loaded ? (
+        <Loading />
+      ) : (
+        <View style={styles.notifsContainer}>
+          <FadeComponent>
+            <FlatList
+              style={{ flex: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+              ListEmptyComponent={emptyNotifs}
+              data={notifications}
+              refreshing={refreshing}
+              onRefresh={() => getNotifications(true)}
+              renderItem={(item) => (
+                <NotificationView key={item.id} notification={item.item} />
+              )}
+            />
+          </FadeComponent>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    height: '100%',
-    alignItems: 'center',
-  },
   container: {
-    width: '100%',
     paddingHorizontal: 10,
     marginTop: 40,
   },
@@ -92,9 +86,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     paddingHorizontal: 10,
-  },
-  flatList: {
-    height: '100%',
   },
   noNotifsContent: {
     paddingHorizontal: 10,

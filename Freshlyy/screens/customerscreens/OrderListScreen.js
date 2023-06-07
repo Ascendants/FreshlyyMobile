@@ -60,90 +60,82 @@ export default function ({ navigation, route }) {
     );
   }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} home={true} />
-        <H3>Orders</H3>
-        <TabMenu
-          tabs={[
-            'All',
-            'To Pay',
-            'Processing',
-            'Shipped',
-            'To Pickup',
-            'To Review',
-            'Completed',
-            'Cancelled',
-          ]}
-          active={activeTab}
-          onPress={changeTab}
-        />
-        {!loaded ? (
-          <Loading />
-        ) : (
-          <View style={styles.ordersContainer}>
-            <FadeComponent>
-              <FlatList
-                style={styles.flatList}
-                ListEmptyComponent={emptyOrders}
-                data={orders}
-                refreshing={refreshing}
-                onRefresh={() =>
-                  getOrderList(
-                    true,
-                    activeTab.replace(/\s+/g, '-').toLowerCase()
-                  )
-                }
-                renderItem={(order) => (
-                  <OrderView
-                    farmer={order.item.farmerName}
-                    key={order.item.orderId}
-                    orderId={order.item.orderId}
-                    orderDate={order.item.orderPlaced}
-                    cancelledDate={order.item.orderCancelled}
-                    paidDate={order.item.orderPaid}
-                    status={order.item.status}
-                    total={order.item.orderTotal}
-                    viewOrder={navigateToOrder}
-                  />
-                )}
-                keyExtractor={(order) => order.orderId}
-              />
-            </FadeComponent>
-          </View>
-        )}
-      </View>
+    <SafeAreaView style={styles.screen}>
+      <Header back={true} home={true} />
+      <H3 style={{ textAlign: 'center' }}>Orders</H3>
+      <TabMenu
+        tabs={[
+          'All',
+          'To Pay',
+          'Processing',
+          'Shipped',
+          'To Pickup',
+          'To Review',
+          'Completed',
+          'Cancelled',
+        ]}
+        active={activeTab}
+        onPress={changeTab}
+      />
+      {!loaded ? (
+        <Loading />
+      ) : (
+        <View style={styles.ordersContainer}>
+          <FadeComponent>
+            <FlatList
+              style={{ flex: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+              ListEmptyComponent={emptyOrders}
+              data={orders}
+              refreshing={refreshing}
+              onRefresh={() =>
+                getOrderList(true, activeTab.replace(/\s+/g, '-').toLowerCase())
+              }
+              renderItem={(order) => (
+                <OrderView
+                  farmer={order.item.farmerName}
+                  key={order.item.orderId}
+                  orderId={order.item.orderId}
+                  orderDate={order.item.orderPlaced}
+                  cancelledDate={order.item.orderCancelled}
+                  paidDate={order.item.orderPaid}
+                  status={order.item.status}
+                  total={order.item.orderTotal}
+                  viewOrder={navigateToOrder}
+                />
+              )}
+              keyExtractor={(order) => order.orderId}
+            />
+          </FadeComponent>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    height: '100%',
-    alignItems: 'center',
+    flex: 1,
   },
   ordersContainer: {
     marginVertical: 10,
-    width: '100%',
     flex: 1,
     paddingHorizontal: 10,
   },
-  flatList: {
-    height: '100%',
-  },
   noOrdersContent: {
     paddingHorizontal: 10,
-    minHeight: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
   },
   messageImage: {
     height: 200,
     resizeMode: 'contain',
+    marginVertical: 50,
   },
   messageTitle: {
     fontFamily: 'Poppins',
     textAlign: 'center',
-    paddingVertical: 50,
+    paddingBottom: 50,
   },
 });

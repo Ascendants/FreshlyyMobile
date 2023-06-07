@@ -13,23 +13,25 @@ export default function (props) {
   }
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={switchMethod.bind(this, 'cod')}
-        style={styles.methodClicker}
-      >
-        <View
-          style={[
-            styles.method,
-            props.selectedMethod == 'cod' ? styles.selectedMethod : null,
-          ]}
+      {!props.noCod && (
+        <TouchableOpacity
+          onPress={switchMethod.bind(this, 'cod')}
+          style={styles.methodClicker}
         >
-          <Image
-            source={require('../assets/money.png')}
-            style={styles.methodImage}
-          />
-          <H4 style={{ fontFamily: 'Poppins' }}> Cash on Delivery</H4>
-        </View>
-      </TouchableOpacity>
+          <View
+            style={[
+              styles.method,
+              props.selectedMethod == 'cod' ? styles.selectedMethod : null,
+            ]}
+          >
+            <Image
+              source={require('../assets/money.png')}
+              style={styles.methodImage}
+            />
+            <H4 style={{ fontFamily: 'Poppins' }}> Cash on Delivery</H4>
+          </View>
+        </TouchableOpacity>
+      )}
       {methods.map((method) => {
         let icon = require('../assets/card.png');
         switch (method.cardType) {
@@ -102,6 +104,7 @@ const styles = StyleSheet.create({
   },
   selectedMethod: {
     backgroundColor: Theme.primaryShade,
+    borderRadius: 20,
   },
   methodImage: {
     width: 50,

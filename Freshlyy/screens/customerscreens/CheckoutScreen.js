@@ -25,7 +25,6 @@ export default function ({ navigation, route }) {
   const [subTotal, setSubTotal] = React.useState(0);
   const [total, setTotal] = React.useState(0);
   const [cart, setCart] = React.useState([]);
-
   async function placeOrder() {
     const data = {};
     setConfirmOrder(true);

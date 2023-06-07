@@ -66,3 +66,5 @@ export { default as ProductDeleteScreen } from './farmerscreens/ProductDeleteScr
 export { default as ProductAddedScreen } from './farmerscreens/ProductAddedScreen';
 export { default as ProductUpdatedScreen } from './farmerscreens/ProductUpdatedScreen';
 export { default as FarmerInvoiceScreen } from './farmerscreens/FarmerViewInvoiceScreen';
+export { default as SettleAccountScreen } from './farmerscreens/SettleAccountScreen';
+export { default as OtherFarmerPaymentScreen } from './farmerscreens/OtherFarmerPaymentScreen';

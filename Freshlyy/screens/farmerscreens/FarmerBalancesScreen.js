@@ -114,6 +114,7 @@ export default function ({ navigation, route }) {
                   title='Settle Account'
                   color='filledPrimary'
                   size='big'
+                  onPress={() => navigation.navigate('Settle Account')}
                 />
                 <P style={styles.infoTextLast}>
                   ⓘ Negative since {data.negativeSince}
@@ -187,7 +188,9 @@ export default function ({ navigation, route }) {
             />
           )}
           <View style={styles.infoTextCont}>
-            <P>Last updated {data.lastUpdate}</P>
+            <P style={{ textAlign: 'center' }}>
+              Last updated {data.lastUpdate}
+            </P>
             <P style={styles.infoTextLast}>
               ⓘ Balance updates 3 days after an order is complete
             </P>

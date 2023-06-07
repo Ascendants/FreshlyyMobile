@@ -20,6 +20,7 @@ export default function (props) {
     <ScrollView
       howsVerticalScrollIndicator={false}
       style={styles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
@@ -31,7 +32,7 @@ export default function (props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    flex: 1,
     paddingHorizontal: 10,
   },
 });

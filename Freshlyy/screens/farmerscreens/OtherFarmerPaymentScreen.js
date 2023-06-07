@@ -2,23 +2,74 @@ import React from 'react';
 import { StyleSheet, View, Image, ScrollView, Settings } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import { H3, P } from '../../components/Texts';
+import { TextInputBox, MaskedTextInputBox } from '../../components/Inputs';
+import { H3, P, H6 } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
+import { Formik, useFormik } from 'formik';
+import * as Yup from 'yup';
+import CardTypeSelector from '../../components/CardTypeSelector';
 import ENV from '../../constants/env';
 import LoadingModal from '../../components/LoadingModal';
+import { CheckBox } from '../../components/Inputs';
 import {
   StripeProvider,
   CardField,
-  useConfirmSetupIntent,
+  confirmSetupIntent,
 } from '@stripe/stripe-react-native';
 
 const stripeKey =
   'pk_test_51JxX4pBhvwaCydqin0F11wqwvBzL9AiA6jrkNZCqbawmKY4TWOgd21feOfkXItvsoqGduSdEw2dgLswnmzRxSZbl0074AP4Qmr';
 
 export default function ({ navigation, route }) {
-  const { confirmSetupIntent, loading } = useConfirmSetupIntent();
-  const [saving, setSaving] = React.useState(false);
+  const [saveCardLater, setSaveCardLater] = React.useState(false);
+  const [paying, setPaying] = React.useState(false);
+  async function handleButtonPress() {
+    setPaying(true);
+    const paymentId = await saveCard();
+    await makePayment(paymentId);
+    setPaying(false);
+  }
+  async function makePayment(paymentMethod) {
+    try {
+      const data = {
+        payFrom: paymentMethod,
+        farmerPayment: route.params.settlementIntent,
+        saveCard: saveCardLater,
+      };
+      const result = await fetch(ENV.backend + '/farmer/settle-account/', {
+        method: 'POST',
+        headers: {
+          userEmail: route.params.userEmail,
+          'Content-Type': 'application/json',
+          //this will be replaced with an http only token
+          //after auth gets set
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await result.json();
+      if (res.message != 'Success') {
+        throw new Error('Something went wrong');
+      }
+      navigation.navigate('Message', {
+        type: 'Success',
+        messageTitle: 'Payment Complete!',
+        messageText: 'We have received your payment!!',
+        goto: 'Farmer Balance',
+        goButtonText: 'Go Back',
+      });
+    } catch (error) {
+      console.log(error);
+      navigation.navigate('Message', {
+        type: 'fail',
+        messageTitle: 'Payment Failed :(',
+        messageText: 'Some unknown error occured :(',
+        goto: 'Farmer Balance',
+        goButtonText: 'Go Back',
+      });
+    }
+  }
+
   const fetchSetupIntent = async () => {
     try {
       const response = await fetch(
@@ -39,40 +90,24 @@ export default function ({ navigation, route }) {
   };
 
   async function saveCard() {
-    setSaving(true);
     const { clientSecret } = await fetchSetupIntent();
     const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
       paymentMethodType: 'Card',
     });
-    setSaving(false);
+
     if (error) {
-      navigation.navigate('Message', {
-        type: 'fail',
-        messageTitle: 'Card could not be saved :(',
-        messageText: 'There was something wrong with your card.',
-        goto: 'Card Management',
-        goButtonText: 'View Cards',
-      });
-      return;
+      throw new Error(error);
     } else if (setupIntent) {
-      navigation.navigate('Message', {
-        type: 'Success',
-        messageTitle: 'Card Saved!',
-        messageText: 'The card has been saved securely',
-        goto: 'Card Management',
-        goButtonText: 'View Cards',
-      });
-      return;
+      return setupIntent.paymentMethodId;
     }
   }
-
   return (
     <StripeProvider publishableKey={stripeKey}>
       <SafeAreaView>
         <View style={styles.screen}>
-          <LoadingModal message='Saving Card' visible={saving} />
+          <LoadingModal message='Making Payment' visible={paying} />
           <Header back={true} home={true} />
-          <H3 style={{ textAlign: 'center' }}>Add Card</H3>
+          <H3 style={{ textAlign: 'center' }}>Payment</H3>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pageContent}>
               <Image
@@ -96,11 +131,17 @@ export default function ({ navigation, route }) {
                     marginVertical: 30,
                   }}
                 />
+                <CheckBox
+                  value={saveCardLater}
+                  disabled={false}
+                  setCheckBox={setSaveCardLater}
+                  label='Save this card'
+                />
                 <Button
-                  title='Save Card'
+                  title='Make Payment'
                   color='filledWarning'
                   size='big'
-                  onPress={saveCard}
+                  onPress={handleButtonPress}
                 />
               </View>
               <View style={styles.inputcont}></View>
