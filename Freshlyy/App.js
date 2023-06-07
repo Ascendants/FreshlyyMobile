@@ -1,80 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import { P, H1, H3, H4 } from './components/Texts';
-import Header from './components/Header';
 import { UserContext, user } from './context/UserContext';
-import Theme from './constants/theme';
-
+import * as Screens from './screens';
 const Stack = createNativeStackNavigator();
 
-import StartScreen from './screens/StartScreen';
-import GetStartedScreen from './screens/GetStartedScreen';
-import ProductDetailScreen from './screens/ProductDetailScreen';
-import EmailVerificationScreen from './screens/EmailVerificationScreen';
-import VerifyEmail from './screens/VerifyEmail';
-import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
-import FarmerDashBoardScreen from './screens/FarmerDashboardScreen';
-import MyCartScreen from './screens/MyCartScreen';
-import CheckoutScreen from './screens/CheckoutScreen';
-import HomeScreen from './screens/HomeScreen';
-import PaymentScreen from './screens/PaymentScreen';
-import SignUpScreen from './screens/SignUpScreen';
-import ProductHomePageScreen from './screens/ProductHomePageScreen';
-import SocialCornerScreen from './screens/SocialCornerScreen';
-import LoginScreen from './screens/LoginScreen';
-import PasswordCreationScreen from './screens/PasswordCreationScreen';
-import BeFarmerScreen from './screens/BeFarmerScreen';
-import FarmerCreateAccountScreen from './screens/FarmerCreateAccountScreen';
-import MessageScreen from './screens/MessageScreen';
-import InsertProductScreen from './screens/InsertProductScreen';
-import ProductAddedScreen from './screens/ProductAddedScreen';
-import ProductUpdatedScreen from './screens/ProductUpdated';
-import ProductDeletedScreen from './screens/ProductDelete';
-import EorDproduct from './screens/EorDproduct';
-import CustomerDashboardScreen from './screens/CustomerDashboardScreen';
-import FarmerDashboardScreen from './screens/FarmerDashboardScreen';
-import HelpCenterScreen from './screens/HelpCenterScreen';
-import CantSignInScreen from './screens/CantSignInScreen';
-import HelpWithanOrderScreen from './screens/HelpWithanOrderScreen';
-import FoodDamagedScreen from './screens/FoodDamagedScreen';
-import SelectTheOrderHC from './screens/SelectTheOrderScreen';
-import CardScreen from './screens/CardScreen';
-import AddCardScreen from './screens/AddCardScreen';
-import OrderListScreen from './screens/OrderListScreen';
-
-import OrderStatusScreen from './screens/OrderStatusScreen';
-import OtherPaymentScreen from './screens/OtherPaymentScreen';
-import AddCardScreenBackup from './screens/AddCardScreenBackup';
-import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
-import VerifyYourEmail from './screens/VerifyYourEmail';
-import CreateNewPassword from './screens/CreateNewPassword';
-import { G } from 'react-native-svg';
-import AddBankAccountScreen from './screens/AddBankAccountScreen';
-
-import FarmerFollowerScreen from './screens/FarmerFollowerScreen';
-import LocationScreen from './screens/LocationScreen';
-import OrderReviewScreen from './screens/OrderReviewScreen';
-import ReviewedOrderScreen from './screens/ReviewedOrderScreen';
-import LocationAddScreen from './screens/LocationAddScreen';
-import FarmerDetailScreen from './screens/FarmerDetailScreen';
-
-import OrderCancelScreen from './screens/OrderCancelScreen';
-import ConfirmPickupScreen from './screens/ConfirmPickupScreen';
-
-import FarmerBalancesScreen from './screens/FarmerBalancesScreen';
-import ConfirmRequestWithdrawalScreen from './screens/ConfirmRequestWithdrawalScreen';
-import PayoutRequestListScreen from './screens/PayoutRequestListScreen';
-import FarmerInvoicesScreen from './screens/FarmerInvoicesScreen';
 export default function App() {
   const [fonts] = useFonts({
     Poppins: require('./assets/fonts/Poppins-Medium.ttf'),
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'harini@freshlyy.com';
+  const userEmail = 'haritha@freshlyy.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -85,47 +24,48 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={LocationAddScreen}
+            component={Screens.SignUpScreen}
             initialParams={{
+              // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
-              total: 5000,
               purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               userEmail: userEmail,
               initialTab: 'toPay',
             }}
           />
-          <Stack.Screen name='Payment' component={PaymentScreen} />
+          <Stack.Screen name='Payment' component={Screens.PaymentScreen} />
           <Stack.Screen
             name='Farmer Dashboard'
-            component={FarmerDashboardScreen}
+            component={Screens.FarmerDashboardScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Farmer Balance'
-            component={FarmerBalancesScreen}
+            component={Screens.FarmerBalancesScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Configure Bank'
-            component={AddBankAccountScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
-          />
-           <Stack.Screen
-            name='GetStartedScreen'
-            component={GetStartedScreen}
+            component={Screens.AddBankAccountScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
+            name='GetStartedScreen'
+            component={Screens.GetStartedScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+
+          <Stack.Screen
             name='Confirm Pickup'
-            component={ConfirmPickupScreen}
+            component={Screens.ConfirmPickupScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -135,7 +75,7 @@ export default function App() {
           />
           <Stack.Screen
             name='Orders List'
-            component={OrderListScreen}
+            component={Screens.OrderListScreen}
             initialParams={{
               userEmail: userEmail,
               initialTab: 'All',
@@ -143,56 +83,77 @@ export default function App() {
           />
           <Stack.Screen
             name='Farmer Payout Requests'
-            component={PayoutRequestListScreen}
+            component={Screens.PayoutRequestListScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Farmer Invoices'
-            component={FarmerInvoicesScreen}
+            component={Screens.FarmerInvoicesScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Order Details'
-            component={OrderStatusScreen}
+            component={Screens.OrderStatusScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Card Management'
-            component={CardScreen}
+            component={Screens.CardScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Add Card'
-            component={AddCardScreen}
+            component={Screens.AddCardScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Add New Card'
-            component={OtherPaymentScreen}
+            component={Screens.OtherPaymentScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Customer Dashboard'
-            component={CustomerDashboardScreen}
+            component={Screens.CustomerDashboardScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='editScreen'
+            component={Screens.EditProductScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='productupdated'
+            component={Screens.ProductUpdatedScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
+          <Stack.Screen
+            name='productAddedSuccessfully'
+            component={Screens.ProductAddedScreen}
             initialParams={{
               userEmail: userEmail,
             }}
           />
           <Stack.Screen
             name='Order Cancel Screen'
-            component={OrderCancelScreen}
+            component={Screens.OrderCancelScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -202,7 +163,7 @@ export default function App() {
           />
           <Stack.Screen
             name='Payout Request Screen'
-            component={ConfirmRequestWithdrawalScreen}
+            component={Screens.ConfirmRequestWithdrawalScreen}
             initialParams={{
               userEmail: userEmail,
             }}
@@ -210,19 +171,59 @@ export default function App() {
               animation: 'slide_from_bottom',
             }}
           />
-          <Stack.Screen name='Help Center' component={HelpCenterScreen} />
-          <Stack.Screen name='Cant sign in' component={CantSignInScreen} />
-          <Stack.Screen name='Food Damaged' component={FoodDamagedScreen} />
-          <Stack.Screen name='Select order' component={SelectTheOrderHC} />
+          <Stack.Screen
+            name='Help Center'
+            component={Screens.HelpCenterScreen}
+          />
+          <Stack.Screen
+            name='Cant sign in'
+            component={Screens.CantSignInScreen}
+          />
+          <Stack.Screen
+            name='Food Damaged'
+            component={Screens.FoodDamagedScreen}
+          />
+          <Stack.Screen
+            name='Select the Order'
+            component={Screens.SelectOrderScreen}
+          />
           <Stack.Screen
             name='Help with an order'
-            component={HelpWithanOrderScreen}
+            component={Screens.HelpWithAnOrderScreen}
           />
-          <Stack.Screen name='Cart' component={MyCartScreen} />
+          <Stack.Screen
+            name='Order Naver Arrived'
+            component={Screens.OrderNeverArrivedScreen}
+          />
+          <Stack.Screen
+            name='Order is Wrong'
+            component={Screens.OrderIsWrong}
+          />
+          <Stack.Screen
+            name='Order Details Help Center'
+            component={Screens.HelpWithAnOrderScreen}
+          />
+          <Stack.Screen
+            name='Create Coupon'
+            component={Screens.CreateCouponScreen}
+          />
+          <Stack.Screen name='Contact Us' component={Screens.ContactUsScreen} />
+          <Stack.Screen
+            name='Ticket Details'
+            component={Screens.TicketDetailsScreen}
+          />
+
+          <Stack.Screen
+            name='Cart'
+            component={Screens.MyCartScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
+          />
 
           <Stack.Screen
             name='Message'
-            component={MessageScreen}
+            component={Screens.MessageScreen}
             options={{
               animation: 'slide_from_bottom',
             }}
@@ -230,70 +231,70 @@ export default function App() {
 
           <Stack.Screen
             name='Sign Up'
-            component={SignUpScreen}
+            component={Screens.SignUpScreen}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
             name='createPassword'
-            component={PasswordCreationScreen}
+            component={Screens.PasswordCreationScreen}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
             name='beFarmer'
-            component={BeFarmerScreen}
+            component={Screens.BeFarmerScreen}
             options={{
               headerShown: false,
             }}
           />
-              <Stack.Screen
+          <Stack.Screen
             name='FarmerCreateAccount'
-            component={FarmerCreateAccountScreen}
+            component={Screens.FarmerCreateAccountScreen}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
             name='homePage'
-            component={ProductHomePageScreen}
+            component={Screens.ProductHomePageScreen}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
             name='login'
-            component={LoginScreen}
+            component={Screens.LoginScreen}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
             name='Product Detail'
-            component={ProductDetailScreen}
+            component={Screens.ProductDetailScreen}
             options={{
               headerShown: true,
             }}
           />
-                  <Stack.Screen
+          <Stack.Screen
             name='Email Verification'
-            component={EmailVerificationScreen}
+            component={Screens.EmailVerificationScreen}
             options={{
               headerShown: false,
             }}
           />
-            <Stack.Screen
+          <Stack.Screen
             name='EmailVerify'
-            component={VerifyEmail}
+            component={Screens.VerifyEmailScreen}
             options={{
               headerShown: false,
             }}
           />
-               <Stack.Screen
+          <Stack.Screen
             name='Phone Verification'
-            component={PhoneVerificationScreen}
+            component={Screens.PhoneVerificationScreen}
             options={{
               headerShown: false,
             }}

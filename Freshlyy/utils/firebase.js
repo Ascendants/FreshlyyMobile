@@ -25,4 +25,4 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth();
 export const app = firebase.app();
-
+export const FreshlyyImageStore = getStorage(app);
