@@ -19,7 +19,8 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LocationCard } from '../components/LocationCard';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Location from 'expo-location';
-//import { GOOGLE_API_KEY } from '@env';
+import ENV from '../constants/env';
+import Loading from '../components/Loading';
 
 export default function App() {
   const [location, setLocation] = useState(null);
@@ -36,14 +37,21 @@ export default function App() {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      let currLocation = await Location.getCurrentPositionAsync({});
+      setLocation(currLocation);
+      setSelectedLocation(
+        {
+          latitude: currLocation?.coords.latitude,
+          longitude: currLocation?.coords.longitude
+        }
+      )
     })();
   }, []);
-
+  console.log("Current Location: ",location)
+  console.log("Selected lcation",selectedLocation)
   const getAddress = async (latitude, longitude) => {
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw"}`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${ENV.GOOGLE_API_KEY}`
     );
     const data = await response.json();
     return data.results[0].formatted_address;
@@ -71,7 +79,7 @@ export default function App() {
     });
   };
 
-  let text = 'Waiting...';
+  let text = <Loading/>;
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {

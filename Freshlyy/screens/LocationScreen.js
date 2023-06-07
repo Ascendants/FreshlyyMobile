@@ -25,6 +25,7 @@ export default function () {
         <View style={styles.screen}>
           <H3>Locations</H3>
           <LocationCard />
+          <LocationCard/>
           <Button title='Add Location' color='shadedPrimary' size='normal' />
         </View>
       </ScrollView>
