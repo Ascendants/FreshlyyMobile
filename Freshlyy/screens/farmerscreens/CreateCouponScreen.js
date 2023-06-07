@@ -69,48 +69,48 @@ export default function ({ navigation, route }) {
 
   const couponRegex = /^CP\d{4}$/;
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     const response = await fetch(ENV.backend + '/farmer/verify-coupon-code/', {
-  //       method: 'POST',
-  //       headers: {
-  //         useremail: route.params.userEmail,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         cCode: code,
-  //       })
-  //     })
-  //     const result = await response.json();
-  //     if (result.isExist) {
-  //       alert(`Coupon code ${code} already exists`);
-  //     } else {
-  //       const response = await fetch(ENV.backend + "/farmer/create-coupon/", {
-  //         method: 'POST',
-  //         headers: {
-  //           useremail: route.params.userEmail,
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           presentage: presentage,
-  //           cCode: code,
-  //           cDate: createDateString,
-  //           eDate: expireDateString,
-  //         })
-  //       })
-  //       // console.log(response.id);
-  //       navigation.navigate('Message', {
-  //         type: 'Success',
-  //         messageTitle: 'Coupon Created Successfully!',
-  //         messageText: 'An administrator will be in touch with you shortly!',
-  //         goto: 'Farmer Dashboard',
-  //         goButtonText: 'Dashboard',
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(ENV.backend + '/farmer/verify-coupon-code/', {
+        method: 'POST',
+        headers: {
+          useremail: route.params.userEmail,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cCode: code,
+        })
+      })
+      const result = await response.json();
+      if (result.isExist) {
+        alert(`Coupon code ${code} already exists`);
+      } else {
+        const response = await fetch(ENV.backend + "/farmer/create-coupon/", {
+          method: 'POST',
+          headers: {
+            useremail: route.params.userEmail,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            presentage: presentage,
+            cCode: code,
+            cDate: createDateString,
+            eDate: expireDateString,
+          })
+        })
+        // console.log(response.id);
+        navigation.navigate('Message', {
+          type: 'Success',
+          messageTitle: 'Coupon Created Successfully!',
+          messageText: 'An administrator will be in touch with you shortly!',
+          goto: 'Farmer Dashboard',
+          goButtonText: 'Dashboard',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const minimumDate = new Date();
   minimumDate.setDate(minimumDate.getDate() + 1);
