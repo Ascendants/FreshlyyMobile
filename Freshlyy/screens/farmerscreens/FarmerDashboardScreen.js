@@ -31,13 +31,19 @@ export default function ({ navigation, route }) {
   const [pastOrders, setPastOrders] = useState('');
   const sheetRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const snapPoints = ['60%', '100%'];
 
-  const handleSnapPress = useCallback((index) => {
-    sheetRef.current?.snapToIndex(index);
-    setIsOpen(true);
-  }, []);
+  // const handleSnapPress = useCallback((index) => {
+  //   sheetRef.current?.snapToIndex(index);
+  //   setIsOpen(true);
+  // }, []);
+
+  const handleBottomSheetClose = () => {
+    setIsBottomSheetVisible(false);
+  };
+
   const getData = React.useCallback(async () => {
     return fetch(ENV.backend + '/farmer/dashboard', {
       method: 'GET',
@@ -119,7 +125,7 @@ export default function ({ navigation, route }) {
             borderTopRightRadius: 60,
             borderTopLeftRadius: 60,
           }}
-          onClose={() => setIsOpen(false)}
+          onClose={handleBottomSheetClose}
         >
           <BottomSheetView>
             <SwipeOverlay />

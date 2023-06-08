@@ -69,6 +69,8 @@ export default function ({ navigation, route }) {
 
   const couponRegex = /^CP\d{4}$/;
 
+  console.log(route.params.userEmail);
+
   const handleSubmit = async () => {
     try {
       const response = await fetch(ENV.backend + '/farmer/verify-coupon-code/', {
