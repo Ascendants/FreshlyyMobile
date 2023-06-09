@@ -29,6 +29,12 @@ export default function ({ navigation,route }) {
     });
   }
 
+  function navigateToTicketStatus(email) {
+    navigation.navigate('Ticket Status', {
+      userEmail: email,
+    });
+  }
+
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -63,12 +69,12 @@ export default function ({ navigation,route }) {
               <AntDesign name='right' size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ticket status')}>
+          <TouchableOpacity style={styles.button} onPress={navigateToTicketStatus}>
             <View style={styles.barContainer}>
               <H5>View my tickets</H5>
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <H5 style={{ margin: 10 }}>Still Have Questions?</H5>
           <Image
             source={require('../../assets/support-ticket.png')}

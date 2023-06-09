@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Loading from '../../components/Loading';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button } from '../../components/Buttons';
 import Header from '../../components/Header';
@@ -29,20 +30,54 @@ export default function ({ navigation, route }) {
   const [pendingProducts, setPendingProducts] = useState('');
   const [newOrders, setNewOrders] = useState('');
   const [pastOrders, setPastOrders] = useState('');
-  const sheetRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const [isBottomSheetNewOrderVisible, setIsBottomSheetNewOrderVisible] = useState(false);
+  const [isBottomSheetPastOrderVisible, setIsBottomSheetPastOrderVisible] = useState(false);
+  const [isBottomSheetSellingVisible, setIsBottomSheetSellingVisible] = useState(false);
+  const [isBottomSheetPendingVisible, setIsBottomSheetPendingVisible] = useState(false);
 
-  const snapPoints = ['60%', '100%'];
+  const bottomSheetRefNewOrder = useRef(null);
+  const bottomSheetRefPastOrder = useRef(null);
+  const bottomSheetRefSelling = useRef(null);
+  const bottomSheetRefPending = useRef(null);
+  const snapPoints = ['100%', '60%'];
 
-  // const handleSnapPress = useCallback((index) => {
-  //   sheetRef.current?.snapToIndex(index);
-  //   setIsOpen(true);
-  // }, []);
-
-  const handleBottomSheetClose = () => {
-    setIsBottomSheetVisible(false);
+  const handleBottomSheetNewOrderClose = () => {
+    setIsBottomSheetNewOrderVisible(false);
   };
+
+  const handleNewOrderBottomSheet = () => {
+    setIsBottomSheetNewOrderVisible(true);
+    bottomSheetRefNewOrder.current.expand();
+  };
+
+  const handleBottomSheetPastOrderClose = () => {
+    setIsBottomSheetPastOrderVisible(false);
+  };
+
+  const handlePastOrderBottomSheet = () => {
+    setIsBottomSheetPastOrderVisible(true);
+    bottomSheetRefPastOrder.current.expand();
+  };
+
+  const handleBottomSheetSellingClose = () => {
+    setIsBottomSheetSellingVisible(false);
+  };
+
+  const handleSeliingBottomSheet = () => {
+    setIsBottomSheetSellingVisible(true);
+    bottomSheetRefSelling.current.expand();
+  };
+  
+  const handleBottomSheetPendingClose = () => {
+    setIsBottomSheetPendingVisible(false);
+  };
+
+  const handlePendingBottomSheet = () => {
+    setIsBottomSheetPendingVisible(true);
+    bottomSheetRefPending.current.expand();
+  };
+  
 
   const getData = React.useCallback(async () => {
     return fetch(ENV.backend + '/farmer/dashboard', {
@@ -67,6 +102,7 @@ export default function ({ navigation, route }) {
   });
 
   return (
+    <GestureHandlerRootView>
     <SafeAreaView>
       <View style={styles.screen}>
         <Header farmer={true} />
@@ -81,13 +117,13 @@ export default function ({ navigation, route }) {
               imageUri={require('../../assets/gift.png')}
               number={newOrders}
               text='New Orders'
-              onPress={() => handleSnapPress(0)}
+              onPress={handleNewOrderBottomSheet}
             />
             <DashBoardCard
               imageUri={require('../../assets/box.png')}
               number={pastOrders}
               text='Past Orders'
-              onPress={() => handleSnapPress(0)}
+              onPress={handlePastOrderBottomSheet}
             />
           </View>
           <H4 style={styles.headings}>My Listings</H4>
@@ -96,13 +132,13 @@ export default function ({ navigation, route }) {
               imageUri={require('../../assets/trade.png')}
               number={sellingProducts}
               text='Selling'
-              onPress={() => handleSnapPress(0)}
+              onPress={handleSeliingBottomSheet}
             />
             <DashBoardCard
               imageUri={require('../../assets/pending.png')}
               number={pendingProducts}
               text='Pending'
-              onPress={() => handleSnapPress(0)}
+              onPress={handlePendingBottomSheet}
             />
           </View>
           <View style={styles.buttonContainer}>
@@ -117,23 +153,76 @@ export default function ({ navigation, route }) {
           <View style={styles.lastChild}></View>
         </RefreshView>
         <BottomSheet
-          ref={sheetRef}
+          ref={bottomSheetRefNewOrder}
           index={-1}
           snapPoints={snapPoints}
           enablePanDownToClose={true}
           backgroundStyle={{
-            borderTopRightRadius: 60,
-            borderTopLeftRadius: 60,
+          borderTopRightRadius: 60,
+          borderTopLeftRadius: 60,
           }}
-          onClose={handleBottomSheetClose}
+          onClose={handleBottomSheetNewOrderClose}
         >
           <BottomSheetView>
             <SwipeOverlay />
           </BottomSheetView>
         </BottomSheet>
+
+        {/* Handing Past Order */}
+        <BottomSheet
+          ref={bottomSheetRefPastOrder}
+          index={-1}
+          snapPoints={snapPoints}
+          enablePanDownToClose={true}
+          backgroundStyle={{
+          borderTopRightRadius: 60,
+          borderTopLeftRadius: 60,
+          }}
+          onClose={handleBottomSheetPastOrderClose}
+        >
+          <BottomSheetView>
+            <H4>past order</H4>
+          </BottomSheetView>
+        </BottomSheet>
+
+        {/* Handing Selling */}
+        <BottomSheet
+          ref={bottomSheetRefSelling}
+          index={-1}
+          snapPoints={snapPoints}
+          enablePanDownToClose={true}
+          backgroundStyle={{
+          borderTopRightRadius: 60,
+          borderTopLeftRadius: 60,
+          }}
+          onClose={handleBottomSheetSellingClose}
+        >
+          <BottomSheetView>
+            <H4>Selling</H4>
+          </BottomSheetView>
+        </BottomSheet>
+
+        {/* Handing Pending */}
+        <BottomSheet
+          ref={bottomSheetRefPending}
+          index={-1}
+          snapPoints={snapPoints}
+          enablePanDownToClose={true}
+          backgroundStyle={{
+          borderTopRightRadius: 60,
+          borderTopLeftRadius: 60,
+          }}
+          onClose={handleBottomSheetPendingClose}
+        >
+          <BottomSheetView>
+            <H4>Pending</H4>
+          </BottomSheetView>
+        </BottomSheet>          
+
         <Navbar screenName='Cart' />
       </View>
     </SafeAreaView>
+    </GestureHandlerRootView>
   );
 }
 

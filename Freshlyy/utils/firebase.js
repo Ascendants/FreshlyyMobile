@@ -1,4 +1,5 @@
 import { getStorage } from 'firebase/storage';
+import { getFirestore } from 'firebase/firestore';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 
@@ -26,3 +27,4 @@ if (!firebase.apps.length) {
 export const auth = firebase.auth();
 export const app = firebase.app();
 export const FreshlyyImageStore = getStorage(app);
+export const database = getFirestore(app);

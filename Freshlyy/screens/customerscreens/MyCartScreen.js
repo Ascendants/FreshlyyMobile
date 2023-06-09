@@ -13,7 +13,6 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 
 export default function ({ navigation, route }) {
   const [cart, setCart] = React.useState([]);
-  let totalPrice = 0;
   const [total, setTotal] = React.useState(0);
   React.useState(() => {
     fetch(ENV.backend + '/customer/cart/', {
@@ -38,55 +37,55 @@ export default function ({ navigation, route }) {
     );
     setTotal(ctotal);
   }, [cart]);
-  // const [modal, setModal] = React.useState(false);
+  const [modal, setModal] = React.useState(false);
 
-  // const [selectedQuantity, setSelectedQuantity] = React.useState(0);
-  // const [product, setProduct] = React.useState({
-  //   purl: route.params.purl,
-  //   imageUrls: [],
-  // });
+  const [selectedQuantity, setSelectedQuantity] = React.useState(0);
+  const [product, setProduct] = React.useState({
+    purl: route.params.purl,
+    imageUrls: [],
+  });
 
-  // function increaseQuantity() {
-  //   const newQuantity = selectedQuantity + product.minQtyIncrement;
-  //   fetch(ENV.backend + '/public/product/' + product.purl, {
-  //     method: 'GET',
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       const availableQuantity = res.product.qtyAvailable;
-  //       if (newQuantity <= availableQuantity) {
-  //         setSelectedQuantity(newQuantity);
-  //       } else {
-  //         alert('Not enough quantity available');
-  //       }
-  //   })
-  //   .catch((err) => console.log(err));
-  // }
-  // function decreaseQuantity() {
-  //   setSelectedQuantity((curr) =>
-  //     Math.max(curr - product.minQtyIncrement, product.minQtyIncrement)
-  //   );
-  // }
+  function increaseQuantity() {
+    const newQuantity = selectedQuantity + product.minQtyIncrement;
+    fetch(ENV.backend + '/public/product/' + product.purl, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const availableQuantity = res.product.qtyAvailable;
+        if (newQuantity <= availableQuantity) {
+          setSelectedQuantity(newQuantity);
+        } else {
+          alert('Not enough quantity available');
+        }
+    })
+    .catch((err) => console.log(err));
+  }
+  function decreaseQuantity() {
+    setSelectedQuantity((curr) =>
+      Math.max(curr - product.minQtyIncrement, product.minQtyIncrement)
+    );
+  }
 
-  // React.useEffect(() => {
-  //   const purl = product.purl;
-  //   fetch(ENV.backend + '/public/product/' + purl, {
-  //     method: 'GET',
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setProduct((prev) => {
-  //         return { ...prev, ...res.product };
-  //       });
-  //       setSelectedQuantity(res.product.minQtyIncrement);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  React.useEffect(() => {
+    const purl = product.purl;
+    fetch(ENV.backend + '/public/product/' + purl, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setProduct((prev) => {
+          return { ...prev, ...res.product };
+        });
+        setSelectedQuantity(res.product.minQtyIncrement);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Button title='toggle' onPress={() => setModal((prev) => !prev)} />
+        {/* <Button title='toggle' onPress={() => setModal((prev) => !prev)} /> */}
         <Header />
         <H2>My Cart</H2>
         <ScrollView

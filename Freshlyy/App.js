@@ -24,7 +24,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={Screens.MyCartScreen}
+            component={Screens.FarmerDashboardScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
@@ -212,7 +212,10 @@ export default function App() {
             name='Ticket Details'
             component={Screens.TicketDetailsScreen}
           />
-
+          <Stack.Screen
+            name='Ticket Status'
+            component={Screens.TicketStatusScreen}
+          />
           <Stack.Screen
             name='Cart'
             component={Screens.MyCartScreen}

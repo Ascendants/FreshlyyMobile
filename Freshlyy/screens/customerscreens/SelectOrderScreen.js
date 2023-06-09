@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   noOrdersContent: {
-    paddingHorizontal: 10,
-    minHeight: '100%',
+    // minHeight: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
