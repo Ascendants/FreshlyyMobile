@@ -13,7 +13,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'haritha@hasathcharu.com';
+  const userEmail = 'hasathcharu@icloud.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
