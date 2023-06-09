@@ -13,7 +13,7 @@ export default function (props) {
   }, []);
   React.useEffect(() => {
     props.getData().then(() => setLoaded(true));
-  }, []);
+  }, [props.route]);
   return !loaded ? (
     <Loading />
   ) : (

@@ -53,7 +53,7 @@ export default function ({ navigation, route }) {
       <View style={styles.screen}>
         <Header back={true} home={true} />
         <H3>Order</H3>
-        <RefreshView getData={getData}>
+        <RefreshView getData={getData} route={route}>
           <View style={styles.ordersContainer}>
             <H7 style={styles.orderInfo} selectable={true}>
               #{order?._id}

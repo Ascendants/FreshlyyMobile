@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import Loading from '../../components/Loading';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Button } from '../../components/Buttons';
 import Header from '../../components/Header';
@@ -58,7 +57,7 @@ export default function ({ navigation, route }) {
         setLoaded(true);
       })
       .catch((err) => console.log(err));
-  });
+  }, [route]);
 
   return (
     <SafeAreaView>
@@ -69,7 +68,7 @@ export default function ({ navigation, route }) {
           notifMode={'farmer'}
           hasNotifications={userData?.notifications}
         />
-        <RefreshView getData={getData}>
+        <RefreshView getData={getData} route={route}>
           <InfoCardDB
             user={userData}
             goToBalances={() => navigation.navigate('Farmer Balance')}

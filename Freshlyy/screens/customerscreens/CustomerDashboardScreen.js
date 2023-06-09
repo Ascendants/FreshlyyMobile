@@ -32,7 +32,7 @@ export default function ({ navigation, route }) {
         setUserData(res);
       })
       .catch((err) => console.log(err));
-  });
+  }, [route]);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -42,7 +42,7 @@ export default function ({ navigation, route }) {
           hasNotifications={userData.user?.notifications}
           notifMode={'customer'}
         />
-        <RefreshView getData={getData}>
+        <RefreshView getData={getData} route={route}>
           <InfoCardDBCust user={userData.user} />
           <View style={styles.cardContainer}>
             <DashBoardCard

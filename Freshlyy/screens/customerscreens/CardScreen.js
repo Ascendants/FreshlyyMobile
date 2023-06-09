@@ -52,7 +52,7 @@ export default function ({ navigation, route }) {
     <SafeAreaView style={{ flex: 1 }}>
       <Header back={true} home={true} />
       <H3 style={{ textAlign: 'center' }}>Cards</H3>
-      <RefreshView getData={getCards}>
+      <RefreshView getData={getCards} route={route}>
         <View>
           {cards?.map((item) => (
             <CardView

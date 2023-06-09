@@ -1,14 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Header from '../../components/Header';
-import Navbar from '../../components/Navbar';
-import DashBoardCard from '../../components/DashBoardCard';
-import ServicesCardDB from '../../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { H5, Pr, H3, P, H4, H6 } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
-import InfoCardDBCust from '../../components/InfoCardDBCust';
 import RefreshView from '../../components/RefreshView';
 import Box from '../../components/Box';
 import ListItem from '../../components/ListItem';
@@ -70,7 +66,7 @@ export default function ({ navigation, route }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} home={true} />
-        <RefreshView getData={getData}>
+        <RefreshView getData={getData} route={route}>
           <H3 style={{ textAlign: 'center' }}>Your Earnings</H3>
           <Box>
             <ListItem>

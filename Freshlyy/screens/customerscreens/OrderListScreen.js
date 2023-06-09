@@ -58,7 +58,7 @@ export default function ({ navigation, route }) {
       false,
       route.params.initialTab.replace(/\s+/g, '-').toLowerCase()
     );
-  }, []);
+  }, [route]);
   return (
     <SafeAreaView style={styles.screen}>
       <Header back={true} home={true} />
