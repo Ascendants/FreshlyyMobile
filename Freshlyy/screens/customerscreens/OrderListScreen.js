@@ -93,7 +93,7 @@ export default function ({ navigation, route }) {
               }
               renderItem={(order) => (
                 <OrderView
-                  isConcerned={order.item.new}
+                  isConcerned={order.item.newOrder}
                   farmer={order.item.farmerName}
                   key={order.item.orderId}
                   orderId={order.item.orderId}

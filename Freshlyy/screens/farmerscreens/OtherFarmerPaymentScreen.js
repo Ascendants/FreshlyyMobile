@@ -57,7 +57,7 @@ export default function ({ navigation, route }) {
       navigation.navigate('Message', {
         type: 'Success',
         messageTitle: 'Payment Complete!',
-        messageText: 'We have received your payment!!',
+        messageText: 'We have received your payment!',
         goto: 'Farmer Balance',
         goButtonText: 'Go Back',
       });
@@ -151,13 +151,21 @@ export default function ({ navigation, route }) {
                   onPress={handleButtonPress}
                 />
               </View>
-              <View style={styles.inputcont}></View>
+              <P
+                style={{
+                  marginTop: 10,
+                  textAlign: 'center',
+                  color: Theme.danger,
+                }}
+              >
+                {error}
+              </P>
             </View>
+            <P style={styles.infoText}>
+              ⓘ We do not store your card details with us. It is stored securely
+              with our payment processor Stripe.
+            </P>
           </ScrollView>
-          <P style={styles.infoText}>
-            ⓘ We do not store your card details with us. It is stored securely
-            with our payment processor Stripe.
-          </P>
         </View>
       </SafeAreaView>
     </StripeProvider>
@@ -184,6 +192,6 @@ const styles = StyleSheet.create({
   },
   infoText: {
     textAlign: 'center',
-    marginBottom: 20,
+    marginTop: 50,
   },
 });
