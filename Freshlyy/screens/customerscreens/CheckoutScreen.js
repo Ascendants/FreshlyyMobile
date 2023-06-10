@@ -1,27 +1,20 @@
-import React from "react";
-import { StyleSheet, View, Image, ScrollView, StatusBar } from "react-native";
-import { H3, H4, Pr } from "../../components/Texts";
-import Theme from "../../constants/theme";
-import { Button } from "../../components/Buttons";
-import theme from "../../constants/theme";
-import { UserContext } from "../../context/UserContext";
-import FadeComponent from "../../components/FadeComponent";
-import Header from "../../components/Header";
-import { SafeAreaView } from "react-native-safe-area-context";
-import ProductView from "../../components/ProductView";
-import DeliveryView from "../../components/DeliveryView";
-import LoadingModal from "../../components/LoadingModal";
-import ENV from "../../constants/env";
-import Loading from "../../components/Loading";
-import RefreshView from "../../components/RefreshView";
-import useAuth from "../../hooks/useAuth";
-import { getAuth } from "firebase/auth";
-
+import React from 'react';
+import { StyleSheet, View, Image, ScrollView, StatusBar } from 'react-native';
+import { H3, H4, Pr } from '../../components/Texts';
+import Theme from '../../constants/theme';
+import { Button } from '../../components/Buttons';
+import Header from '../../components/Header';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ProductView from '../../components/ProductView';
+import DeliveryView from '../../components/DeliveryView';
+import LoadingModal from '../../components/LoadingModal';
+import ENV from '../../constants/env';
+import Loading from '../../components/Loading';
+import RefreshView from '../../components/RefreshView';
 export default function ({ navigation, route }) {
-  const auth = useAuth();
   const [loaded, setLoaded] = React.useState(false);
   const [orderData, setOrderData] = React.useState({
-    selectedPaymentMethod: "cod",
+    selectedPaymentMethod: 'cod',
   });
   const [deliveries, setDeliveries] = React.useState({});
   const [confirmOrder, setConfirmOrder] = React.useState(false);
@@ -39,11 +32,11 @@ export default function ({ navigation, route }) {
         delivery: deliveries[farmer],
       });
     });
-    fetch(ENV.backend + "/customer/place-order/", {
-      method: "POST",
+    fetch(ENV.backend + '/customer/place-order/', {
+      method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
-        "Content-Type": "application/json",
+        Authorization: route.params?.auth,
+        'Content-Type': 'application/json',
         //this will be replaced with an http only token
         //after auth gets set
       },
@@ -51,8 +44,8 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.message != "Success") throw new Error("Something went wrong");
-        navigation.navigate("Payment", {
+        if (res.message != 'Success') throw new Error('Something went wrong');
+        navigation.navigate('Payment', {
           orders: res.orderDetails,
           userEmail: route.params.userEmail,
         });
@@ -60,20 +53,20 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => {
         setConfirmOrder(false);
-        if ((err.message = "Not Available")) {
-          navigation.navigate("Message", {
-            type: "fail",
-            messageTitle: "Order could not be placed :(",
-            messageText: "One or more items in cart was not available.",
-            goto: "Cart",
+        if ((err.message = 'Not Available')) {
+          navigation.navigate('Message', {
+            type: 'fail',
+            messageTitle: 'Order could not be placed :(',
+            messageText: 'One or more items in cart was not available.',
+            goto: 'Cart',
           });
           return;
         }
-        navigation.navigate("Message", {
-          type: "fail",
-          messageTitle: "Order could not be placed :(",
-          messageText: "Something went wrong. Please try again.",
-          goto: "Checkout",
+        navigation.navigate('Message', {
+          type: 'fail',
+          messageTitle: 'Order could not be placed :(',
+          messageText: 'Something went wrong. Please try again.',
+          goto: 'Checkout',
         });
       });
   }
@@ -105,22 +98,18 @@ export default function ({ navigation, route }) {
       )
     );
   }, [cart, subTotal, deliveries, total]);
-  console.log(auth.user);
   const getData = React.useCallback(async () => {
-    if (auth.initializing) {
-      return;
-    }
-    return fetch(ENV.backend + "/customer/cart/", {
-      method: "GET",
+    return fetch(ENV.backend + '/customer/cart/', {
+      method: 'GET',
       headers: {
-        Authorization: auth.user?.accessToken,
+        Authorization: route.params?.auth,
         //this will be replaced with an http only token
         //after auth gets set
       },
     })
       .then((res) => res.json())
       .then((res) => {
-        if (!res.cart) throw new Error("Malformed Response");
+        if (!res.cart) throw new Error('Malformed Response');
         setCart(res.cart);
 
         setDeliveries((curr) => {
@@ -132,8 +121,7 @@ export default function ({ navigation, route }) {
         setLoaded(true);
       })
       .catch((err) => console.log(err));
-  }, [auth.user?.accessToken]);
-
+  });
   return (
     <>
       <StatusBar barStyle='dark-content' />
@@ -187,7 +175,7 @@ export default function ({ navigation, route }) {
 }
 const styles = StyleSheet.create({
   screen: {
-    height: "100%",
+    height: '100%',
   },
   pageContent: {
     paddingHorizontal: 10,
@@ -196,12 +184,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 10,
   },
   buttonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 40,
   },
 });

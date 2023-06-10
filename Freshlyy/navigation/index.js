@@ -6,6 +6,5 @@ import AuthStack from './authStack';
 export default function () {
   const { user, initializing } = useAuth();
   if (initializing) return null;
-  return user?.emailVerified ? <UserStack /> : <AuthStack />;
+  return user?.emailVerified ? <UserStack user={user} /> : <AuthStack />;
 }
-

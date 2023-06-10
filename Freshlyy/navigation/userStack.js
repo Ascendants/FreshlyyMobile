@@ -1,43 +1,42 @@
-import React from "react";
-import { StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useFonts } from "expo-font";
-import { UserContext, user } from "../context/UserContext";
-import * as Screens from "../screens";
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useFonts } from 'expo-font';
+import { UserContext, user } from '../context/UserContext';
+import * as Screens from '../screens';
 import FarmerReportScreen from '../screens/farmerscreens/FarmerReportScreen';
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+export default function App(props) {
   const [fonts] = useFonts({
-    Poppins: require("../assets/fonts/Poppins-Medium.ttf"),
-    PoppinsRegular: require("../assets/fonts/Poppins-Regular.ttf"),
-    PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
+    Poppins: require('../assets/fonts/Poppins-Medium.ttf'),
+    PoppinsRegular: require('../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = "haritha@freshlyy.com";
+  const userEmail = 'haritha@freshlyy.com';
   if (!fonts) return null;
+  const defaultParams = { auth: props.user.accessToken };
   return (
     <UserContext.Provider value={null}>
       <NavigationContainer>
         <StatusBar barStyle='dark-content' />
         <Stack.Navigator
-          screenOptions={{ headerShown: false, animation: "none" }}
+          screenOptions={{ headerShown: false, animation: 'none' }}
         >
-         <Stack.Screen
-          name='Farmer report'
-          component={Screens.CheckoutScreen}
-          optio
-          ns={{headerShown:false,}}
-          /> 
-            <Stack.Screen
+          <Stack.Screen
+            name='Farmer report'
+            component={Screens.ProductHomePageScreen}
+            options={{ headerShown: false }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
             name='homePage'
             component={Screens.ProductHomePageScreen}
             options={{
               headerShown: false,
             }}
           />
-  
-        
 
           <Stack.Screen
             name='Farmer Dashboard'
@@ -77,7 +76,7 @@ export default function App() {
               userEmail: userEmail,
             }}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
           <Stack.Screen
@@ -85,7 +84,7 @@ export default function App() {
             component={Screens.OrderListScreen}
             initialParams={{
               userEmail: userEmail,
-              initialTab: "All",
+              initialTab: 'All',
             }}
           />
           <Stack.Screen
@@ -159,7 +158,7 @@ export default function App() {
               userEmail: userEmail,
             }}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
           <Stack.Screen
@@ -169,7 +168,7 @@ export default function App() {
               userEmail: userEmail,
             }}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
           <Stack.Screen
@@ -226,7 +225,7 @@ export default function App() {
             name='Message'
             component={Screens.MessageScreen}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
 

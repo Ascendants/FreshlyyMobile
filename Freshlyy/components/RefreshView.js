@@ -1,21 +1,19 @@
-import React from "react";
-import { StyleSheet, ScrollView, RefreshControl } from "react-native";
-import Loading from "../components/Loading";
-import FadeComponent from "./FadeComponent";
-import useAuth from "../hooks/useAuth";
+import React from 'react';
+import { StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import Loading from '../components/Loading';
+import FadeComponent from './FadeComponent';
 
 export default function (props) {
-  const auth = useAuth();
   const [loaded, setLoaded] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     await props.getData();
     setRefreshing(false);
-  }, [props.getData]);
+  });
   React.useEffect(() => {
     props.getData().then(() => setLoaded(true));
-  }, [props.getData]);
+  });
   return !loaded ? (
     <Loading />
   ) : (
@@ -33,7 +31,7 @@ export default function (props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
     paddingHorizontal: 10,
   },
 });
