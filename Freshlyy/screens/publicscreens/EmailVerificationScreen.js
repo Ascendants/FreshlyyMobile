@@ -34,26 +34,33 @@ export default function ({ navigation, route }) {
   const [isVerified, setIsVerified] = useState(false);
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-
+console.log(route.params.userData)
   const handleSignUp = async (email,password) => {
     setSubmitting(true);
-    console.log(email)
+    const paramsData=JSON.parse(route.params.userData);
+    const updatedUserData = {
+      ...paramsData,
+      email:email,
+    };
+    console.log("Helloooo this is here,",email,password)
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
-      );
+      )
+      console.log(user)
       if (user) {
         await user.sendEmailVerification();
         setSubmitting(false);
         console.log("Verification email sent!");
-        navigation.navigate("EmailVerify",{message:'Success',userData:JSON.stringify(route.params.userData)});
+        navigation.navigate("EmailVerify",{message:'Success',userData:JSON.stringify(updatedUserData)});
       }
       else{
         setSubmitting(false)
         setErr("The email address is already in use by another account! Try Loging in")
       }
     } catch (error) {
+      //console.log("Hi")
       setSubmitting(false)
       console.log(error)
       if(error.code==='auth/email-already-in-use'){
@@ -61,9 +68,10 @@ export default function ({ navigation, route }) {
         return;
       }
       if(error.code==='auth/internal-error'){
-        setErrors("Try again later!");
+        setErr("Try again later!");
         return;
       }
+      setErr
      
     }
   };
@@ -128,11 +136,12 @@ export default function ({ navigation, route }) {
     for (let error in formik.errors) if (error) return;
     const data = formik.values;
     setValid(true);
-    console.log(data.password,data.email)
+    //console.log(data.password,data.email)
     sendToSignup(data.email,data.password);
    
   };
   const sendToSignup = (email,password) => {
+    //console.log("Hello im in the handlesignup");
     handleSignUp(email,password);
   };
   return (

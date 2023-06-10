@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import React, { useEffect, useState } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 //import { auth } from '../utils/firebase';
 
-export function useAuth() {
+export default function () {
   const auth = getAuth();
-  const [initializing,setInitializing] = useState(true);
+
+  const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
     const subscribeFromAuthStateChanged = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -18,7 +19,8 @@ export function useAuth() {
       }
       setInitializing(false);
     });
-    console.log(user.email);
+    console.log('User Email ', user?.email);
+
     return subscribeFromAuthStateChanged;
   }, []);
   return { user, initializing };

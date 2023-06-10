@@ -16,12 +16,13 @@ import LoadingModal from '../../components/LoadingModal';
 import LottieView from 'lottie-react-native';
 
 export default function ({ navigation, route }) {
+  console.log(route.params.userData)
   const [errors, setErrors] = useState("");
   const [resend, setReSend] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
   const [idToken,SetIdToken]=useState()
   const [validUser, setValidUser] = useState();
-  console.log(route.params.userData);
+
 
   const handleVerifyEmail = async () => {
     const user = auth.currentUser;
@@ -29,13 +30,14 @@ export default function ({ navigation, route }) {
       .getIdToken()
       .then((token) => {
         // Send the idToken to the backend for authentication and database storage
-        console.log("ID token:",token);
-        console.log(user.toJSON().stsTokenManager.accessToken)
+        // console.log("ID token:",token);
+        // console.log(route.params.userData)
+        // console.log(user.toJSON().stsTokenManager.accessToken)
         SetIdToken(token)
       })
       .catch((error) => {
         if(error.code==='auth/user-token-expired'){
-          setErrors("User account already exists!");
+          setErrors("Time out try again!");
           return;
         }
         console.error("Error getting ID token:", error);
@@ -50,7 +52,7 @@ export default function ({ navigation, route }) {
           await SendToRegister(idToken);
         } 
         else{
-          setErrors("Email has not benn verified!")
+          setErrors("Email has not been verified!")
         }
       } catch (error) {
         if(error.code==='auth/internal-error'){
@@ -66,17 +68,20 @@ export default function ({ navigation, route }) {
           setErrors("User account already exists!");
           return;
         }
-        
-        console.log("Error", error.message);
+        else{
+          setErrors(error.code)
+        }
+        //console.log("Error", error.message);
       }
     }
   };
 
   const SendToRegister = (idToken) => {
+   // console.log(idToken)
     fetch(ENV.backend + "/customer/signup", {
       method: "POST",
       headers: {
-        useremail: "harini@freshlyy.com",
+        useremail:'gimhani@freshlyy.com',
         Authorization:idToken,
         "Content-Type": "application/json",
       },
@@ -84,14 +89,20 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        console.log("Hi");
         setEmailVerified(true);
-        if(res.message==='Success'){
-          const email=res.email
-          navigation.navigate("login",{message:'Success',userEmail:email,token:idToken});
-        }
+        // if(res.message==='Success'){
+        //   const email=res.email
+        //   navigation.navigate("login",{message:'Success',userEmail:email,token:idToken});
+        // }
+       if(res.message==='unsuccess'){
+        setErrors(res.error)
+       }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+       
+        setErrors(err.error)
+      });
   };
 
   const handleResendVerification = () => {
@@ -111,9 +122,9 @@ export default function ({ navigation, route }) {
       });
   };
 
-  //   const onAnimationFinish = () => {
-
-  // };
+    const onAnimationFinish = () => {
+      navigation.navigate("login",{message:'Success',});
+  };
 
   return (
     <SafeAreaView>
@@ -121,7 +132,7 @@ export default function ({ navigation, route }) {
         <LoadingModal message="Submitting" visible={resend} />
         <Header back={true} />
         <View style={styles.pageContent}>
-          {/* {emailVerified ? (
+          {emailVerified ? (
           <LottieView
             source={{
               uri:
@@ -131,7 +142,7 @@ export default function ({ navigation, route }) {
             loop={false}
             onAnimationFinish={onAnimationFinish}
           />
-        ) : ( */}
+        ) : (
           <>
             <Image
               source={require("../../assets/success.png")}
@@ -157,7 +168,7 @@ export default function ({ navigation, route }) {
               />
             </View>
           </>
-          {/* )} */}
+           )} 
         </View>
       </View>
     </SafeAreaView>

@@ -30,8 +30,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import { Animations } from '../../constants/Animation';
 import Loading from '../../components/Loading';
+import useAuth from '../../hooks/useAuth';
 
 export default function ({ navigation, route }) {
+  const auth = useAuth();
   const [searchText, setSearchText] = useState('');
   const [products, setProducts] = useState([]);
   const [filterproducts, setFilterProducts] = useState([]);
@@ -54,23 +56,23 @@ export default function ({ navigation, route }) {
       purl: pubUrl,
     });
   };
-  const getData = (isRefreshing) => {
+
+  const getData =  (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    
+   
+   
     fetch(ENV.backend + '/customer/mainpage/', {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
-        useremail: 'harini@freshlyy.com',
-        Authorization:route.params.token,
+        useremail:'gimhani@freshlyy.com',
+        Authorization: auth.user?.accessToken,
         "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
       .then((res) => {
         const data = res;
-        console.log(res);
-        console.log('helllo')
         setProducts(res.mainPageProducts);
         isRefreshing ? setRefreshing(false) : setLoaded(true);
       })
@@ -85,7 +87,7 @@ export default function ({ navigation, route }) {
     // Send a POST request to update the product's likes array in MongoDB
     const response = await fetch(`/customer/${productId}/like`, {
       method: 'POST',
-      body: JSON.stringify({ email: 'harini@freshlyy.com' }),
+      body: JSON.stringify({ email: 'gimhani@freshlyy.com' }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -292,7 +294,7 @@ export default function ({ navigation, route }) {
                       unit={item.unit}
                       overallRating={item.overallRating}
                       likes={item.likes}
-                      userID={route.params.userEmail}
+                      userID={auth.user.email}
                       onLikePress={handleLikePress}
                       bestMatch={sortByBestMatch}
                       cheaper={item.cheaper}

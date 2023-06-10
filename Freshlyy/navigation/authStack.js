@@ -30,11 +30,6 @@ export default function App() {
               headerShown: false,
             }}
           /> 
-             <Stack.Screen
-             name='Farmer report'
-             component={FarmerReportScreen}
-             options={{headerShown:false,}}
-             />
                <Stack.Screen
             name='Sign Up'
             component={Screens.SignUpScreen}

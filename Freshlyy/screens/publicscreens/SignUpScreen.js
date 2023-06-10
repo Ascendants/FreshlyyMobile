@@ -25,7 +25,7 @@ import { Animations } from '../../constants/Animation';
 import Dropdown from 'react-native-modal-dropdown';
 import { H2, H4, H5, H6, H7, H8 } from '../../components/Texts';
 
-export default function ({ navigation }) {
+export default function ({ navigation,route }) {
   const [valid, setValid] = useState(false);
   const [userData, setUserData] = useState({});
 

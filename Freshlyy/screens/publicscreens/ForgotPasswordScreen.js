@@ -20,7 +20,7 @@ import Header from '../../components/Header';
 import { H1, H2, H4, H3 } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function () {
+export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
