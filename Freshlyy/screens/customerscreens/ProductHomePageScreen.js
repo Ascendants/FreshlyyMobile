@@ -59,8 +59,8 @@ export default function ({ navigation, route }) {
 
   const getData =  (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-   
-   
+    //while(auth.initializing) console.log('waiting');
+    console.log(auth)
     fetch(ENV.backend + '/customer/mainpage/', {
       //getting data from the backend (all products)
       method: 'GET',

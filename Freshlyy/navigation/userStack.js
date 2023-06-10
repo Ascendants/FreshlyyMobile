@@ -25,8 +25,9 @@ export default function App() {
         >
          <Stack.Screen
           name='Farmer report'
-          component={FarmerReportScreen}
-          options={{headerShown:false,}}
+          component={Screens.CheckoutScreen}
+          optio
+          ns={{headerShown:false,}}
           /> 
             <Stack.Screen
             name='homePage'
