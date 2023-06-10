@@ -1,14 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Image, ScrollView, Settings } from 'react-native';
+import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import { TextInputBox, MaskedTextInputBox } from '../../components/Inputs';
-import { H3, P, H6 } from '../../components/Texts';
+import { H3, P } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import { Formik, useFormik } from 'formik';
-import * as Yup from 'yup';
-import CardTypeSelector from '../../components/CardTypeSelector';
 import ENV from '../../constants/env';
 import LoadingModal from '../../components/LoadingModal';
 import { CheckBox } from '../../components/Inputs';
@@ -24,9 +20,16 @@ const stripeKey =
 export default function ({ navigation, route }) {
   const [saveCardLater, setSaveCardLater] = React.useState(false);
   const [paying, setPaying] = React.useState(false);
+  const [error, setError] = React.useState(null);
   async function handleButtonPress() {
     setPaying(true);
+    setError(null);
     const paymentId = await saveCard();
+    if (!paymentId) {
+      setError('Something is wrong with your card details');
+      setPaying(false);
+      return;
+    }
     await makePayment(paymentId);
     setPaying(false);
   }
@@ -90,15 +93,19 @@ export default function ({ navigation, route }) {
   };
 
   async function saveCard() {
-    const { clientSecret } = await fetchSetupIntent();
-    const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
-      paymentMethodType: 'Card',
-    });
+    try {
+      const { clientSecret } = await fetchSetupIntent();
+      const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
+        paymentMethodType: 'Card',
+      });
 
-    if (error) {
-      throw new Error(error);
-    } else if (setupIntent) {
-      return setupIntent.paymentMethodId;
+      if (error) {
+        throw new Error(error);
+      } else if (setupIntent) {
+        return setupIntent.paymentMethod.id;
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
   return (
@@ -147,6 +154,10 @@ export default function ({ navigation, route }) {
               <View style={styles.inputcont}></View>
             </View>
           </ScrollView>
+          <P style={styles.infoText}>
+            ⓘ We do not store your card details with us. It is stored securely
+            with our payment processor Stripe.
+          </P>
         </View>
       </SafeAreaView>
     </StripeProvider>
@@ -170,5 +181,9 @@ const styles = StyleSheet.create({
   inputcont: {
     width: '100%',
     alignItems: 'center',
+  },
+  infoText: {
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });

@@ -93,6 +93,7 @@ export default function ({ navigation, route }) {
               }
               renderItem={(order) => (
                 <OrderView
+                  isConcerned={order.item.new}
                   farmer={order.item.farmerName}
                   key={order.item.orderId}
                   orderId={order.item.orderId}
@@ -102,6 +103,7 @@ export default function ({ navigation, route }) {
                   status={order.item.status}
                   total={order.item.orderTotal}
                   viewOrder={navigateToOrder}
+                  style={styles.concernedOrder}
                 />
               )}
               keyExtractor={(order) => order.orderId}
@@ -116,6 +118,9 @@ export default function ({ navigation, route }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  concernedOrder: {
+    backgroundColor: 'red',
   },
   ordersContainer: {
     marginVertical: 10,

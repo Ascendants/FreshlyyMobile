@@ -81,6 +81,10 @@ export default function ({ navigation, route }) {
           messageTitle: 'Payment Complete!',
           messageText: 'The farmers will process your order and let you know!',
           goto: 'Orders List',
+          screenParams: {
+            concerned: route.params?.orders?.map((order) => order._id),
+            initialTab: 'Processing',
+          },
           goButtonText: 'View Order',
         });
         return;
@@ -115,14 +119,14 @@ export default function ({ navigation, route }) {
                   return <PlacedOrderView key={order.farmer} order={order} />;
                 })}
               </View>
-              <View style={styles.pageArea}>
+              {/* <View style={styles.pageArea}>
                 <H3>Total</H3>
                 <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
-              </View>
-              <View style={styles.pageArea}>
+              </View> */}
+              {/* <View style={styles.pageArea}>
                 <H4 style={styles.title}>Apply Coupon Code</H4>
                 <View style={styles.coupon}></View>
-              </View>
+              </View> */}
               <View style={styles.pageArea}>
                 <H3>Net Total</H3>
                 <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>

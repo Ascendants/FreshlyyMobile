@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Image, ScrollView, StatusBar } from 'react-native';
-import { H3, H4, Pr } from '../../components/Texts';
+import { H3, H4, Pr, P } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
 import theme from '../../constants/theme';
@@ -170,6 +170,9 @@ export default function ({ navigation, route }) {
                   onPress={placeOrder}
                 />
               </View>
+              <P style={styles.infoText}>
+                ⓘ Orders from different farmers will be processed separately.
+              </P>
             </View>
           </RefreshView>
         </View>
@@ -195,5 +198,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 40,
+  },
+  infoText: {
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });

@@ -4,6 +4,7 @@ import { P, Pr, H2, H4, H3 } from './Texts';
 import Theme from '../constants/theme';
 import LoyaltyArea from './LoyaltyArea';
 import {
+  FontAwesome,
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
@@ -57,8 +58,8 @@ export default function (props) {
           size='normal'
           color='filledSecondary'
           icon={
-            <Ionicons
-              name='card-outline'
+            <FontAwesome
+              name='credit-card-alt'
               size={28}
               color={Theme.contrastTextColor}
             />
@@ -72,8 +73,8 @@ export default function (props) {
           size='normal'
           color='filledSecondary'
           icon={
-            <Ionicons
-              name='card-outline'
+            <MaterialCommunityIcons
+              name='ticket'
               size={28}
               color={Theme.contrastTextColor}
             />

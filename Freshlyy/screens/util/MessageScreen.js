@@ -8,8 +8,12 @@ import Header from '../../components/Header';
 
 export default function ({ navigation, route }) {
   function buttonPress() {
-    if (route.params.goto) {
+    if (route.params.goto && !route.params.screenParams) {
       navigation.navigate(route.params.goto);
+      return;
+    }
+    if (route.params.goto && route.params.screenParams) {
+      navigation.navigate(route.params.goto, route.params.screenParams);
       return;
     }
     navigation.goBack();

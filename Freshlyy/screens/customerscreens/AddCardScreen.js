@@ -103,7 +103,16 @@ export default function ({ navigation, route }) {
                   onPress={saveCard}
                 />
               </View>
-              <View style={styles.inputcont}></View>
+            </View>
+            <View style={{ marginTop: 20 }}>
+              <P style={styles.infoText}>
+                ⓘ We may charge a small amount to verify your card which will be
+                refunded back to you.
+              </P>
+              <P style={styles.infoText}>
+                We do not store your card details with us. It is stored securely
+                with our payment processor Stripe.
+              </P>
             </View>
           </ScrollView>
         </View>
@@ -129,5 +138,9 @@ const styles = StyleSheet.create({
   inputcont: {
     width: '100%',
     alignItems: 'center',
+  },
+  infoText: {
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });

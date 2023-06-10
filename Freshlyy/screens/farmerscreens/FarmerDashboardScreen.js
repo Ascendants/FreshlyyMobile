@@ -58,7 +58,6 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   }, [route]);
-
   return (
     <SafeAreaView>
       <View style={styles.screen}>
