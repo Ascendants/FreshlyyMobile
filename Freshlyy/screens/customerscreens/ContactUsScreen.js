@@ -31,7 +31,7 @@ export default function ({ navigation, route }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(ENV.backend + '/farmer/support-ticket/', {
+      const response = await fetch(ENV.backend + '/customer/support-ticket/', {
         method: 'POST',
         headers: {
           Authorization: route.params.auth,
@@ -57,7 +57,7 @@ export default function ({ navigation, route }) {
         subjectId: id,
         messageText:
           ' is your ticket number. An administrator will be in touch with you shortly!',
-        goto: 'Farmer Dashboard',
+        goto: 'Customer Dashboard',
         goButtonText: 'Dashboard',
       });
       // console.log(data.id);

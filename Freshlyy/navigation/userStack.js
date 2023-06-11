@@ -237,7 +237,11 @@ export default function App(props) {
             component={Screens.TicketDetailsScreen}
             initialParams={defaultParams}
           />
-
+          <Stack.Screen
+            name='Ticket Status'
+            component={Screens.TicketStatusScreen}
+            initialParams={defaultParams}
+          />
           <Stack.Screen
             name='Cart'
             component={Screens.MyCartScreen}

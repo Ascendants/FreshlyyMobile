@@ -91,7 +91,7 @@ export default function ({ navigation, route }) {
               onPress={() => viewOrders('All')}
             />
           </View>
-          <ServicesCardDB />
+          <ServicesCardDB farmer={userData?.user?.accessLevel=="Farmer"}/>
           <Button
             style={styles.buttonContainer}
             title='Log Out'

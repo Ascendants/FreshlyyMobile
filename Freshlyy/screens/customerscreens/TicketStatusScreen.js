@@ -12,7 +12,7 @@ import RefreshView from '../../components/RefreshView';
 export default function ({ navigation, route }) {
   const [tickets, setTickets] = useState([]);
 
-  React.useState(() => {
+  React.useEffect(() => {
     fetch(ENV.backend + '/customer/get-support-tickets/', {
       method: 'GET',
       headers: {
@@ -23,6 +23,7 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res)
         if (!res.tickets) throw new Error('Malformed Response');
         setTickets(res.tickets);
       })

@@ -168,7 +168,7 @@ export default function ({ navigation, route }) {
                 // backgroundstyle={styles.button}
               />
             </View>
-            <ServicesCardDB farmer={true} />
+            <ServicesCardDB farmer={true}  />
             <View style={styles.lastChild}></View>
           </RefreshView>
           <BottomSheet

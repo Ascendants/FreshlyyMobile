@@ -13,7 +13,7 @@ import Theme from '../../constants/theme';
 import { H3, H4, H5 } from '../../components/Texts';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function ({ navigation,route }) {
+export default function ({ navigation, route }) {
 
   const email = route.params.userEmail;
   function navigateToSelectOrder(email) {
@@ -54,15 +54,16 @@ export default function ({ navigation,route }) {
               <AntDesign name='right' size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={navigateToCreateCoupon}
-          >
-            <View style={styles.barContainer}>
-              <H5>Create coupon</H5>
-              <AntDesign name='right' size={24} color={Theme.textColor} />
-            </View>
-          </TouchableOpacity>
+          {route?.params?.farmer && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={navigateToCreateCoupon}
+            >
+              <View style={styles.barContainer}>
+                <H5>Create coupon</H5>
+                <AntDesign name='right' size={24} color={Theme.textColor} />
+              </View>
+            </TouchableOpacity>)}
           <TouchableOpacity style={styles.button} onPress={navigateToTicketStatus}>
             <View style={styles.barContainer}>
               <H5>View my tickets</H5>

@@ -15,7 +15,7 @@ export default function ({ navigation, route }) {
 
   const getTicket = React.useCallback(async () => {
     const ticketId = route.params.ticketId;
-    return fetch(ENV.backend + `/farmer/support-ticket/${ticketId}`, {
+    return fetch(ENV.backend + `/customer/support-ticket/${ticketId}`, {
       method: 'GET',
       headers: {
         Authorization: route.params.auth,
