@@ -3,9 +3,6 @@ import { StyleSheet, View, Image, ScrollView, StatusBar } from 'react-native';
 import { H3, H4, Pr, P } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import theme from '../../constants/theme';
-import { UserContext } from '../../context/UserContext';
-import FadeComponent from '../../components/FadeComponent';
 import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductView from '../../components/ProductView';
@@ -14,7 +11,6 @@ import LoadingModal from '../../components/LoadingModal';
 import ENV from '../../constants/env';
 import Loading from '../../components/Loading';
 import RefreshView from '../../components/RefreshView';
-
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
   const [orderData, setOrderData] = React.useState({
@@ -38,7 +34,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/place-order/', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params?.auth,
         'Content-Type': 'application/json',
         //this will be replaced with an http only token
         //after auth gets set
@@ -105,7 +101,7 @@ export default function ({ navigation, route }) {
     return fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params?.auth,
         //this will be replaced with an http only token
         //after auth gets set
       },
@@ -125,7 +121,6 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   });
-
   return (
     <>
       <StatusBar barStyle='dark-content' />

@@ -29,7 +29,7 @@ import ENV from '../../constants/env';
 import { Rate5 } from '../../components/Rate5';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import TabMenu from '../../components/TabMenu';
-
+import useAuth from '../../hooks/useAuth';
 const DATA = [
   {
     showSection: false,
@@ -54,6 +54,7 @@ const DATA = [
 ];
 
 export default function ({ navigation, route }) {
+  const auth = useAuth();
   const [products, setProducts] = useState([]);
   const [showSocial, setSocial] = useState(true);
   const [activeTab, setActiveTab] = useState('All Products');
@@ -63,7 +64,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/like/' + productId, {
       method: 'POST',
       headers: {
-        useremail: 'harini@freshlyy.com',
+        useremail: 'gimhani@freshlyy.com',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -83,36 +84,36 @@ export default function ({ navigation, route }) {
       purl: pubUrl,
     });
   };
-  function changeTab(tab) {
-    setActiveTab(tab);
-    if (tab == 'For You') {
-      handleFetchProducts();
-    } else {
-      fetchSocialCorner();
-    }
-  }
+  // function changeTab(tab) {
+  //   setActiveTab(tab);
+  //   if (tab == 'For You') {
+  //     handleFetchProducts();
+  //   } else {
+  //     fetchSocialCorner();
+  //   }
+  // }
 
-  async function handleFetchProducts() {
-    setSocial(false);
-    const result = await fetch(ENV.backend + '/customer/following-products', {
-      method: 'GET',
-      headers: {
-        useremail: 'harini@freshlyy.com',
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-  }
+  // async function handleFetchProducts() {
+  //   setSocial(false);
+  //   const result = await fetch(ENV.backend + '/customer/following-products', {
+  //     method: 'GET',
+  //     headers: {
+  //       useremail: 'gimhani@freshlyy.com',
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
   function fetchSocialCorner() {
     setSocial(true);
     fetch(ENV.backend + '/customer/social-corner/', {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
-        useremail: 'harini@freshlyy.com',
+        useremail: 'gimhani@freshlyy.com',
       },
     })
       .then((res) => res.json())
@@ -131,7 +132,7 @@ export default function ({ navigation, route }) {
   return (
     <GestureHandlerRootView>
       <SafeAreaView>
-        <Header back={true} />
+        <Header back={false} />
 
         <View style={styles.screen}>
           <H4 style={styles.heading}>Social Corner</H4>
@@ -148,7 +149,6 @@ export default function ({ navigation, route }) {
                 ]}
               >
                 <H4 style={styles.header}>{section.title}</H4>
-                {/* {section.horizontalScroll?( */}
                 <FlatList
                   horizontal
                   data={section.data}
@@ -157,7 +157,7 @@ export default function ({ navigation, route }) {
                       cardType='social'
                       title={item.title}
                       id={item._id}
-                      userEmail={route.params.userEmail}
+                      userEmail={auth.user.userEmail}
                       imageUrl={item.imageUrl}
                       unit={item.unit}
                       likes={item.likes}

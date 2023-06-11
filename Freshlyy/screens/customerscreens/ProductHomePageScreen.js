@@ -54,18 +54,20 @@ export default function ({ navigation, route }) {
       purl: pubUrl,
     });
   };
+
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
     fetch(ENV.backend + '/customer/mainpage/', {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
-        useremail: 'harini@freshlyy.com',
+        useremail: 'gimhani@freshlyy.com',
+        Authorization: route.params?.auth,
+        'Content-Type': 'application/json',
       },
     })
       .then((res) => res.json())
       .then((res) => {
-        const data = res;
         console.log(res);
         setProducts(res.mainPageProducts);
         isRefreshing ? setRefreshing(false) : setLoaded(true);
@@ -81,7 +83,7 @@ export default function ({ navigation, route }) {
     // Send a POST request to update the product's likes array in MongoDB
     const response = await fetch(`/customer/${productId}/like`, {
       method: 'POST',
-      body: JSON.stringify({ email: 'harini@freshlyy.com' }),
+      body: JSON.stringify({ email: 'gimhani@freshlyy.com' }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -169,7 +171,7 @@ export default function ({ navigation, route }) {
     ? products
     : null;
 
-  const filteredProducts = sortedProducts.filter((product) => {
+  const filteredProducts = sortedProducts?.filter((product) => {
     return product?.title.toLowerCase().includes(searchText.toLowerCase());
   });
 
@@ -288,7 +290,7 @@ export default function ({ navigation, route }) {
                       unit={item.unit}
                       overallRating={item.overallRating}
                       likes={item.likes}
-                      userID={route.params.userEmail}
+                      userID={auth.user.email}
                       onLikePress={handleLikePress}
                       bestMatch={sortByBestMatch}
                       cheaper={item.cheaper}

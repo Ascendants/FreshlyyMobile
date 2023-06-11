@@ -64,10 +64,10 @@ export default function ({ navigation, route }) {
     hasVehicle: Yup.string()
       .nullable()
       .required('Vehicle accessabilty details are required'),
-    address: Yup.string().required('Address is required!'),
-    nic: Yup.string()
-      .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, 'Invalid NIC format!')
-      .required('NIC is required!'),
+      Shopaddress: Yup.string().required('Address is required!'),
+    // nic: Yup.string()
+    //   .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, 'Invalid NIC format!')
+    //   .required('NIC is required!'),
   });
 
   const formik = useFormik({
@@ -75,25 +75,36 @@ export default function ({ navigation, route }) {
       Occupation: '',
       delDistance: '',
       delCharge: '',
-      address: '',
+      Shopaddress: '',
       hasVehicle: '',
     },
     validationSchema: validationSchema,
   });
 
   async function submit() {
+    const paramsData=JSON.parse(route.params.userData);
+   
     formik.validateForm();
     Object.keys(formik.values).forEach((value) => {
       formik.setFieldTouched(value);
     });
     if (!Object.keys(formik.touched).length) return;
-    for (let error in formik.errors) if (error) return;
+    for (let error in formik.errors) if (error){ 
+      console.log(error)
+      return
+    };
+    console.log("hi");
     const data = formik.values;
+  
     setValid(true);
     setUserData(data);
-    console.log(userData);
+    const updatedUserData = {
+      ...paramsData,
+      ...userData
+    };
+
     if (valid) {
-      navigation.navigate('beFarmer', { type: 'Success', userData: data });
+      navigation.navigate('Email Verification', { type: 'Success', userData:JSON.stringify(updatedUserData) });
     }
   }
   const animation = Animations[Math.floor(Math.random() * Animations.length)];
@@ -166,21 +177,21 @@ export default function ({ navigation, route }) {
                       value: 'No vehicle to deliver',
                     },
                   ]}
-                  value={formik.values.vehicle}
-                  onChange={(value) => formik.setFieldValue('vehicle', value)}
-                  touched={formik.touched.vehicle}
-                  error={formik.errors.vehicle}
-                  onClose={() => formik.setFieldTouched('vehicle', true, true)}
+                  value={formik.values.hasVehicle}
+                  onChange={(value) => formik.setFieldValue('hasVehicle', value)}
+                  touched={formik.touched.hasVehicle}
+                  error={formik.errors.hasVehicle}
+                  onClose={() => formik.setFieldTouched('hasVehicle', true, true)}
                 />
                 <TextInputBox
-                  inputlabel='Address'
+                  inputlabel='Shop address'
                   placeholder='Enter Address'
-                  name='address'
-                  onChangeText={formik.handleChange('address')}
-                  onBlur={() => formik.setFieldTouched('address', true, true)}
-                  value={formik.values.address}
-                  error={formik.errors.address}
-                  touched={formik.touched.address}
+                  name='Shopaddress'
+                  onChangeText={formik.handleChange('Shopaddress')}
+                  onBlur={() => formik.setFieldTouched('Shopaddress', true, true)}
+                  value={formik.values.Shopaddress}
+                  error={formik.errors.Shopaddress}
+                  touched={formik.touched.Shopaddress}
                 />
                 <Button
                   title='Next'

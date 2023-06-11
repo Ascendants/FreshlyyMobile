@@ -10,10 +10,10 @@ export default function (props) {
     setRefreshing(true);
     await props.getData();
     setRefreshing(false);
-  }, []);
+  });
   React.useEffect(() => {
     props.getData().then(() => setLoaded(true));
-  }, [props.route]);
+  });
   return !loaded ? (
     <Loading />
   ) : (

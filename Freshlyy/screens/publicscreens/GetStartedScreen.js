@@ -4,7 +4,7 @@ import { H1, H2 } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
 
-export default function ({ navigation }) {
+export default function ({ navigation,route }) {
   return (
     <View style={styles.screen}>
       <Image
