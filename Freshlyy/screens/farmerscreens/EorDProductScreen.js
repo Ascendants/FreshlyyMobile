@@ -27,16 +27,13 @@ export default function ({ navigation, route }) {
   const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
-    fetch(
-      ENV.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: route.params.auth,
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    fetch(ENV.backend + '/farmer/selling-product/' + route.params?.productId, {
+      method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.message != 'Success') {
@@ -72,22 +69,22 @@ export default function ({ navigation, route }) {
           {/* <DatePicker/> */}
           <H6 style={styles.PText}>{product.title}</H6>
           <View style={styles.DeBox}>
-            <H2 style={styles.DText}>Available Quantity -:</H2>
+            <H2 style={styles.DText}>Available Quantity</H2>
             <H1 style={styles.DText}>
               {product?.qtyAvailable}
               {product?.unit}
             </H1>
-            <H2 style={styles.DText}>Minimum Quantity -:</H2>
+            <H2 style={styles.DText}>Minimum Quantity</H2>
             <H1 style={styles.DText}>
               {' '}
               {product.minQtyIncrement}
               {product.unit}
             </H1>
-            <H2 style={styles.DText}>Price -: </H2>
+            <H2 style={styles.DText}>Price</H2>
             <Pr>
               <H1 style={styles.DText}>{product.price} </H1>
             </Pr>
-            <H2 style={styles.DText}>Description -: </H2>
+            <H2 style={styles.DText}>Description</H2>
             <H1 style={styles.DText}>{product.description}</H1>
           </View>
 
@@ -96,7 +93,11 @@ export default function ({ navigation, route }) {
               title='Edit'
               color='shadedPrimary'
               size='big'
-              onPress={() => navigation.navigate('editScreen')}
+              onPress={() =>
+                navigation.navigate('Edit Product', {
+                  productId: route.params.productId,
+                })
+              }
             />
             <Button title='Delete' color='shadedDanger' size='big' />
           </View>

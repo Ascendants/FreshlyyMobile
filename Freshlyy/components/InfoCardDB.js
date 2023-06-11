@@ -15,7 +15,7 @@ export default function (props) {
           <H4 style={styles.subTopic}>Total Earnings</H4>
           <H2>
             <Pr style={styles.mainTopic} fontSize={40}>
-              {props.user?.farmer.accTotalEarnings}
+              {props.user.totalEarnings}
             </Pr>
           </H2>
         </View>

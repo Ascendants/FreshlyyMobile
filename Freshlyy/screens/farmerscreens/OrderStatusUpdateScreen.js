@@ -35,6 +35,7 @@ function getPaymentType(order) {
 }
 
 export default function ({ navigation, route }) {
+  console.log(route);
   const [order, setOrder] = React.useState({});
   const [updateModal, setUpdateModal] = React.useState(false);
   const [updating, setUpdating] = React.useState(false);

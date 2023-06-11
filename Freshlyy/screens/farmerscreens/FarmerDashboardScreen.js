@@ -17,6 +17,7 @@ import SwipeOverlay from '../../components/SwipeOverlay';
 import InfoCardDB from '../../components/InfoCardDB';
 import DashBoardCard from '../../components/DashBoardCard';
 import ServicesCardDB from '../../components/ServicesCardDB';
+import SwipeOverlayCard from '../../components/SwipeOverlayCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
@@ -182,7 +183,42 @@ export default function ({ navigation, route }) {
             onClose={handleBottomSheetNewOrderClose}
           >
             <BottomSheetView>
-              <SwipeOverlay />
+              <View style={styles.containerOverlay}>
+                <H4 style={styles.topic}>New Orders</H4>
+                <View style={styles.containerOverlay}>
+                  {newOrdersList?.length > 0 ? (
+                    newOrdersList.map((order) => (
+                      <View
+                        style={styles.newOrdersContainer}
+                        key={order.orderId}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('Order Status Update', {
+                              orderId: order.orderId,
+                            });
+                          }}
+                        >
+                          <H5>
+                            {order.customerFirstName} {order.customerLastName}{' '}
+                            has ordered
+                          </H5>
+                          {order.itemDetails.map((item) => (
+                            <H5
+                              key={item.itemId}
+                              style={{ color: Theme.secondary }}
+                            >
+                              {item.qty} {item.unit} of {item.title}
+                            </H5>
+                          ))}
+                        </TouchableOpacity>
+                      </View>
+                    ))
+                  ) : (
+                    <H4 style={styles.noItemsContainer}>No New Orders</H4>
+                  )}
+                </View>
+              </View>
             </BottomSheetView>
           </BottomSheet>
 
@@ -199,7 +235,45 @@ export default function ({ navigation, route }) {
             onClose={handleBottomSheetPastOrderClose}
           >
             <BottomSheetView>
-              <H4>past order</H4>
+              <View style={styles.containerOverlay}>
+                <H4 style={styles.topic}>Past Orders</H4>
+                <View style={styles.containerOverlay}>
+                  <ScrollView showsVerticalScrollIndicator={false}>
+                    {pastOrdersList?.length > 0 ? (
+                      pastOrdersList.map((order) => (
+                        <View
+                          style={styles.newOrdersContainer}
+                          key={order.orderId}
+                        >
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate('Order Status Update', {
+                                orderId: order.orderId,
+                              });
+                            }}
+                          >
+                            <H5>
+                              {order.customerFirstName} {order.customerLastName}{' '}
+                              has ordered
+                            </H5>
+                            {order.itemDetails.map((item) => (
+                              <H5
+                                key={item.itemId}
+                                style={{ color: Theme.secondary }}
+                              >
+                                {' '}
+                                {item.qty} {item.unit} of {item.title}
+                              </H5>
+                            ))}
+                          </TouchableOpacity>
+                        </View>
+                      ))
+                    ) : (
+                      <H4 style={styles.noItemsContainer}>No Past Orders</H4>
+                    )}
+                  </ScrollView>
+                </View>
+              </View>
             </BottomSheetView>
           </BottomSheet>
 
@@ -216,7 +290,33 @@ export default function ({ navigation, route }) {
             onClose={handleBottomSheetSellingClose}
           >
             <BottomSheetView>
-              <H4>Selling</H4>
+              <H4 style={styles.topic}>Selling Items</H4>
+              <View style={styles.containerOverlay}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  {sellingList?.length > 0 ? (
+                    sellingList.map((item, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() =>
+                          navigation.navigate('Manage Product', {
+                            productId: item._id,
+                          })
+                        }
+                      >
+                        <SwipeOverlayCard
+                          imageUri={item.imageUrls}
+                          name={item.title}
+                          quantity={item.qtyAvailable}
+                          unit={item.unit}
+                          price={item.price}
+                        />
+                      </TouchableOpacity>
+                    ))
+                  ) : (
+                    <H4 style={styles.noItemsContainer}>No Selling Items</H4>
+                  )}
+                </ScrollView>
+              </View>
             </BottomSheetView>
           </BottomSheet>
 
@@ -233,7 +333,26 @@ export default function ({ navigation, route }) {
             onClose={handleBottomSheetPendingClose}
           >
             <BottomSheetView>
-              <H4>Pending</H4>
+              <H4 style={styles.topic}>Pending Items</H4>
+              <View style={styles.containerOverlay}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  {pendingList?.length > 0 ? (
+                    pendingList.map((item, index) => (
+                      <TouchableOpacity key={index}>
+                        <SwipeOverlayCard
+                          imageUri={item.imageUrls}
+                          name={item.title}
+                          quantity={item.qtyAvailable}
+                          unit={item.unit}
+                          price={item.price}
+                        />
+                      </TouchableOpacity>
+                    ))
+                  ) : (
+                    <H4 style={styles.noItemsContainer}>No Pending Items</H4>
+                  )}
+                </ScrollView>
+              </View>
             </BottomSheetView>
           </BottomSheet>
 

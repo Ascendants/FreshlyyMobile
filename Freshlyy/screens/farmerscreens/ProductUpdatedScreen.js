@@ -14,7 +14,7 @@ import { TextInputBox, DropDownPicker } from '../../components/Inputs';
 import { H2, H4, H5 } from '../../components/Texts';
 import Header from '../../components/Header';
 
-export default function () {
+export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -32,9 +32,10 @@ export default function () {
         <View>
           <View style={styles.buttoncont}>
             <Button
-              title='View Product List'
+              title='Go To Dashboard'
               color='filledPrimary'
               size='big'
+              onPress={() => navigation.navigate('Farmer Dashboard')}
             />
           </View>
         </View>

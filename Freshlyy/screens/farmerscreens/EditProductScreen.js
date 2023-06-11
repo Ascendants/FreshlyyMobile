@@ -171,7 +171,7 @@ export default function ({ navigation, route }) {
 
   useEffect(() => {
     fetch(
-      ENV.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8',
+      ENV.backend + '/farmer/selling-product/' + route.params?.productId,
       // "${ENV.backend}/farmer/getSellingProduct/?productId=63f4d385b1a06dad48ec25ba",
       {
         method: 'GET',
@@ -203,8 +203,12 @@ export default function ({ navigation, route }) {
       });
       // Fetch existing product data
       const response = await fetch(
-        env.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8'
-
+        env.backend + '/farmer/selling-product/' + route.params.productId,
+        {
+          headers: {
+            Authorization: route.params.auth,
+          },
+        }
         // "/farmer/get-product/" + productId
       );
       const existingData = await response.json();
@@ -219,10 +223,9 @@ export default function ({ navigation, route }) {
         minQtyIncrement: minQtyIncrement || existingData.minQtyIncrement,
         imageUrls: imageData,
       };
-
       // Update product data in the database
       const updateResponse = await fetch(
-        env.backend + '/farmer/update-product/' + '63b6b7b160d78bea22456aa8',
+        env.backend + '/farmer/update-product/' + route.params.productId,
         {
           method: 'POST',
           headers: {
@@ -265,7 +268,7 @@ export default function ({ navigation, route }) {
   };
   return (
     <SafeAreaView>
-      <Header />
+      <Header back={true} home={true} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <LoadingModal message='Uploading Image' visible={uploadingImage} />

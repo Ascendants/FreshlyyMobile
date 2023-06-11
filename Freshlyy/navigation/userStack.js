@@ -15,7 +15,6 @@ export default function App(props) {
     PoppinsRegular: require('../assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'haritha@freshlyy.com';
   if (!fonts) return null;
   const defaultParams = {
     auth: props.user.accessToken,
@@ -83,8 +82,8 @@ export default function App(props) {
             initialParams={{ ...defaultParams, initialTab: 'all' }}
           />
           <Stack.Screen
-            name='Orders Status Update'
-            component={Screens.OrderListScreen}
+            name='Order Status Update'
+            component={Screens.OrderStatusUpdateScreen}
             initialParams={{
               ...defaultParams,
               orderId: '6480039d9a0f5ec665018986',
@@ -131,7 +130,12 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name='editScreen'
+            name='Manage Product'
+            component={Screens.EorDProductScreen}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Edit Product'
             component={Screens.EditProductScreen}
             initialParams={defaultParams}
           />
