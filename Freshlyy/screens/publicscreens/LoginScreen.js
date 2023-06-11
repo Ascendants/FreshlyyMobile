@@ -142,8 +142,8 @@ export default function ({ navigation, route }) {
                 onFocus={() => formik.setFieldTouched('email', true, true)}
               />
               <TextInputBox
-                inputlabel='password'
-                placeholder='password'
+                inputlabel='Password'
+                placeholder='Password'
                 type='password'
                 name='password'
                 secure={true}

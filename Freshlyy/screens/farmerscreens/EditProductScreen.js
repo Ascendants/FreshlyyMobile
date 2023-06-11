@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
+import LoadingModal from '../../components/LoadingModal';
 import {
   TextInputBox,
   DropDownPicker,
@@ -31,7 +32,7 @@ import { min } from 'react-native-reanimated';
 import { getStorage, deleteObject } from 'firebase/storage';
 import ENV from '../../constants/env';
 
-export default function ({ route, navigation }) {
+export default function ({ navigation, route }) {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -39,12 +40,12 @@ export default function ({ route, navigation }) {
   const [minQtyIncrement, setMinQuantity] = useState('');
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [images, setImages] = useState([]);
-  const [uploading, setUploading] = useState(false);
-  const [product, setProduct] = useState({});
-  const [productId, setProductId] = useState(null);
-  const [numImages, setNumImages] = useState(0);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
 
+  const [product, setProduct] = useState({});
+  const [numImages, setNumImages] = useState(0);
   const pickImage = async () => {
     if (images.length >= 3) {
       return; // Do nothing if three images have already been selected
@@ -59,55 +60,31 @@ export default function ({ route, navigation }) {
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const source = { uri: result.assets[result.assets.length - 1].uri };
-      if (images.length < 3) {
-        setImages([...images, source]);
-        // setImage(source);
-      }
+      await uploadImage(source);
     }
     setNumImages(images.length + 1);
   };
-  const uploadImages = async () => {
-    // const uploadedImageUrls = [];
-    const maxImages = 3;
-    const limitedImages = images?.slice(0, maxImages) || []; // Handle null or undefined image
-    //
-    const uploadPromises = limitedImages.map(async (image) => {
-      if (!image) {
-        return;
-      }
-      setUploading(true);
-      try {
-        const response = await fetch(image.uri);
-        const blob = await response.blob();
-        const fileName = `ProductImages/${uuid.v4()}`;
-        const imageRef = ref(FreshlyyImageStore, fileName);
-        // const imageRef = ref(FreshlyyImageStore, "ProductImages/" + blob);
-        await uploadBytes(imageRef, blob);
-      } catch (error) {
-        // } catch (e) {
-        //   console.log(e);
-        console.error(error);
-        throw new Error('An error occurred while uploading images.');
-      }
-      setUploading(false);
-      return true;
-    });
-    const results = await Promise.all(uploadPromises);
-    const allImagesUploaded = results.every((result) => result === true); // Check if all images are uploaded successfully
-    setImages([]);
-
-    // return allImagesUploaded;
-    // Return a boolean value indicating whether all images are uploaded successfully or not
-    if (!allImagesUploaded) {
-      throw new Error('Not all images were uploaded successfully.');
+  const uploadImage = async (image) => {
+    setUploadingImage(true);
+    if (uploadedImageUrls.length >= 3) {
+      return;
     }
-
-    return true;
+    try {
+      const response = await fetch(image.uri);
+      const blob = await response.blob();
+      const fileName = `ProductImages/${uuid.v4()}`;
+      const imageRef = ref(FreshlyyImageStore, fileName);
+      await uploadBytes(imageRef, blob);
+      const url = await getDownloadURL(imageRef);
+      console.log(url);
+      setUploadedImageUrls((prevUrls) => [...prevUrls, url]);
+    } catch (error) {
+      console.log(error);
+    }
+    setUploadingImage(false);
   };
   const handleDeleteImage = (index) => {
-    const updatedImages = [...images];
-    updatedImages.splice(index, 1);
-    setImages(updatedImages);
+    setUploadedImageUrls((curr) => curr.filter((item) => item !== curr[index]));
   };
 
   const handleProductNameChange = (text) => {
@@ -211,20 +188,19 @@ export default function ({ route, navigation }) {
           throw new Error('Malformed Response');
         }
         const data = res.product;
-        console.log(data);
         setProduct(data);
+        setUploadedImageUrls(data.imageUrls.map((image) => image.imageUrl));
       })
 
       .catch((err) => console.log(err));
   }, []);
-  useEffect(() => {
-    setProductId('63f4d385b1a06dad48ec25ba');
-  }, []);
 
   const handleUpdate = async () => {
-    const productId = '63f4d385b1a06dad48ec25ba';
     try {
-      await uploadImages();
+      const imageData = [];
+      uploadedImageUrls?.forEach((image) => {
+        imageData.push({ imageUrl: image, placeholder: '#10ab68' });
+      });
       // Fetch existing product data
       const response = await fetch(
         env.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8'
@@ -241,6 +217,7 @@ export default function ({ route, navigation }) {
         qtyAvailable: quantity || existingData.qtyAvailable,
         description: description || existingData.description,
         minQtyIncrement: minQtyIncrement || existingData.minQtyIncrement,
+        imageUrls: imageData,
       };
 
       // Update product data in the database
@@ -250,22 +227,20 @@ export default function ({ route, navigation }) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: route.params.auth,
           },
           body: JSON.stringify(updatedData),
         }
       );
       const data = await updateResponse.json();
-      console.log(data);
-
+      if (data.message != 'Product updated successfully') {
+        throw new Error(data.message);
+      }
       navigation.navigate('productupdated');
     } catch (error) {
       console.error(error);
     }
   };
-
-  const image =
-    product.imageUrls?.length > 0 ? product.imageUrls[0].imageUrl : '';
-  console.log(image);
 
   const handleClose = async () => {
     try {
@@ -291,7 +266,9 @@ export default function ({ route, navigation }) {
   return (
     <SafeAreaView>
       <Header />
+
       <ScrollView showsVerticalScrollIndicator={false}>
+        <LoadingModal message='Uploading Image' visible={uploadingImage} />
         <View style={styles.screen}>
           <H1 style={styles.AddText}>Edit your product</H1>
           <TextInputBox
@@ -360,10 +337,10 @@ export default function ({ route, navigation }) {
               You can upload maximum three images of a product
             </Text>
           )}
-          <View style={styles.previmage}>
-            {image && (
+          {/* <View style={styles.previmage}>
+            {uploadedImageUrls && (
               <>
-                <Image source={{ uri: image }} style={styles.fillimage} />
+                <Image source={{ uri: }} style={styles.fillimage} />
                 <TouchableOpacity
                   onPress={handleClose}
                   style={{ position: 'absolute', top: 10, right: 10 }}
@@ -372,10 +349,10 @@ export default function ({ route, navigation }) {
                 </TouchableOpacity>
               </>
             )}
-          </View>
+          </View> */}
           <View style={styles.maincont}>
             <View style={styles.buttcont}>
-              {images.length < 3 && (
+              {uploadedImageUrls.length < 3 && (
                 <Button
                   title='Add Image'
                   type='icon'
@@ -407,9 +384,9 @@ export default function ({ route, navigation }) {
                   </TouchableOpacity>
                 
               ))} */}
-              {images.map((image, index) => (
+              {uploadedImageUrls.map((image, index) => (
                 <View key={index}>
-                  <Image source={image} style={styles.newimage} />
+                  <Image source={{ uri: image }} style={styles.newimage} />
                   <TouchableOpacity
                     onPress={() => handleDeleteImage(index)}
                     style={{ position: 'absolute', top: 10, right: 10 }}
@@ -426,7 +403,7 @@ export default function ({ route, navigation }) {
             color='filledPrimary'
             size='big'
             onPress={() => handleUpdate(navigation.navigate('productupdated'))}
-            disabled={images.length === 0 || !isValid}
+            disabled={uploadedImageUrls.length === 0 || !isValid}
           />
         </View>
       </ScrollView>

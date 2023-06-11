@@ -83,7 +83,6 @@ export default function ({ navigation, route }) {
         await uploadBytes(imageRef, blob);
         const url = await getDownloadURL(imageRef);
         setUploadedImageUrls((prevUrls) => [...prevUrls, url]);
-        console.log(uploadedImageUrls);
       } catch (error) {
         // } catch (e) {
         //   console.log(e);
@@ -109,8 +108,8 @@ export default function ({ navigation, route }) {
   const handleSubmit = async () => {
     try {
       const imageData = [];
-      images?.forEach((image) => {
-        imageData.push({ imageUrl: image.uri, placeholder: '#22cc9d' });
+      uploadedImageUrls?.forEach((image) => {
+        imageData.push({ imageUrl: image, placeholder: '#10ab68' });
       });
       const response = await fetch(env.backend + '/farmer/insert-product/', {
         method: 'POST',
