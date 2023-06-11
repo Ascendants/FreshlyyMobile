@@ -64,8 +64,16 @@ export default function App(props) {
             component={Screens.CustomerDashboardScreen}
             initialParams={defaultParams}
           />
-          <Stack.Screen name='Payment' component={Screens.PaymentScreen} />
-
+          <Stack.Screen
+            name='Payment'
+            component={Screens.PaymentScreen}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Other Payment'
+            component={Screens.OtherPaymentScreen}
+            initialParams={defaultParams}
+          />
           <Stack.Screen
             name='Farmer Balance'
             component={Screens.FarmerBalancesScreen}
@@ -245,6 +253,7 @@ export default function App(props) {
             component={Screens.WishListScreen}
             initialParams={defaultParams}
           />
+
           <Stack.Screen
             name='Message'
             component={Screens.MessageScreen}

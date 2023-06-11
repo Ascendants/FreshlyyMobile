@@ -49,7 +49,7 @@ export default function ({ navigation, route }) {
           notification={true}
           hasNotifications={userData.user?.notifications}
           notifMode={'customer'}
-          hasFarmerAccess={userData.user?.accessLevel != 'Farmer'}
+          hasFarmerAccess={userData.user?.accessLevel == 'Farmer'}
         />
         <RefreshView getData={getData} route={route}>
           <InfoCardDBCust user={userData.user} />

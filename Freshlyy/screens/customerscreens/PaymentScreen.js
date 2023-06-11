@@ -37,6 +37,7 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         if (!res.cards) throw new Error('Malformed Response');
         setPaymentMethods(res.cards);
         setLoaded(true);

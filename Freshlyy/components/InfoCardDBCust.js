@@ -65,10 +65,10 @@ export default function (props) {
             />
           }
         />
-        <Button
+        {/* <Button
           title='Coupons'
           type='icon'
-          onPress={() => nav.navigate('Card Management')}
+          onPress={() => nav.navigate('Customer Coupons')}
           backgroundStyle={styles.buttonBackground}
           size='normal'
           color='filledSecondary'
@@ -79,7 +79,7 @@ export default function (props) {
               color={Theme.contrastTextColor}
             />
           }
-        />
+        /> */}
         <Button
           title='Edit Profile'
           type='icon'
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   buttonBackground: {
-    width: 70,
+    flex: 1,
+    width: '100%',
   },
 });

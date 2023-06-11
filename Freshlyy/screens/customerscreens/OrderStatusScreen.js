@@ -189,6 +189,7 @@ export default function ({ navigation, route }) {
 const styles = StyleSheet.create({
   screen: {
     height: '100%',
+    width: '100%',
     alignItems: 'center',
   },
   pageArea: {
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
+
     paddingHorizontal: 10,
   },
   ordersContainer: {

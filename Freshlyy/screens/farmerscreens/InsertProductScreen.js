@@ -20,22 +20,24 @@ import env from '../../constants/env';
 import * as ImagePicker from 'expo-image-picker';
 import { FreshlyyImageStore } from '../../utils/firebase';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+
 import uuid from 'react-native-uuid';
+import LoadingModal from '../../components/LoadingModal';
 
 export default function ({ navigation, route }) {
-  console.log();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
   const [description, setDescription] = useState('');
   const [minQtyIncrement, setMinQuantity] = useState('');
   const [errors, setErrors] = useState({});
-  const [images, setImages] = useState([]);
   const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
-  const [uploading, setUploading] = useState(false);
-  const [touched, setTouched] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const pickImage = async () => {
+    if (uploadedImageUrls.length >= 3) {
+      return;
+    }
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -45,57 +47,30 @@ export default function ({ navigation, route }) {
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const source = { uri: result.assets[result.assets.length - 1].uri };
-      if (images.length < 3) {
-        setImages([...images, source]);
-        // setImage(source);
-      }
+      await uploadImage(source);
     }
   };
   const handleDeleteImage = (index) => {
-    const updatedImages = [...images];
-    updatedImages.splice(index, 1);
-    setImages(updatedImages);
+    const image = uploadedImageUrls[index];
+    FreshlyyImageStore.app.setUploadedImageUrls((curr) =>
+      curr.filter((item) => item !== curr[index])
+    );
   };
 
-  const uploadImages = async () => {
-    // const uploadedImageUrls = [];
-    const maxImages = 3;
-    const limitedImages = images?.slice(0, maxImages) || []; // Handle null or undefined image
-    //
-    const uploadPromises = limitedImages.map(async (image) => {
-      if (!image) {
-        return;
-      }
-      setUploading(true);
-      try {
-        const response = await fetch(image.uri);
-        const blob = await response.blob();
-        const fileName = `ProductImages/${uuid.v4()}`;
-        const imageRef = ref(FreshlyyImageStore, fileName);
-        // const imageRef = ref(FreshlyyImageStore, "ProductImages/" + blob);
-        await uploadBytes(imageRef, blob);
-        const url = await getDownloadURL(imageRef);
-        setUploadedImageUrls((prevUrls) => [...prevUrls, url]);
-      } catch (error) {
-        // } catch (e) {
-        //   console.log(e);
-        console.error(error);
-        throw new Error('An error occurred while uploading images.');
-      }
-      setUploading(false);
-      return true;
-    });
-    const results = await Promise.all(uploadPromises);
-    const allImagesUploaded = results.every((result) => result === true); // Check if all images are uploaded successfully
-    setImages([]);
-
-    // return allImagesUploaded;
-    // Return a boolean value indicating whether all images are uploaded successfully or not
-    if (!allImagesUploaded) {
-      throw new Error('Not all images were uploaded successfully.');
+  const uploadImage = async (image) => {
+    setUploadingImage(true);
+    try {
+      const response = await fetch(image.uri);
+      const blob = await response.blob();
+      const fileName = `ProductImages/${uuid.v4()}`;
+      const imageRef = ref(FreshlyyImageStore, fileName);
+      await uploadBytes(imageRef, blob);
+      const url = await getDownloadURL(imageRef);
+      setUploadedImageUrls((prevUrls) => [...prevUrls, url]);
+    } catch (error) {
+      console.log(error);
     }
-
-    return true;
+    setUploadingImage(false);
   };
 
   const handleSubmit = async () => {
@@ -134,7 +109,7 @@ export default function ({ navigation, route }) {
       !price ||
       !quantity ||
       !minQtyIncrement ||
-      images.length === 0
+      uploadedImageUrls.length === 0
     ) {
       Alert.alert(
         'Error',
@@ -145,11 +120,9 @@ export default function ({ navigation, route }) {
     }
 
     try {
-      const areImagesUploaded = await uploadImages();
-
       const isDataValid = await handleSubmit();
 
-      if (isDataValid && areImagesUploaded) {
+      if (isDataValid) {
         console.log('Form submitted successfully.');
         navigation.navigate('productAddedSuccessfully');
       } else {
@@ -228,9 +201,6 @@ export default function ({ navigation, route }) {
     }));
   };
 
-  // const handleSubmit = () => {
-  //   // handle form submission
-  // };
   React.useEffect(() => {
     for (let key in errors) {
       if (errors[key] !== null) {
@@ -243,6 +213,8 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <Header back={true} />
+      <LoadingModal message='Uploading Image' visible={uploadingImage} />
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.screen}>
           <Image
@@ -313,7 +285,7 @@ export default function ({ navigation, route }) {
               Please fill in all fields correctly
             </Text>
           )}
-          {images.length < 3 && (
+          {uploadedImageUrls.length < 3 && (
             <View style={styles.buttcont}>
               <Button
                 title='Add Image'
@@ -324,15 +296,15 @@ export default function ({ navigation, route }) {
                 color='shadedPrimary'
                 size='normal'
                 onPress={pickImage}
-                disabled={images.length >= 3}
+                disabled={uploadedImageUrls.length >= 3}
               />
             </View>
           )}
           <View style={styles.imagecont}>
-            {images.map((image, index) => (
+            {uploadedImageUrls.map((image, index) => (
               <View key={index} style={{ position: 'relative' }}>
                 <Image
-                  source={{ uri: image.uri }}
+                  source={{ uri: image }}
                   style={{
                     width: 200,
                     height: 200,
@@ -354,37 +326,8 @@ export default function ({ navigation, route }) {
             title='Submit'
             color='filledPrimary'
             size='big'
-            // onPress={async () => {
-            //   const formValid = await handleSubmit();
-            //   const imagesValid = uploadImages();
-            //   if (formValid && imagesValid) {
-            //     // Submit the form
-            //   } else {
-            //     Alert.alert(
-            //       "Error",
-            //       "Please fill all the details and select 3 images.",
-            //       [{ text: "OK" }]
-            //     );
-            //   }
-            // }}
-
-            // onPress={async () => {
-            //   const [isDataValid, areImagesUploaded] = await Promise.all([
-            //     handleSubmit(),
-            //     uploadImages(),
-            //   ]);
-            //   if (isDataValid && areImagesUploaded) {
-            //     // Submit the form to backend
-            //   } else {
-            //     Alert.alert(
-            //       "Error",
-            //       "Please fill all the details and select 3 images.",
-            //       [{ text: "OK" }]
-            //     );
-            //   }
-            // }}
             onPress={handleFormSubmit}
-            disabled={images.length === 0 || !isValid}
+            disabled={uploadedImageUrls.length === 0 || !isValid}
           />
         </View>
       </ScrollView>

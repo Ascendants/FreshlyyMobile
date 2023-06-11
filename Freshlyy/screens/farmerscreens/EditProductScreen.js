@@ -84,6 +84,7 @@ export default function ({ navigation, route }) {
     setUploadingImage(false);
   };
   const handleDeleteImage = (index) => {
+    const image = uploadedImageUrls[index];
     setUploadedImageUrls((curr) => curr.filter((item) => item !== curr[index]));
   };
 

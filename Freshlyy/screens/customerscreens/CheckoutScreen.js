@@ -12,10 +12,6 @@ import ENV from '../../constants/env';
 import Loading from '../../components/Loading';
 import RefreshView from '../../components/RefreshView';
 export default function ({ navigation, route }) {
-  const [loaded, setLoaded] = React.useState(false);
-  const [orderData, setOrderData] = React.useState({
-    selectedPaymentMethod: 'cod',
-  });
   const [deliveries, setDeliveries] = React.useState({});
   const [confirmOrder, setConfirmOrder] = React.useState(false);
   const [subTotal, setSubTotal] = React.useState(0);
@@ -34,7 +30,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/place-order/', {
       method: 'POST',
       headers: {
-        Authorization: route.params?.auth,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
@@ -115,10 +111,9 @@ export default function ({ navigation, route }) {
           });
           return curr;
         });
-        setLoaded(true);
       })
       .catch((err) => console.log(err));
-  },[]);
+  }, []);
   return (
     <>
       <StatusBar barStyle='dark-content' />

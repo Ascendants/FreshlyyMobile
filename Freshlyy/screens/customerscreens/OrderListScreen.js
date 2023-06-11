@@ -58,6 +58,7 @@ export default function ({ navigation, route }) {
       false,
       route.params.initialTab.replace(/\s+/g, '-').toLowerCase()
     );
+    setActiveTab(route.params.initialTab);
   }, [route]);
   return (
     <SafeAreaView style={styles.screen}>
@@ -119,9 +120,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  concernedOrder: {
-    backgroundColor: 'red',
-  },
+
   ordersContainer: {
     marginVertical: 10,
     flex: 1,

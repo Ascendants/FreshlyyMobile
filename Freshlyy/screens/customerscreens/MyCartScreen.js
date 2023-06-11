@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { H2, H3, Pr } from '../../components/Texts';
+import { StyleSheet, View, ScrollView, Image } from 'react-native';
+import { H4, H3, Pr } from '../../components/Texts';
 import { Button } from '../../components/Buttons';
 import Header from '../../components/Header';
-import CartCard from '../../components/CartCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import ProductView from '../../components/ProductView';
@@ -11,15 +10,18 @@ import ENV from '../../constants/env';
 import ModalComponent from '../../components/ModalComponent';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import Navbar from '../../components/Navbar';
+import RefreshView from '../../components/RefreshView';
 
 export default function ({ navigation, route }) {
   const [cart, setCart] = React.useState([]);
   const [total, setTotal] = React.useState(0);
-  React.useState(() => {
-    fetch(ENV.backend + '/customer/cart/', {
+  const getData = React.useCallback(async () => {
+    return fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
       headers: {
-        Authorization: route.params.auth,
+        Authorization: route.params?.auth,
+        //this will be replaced with an http only token
+        //after auth gets set
       },
     })
       .then((res) => res.json())
@@ -31,7 +33,7 @@ export default function ({ navigation, route }) {
   }, []);
   React.useEffect(() => {
     let ctotal = 0;
-    cart.map((farmer) =>
+    cart?.map((farmer) =>
       farmer.items.map((item) => {
         return (ctotal += item.uPrice * item.qty);
       })
@@ -39,42 +41,53 @@ export default function ({ navigation, route }) {
     setTotal(ctotal);
   }, [cart]);
 
-  const [selectedQuantity, setSelectedQuantity] = React.useState(0);
-  const [product, setProduct] = React.useState({
-    purl: route.params.purl,
-    imageUrls: [],
-  });
-
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         {/* <Button title='toggle' onPress={() => setModal((prev) => !prev)} /> */}
         <Header />
         <H3>My Cart</H3>
-        <ScrollView
-          howsVerticalScrollIndicator={false}
-          style={styles.container}
-        >
-          {cart.map((farmer) =>
-            farmer.items.map((item) => {
-              return <ProductView key={item.item} product={item} />;
-            })
+        <RefreshView getData={getData} route={route} style={styles.container}>
+          <View>
+            {cart.map((farmer) =>
+              farmer.items.map((item) => {
+                return <ProductView key={item.item} product={item} />;
+              })
+            )}
+          </View>
+          {cart.length === 0 && (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <Image
+                style={{
+                  width: 250,
+                  height: 250,
+                  resizeMode: 'contain',
+                  alignSelf: 'center',
+                }}
+                source={require('../../assets/emptycart.png')}
+              />
+              <H4 style={{ textAlign: 'center' }}>
+                Your cart is empty.{'\n'}Let's go shopping!
+              </H4>
+            </View>
           )}
-        </ScrollView>
-        <View style={styles.bottomContainer}>
-          <View style={styles.left}>
-            <H3>Total</H3>
-            <Pr fontSize={20}>{total}</Pr>
+        </RefreshView>
+        {cart.length !== 0 && (
+          <View style={styles.bottomContainer}>
+            <View style={styles.left}>
+              <H3>Total</H3>
+              <Pr fontSize={20}>{total}</Pr>
+            </View>
+            <View style={styles.right}>
+              <Button
+                size='big'
+                color='filledPrimary'
+                title='Checkout'
+                onPress={() => navigation.navigate('Checkout')}
+              />
+            </View>
           </View>
-          <View style={styles.right}>
-            <Button
-              size='big'
-              color='filledPrimary'
-              title='Checkout'
-              onPress={() => navigation.navigate('Checkout')}
-            />
-          </View>
-        </View>
+        )}
       </View>
       <Navbar cart={true} />
     </SafeAreaView>
