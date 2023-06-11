@@ -30,7 +30,7 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.OrderStatusUpdateScreen}
+            component={Screens.FarmerDashboardScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,

@@ -22,8 +22,6 @@ import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
 import { H4, H3, H5 } from '../../components/Texts';
 import RefreshView from '../../components/RefreshView';
-import SwipeOverlayCard from '../../components/SwipeOverlayCard';
-import ProductView from '../../components/ProductView';
 
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -119,8 +117,13 @@ export default function ({ navigation, route }) {
     <GestureHandlerRootView>
       <SafeAreaView>
         <View style={styles.screen}>
-          <Header farmer={true} />
-          <RefreshView getData={getData}>
+          <Header
+            farmer={true}
+            notification={true}
+            notifMode={'farmer'}
+            hasNotifications={userData?.notifications}
+          />
+          <RefreshView getData={getData} route={route}>
             <InfoCardDB
               user={userData}
               goToBalances={() => navigation.navigate('Farmer Balance')}
@@ -160,6 +163,7 @@ export default function ({ navigation, route }) {
                 size='big'
                 color='shadedPrimary'
                 title='Add new produce listing'
+                onPress={() => navigation.navigate('Insert Product')}
                 // backgroundstyle={styles.button}
               />
             </View>
