@@ -8,7 +8,6 @@ export default function (props) {
   return (
     <View style={styles.container}>
       <Image source={props.imgUrl?.imageUrl} style={styles.image} />
-      {/* <MaterialIcons name="horizontal-rule" size={24} color="black" /> */}
       <View style={styles.left}>
         <H5>{props.topic}</H5>
         <H6>{props.subTopic}</H6>

@@ -44,7 +44,7 @@ export default function ({ navigation, route }) {
                 style={styles.button}
                 key={index}
                 onPress={() =>
-                  navigation.navigate('Ticket Details', { ticket: ticket._id })
+                  navigation.navigate('Ticket Details', { ticketId: ticket._id })
                 }
               >
                 <View style={styles.ticketContainer}>
