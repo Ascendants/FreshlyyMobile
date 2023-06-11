@@ -28,7 +28,7 @@ function getPaymentType(order) {
 
 export default function ({ navigation, route }) {
   const [order, setOrder] = React.useState({});
-
+  console.log(order);
   const getData = React.useCallback(async () => {
     const orderId = route.params.orderId;
     return fetch(ENV.backend + '/customer/get-order/' + orderId, {
