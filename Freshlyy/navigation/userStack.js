@@ -114,7 +114,11 @@ export default function App(props) {
             component={Screens.OtherPaymentScreen}
             initialParams={defaultParams}
           />
-
+          <Stack.Screen
+            name='Insert Product'
+            component={Screens.InsertProductScreen}
+            initialParams={defaultParams}
+          />
           <Stack.Screen
             name='editScreen'
             component={Screens.EditProductScreen}

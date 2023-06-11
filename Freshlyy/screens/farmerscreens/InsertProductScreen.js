@@ -29,7 +29,7 @@ import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import uuid from 'react-native-uuid';
 import { min } from 'react-native-reanimated';
 
-export default function ({ navigation }) {
+export default function ({ navigation, route }) {
   console.log();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
@@ -38,10 +38,10 @@ export default function ({ navigation }) {
   const [minQtyIncrement, setMinQuantity] = useState('');
   const [errors, setErrors] = useState({});
   const [images, setImages] = useState([]);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [touched, setTouched] = useState(false);
   const [isValid, setIsValid] = useState(false);
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -81,6 +81,9 @@ export default function ({ navigation }) {
         const imageRef = ref(FreshlyyImageStore, fileName);
         // const imageRef = ref(FreshlyyImageStore, "ProductImages/" + blob);
         await uploadBytes(imageRef, blob);
+        const url = await getDownloadURL(imageRef);
+        setUploadedImageUrls((prevUrls) => [...prevUrls, url]);
+        console.log(uploadedImageUrls);
       } catch (error) {
         // } catch (e) {
         //   console.log(e);
@@ -105,6 +108,10 @@ export default function ({ navigation }) {
 
   const handleSubmit = async () => {
     try {
+      const imageData = [];
+      images?.forEach((image) => {
+        imageData.push({ imageUrl: image.uri, placeholder: '#22cc9d' });
+      });
       const response = await fetch(env.backend + '/farmer/insert-product/', {
         method: 'POST',
         headers: {
@@ -117,6 +124,7 @@ export default function ({ navigation }) {
           qtyAvailable: quantity,
           description: description,
           minQtyIncrement: minQtyIncrement,
+          images: imageData,
         }),
       });
       const data = await response.json();
@@ -145,8 +153,9 @@ export default function ({ navigation }) {
     }
 
     try {
-      const isDataValid = await handleSubmit();
       const areImagesUploaded = await uploadImages();
+
+      const isDataValid = await handleSubmit();
 
       if (isDataValid && areImagesUploaded) {
         console.log('Form submitted successfully.');

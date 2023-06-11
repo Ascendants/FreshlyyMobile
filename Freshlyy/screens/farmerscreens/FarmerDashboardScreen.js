@@ -107,6 +107,7 @@ export default function ({ navigation, route }) {
               size='big'
               color='shadedPrimary'
               title='Add new produce listing'
+              onPress={() => navigation.navigate('Insert Product')}
               // backgroundstyle={styles.button}
             />
           </View>

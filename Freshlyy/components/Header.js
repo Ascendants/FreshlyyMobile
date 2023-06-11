@@ -47,7 +47,7 @@ export default function (props) {
         <View style={{ width: 32 }}></View>
       )}
       <Image source={require('../assets/logo.png')} style={styles.logo} />
-      {props.customer ? (
+      {props.customer && props.hasFarmerAccess ? (
         <TouchableOpacity onPress={switchFarmer}>
           <Image
             source={require('../assets/farmericon.png')}
@@ -68,9 +68,9 @@ export default function (props) {
           <Image source={require('../assets/homeh.png')} style={styles.icon} />
         </TouchableOpacity>
       ) : null}
-      {!props.farmer && !props.customer && !props.home && (
-        <View style={{ width: 32 }}></View>
-      )}
+      {!props.farmer &&
+        !(props.customer && props.hasFarmerAccess) &&
+        !props.home && <View style={{ width: 32 }}></View>}
     </View>
   );
 }

@@ -40,33 +40,32 @@ export default function ({ navigation, route }) {
   });
 
   const handleLogin = async (email, password) => {
-    setSubmitting(true)
+    setSubmitting(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-       // User is signed in
+      // User is signed in
       setSubmitting(false);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setSubmitting(false);
-      setErr("Something went wrong");
-      if(err.code==='auth/wrong-password'){
-        setErr("Invalid Credentials!");
+      setErr('Something went wrong');
+      if (err.code === 'auth/wrong-password') {
+        setErr('Invalid Credentials!');
         return;
       }
-      if(err.code==='auth/user-not-found'){
-        setErr("Invalid Credentials!");
+      if (err.code === 'auth/user-not-found') {
+        setErr('Invalid Credentials!');
         return;
       }
-      if(err.code==='auth/internal-error'){
-        setErr("Try again later!");
+      if (err.code === 'auth/internal-error') {
+        setErr('Try again later!');
         return;
       }
-      if(err.code==='auth/user-token-expired'){
-        setErr("User account already exists!");
+      if (err.code === 'auth/user-token-expired') {
+        setErr('User account already exists!');
         return;
-      }
-      else{
-        setErr("Try again later!");
+      } else {
+        setErr('Try again later!');
       }
     }
   };
@@ -120,7 +119,7 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <LoadingModal message='Loging In' visible={submitting} />
+        <LoadingModal message='Logging In' visible={submitting} />
         <Header back={true} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.pageContent}>

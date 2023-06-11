@@ -12,7 +12,6 @@ import InfoCardDBCust from '../../components/InfoCardDBCust';
 import RefreshView from '../../components/RefreshView';
 import { auth } from '../../utils/firebase';
 export default function ({ navigation, route }) {
-  console.log('test2');
   const [userData, setUserData] = useState({});
   function viewOrders(type) {
     navigation.navigate('Orders List', {
@@ -50,6 +49,7 @@ export default function ({ navigation, route }) {
           notification={true}
           hasNotifications={userData.user?.notifications}
           notifMode={'customer'}
+          hasFarmerAccess={userData.user?.accessLevel != 'Farmer'}
         />
         <RefreshView getData={getData} route={route}>
           <InfoCardDBCust user={userData.user} />
