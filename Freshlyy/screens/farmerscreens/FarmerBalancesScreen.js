@@ -61,7 +61,7 @@ export default function ({ navigation, route }) {
         setData(res.earnings);
       })
       .catch((err) => console.log(err));
-  });
+  },[]);
   return (
     <SafeAreaView>
       <View style={styles.screen}>

@@ -28,8 +28,7 @@ export default function ({ navigation, route }) {
         }
         setTicket(res.supportTicket);
       });
-
-  });
+  }, []);
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -37,15 +36,15 @@ export default function ({ navigation, route }) {
       <View style={styles.container}>
         <RefreshView getData={getTicket}>
           <TicketStatus status={ticket?.status} />
-          <View style={{justifyContent: 'space-between', padding:10 }}>
+          <View style={{ justifyContent: 'space-between', padding: 10 }}>
             <H6>ID: #{ticket?._id}</H6>
             <H6>Issue: {ticket?.issue}</H6>
             <H6>Date: {ticket?.date}</H6>
             <H6>Description: {ticket?.description}</H6>
             <Image
-            source={require('../../assets/SupportTicket.png')}
-            style={styles.image}
-          />
+              source={require('../../assets/SupportTicket.png')}
+              style={styles.image}
+            />
           </View>
         </RefreshView>
       </View>

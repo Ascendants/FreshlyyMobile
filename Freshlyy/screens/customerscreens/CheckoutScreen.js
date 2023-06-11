@@ -118,7 +118,7 @@ export default function ({ navigation, route }) {
         setLoaded(true);
       })
       .catch((err) => console.log(err));
-  });
+  },[]);
   return (
     <>
       <StatusBar barStyle='dark-content' />

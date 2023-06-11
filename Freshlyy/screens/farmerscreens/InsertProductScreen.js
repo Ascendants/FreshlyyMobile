@@ -11,23 +11,16 @@ import {
 } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import {
-  TextInputBox,
-  DropDownPicker,
-  DatePicker,
-} from '../../components/Inputs';
+import { TextInputBox } from '../../components/Inputs';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { H1, H2 } from '../../components/Texts';
 import env from '../../constants/env';
 import * as ImagePicker from 'expo-image-picker';
-import firebase from '../../utils/firebase';
 import { FreshlyyImageStore } from '../../utils/firebase';
-import { async } from '@firebase/util';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import uuid from 'react-native-uuid';
-import { min } from 'react-native-reanimated';
 
 export default function ({ navigation, route }) {
   console.log();
@@ -249,7 +242,7 @@ export default function ({ navigation, route }) {
   }, [errors]);
   return (
     <SafeAreaView>
-      <Header />
+      <Header back={true} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.screen}>
           <Image

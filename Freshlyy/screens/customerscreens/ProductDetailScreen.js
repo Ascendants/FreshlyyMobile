@@ -59,7 +59,7 @@ export default function ({ route, navigation, productId, addToCart }) {
         setSelectedQuantity(res.product?.minQtyIncrement);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   async function postCart() {
     const result = await fetch(ENV.backend + '/customer/cart/add', {

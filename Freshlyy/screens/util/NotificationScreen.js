@@ -39,7 +39,7 @@ export default function ({ navigation, route }) {
         refreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
   React.useEffect(() => {
     getNotifications(false);
   }, []);

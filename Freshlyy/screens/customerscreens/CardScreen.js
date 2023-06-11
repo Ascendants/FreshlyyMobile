@@ -25,7 +25,7 @@ export default function ({ navigation, route }) {
         setCards(res.cards);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
   async function deleteCard(cardId) {
     const result = await fetch(
       ENV.backend + '/customer/delete-card/' + cardId,

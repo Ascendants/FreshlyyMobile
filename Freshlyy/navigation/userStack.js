@@ -30,9 +30,12 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.FarmerDashboardScreen}
+            component={Screens.OrderStatusUpdateScreen}
             options={{ headerShown: false }}
-            initialParams={defaultParams}
+            initialParams={{
+              ...defaultParams,
+              orderId: '648017f45ed6e07fdd85bb5c',
+            }}
           />
           <Stack.Screen
             name='homePage'
@@ -78,6 +81,14 @@ export default function App(props) {
             name='Orders List'
             component={Screens.OrderListScreen}
             initialParams={{ ...defaultParams, initialTab: 'all' }}
+          />
+          <Stack.Screen
+            name='Orders Status Update'
+            component={Screens.OrderListScreen}
+            initialParams={{
+              ...defaultParams,
+              orderId: '6480039d9a0f5ec665018986',
+            }}
           />
           <Stack.Screen
             name='Farmer Payout Requests'

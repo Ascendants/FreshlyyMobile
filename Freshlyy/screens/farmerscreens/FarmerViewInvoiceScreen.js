@@ -58,7 +58,7 @@ export default function ({ route, navigation }) {
         refreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
   React.useEffect(() => {
     getData();
   }, []);

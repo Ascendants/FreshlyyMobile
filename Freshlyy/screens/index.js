@@ -68,3 +68,4 @@ export { default as ProductUpdatedScreen } from './farmerscreens/ProductUpdatedS
 export { default as FarmerInvoiceScreen } from './farmerscreens/FarmerViewInvoiceScreen';
 export { default as SettleAccountScreen } from './farmerscreens/SettleAccountScreen';
 export { default as OtherFarmerPaymentScreen } from './farmerscreens/OtherFarmerPaymentScreen';
+export { default as OrderStatusUpdateScreen } from './farmerscreens/OrderStatusUpdateScreen';

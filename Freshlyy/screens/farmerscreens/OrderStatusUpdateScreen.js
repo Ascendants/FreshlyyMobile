@@ -1,6 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, RefreshControl } from 'react-native';
-import { H3, Pr, H7, H6, H4, P } from '../../components/Texts';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  RefreshControl,
+  Image,
+} from 'react-native';
+import { H3, Pr, H7, H6, H4, P, H5 } from '../../components/Texts';
 import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
@@ -13,6 +19,8 @@ import DeliveryView from '../../components/DeliveryView';
 import ENV from '../../constants/env';
 import RefreshView from '../../components/RefreshView';
 import PaymentType from '../../components/PaymentType';
+import ModalComponent from '../../components/ModalComponent';
+import LoadingModal from '../../components/LoadingModal';
 function getPaymentType(order) {
   if (!order.payment?.length) {
     return null;
@@ -28,10 +36,59 @@ function getPaymentType(order) {
 
 export default function ({ navigation, route }) {
   const [order, setOrder] = React.useState({});
-  console.log(order);
+  const [updateModal, setUpdateModal] = React.useState(false);
+  const [updating, setUpdating] = React.useState(false);
+  function nextStatus() {
+    if (!order && order.orderUpdate.cancelled != null) {
+      return null;
+    }
+    if (!order.orderUpdate?.processed) {
+      return { title: 'Mark as Processed', nextStatus: 'processed' };
+    } else {
+      if (order.isDelivery) {
+        if (!order.orderUpdate.shipped) {
+          return { title: 'Mark as Shipped', nextStatus: 'shipped' };
+        }
+        if (!order.orderUpdate.delivered) {
+          return { title: 'Mark as Delivered', nextStatus: 'delivered' };
+        }
+      }
+    }
+    return null;
+  }
+  function updateStatus() {
+    setUpdateModal(false);
+    setUpdating(true);
+    let next = nextStatus();
+    if (!next) {
+      return;
+    }
+    fetch(ENV.backend + '/farmer/update-order-status/' + order._id, {
+      method: 'POST',
+      headers: {
+        Authorization: route.params.auth,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        status: next.nextStatus,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message != 'Success') {
+          throw new Error('Something went wrong');
+        }
+        setOrder((prev) => {
+          return { ...prev, ...res.order };
+        });
+      })
+      .catch((err) => console.log(err));
+    setUpdating(false);
+  }
   const getData = React.useCallback(async () => {
     const orderId = route.params.orderId;
-    return fetch(ENV.backend + '/customer/get-order/' + orderId, {
+    return fetch(ENV.backend + '/farmer/order/' + orderId, {
       method: 'GET',
       headers: {
         Authorization: route.params.auth,
@@ -51,6 +108,29 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
+        <LoadingModal visible={updating} message='Updating Status' />
+        <ModalComponent visible={updateModal}>
+          <H4 style={{ textAlign: 'center', color: Theme.secondary }}>
+            Update Order Status
+          </H4>
+          <Image
+            style={{
+              width: 200,
+              height: 200,
+              alignSelf: 'center',
+              marginVertical: 20,
+              resizeMode: 'contain',
+            }}
+            source={require('../../assets/status.png')}
+          />
+          <H3 style={{ textAlign: 'center' }}>{nextStatus()?.title}</H3>
+          <Button
+            title='Confirm'
+            size='big'
+            color='filledWarning'
+            onPress={updateStatus}
+          />
+        </ModalComponent>
         <Header back={true} home={true} />
         <H3>Order</H3>
         <RefreshView getData={getData} route={route}>
@@ -58,43 +138,27 @@ export default function ({ navigation, route }) {
             <H7 style={styles.orderInfo} selectable={true}>
               #{order?._id}
             </H7>
-            <H6 style={styles.orderInfoFarmer}>From {order?.farmerName}</H6>
+            <H6 style={styles.orderInfoFarmer}>To {order?.customerName}</H6>
             <OrderStatus
               status={order?.orderUpdate}
               isDelivery={order?.isDelivery}
               reviewed={order?.farmerRating != -1}
             />
-            {!order?.orderUpdate?.cancelled && !order?.orderUpdate?.payment && (
+            {nextStatus() !== null && (
               <Button
-                title='Pay Now'
+                title={nextStatus().title}
                 size='big'
                 color='shadedSecondary'
-                onPress={() => {
-                  navigation.navigate('Payment', {
-                    orders: [order],
-                    userEmail: route.params.userEmail,
-                    later: true,
-                  });
-                }}
+                onPress={() => setUpdateModal(true)}
               />
             )}
-            {!order?.orderUpdate?.cancelled &&
-              order?.orderUpdate?.processed &&
-              !order.isDelivery &&
-              !order?.orderUpdate.pickedUp && (
-                <Button
-                  title='Confirm Pick Up'
-                  size='big'
-                  color='shadedWarning'
-                  onPress={() => {
-                    navigation.navigate('Confirm Pickup', {
-                      orderId: order?._id,
-                      farmerName: order?.farmerName,
-                      userEmail: route.params.userEmail,
-                    });
-                  }}
-                />
-              )}
+            {!order.isDelivery && order?.orderUpdate?.processed && (
+              <P style={styles.infoText}>
+                ⓘ Ask the customer to mark the order as picked up before they
+                leave.
+              </P>
+            )}
+
             <View style={styles.pageArea}>
               {order?.items?.map((item) => (
                 <ProductView ordered={true} key={item.itemId} product={item} />
@@ -152,14 +216,15 @@ export default function ({ navigation, route }) {
               {getPaymentType(order)}
             </View>
           )}
-          <View style={styles.buttonArea}>
+
+          {/* <View style={styles.buttonArea}>
             <Button title='Get Support' color='shadedWarning' size='big' />
             {(order?.orderUpdate?.delivered ||
               order?.orderUpdate?.pickedUp) && (
               <Button title='Review' color='shadedSecondary' size='big' />
             )}
-          </View>
-          {!order?.orderUpdate?.cancelled && !order?.orderUpdate?.processed && (
+          </View> */}
+          {/* {!order?.orderUpdate?.cancelled && !order?.orderUpdate?.processed && (
             <>
               <Button
                 title='Cancel Order'
@@ -174,12 +239,9 @@ export default function ({ navigation, route }) {
                 }
               />
             </>
-          )}
-          {!order?.orderUpdate?.cancelled && (
-            <P style={styles.infoText}>
-              ⓘ You can only cancel an order before it's processed.
-            </P>
-          )}
+          )} */}
+
+          <P style={styles.infoText}></P>
         </RefreshView>
       </View>
     </SafeAreaView>
