@@ -69,8 +69,6 @@ export default function ({ navigation, route }) {
 
   const couponRegex = /^CP\d{4}$/;
 
-  console.log(route.params.userEmail);
-
   const handleSubmit = async () => {
     try {
       const response = await fetch(ENV.backend + '/farmer/verify-coupon-code/', {
@@ -265,13 +263,25 @@ export default function ({ navigation, route }) {
                   onChangeText={handleChange('code')}
                   onFocus={() => setShowInstructions(true)}
                   onBlur={() => {
-                    setShowInstructions(false);
+                    setShowInstructions(true);
                     setFieldTouched('code');
                   }}
                   error={errors.code}
                   touched={touched.code}
                 />
-                {showInstructions && suggestions.length > 0 && (
+                <View style={styles.instructionContainer}>
+                    <H6>Code format -- "CP" and 4 digit code.</H6>
+                    <H6>Suggestions:</H6>
+                    {suggestions.map((suggestion, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => setCode(suggestion)}
+                      >
+                        <H6>{suggestion}</H6>
+                      </TouchableOpacity>
+                    ))}
+                </View>
+                {/* {showInstructions && suggestions.length > 0 && (
                   <View style={styles.instructionContainer}>
                     <H6>Code format -- "CP" and 4 digit code.</H6>
                     <H6>Suggestions:</H6>
@@ -284,7 +294,7 @@ export default function ({ navigation, route }) {
                       </TouchableOpacity>
                     ))}
                   </View>
-                )}
+                )} */}
                 <DatePicker
                   inputlabel={'Activates On'}
                   name='Activates On'

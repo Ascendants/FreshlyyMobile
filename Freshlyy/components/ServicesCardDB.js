@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { H6, H7, H8 } from '../components/Texts';
 import Theme from '../constants/theme';
 
-export default function (props, { navigation }) {
+export default function (props, navigation ) {
   return (
     <View style={styles.container}>
       {/* <View style={styles.notify}>

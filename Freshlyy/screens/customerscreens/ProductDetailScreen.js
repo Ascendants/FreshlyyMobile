@@ -13,7 +13,7 @@ import Rating from '../../components/Rating';
 import RefreshView from '../../components/RefreshView';
 import ModalComponent from '../../components/ModalComponent';
 
-export default function ({ route, navigation, productId, addToCart }) {
+export default function ({ route }) {
   const [modal, setModal] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
@@ -84,6 +84,88 @@ export default function ({ route, navigation, productId, addToCart }) {
       })
       .catch((err) => console.log(err));
   }
+
+  async function postWishList() {
+    const result = await fetch(ENV.backend + '/customer/wishList/add', {
+      method: 'POST',
+      headers: {
+        userEmail: route.params.userEmail,
+        'Content-Type': 'application/json',
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+      body: JSON.stringify({
+        productId: product._id,
+        quantity: selectedQuantity,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message == 'Success') {
+          return true;
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+//   async function postWishList() {
+//   const result = await fetch(ENV.backend + '/customer/wishList', {
+//     method: 'GET',
+//     headers: {
+//       userEmail: route.params.userEmail,
+//       'Content-Type': 'application/json',
+//       // this will be replaced with an http only token
+//       // after auth gets set
+//     },
+//   })
+//     .then((res) => res.json())
+//     .then((res) => {
+//       const wishlistItem = res.wishlist.find(
+//         (item) => item.productId === product._id
+//       );
+
+//       if (wishlistItem) {
+//         // Item is already in the wishlist, remove it
+//         return fetch(
+//           ENV.backend + '/customer/wishList/remove/' + wishlistItem._id,
+//           {
+//             method: 'DELETE',
+//             headers: {
+//               userEmail: route.params.userEmail,
+//               'Content-Type': 'application/json',
+//               // this will be replaced with an http only token
+//               // after auth gets set
+//             },
+//           }
+//         );
+//       } else {
+//         // Item is not in the wishlist, add it
+//         return fetch(ENV.backend + '/customer/wishList/add', {
+//           method: 'POST',
+//           headers: {
+//             userEmail: route.params.userEmail,
+//             'Content-Type': 'application/json',
+//             // this will be replaced with an http only token
+//             // after auth gets set
+//           },
+//           body: JSON.stringify({
+//             productId: product._id,
+//             quantity: selectedQuantity,
+//           }),
+//         });
+//       }
+//     })
+//     .then((res) => res.json())
+//     .then((res) => {
+//       console.log(res);
+//       if (res.message === 'Success') {
+//         return true;
+//       }
+//     })
+//     .catch((err) => console.log(err));
+// }
+
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -144,6 +226,7 @@ export default function ({ route, navigation, productId, addToCart }) {
                   title='Wishlist'
                   size='normal'
                   color='shadedTertiary'
+                  onPress={postWishList}
                 />
                 <Button
                   type='icon'

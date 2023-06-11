@@ -20,8 +20,10 @@ import ServicesCardDB from '../../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
-import { H4 } from '../../components/Texts';
+import { H4, H3, H5 } from '../../components/Texts';
 import RefreshView from '../../components/RefreshView';
+import SwipeOverlayCard from '../../components/SwipeOverlayCard';
+import ProductView from '../../components/ProductView';
 
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -41,6 +43,11 @@ export default function ({ navigation, route }) {
   const bottomSheetRefSelling = useRef(null);
   const bottomSheetRefPending = useRef(null);
   const snapPoints = ['100%', '60%'];
+
+  const [newOrdersList, setNewOrdersList] = React.useState([]);
+  const [pastOrdersList, setPastOrdersList] = React.useState([]);
+  const [sellingList, setSellingList] = React.useState([]);
+  const [pendingList, setPendingList] = React.useState([]);
 
   const handleBottomSheetNewOrderClose = () => {
     setIsBottomSheetNewOrderVisible(false);
@@ -96,6 +103,11 @@ export default function ({ navigation, route }) {
         setPendingProducts(res.pendingProducts);
         setNewOrders(res.newOrders);
         setPastOrders(res.pastOrders);
+        setSellingList(res.liveProductsList);
+        setPendingList(res.pendingProductsList);
+        setNewOrdersList(res.newOrderDetailsList);
+        setPastOrdersList(res.pastOrderDetailsList);
+
         setLoaded(true);
       })
       .catch((err) => console.log(err));
@@ -151,7 +163,7 @@ export default function ({ navigation, route }) {
           </View>
           <ServicesCardDB farmer={true} />
           <View style={styles.lastChild}></View>
-        </RefreshView>
+        
         <BottomSheet
           ref={bottomSheetRefNewOrder}
           index={-1}
@@ -164,7 +176,26 @@ export default function ({ navigation, route }) {
           onClose={handleBottomSheetNewOrderClose}
         >
           <BottomSheetView>
-            <SwipeOverlay />
+            <View style={styles.containerOverlay}>
+              <H4 style={styles.topic}>New Orders</H4>
+                <View style={styles.containerOverlay}>
+                {newOrdersList.length > 0 ? (
+                    newOrdersList.map((order) => (
+                      <View style={styles.newOrdersContainer} key={order._id}>
+                        <TouchableOpacity>
+                          <H5>{order.customerFirstName} {order.customerLastName} has ordered</H5>
+                          {order.itemDetails.map((item) => (
+                            <H5 key={item.itemId} style={{color: Theme.secondary}}>    {item.qty} {item.unit} of {item.title}</H5>
+                          ))}
+                        </TouchableOpacity>
+                      </View>
+                    ))
+                  ) : (
+                    <H4 style={styles.noItemsContainer}>No New Orders</H4>
+                  )}
+                
+                </View>
+            </View>
           </BottomSheetView>
         </BottomSheet>
 
@@ -181,7 +212,27 @@ export default function ({ navigation, route }) {
           onClose={handleBottomSheetPastOrderClose}
         >
           <BottomSheetView>
-            <H4>past order</H4>
+            <View style={styles.containerOverlay}>
+              <H4 style={styles.topic}>Past Orders</H4>
+              <View style={styles.containerOverlay}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+              {pastOrdersList.length > 0 ? (
+                    pastOrdersList.map((order) => (
+                      <View style={styles.newOrdersContainer} key={order._id}>
+                        <TouchableOpacity>
+                          <H5>{order.customerFirstName} {order.customerLastName} has ordered</H5>
+                          {order.itemDetails.map((item) => (
+                            <H5 key={item.itemId} style={{color: Theme.secondary}}>    {item.qty} {item.unit} of {item.title}</H5>
+                          ))}
+                        </TouchableOpacity>
+                      </View>
+                    ))
+                  ) : (
+                    <H4 style={styles.noItemsContainer}>No Past Orders</H4>
+                  )}
+                </ScrollView>
+              </View>
+            </View>
           </BottomSheetView>
         </BottomSheet>
 
@@ -198,7 +249,26 @@ export default function ({ navigation, route }) {
           onClose={handleBottomSheetSellingClose}
         >
           <BottomSheetView>
-            <H4>Selling</H4>
+            <H4 style={styles.topic}>Selling Items</H4>
+              <View style={styles.containerOverlay}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                  {sellingList.length > 0 ? (
+                    sellingList.map((item, index) => (
+                    <TouchableOpacity key={index}>
+                      <SwipeOverlayCard
+                        imageUri={item.imageUrls}
+                        name={item.title}
+                        quantity={item.qtyAvailable}
+                        unit={item.unit}
+                        price={item.price}
+                      />
+                    </TouchableOpacity>
+                    ))
+                    ) : (
+                        <H4 style={styles.noItemsContainer}>No Selling Items</H4>
+                      )}
+                </ScrollView>
+              </View>            
           </BottomSheetView>
         </BottomSheet>
 
@@ -215,10 +285,29 @@ export default function ({ navigation, route }) {
           onClose={handleBottomSheetPendingClose}
         >
           <BottomSheetView>
-            <H4>Pending</H4>
+            <H4 style={styles.topic}>Pending Items</H4>            
+              <View style={styles.containerOverlay}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  {pendingList.length > 0 ? (
+                    pendingList.map((item, index) => (
+                    <TouchableOpacity key={index}>
+                      <SwipeOverlayCard
+                        imageUri={item.imageUrls}
+                        name={item.title}
+                        quantity={item.qtyAvailable}
+                        unit={item.unit}
+                        price={item.price}
+                      />
+                    </TouchableOpacity>
+                    ))
+                    ) : (
+                        <H4 style={styles.noItemsContainer}>No Pending Items</H4>
+                      )}
+                </ScrollView>
+              </View>            
           </BottomSheetView>
         </BottomSheet>          
-
+        </RefreshView>
         <Navbar screenName='Cart' />
       </View>
     </SafeAreaView>
@@ -254,5 +343,28 @@ const styles = StyleSheet.create({
   },
   lastChild: {
     height: 80,
+  },
+  topic: {
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+    color: Theme.primary,
+  },
+  containerOverlay: {
+    width: '100%',
+    
+  },
+  noItemsContainer: {
+    alignSelf: 'center',
+  },
+  newOrdersContainer: {
+    backgroundColor: Theme.tertiaryShade,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    paddingLeft: 20,
+    // paddingRight: 5,
   },
 });

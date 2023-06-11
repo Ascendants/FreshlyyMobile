@@ -167,15 +167,15 @@ export default function ({ navigation, route }) {
               console.log('');
             }}
           />
-          <Text style={styles.inputLabel}>
-            Screenshot of the error message while you are trying to sign in
+          {/* <Text style={styles.inputLabel}>
+            Upload a photo of the affected item
           </Text>
           <TouchableOpacity>
             <View style={styles.inputImgBox}>
               <Ionicons name='image' size={22} color={Theme.tertiary} />
               <H8 style={{ color: Theme.tertiary }}>Select file</H8>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TextInputBox
             inputlabel='Share details'
             placeholder=''

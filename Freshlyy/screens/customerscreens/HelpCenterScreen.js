@@ -16,23 +16,17 @@ import { AntDesign } from '@expo/vector-icons';
 export default function ({ navigation,route }) {
 
   const email = route.params.userEmail;
-
   function navigateToSelectOrder(email) {
     navigation.navigate('Select the Order', {
-      userEmail: email,
     });
   }
 
   function navigateToCreateCoupon(email) {
-    navigation.navigate('Create Coupon', {
-      userEmail: email,
-    });
+    navigation.navigate('Create Coupon');
   }
 
   function navigateToTicketStatus(email) {
-    navigation.navigate('Ticket Status', {
-      userEmail: email,
-    });
+    navigation.navigate('Ticket Status');
   }
 
   return (

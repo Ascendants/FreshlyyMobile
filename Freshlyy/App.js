@@ -13,7 +13,7 @@ export default function App() {
     PoppinsRegular: require('./assets/fonts/Poppins-Regular.ttf'),
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
-  const userEmail = 'gimhani@freshlyy.com';
+  const userEmail = 'hasathcharu@icloud.com';
   if (!fonts) return null;
   return (
     <UserContext.Provider value={null}>
@@ -24,7 +24,7 @@ export default function App() {
         >
           <Stack.Screen
             name='Checkout'
-            component={Screens.FarmerDashboardScreen}
+            component={Screens.HelpCenterScreen}
             initialParams={{
               // purl: 'sri_lankan_carrots_63b6b9929ad79279b814928f',
               // purl: 'nuwara_eliya_strawberries_63b6b7b160d78bea22456aa8',
@@ -174,47 +174,83 @@ export default function App() {
           <Stack.Screen
             name='Help Center'
             component={Screens.HelpCenterScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Cant sign in'
             component={Screens.CantSignInScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Food Damaged'
             component={Screens.FoodDamagedScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Select the Order'
             component={Screens.SelectOrderScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Help with an order'
             component={Screens.HelpWithAnOrderScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Order Naver Arrived'
             component={Screens.OrderNeverArrivedScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Order is Wrong'
             component={Screens.OrderIsWrong}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Order Details Help Center'
             component={Screens.HelpWithAnOrderScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Create Coupon'
             component={Screens.CreateCouponScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
-          <Stack.Screen name='Contact Us' component={Screens.ContactUsScreen} />
+          <Stack.Screen name='Contact Us' component={Screens.ContactUsScreen}
+          initialParams={{
+            userEmail: userEmail,
+          }} />
           <Stack.Screen
             name='Ticket Details'
             component={Screens.TicketDetailsScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Ticket Status'
             component={Screens.TicketStatusScreen}
+            initialParams={{
+              userEmail: userEmail,
+            }}
           />
           <Stack.Screen
             name='Cart'

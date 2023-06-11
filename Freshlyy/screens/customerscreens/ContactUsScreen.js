@@ -17,7 +17,7 @@ export default function ({ navigation, route }) {
 
   const [selected, setSelected] = useState('');
 
-  const orderId = route.params.orderId;
+  const orderId = route.params?.orderId;
 
   const data = [
     { key: '1', value: 'Technical issues' },
