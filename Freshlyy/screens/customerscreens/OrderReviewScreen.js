@@ -24,9 +24,9 @@ import Rating from '../../components/Rating';
 import ENV from '../../constants/env';
 
 export default function ({route,navigation}) {
-  const [Order, setOrder] = useState([]);
+  const [order, setOrder] = useState([]);
   const [Product,setProduct]=useState([]);
-  const [Items,setItem]=useState([]);
+  const [items,setItem]=useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
@@ -37,18 +37,17 @@ export default function ({route,navigation}) {
   };
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + '/customer/orderDetailReview/641416235bbd0f10a17cf1fb', {
+    fetch(ENV.backend + '/customer/orderDetail/6480039c9a0f5ec665018982', {
       //getting data from the backend (all products)
       method: 'GET',
-      headers: {
-      },
+
     })
       .then((res) => res.json())
       .then((res) => {
         if(res.message=="Success"){
-          setItem(res.Items);
-          setOrder(res.Order);
-          setProduct(res.Product)
+          setItem(res.order.items);
+          setOrder(res.order);
+          console.log(res)
         }
         isRefreshing ? setRefreshing(false) : setLoaded(true);
       })
@@ -58,8 +57,8 @@ export default function ({route,navigation}) {
   useEffect(() => {
     getData();
   }, []);
-console.log(Order)
-console.log(Items)
+
+
 
   return (
     <SafeAreaView>
@@ -67,9 +66,9 @@ console.log(Items)
       <ScrollView>
         <View style={styles.screen}>
           <H3>Review Order</H3>
-          <H6> {Order?.orderID}</H6>
-          <H4 style={styles.farmername}>{Order?.farmerName}</H4>
-          {Items?.map(item=>{
+          <H6> #{order?.orderId}</H6>
+          <H4 style={styles.farmername}>{order?.farmerName}</H4>
+          {items?.map(item=>{
            return  <ReviewProductCard
             title={item?.title}
             imageUrl={item?.imageUrl} //should be taken from Products table
@@ -81,12 +80,12 @@ console.log(Items)
           <ReviewProductCard></ReviewProductCard> */}
           <H4 style={styles.delivery}>Rate the Delivery</H4>
           <View style={styles.rating}>
-            <Rating value={Order?.deliverRating}></Rating>
+            <Rating value={order?.deliverRating}></Rating>
           </View>
 
           <H4 style={styles.communi}>Rate the Farmer</H4>
           <View style={styles.rating}>
-            <Rating style={styles.rating} value={Order.farmerRating}></Rating>
+            <Rating style={styles.rating} value={order?.farmerRating}></Rating>
           </View>
 
           <Button

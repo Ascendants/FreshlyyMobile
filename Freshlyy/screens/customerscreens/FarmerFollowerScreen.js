@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React,{useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -20,8 +20,35 @@ import Header from '../../components/Header';
 import { H4, P } from '../../components/Texts';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import FarmerFollowCard from '../../components/FarmerFollowCard';
+import ENV from '../../constants/env';
 
-export default function () {
+export default function (navigation,route) {
+  const [farmers, setFarmer]  = useState({});
+  const [refreshing, setRefreshing] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  
+  const getData = (isRefreshing) => {
+    isRefreshing ? setRefreshing(true) : setLoaded(false);
+    fetch(ENV.backend + '/customer/followDetail/63b6b5d2ce65a7b5a2671383', {
+      method: 'GET',
+      headers: {
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if(res.message=="Success"){
+          setFarmer(res.farmers);
+        }
+        isRefreshing ? setRefreshing(false) : setLoaded(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -37,8 +64,16 @@ export default function () {
             <TextInput placeholder='Search' style={styles.searchinput} />
           </View>
           <View style={styles.followingList}>
-            <FarmerFollowCard></FarmerFollowCard>
-            <FarmerFollowCard></FarmerFollowCard>
+            {farmers?.map(farmer=>{
+            return  
+            <FarmerFollowCard 
+              farmerName={farmer?.farmerName}
+              imageUrl={farmer?.imageUrl}
+            />
+            })
+          }
+            <FarmerFollowCard
+            />
           </View>
         </View>
       </ScrollView>

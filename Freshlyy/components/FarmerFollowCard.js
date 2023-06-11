@@ -8,16 +8,16 @@ import theme from '../constants/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Button } from '../components/Buttons';
 
-export default function () {
+export default function (props) {
   return (
     <View style={styles.screen}>
       <View style={styles.card}>
         <Image
-          source={require('../assets/farmer.jpg')}
+          source={{ uri: props.imageUrl?.imageUrl }}
           style={styles.farmerimage}
         />
-        <Text style={styles.farmername}>Komuthu Fernando</Text>
-        <Button title='Follow' color='shadedPrimary' size='normal' style={styles.followbutton} />
+        <Text style={styles.farmername}>{props.farmerName}</Text>
+        <Button title='Following' color='shadedPrimary' size='normal' style={styles.followbutton} />
       </View>
     </View>
   );

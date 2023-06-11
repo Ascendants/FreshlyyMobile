@@ -31,11 +31,7 @@ export default function ({ navigation, route }) {
   const [loaded, setLoaded] = useState(false);
   const [farmer, setFarmer]  = useState({});
 
-  const sendToProductDetail = async (pubUrl) => {
-    navigation.navigate('Product Detail', {
-      purl: pubUrl,
-    });
-  };
+  
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
     fetch(ENV.backend + '/customer/farmerDetail/haritha@hasathcharu.com', {

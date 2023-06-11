@@ -9,6 +9,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Rating from './Rating';
 
 export default function (props) {
+  
 
 
   return (

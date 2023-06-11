@@ -90,7 +90,7 @@ export default function App() {
           <Header back={true} />
           <View style={styles.screen}>
             <H4>Select your Address</H4>
-            <TextInputBox></TextInputBox>
+            <TextInputBox style={styles.textBox}></TextInputBox>
             <MapView
               style={styles.map}
               initialRegion={{
@@ -125,6 +125,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  textBox:{
+    padding: 10,
   },
   map: {
     margin: 10,
