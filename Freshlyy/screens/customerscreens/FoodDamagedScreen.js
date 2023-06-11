@@ -87,7 +87,7 @@ export default function ({ navigation, route }) {
       const response = await fetch(ENV.backend + '/farmer/support-ticket/', {
         method: 'POST',
         headers: {
-          useremail: route.params.userEmail,
+          Authorization: route.params.auth,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

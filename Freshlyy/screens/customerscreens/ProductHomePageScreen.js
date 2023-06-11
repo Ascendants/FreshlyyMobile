@@ -290,7 +290,7 @@ export default function ({ navigation, route }) {
                       unit={item.unit}
                       overallRating={item.overallRating}
                       likes={item.likes}
-                      userID={auth.user.email}
+                      userID={route.params.userEmail}
                       onLikePress={handleLikePress}
                       bestMatch={sortByBestMatch}
                       cheaper={item.cheaper}

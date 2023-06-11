@@ -32,7 +32,7 @@ export default function ({ navigation, route }) {
       {
         method: 'GET',
         headers: {
-          useremail: route.params.userEmail,
+          Authorization: route.params.auth,
           'Content-Type': 'application/json',
         },
       }

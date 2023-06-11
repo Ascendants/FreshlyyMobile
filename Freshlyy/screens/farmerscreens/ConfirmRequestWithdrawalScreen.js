@@ -16,9 +16,7 @@ export default function ({ navigation, route }) {
       const result = await fetch(ENV.backend + '/farmer/payout-request/', {
         method: 'POST',
         headers: {
-          userEmail: route.params.userEmail,
-          //this will be replaced with an http only token
-          //after auth gets set
+          Authorization: route.params.auth,
         },
       });
       const res = await result.json();

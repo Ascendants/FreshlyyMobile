@@ -36,8 +36,6 @@ export default function ({ navigation, route }) {
       headers: {
         Authorization: route.params?.auth,
         'Content-Type': 'application/json',
-        //this will be replaced with an http only token
-        //after auth gets set
       },
       body: JSON.stringify(data),
     })

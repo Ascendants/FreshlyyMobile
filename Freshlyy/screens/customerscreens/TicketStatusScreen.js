@@ -16,7 +16,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/get-support-tickets/', {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         //this will be replaced with an http only token
         //after auth gets set
       },

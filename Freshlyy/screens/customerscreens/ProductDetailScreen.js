@@ -65,7 +65,7 @@ export default function ({ route, navigation, productId, addToCart }) {
     const result = await fetch(ENV.backend + '/customer/cart/add', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
         //this will be replaced with an http only token
         //after auth gets set

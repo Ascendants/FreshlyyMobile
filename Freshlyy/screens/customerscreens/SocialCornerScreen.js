@@ -64,7 +64,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/like/' + productId, {
       method: 'POST',
       headers: {
-        useremail: 'gimhani@freshlyy.com',
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -113,7 +113,7 @@ export default function ({ navigation, route }) {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
-        useremail: 'gimhani@freshlyy.com',
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

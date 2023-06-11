@@ -199,7 +199,7 @@ export default function ({ route, navigation }) {
       {
         method: 'GET',
         headers: {
-          useremail: route.params.userEmail,
+          Authorization: route.params.auth,
           'Content-Type': 'application/json',
         },
       }
@@ -228,6 +228,7 @@ export default function ({ route, navigation }) {
       // Fetch existing product data
       const response = await fetch(
         env.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8'
+
         // "/farmer/get-product/" + productId
       );
       const existingData = await response.json();

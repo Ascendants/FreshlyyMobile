@@ -16,7 +16,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/getSpecificOrder/' + orderId, {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

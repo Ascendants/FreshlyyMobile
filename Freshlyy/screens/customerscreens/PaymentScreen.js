@@ -32,7 +32,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/cards/', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -63,10 +63,8 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/payment/', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
-        //this will be replaced with an http only token
-        //after auth gets set
       },
       body: JSON.stringify(data),
     })

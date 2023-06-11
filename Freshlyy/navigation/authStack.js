@@ -4,11 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import { UserContext, user } from '../context/UserContext';
-import * as Screens from '../screens'
+import * as Screens from '../screens';
 import FarmerReportScreen from '../screens/farmerscreens/FarmerReportScreen';
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+export default function App(props) {
   const [fonts] = useFonts({
     Poppins: require('../assets/fonts/Poppins-Medium.ttf'),
     PoppinsRegular: require('../assets/fonts/Poppins-Regular.ttf'),
@@ -21,22 +21,22 @@ export default function App() {
       <NavigationContainer>
         <StatusBar barStyle='dark-content' />
         <Stack.Navigator
-          screenOptions={{ headerShown: false, animation: 'none' }}>
-       
+          screenOptions={{ headerShown: false, animation: 'none' }}
+        >
           <Stack.Screen
             name='Start screen'
-            component={Screens.StartScreen}
+            component={Screens.LoginScreen}
             options={{
               headerShown: false,
             }}
-          /> 
-               <Stack.Screen
+          />
+          <Stack.Screen
             name='Sign Up'
             component={Screens.SignUpScreen}
             options={{
               headerShown: false,
             }}
-          /> 
+          />
           <Stack.Screen
             name='Checkout'
             component={Screens.LoginScreen}
@@ -47,19 +47,17 @@ export default function App() {
               userEmail: userEmail,
               initialTab: 'toPay',
             }}
-          /> 
-    
+          />
+
           <Stack.Screen
             name='GetStartedScreen'
             component={Screens.GetStartedScreen}
             initialParams={{
               userEmail: userEmail,
             }}
-          /> 
+          />
 
-
-     
-{/*       
+          {/*       
           <Stack.Screen
             name='Sign Up'
             component={Screens.SignUpScreen}
@@ -73,14 +71,14 @@ export default function App() {
             options={{
               headerShown: false,
             }}
-          /> 
+          />
           <Stack.Screen
             name='beFarmer'
             component={Screens.BeFarmerScreen}
             options={{
               headerShown: false,
             }}
-          /> 
+          />
           <Stack.Screen
             name='FarmerCreateAccount'
             component={Screens.FarmerCreateAccountScreen}
@@ -88,15 +86,15 @@ export default function App() {
               headerShown: false,
             }}
           />
-     
+
           <Stack.Screen
             name='login'
             component={Screens.LoginScreen}
             options={{
               headerShown: false,
             }}
-          /> 
-     
+          />
+
           <Stack.Screen
             name='Email Verification'
             component={Screens.EmailVerificationScreen}
@@ -111,8 +109,7 @@ export default function App() {
               headerShown: false,
             }}
           />
-       
-       
+
           {/* <Stack.Screen name='Profile' component={Screens.ProfileScreen} />  */}
         </Stack.Navigator>
       </NavigationContainer>

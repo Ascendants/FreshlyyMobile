@@ -109,6 +109,7 @@ export default function ({ navigation }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: route.params.auth,
         },
         body: JSON.stringify({
           title: title,

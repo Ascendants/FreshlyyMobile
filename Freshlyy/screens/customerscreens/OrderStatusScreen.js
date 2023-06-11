@@ -34,7 +34,7 @@ export default function ({ navigation, route }) {
     return fetch(ENV.backend + '/customer/get-order/' + orderId, {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

@@ -19,7 +19,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

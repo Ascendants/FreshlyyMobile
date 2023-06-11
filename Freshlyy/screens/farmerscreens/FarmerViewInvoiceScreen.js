@@ -45,6 +45,9 @@ export default function ({ route, navigation }) {
     refreshing ? setRefreshing(true) : setLoaded(false);
     return fetch(ENV.backend + '/farmer/invoice/' + route.params.invoiceId, {
       method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+      },
     })
       .then((res) => res.json())
       .then((res) => {

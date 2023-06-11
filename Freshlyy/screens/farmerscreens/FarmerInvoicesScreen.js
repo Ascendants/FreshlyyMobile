@@ -35,7 +35,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/farmer/invoices/', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

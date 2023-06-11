@@ -29,7 +29,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/get-orders/' + 'to-review', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

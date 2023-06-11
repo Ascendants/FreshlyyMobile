@@ -41,10 +41,10 @@ export default function (props) {
       <ListItem>
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: product.imageUri.imageUrl }}
+            source={{ uri: product?.imageUri?.imageUrl }}
             style={[
               styles.image,
-              { backgroundColor: product.imageUri.placeholder },
+              { backgroundColor: product?.imageUri?.placeholder },
             ]}
           />
         </View>

@@ -50,7 +50,7 @@ export default function ({ navigation, route }) {
     return fetch(ENV.backend + '/farmer/earnings', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

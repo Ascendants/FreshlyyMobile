@@ -41,7 +41,7 @@ export default function ({ navigation, route }) {
     return fetch(ENV.backend + '/farmer/dashboard', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

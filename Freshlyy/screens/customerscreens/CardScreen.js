@@ -10,14 +10,13 @@ import ENV from '../../constants/env';
 import RefreshView from '../../components/RefreshView';
 
 export default function ({ navigation, route }) {
+  console.log(route.params.auth);
   const [cards, setCards] = React.useState([]);
   const getCards = React.useCallback(async () => {
     return fetch(ENV.backend + '/customer/cards/', {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
-        //this will be replaced with an http only token
-        //after auth gets set
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -33,9 +32,7 @@ export default function ({ navigation, route }) {
       {
         method: 'DELETE',
         headers: {
-          userEmail: route.params.userEmail,
-          //this will be replaced with an http only token
-          //after auth gets set
+          Authorization: route.params.auth,
         },
       }
     )

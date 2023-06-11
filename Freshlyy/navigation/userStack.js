@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import { UserContext, user } from '../context/UserContext';
 import * as Screens from '../screens';
 import FarmerReportScreen from '../screens/farmerscreens/FarmerReportScreen';
+import { auth } from '../utils/firebase';
 const Stack = createNativeStackNavigator();
 
 export default function App(props) {
@@ -16,7 +17,10 @@ export default function App(props) {
   });
   const userEmail = 'haritha@freshlyy.com';
   if (!fonts) return null;
-  const defaultParams = { auth: props.user.accessToken };
+  const defaultParams = {
+    auth: props.user.accessToken,
+    userEmail: props.user.email,
+  };
   return (
     <UserContext.Provider value={null}>
       <NavigationContainer>
@@ -26,7 +30,7 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.ProductHomePageScreen}
+            component={Screens.CustomerDashboardScreen}
             options={{ headerShown: false }}
             initialParams={defaultParams}
           />
@@ -36,45 +40,36 @@ export default function App(props) {
             options={{
               headerShown: false,
             }}
+            initialParams={defaultParams}
           />
 
           <Stack.Screen
             name='Farmer Dashboard'
             component={Screens.FarmerDashboardScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Customer Dashboard'
             component={Screens.CustomerDashboardScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen name='Payment' component={Screens.PaymentScreen} />
 
           <Stack.Screen
             name='Farmer Balance'
             component={Screens.FarmerBalancesScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Configure Bank'
             component={Screens.AddBankAccountScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
 
           <Stack.Screen
             name='Confirm Pickup'
             component={Screens.ConfirmPickupScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
             options={{
               animation: 'slide_from_bottom',
             }}
@@ -82,81 +77,63 @@ export default function App(props) {
           <Stack.Screen
             name='Orders List'
             component={Screens.OrderListScreen}
-            initialParams={{
-              userEmail: userEmail,
-              initialTab: 'All',
-            }}
+            initialParams={{ ...defaultParams, initialTab: 'all' }}
           />
           <Stack.Screen
             name='Farmer Payout Requests'
             component={Screens.PayoutRequestListScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Farmer Invoices'
             component={Screens.FarmerInvoicesScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Order Details'
             component={Screens.OrderStatusScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Notifications'
+            component={Screens.NotificationScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Card Management'
             component={Screens.CardScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Add Card'
             component={Screens.AddCardScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Add New Card'
             component={Screens.OtherPaymentScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
 
           <Stack.Screen
             name='editScreen'
             component={Screens.EditProductScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='productupdated'
             component={Screens.ProductUpdatedScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='productAddedSuccessfully'
             component={Screens.ProductAddedScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Order Cancel Screen'
             component={Screens.OrderCancelScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
             options={{
               animation: 'slide_from_bottom',
             }}
@@ -164,9 +141,7 @@ export default function App(props) {
           <Stack.Screen
             name='Payout Request Screen'
             component={Screens.ConfirmRequestWithdrawalScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
             options={{
               animation: 'slide_from_bottom',
             }}
@@ -174,51 +149,63 @@ export default function App(props) {
           <Stack.Screen
             name='Help Center'
             component={Screens.HelpCenterScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Cant sign in'
             component={Screens.CantSignInScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Food Damaged'
             component={Screens.FoodDamagedScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Select the Order'
             component={Screens.SelectOrderScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Help with an order'
             component={Screens.HelpWithAnOrderScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Order Naver Arrived'
             component={Screens.OrderNeverArrivedScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Order is Wrong'
             component={Screens.OrderIsWrong}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Order Details Help Center'
             component={Screens.HelpWithAnOrderScreen}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Create Coupon'
             component={Screens.CreateCouponScreen}
+            initialParams={defaultParams}
           />
-          <Stack.Screen name='Contact Us' component={Screens.ContactUsScreen} />
+          <Stack.Screen
+            name='Contact Us'
+            component={Screens.ContactUsScreen}
+            initialParams={defaultParams}
+          />
           <Stack.Screen
             name='Ticket Details'
             component={Screens.TicketDetailsScreen}
+            initialParams={defaultParams}
           />
 
           <Stack.Screen
             name='Cart'
             component={Screens.MyCartScreen}
-            initialParams={{
-              userEmail: userEmail,
-            }}
+            initialParams={defaultParams}
           />
 
           <Stack.Screen
@@ -235,6 +222,7 @@ export default function App(props) {
             options={{
               headerShown: false,
             }}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Product Detail'
@@ -242,6 +230,7 @@ export default function App(props) {
             options={{
               headerShown: true,
             }}
+            initialParams={defaultParams}
           />
           {/* <Stack.Screen
             name='login'

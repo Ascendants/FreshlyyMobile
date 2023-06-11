@@ -7,9 +7,10 @@ import ServicesCardDB from '../../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
+import { Button } from '../../components/Buttons';
 import InfoCardDBCust from '../../components/InfoCardDBCust';
 import RefreshView from '../../components/RefreshView';
-
+import { auth } from '../../utils/firebase';
 export default function ({ navigation, route }) {
   const [userData, setUserData] = useState({});
   function viewOrders(type) {
@@ -17,15 +18,18 @@ export default function ({ navigation, route }) {
       initialTab: type,
     });
   }
+  async function logOut() {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const getData = React.useCallback(async () => {
-   // console.log(route.params.token)
     return fetch(ENV.backend + '/customer/dashboard', {
       method: 'GET',
       headers: {
-        //useremail:'harini@freshlyy.com'
-       useremail: route.params.userEmail,
-       // Authorization:route.params.token,
-      //  "Content-Type": "application/json",
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -87,6 +91,13 @@ export default function ({ navigation, route }) {
             />
           </View>
           <ServicesCardDB />
+          <Button
+            style={styles.buttonContainer}
+            title='Log Out'
+            size='big'
+            color='shadedDanger'
+            onPress={logOut}
+          />
           <View style={styles.lastChild}></View>
         </RefreshView>
         <Navbar />

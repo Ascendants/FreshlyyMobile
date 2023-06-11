@@ -187,7 +187,7 @@ export default function ({ navigation, route }) {
                   {
                     method: 'POST',
                     headers: {
-                      useremail: route.params.userEmail,
+                      Authorization: route.params.auth,
                       'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -204,7 +204,7 @@ export default function ({ navigation, route }) {
                     {
                       method: 'POST',
                       headers: {
-                        useremail: route.params.userEmail,
+                        Authorization: route.params.auth,
                         'Content-Type': 'application/json',
                       },
                       body: JSON.stringify({

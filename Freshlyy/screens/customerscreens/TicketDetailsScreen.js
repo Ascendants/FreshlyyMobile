@@ -18,7 +18,7 @@ export default function ({ navigation, route }) {
     return fetch(ENV.backend + `/farmer/support-ticket/${ticketId}`, {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
