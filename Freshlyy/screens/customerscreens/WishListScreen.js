@@ -17,7 +17,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/wishList/', {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -32,7 +32,7 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header />
+        <Header back={true} home={true} />
         <H2>My Wish List</H2>
         <ScrollView
           howsVerticalScrollIndicator={false}

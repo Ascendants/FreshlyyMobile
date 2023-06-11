@@ -30,6 +30,7 @@ import { Rate5 } from '../../components/Rate5';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import TabMenu from '../../components/TabMenu';
 import useAuth from '../../hooks/useAuth';
+import Navbar from '../../components/Navbar';
 const DATA = [
   {
     showSection: false,
@@ -129,70 +130,62 @@ export default function ({ navigation, route }) {
     fetchSocialCorner();
   }, []);
   //  console.log(products[0].data[0].imageUrl[0].imageUrl)
+  console.log(products);
   return (
-    <GestureHandlerRootView>
-      <SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <Header back={false} />
 
         <View style={styles.screen}>
           <H4 style={styles.heading}>Social Corner</H4>
+
           <SectionList
             sections={products}
+            style={{ flex: 1 }}
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
             keyExtractor={(item, index) => item + index}
             stickySectionHeadersEnabled={false}
-            renderSectionHeader={({ section }) => (
-              <View
-                style={[
-                  section.horizontalScroll
-                    ? { backgroundColor: Theme.primaryShade }
-                    : null,
-                ]}
-              >
-                <H4 style={styles.header}>{section.title}</H4>
-                <FlatList
-                  horizontal
-                  data={section.data}
-                  renderItem={({ item }) => (
-                    <ProductCard
-                      cardType='social'
-                      title={item.title}
-                      id={item._id}
-                      userEmail={auth.user.userEmail}
-                      imageUrl={item.imageUrl}
-                      unit={item.unit}
-                      likes={item.likes}
-                      overallRating={item.overallRating}
-                      price={item.price}
-                      farmerName={item.farmerName}
-                      publicUrl={item.publicUrl}
-                      onPress={sendToProductDetail}
-                      onLike={handleLike}
-                    />
-                  )}
-                  keyExtractor={(prod, index) => prod._id}
-                  showsHorizontalScrollIndicator={false}
-                />
-                {/* ):null} */}
-              </View>
-            )}
+            renderSectionHeader={({ section }) => {
+              return section.showSection ? (
+                <View
+                  style={[
+                    section.horizontalScroll
+                      ? { backgroundColor: Theme.primaryShade }
+                      : null,
+                  ]}
+                >
+                  <H4 style={styles.header}>{section.title}</H4>
+                  <FlatList
+                    horizontal
+                    data={section.data}
+                    renderItem={({ item }) => (
+                      <ProductCard
+                        cardType='social'
+                        title={item.title}
+                        id={item._id}
+                        userEmail={auth.user.userEmail}
+                        imageUrl={item.imageUrl}
+                        unit={item.unit}
+                        likes={item.likes}
+                        overallRating={item.overallRating}
+                        price={item.price}
+                        farmerName={item.farmerName}
+                        publicUrl={item.publicUrl}
+                        onPress={sendToProductDetail}
+                        onLike={handleLike}
+                      />
+                    )}
+                    keyExtractor={(prod, index) => prod._id}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                </View>
+              ) : null;
+            }}
             renderItem={({ item, section }) => {
-              //  if(section.horizontalScroll){
-              return null;
-              //  }
-              //  return( <ProductCard
-              //         cardType="social"
-              //         title={item.title}
-              //         imageUrl={item.imageUrl}
-              //         unit={item.unit}
-              //         likes="0"
-              //         overallRating={item.overallRating}
-              //         price={item.price}
-              //         farmerName={item.farmerName}
-              //         publicUrl={item.publicUrl}
-              //         onPress={sendToProductDetail}
-              //       />)
+              return <View></View>;
             }}
           />
+          <Navbar social={true} />
         </View>
       </SafeAreaView>
     </GestureHandlerRootView>
@@ -201,8 +194,7 @@ export default function ({ navigation, route }) {
 
 const styles = StyleSheet.create({
   screen: {
-    height: '100%',
-    paddingBottom: 190,
+    flex: 1,
   },
   imageCont: {
     alignItems: 'center',

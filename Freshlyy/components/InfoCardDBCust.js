@@ -6,7 +6,7 @@ import LoyaltyArea from './LoyaltyArea';
 import {
   FontAwesome,
   FontAwesome5,
-  Ionicons,
+  AntDesign,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 import { Button } from '../components/Buttons';
@@ -95,6 +95,14 @@ export default function (props) {
           }
         />
       </View>
+      <Button
+        size='normal'
+        title='Wishlist'
+        color='shadedDanger'
+        icon={<AntDesign name='hearto' size={24} color={Theme.danger} />}
+        type='icon'
+        onPress={() => nav.navigate('Wishlist')}
+      />
     </View>
   );
 }

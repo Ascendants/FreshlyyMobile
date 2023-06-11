@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { H2, P, H3, H4, H5, Pr } from '../../components/Texts';
 import { Button } from '../../components/Buttons';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import ImageDots from '../../components/ImageDots';
 import Theme from '../../constants/theme';
@@ -13,10 +13,12 @@ import Rating from '../../components/Rating';
 import RefreshView from '../../components/RefreshView';
 import ModalComponent from '../../components/ModalComponent';
 
-export default function ({ route }) {
+export default function ({ navigation, route }) {
   const [modal, setModal] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
+  const [added, setAdded] = React.useState(false);
+  const [wishListed, setWishListed] = React.useState(false);
   const [product, setProduct] = React.useState({
     purl: route.params.purl,
     imageUrls: [],
@@ -48,8 +50,11 @@ export default function ({ route }) {
   }
   const getData = React.useCallback(async () => {
     const purl = product?.purl;
-    return fetch(ENV.backend + '/public/product/' + purl, {
+    return fetch(ENV.backend + '/customer/product/' + purl, {
       method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+      },
     })
       .then((res) => res.json())
       .then((res) => {
@@ -57,6 +62,7 @@ export default function ({ route }) {
           return { ...prev, ...res.product };
         });
         setSelectedQuantity(res.product?.minQtyIncrement);
+        setWishListed(res.product?.isWishListed);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -79,6 +85,7 @@ export default function ({ route }) {
       .then((res) => {
         console.log(res);
         if (res.message == 'Success') {
+          setAdded(true);
           return true;
         }
       })
@@ -89,7 +96,7 @@ export default function ({ route }) {
     const result = await fetch(ENV.backend + '/customer/wishList/add', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
         //this will be replaced with an http only token
         //after auth gets set
@@ -103,73 +110,105 @@ export default function ({ route }) {
       .then((res) => {
         console.log(res);
         if (res.message == 'Success') {
+          setWishListed(true);
+
           return true;
         }
       })
       .catch((err) => console.log(err));
   }
 
-//   async function postWishList() {
-//   const result = await fetch(ENV.backend + '/customer/wishList', {
-//     method: 'GET',
-//     headers: {
-//       userEmail: route.params.userEmail,
-//       'Content-Type': 'application/json',
-//       // this will be replaced with an http only token
-//       // after auth gets set
-//     },
-//   })
-//     .then((res) => res.json())
-//     .then((res) => {
-//       const wishlistItem = res.wishlist.find(
-//         (item) => item.productId === product._id
-//       );
+  //   async function postWishList() {
+  //   const result = await fetch(ENV.backend + '/customer/wishList', {
+  //     method: 'GET',
+  //     headers: {
+  //       userEmail: route.params.userEmail,
+  //       'Content-Type': 'application/json',
+  //       // this will be replaced with an http only token
+  //       // after auth gets set
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       const wishlistItem = res.wishlist.find(
+  //         (item) => item.productId === product._id
+  //       );
 
-//       if (wishlistItem) {
-//         // Item is already in the wishlist, remove it
-//         return fetch(
-//           ENV.backend + '/customer/wishList/remove/' + wishlistItem._id,
-//           {
-//             method: 'DELETE',
-//             headers: {
-//               userEmail: route.params.userEmail,
-//               'Content-Type': 'application/json',
-//               // this will be replaced with an http only token
-//               // after auth gets set
-//             },
-//           }
-//         );
-//       } else {
-//         // Item is not in the wishlist, add it
-//         return fetch(ENV.backend + '/customer/wishList/add', {
-//           method: 'POST',
-//           headers: {
-//             userEmail: route.params.userEmail,
-//             'Content-Type': 'application/json',
-//             // this will be replaced with an http only token
-//             // after auth gets set
-//           },
-//           body: JSON.stringify({
-//             productId: product._id,
-//             quantity: selectedQuantity,
-//           }),
-//         });
-//       }
-//     })
-//     .then((res) => res.json())
-//     .then((res) => {
-//       console.log(res);
-//       if (res.message === 'Success') {
-//         return true;
-//       }
-//     })
-//     .catch((err) => console.log(err));
-// }
+  //       if (wishlistItem) {
+  //         // Item is already in the wishlist, remove it
+  //         return fetch(
+  //           ENV.backend + '/customer/wishList/remove/' + wishlistItem._id,
+  //           {
+  //             method: 'DELETE',
+  //             headers: {
+  //               userEmail: route.params.userEmail,
+  //               'Content-Type': 'application/json',
+  //               // this will be replaced with an http only token
+  //               // after auth gets set
+  //             },
+  //           }
+  //         );
+  //       } else {
+  //         // Item is not in the wishlist, add it
+  //         return fetch(ENV.backend + '/customer/wishList/add', {
+  //           method: 'POST',
+  //           headers: {
+  //             userEmail: route.params.userEmail,
+  //             'Content-Type': 'application/json',
+  //             // this will be replaced with an http only token
+  //             // after auth gets set
+  //           },
+  //           body: JSON.stringify({
+  //             productId: product._id,
+  //             quantity: selectedQuantity,
+  //           }),
+  //         });
+  //       }
+  //     })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.message === 'Success') {
+  //         return true;
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header />
+        <ModalComponent visible={added} closeModal={() => setAdded(false)}>
+          <Image
+            source={require('../../assets/success.png')}
+            style={{
+              height: 100,
+              width: 100,
+              alignSelf: 'center',
+              resizeMode: 'contain',
+              marginBottom: 20,
+            }}
+          />
+          <H3 style={{ textAlign: 'center' }}>Added to Cart!</H3>
+          <Button
+            title={'Continue Shopping'}
+            onPress={() => {
+              setAdded(false);
+            }}
+            color='filledPrimary'
+            size='normal'
+          />
+          <Button
+            title={'View Cart'}
+            onPress={() => {
+              setAdded(false);
+              navigation.navigate('Cart');
+            }}
+            size='normal'
+            color='shadedWarning'
+          />
+        </ModalComponent>
+        <Header back={true} />
         <RefreshView getData={getData}>
           <View style={styles.pageContent}>
             <View style={styles.productImageContainer}>
@@ -235,7 +274,15 @@ export default function ({ route }) {
                 <Button
                   type='icon'
                   icon={
-                    <Feather name='heart' size={24} color={Theme.textColor} />
+                    wishListed ? (
+                      <AntDesign name='heart' size={24} color={Theme.danger} />
+                    ) : (
+                      <AntDesign
+                        name='hearto'
+                        size={24}
+                        color={Theme.textColor}
+                      />
+                    )
                   }
                   title='Wishlist'
                   size='normal'

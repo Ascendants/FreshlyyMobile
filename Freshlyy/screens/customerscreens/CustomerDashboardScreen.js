@@ -101,7 +101,7 @@ export default function ({ navigation, route }) {
           />
           <View style={styles.lastChild}></View>
         </RefreshView>
-        <Navbar />
+        <Navbar customer={true} />
       </View>
     </SafeAreaView>
   );

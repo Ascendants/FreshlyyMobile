@@ -29,16 +29,25 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.FarmerDashboardScreen}
+            component={Screens.CustomerDashboardScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,
               orderId: '648017f45ed6e07fdd85bb5c',
+              purl: 'sri_lankan_mango_640f50d7c36e0ee998dcbca9',
             }}
           />
           <Stack.Screen
-            name='homePage'
+            name='Product Home Page'
             component={Screens.ProductHomePageScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Social Corner'
+            component={Screens.SocialCornerScreen}
             options={{
               headerShown: false,
             }}
@@ -226,7 +235,16 @@ export default function App(props) {
             component={Screens.MyCartScreen}
             initialParams={defaultParams}
           />
-
+          <Stack.Screen
+            name='Checkout'
+            component={Screens.CheckoutScreen}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Wishlist'
+            component={Screens.WishListScreen}
+            initialParams={defaultParams}
+          />
           <Stack.Screen
             name='Message'
             component={Screens.MessageScreen}
@@ -247,7 +265,7 @@ export default function App(props) {
             name='Product Detail'
             component={Screens.ProductDetailScreen}
             options={{
-              headerShown: true,
+              headerShown: false,
             }}
             initialParams={defaultParams}
           />

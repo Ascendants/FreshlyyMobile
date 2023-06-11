@@ -10,6 +10,7 @@ import ProductView from '../../components/ProductView';
 import ENV from '../../constants/env';
 import ModalComponent from '../../components/ModalComponent';
 import { Ionicons, Feather } from '@expo/vector-icons';
+import Navbar from '../../components/Navbar';
 
 export default function ({ navigation, route }) {
   const [cart, setCart] = React.useState([]);
@@ -37,7 +38,6 @@ export default function ({ navigation, route }) {
     );
     setTotal(ctotal);
   }, [cart]);
-  const [modal, setModal] = React.useState(false);
 
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   const [product, setProduct] = React.useState({
@@ -45,49 +45,12 @@ export default function ({ navigation, route }) {
     imageUrls: [],
   });
 
-  function increaseQuantity() {
-    const newQuantity = selectedQuantity + product.minQtyIncrement;
-    fetch(ENV.backend + '/public/product/' + product.purl, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const availableQuantity = res.product.qtyAvailable;
-        if (newQuantity <= availableQuantity) {
-          setSelectedQuantity(newQuantity);
-        } else {
-          alert('Not enough quantity available');
-        }
-    })
-    .catch((err) => console.log(err));
-  }
-  function decreaseQuantity() {
-    setSelectedQuantity((curr) =>
-      Math.max(curr - product.minQtyIncrement, product.minQtyIncrement)
-    );
-  }
-
-  React.useEffect(() => {
-    const purl = product.purl;
-    fetch(ENV.backend + '/public/product/' + purl, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setProduct((prev) => {
-          return { ...prev, ...res.product };
-        });
-        setSelectedQuantity(res.product.minQtyIncrement);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         {/* <Button title='toggle' onPress={() => setModal((prev) => !prev)} /> */}
         <Header />
-        <H2>My Cart</H2>
+        <H3>My Cart</H3>
         <ScrollView
           howsVerticalScrollIndicator={false}
           style={styles.container}
@@ -101,7 +64,7 @@ export default function ({ navigation, route }) {
         <View style={styles.bottomContainer}>
           <View style={styles.left}>
             <H3>Total</H3>
-            <Pr fontSize={35}>{total}</Pr>
+            <Pr fontSize={20}>{total}</Pr>
           </View>
           <View style={styles.right}>
             <Button
@@ -113,6 +76,7 @@ export default function ({ navigation, route }) {
           </View>
         </View>
       </View>
+      <Navbar cart={true} />
     </SafeAreaView>
   );
 }
@@ -130,15 +94,15 @@ const styles = StyleSheet.create({
   bottomContainer: {
     backgroundColor: Theme.overlayShade,
     height: 130,
-    width: '100%',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
+    width: '90%',
+    borderRadius: 20,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    padding: 10,
+    marginBottom: 80,
   },
   left: {
-    paddingTop: 20,
-    paddingLeft: 20,
+    justifyContent: 'center',
   },
   right: {
     justifyContent: 'center',

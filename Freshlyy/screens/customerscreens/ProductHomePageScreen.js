@@ -30,6 +30,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import { Animations } from '../../constants/Animation';
 import Loading from '../../components/Loading';
+import Navbar from '../../components/Navbar';
 
 export default function ({ navigation, route }) {
   const [searchText, setSearchText] = useState('');
@@ -185,8 +186,8 @@ export default function ({ navigation, route }) {
   };
   const animation = Animations[Math.floor(Math.random() * Animations.length)];
   return (
-    <GestureHandlerRootView>
-      <SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <Header back={true} />
 
         <View style={styles.screen}>
@@ -269,7 +270,8 @@ export default function ({ navigation, route }) {
               <Loading />
             ) : (
               <FlatList
-                style={{ height: '100%', flex: 1 }}
+                style={{ flex: 1 }}
+                contentContainerStyle={{ flexGrow: 1 }}
                 numColumns={2}
                 data={filteredProducts}
                 refreshing={refreshing}
@@ -485,13 +487,14 @@ export default function ({ navigation, route }) {
             </BottomSheet>
           </View>
         </View>
+        <Navbar product={true} />
       </SafeAreaView>
     </GestureHandlerRootView>
   );
 }
 const styles = StyleSheet.create({
   screen: {
-    height: '100%',
+    flex: 1,
   },
   searchico: {
     paddingRight: 10,
@@ -534,7 +537,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     paddingHorizontal: 10,
-    marginBottom: 150,
+    marginBottom: 70,
   },
   bottomSheetContent: {
     color: 'blue',
