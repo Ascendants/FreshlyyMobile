@@ -12,6 +12,7 @@ import InfoCardDBCust from '../../components/InfoCardDBCust';
 import RefreshView from '../../components/RefreshView';
 import { auth } from '../../utils/firebase';
 export default function ({ navigation, route }) {
+  console.log('test2');
   const [userData, setUserData] = useState({});
   function viewOrders(type) {
     navigation.navigate('Orders List', {
