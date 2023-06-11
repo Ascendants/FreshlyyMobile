@@ -23,6 +23,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LocationCard } from '../../components/LocationCard';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Location from 'expo-location';
+import Loading from '../../components/Loading';
 //import { GOOGLE_API_KEY } from '@env';
 
 export default function App() {
@@ -74,12 +75,14 @@ export default function App() {
     });
   };
 
-  let text = 'Waiting...';
+  let text = <Loading/>;
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     const latitude = location.coords.latitude;
     const longitude = location.coords.longitude;
+  
+    
 
     return (
       <SafeAreaView>
@@ -87,6 +90,7 @@ export default function App() {
           <Header back={true} />
           <View style={styles.screen}>
             <H4>Select your Address</H4>
+            <TextInputBox></TextInputBox>
             <MapView
               style={styles.map}
               initialRegion={{
@@ -99,20 +103,7 @@ export default function App() {
             >
               {selectedLocation && (
                 <Marker coordinate={selectedLocation}>
-                  <Callout>
-                    <View style={styles.callout}>
-                      <Text>{selectedLocation.address}</Text>
-                      <H6>Your location</H6>
-                      <TextInput
-                        style={styles.textInput}
-                        placeholder='Enter location name'
-                        value={locationName}
-                        onChangeText={handleLocationNameChange}
-                      />
-                      <H6>Flat/Building/Street</H6>
-                      <TextInput style={styles.textInput} />
-                    </View>
-                  </Callout>
+                  
                 </Marker>
               )}
             </MapView>

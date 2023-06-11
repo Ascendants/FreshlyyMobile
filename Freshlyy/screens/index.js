@@ -48,6 +48,7 @@ export { default as SelectOrderScreen } from './customerscreens/SelectOrderScree
 export { default as SocialCornerScreen } from './customerscreens/SocialCornerScreen';
 export { default as TicketDetailsScreen } from './customerscreens/TicketDetailsScreen';
 export { default as TicketStatusScreen } from './customerscreens/TicketStatusScreen';
+export {default as OrderReviewScreen} from './customerscreens/OrderReviewScreen';
 
 //Farmer Screens
 

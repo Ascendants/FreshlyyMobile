@@ -73,7 +73,7 @@ export default function ({ navigation, route }) {
       .catch((err) => console.log(err));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getData();
   }, []);
 

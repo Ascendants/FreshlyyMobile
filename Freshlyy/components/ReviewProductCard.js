@@ -10,18 +10,18 @@ import { Button } from '../components/Buttons';
 import Rating from '../components/Rating';
 
 export default function (props) {
-  const product = props.product;
+  //const product = props.product;
   return (
     <View style={styles.screen}>
       <View style={styles.card}>
         <Image
-          source={require('../assets/carrot.jpg')}
+          source={{ uri: props.imageUrl?.imageUrl }}
           style={styles.productimage}
         />
         <View style={styles.cardinner}>
-          <P style={styles.productname}>Carrot</P>
-          <P style={styles.productWeight}>20 KG</P>
-          <Pr style={styles.productprice}> 1000</Pr>
+          <P style={styles.productname}>{props.title}</P>
+          <P style={styles.productWeight}>{props.qty}</P>
+          <Pr style={styles.productprice}> {props.uPrice}</Pr>
         </View>
         <View style={styles.cardinner2}>
           <Button
@@ -30,7 +30,7 @@ export default function (props) {
             size='small'
             style={styles.writebutton}
           />
-          <Rating style={styles.rating} />
+          <Rating style={styles.rating} value={props.overallRating} />
         </View>
       </View>
       <View style={styles.lineStyle}></View>

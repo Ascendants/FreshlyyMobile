@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -21,26 +21,72 @@ import { H4, P, H3, H5, H6 } from '../../components/Texts';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import ReviewProductCard from '../../components/ReviewProductCard';
 import Rating from '../../components/Rating';
+import ENV from '../../constants/env';
 
-export default function () {
+export default function ({route,navigation}) {
+  const [Order, setOrder] = useState([]);
+  const [Product,setProduct]=useState([]);
+  const [Items,setItem]=useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  const sendToProductDetail = async (pubUrl) => {
+    navigation.navigate('Order Detail', {
+      purl: pubUrl,
+    });
+  };
+  const getData = (isRefreshing) => {
+    isRefreshing ? setRefreshing(true) : setLoaded(false);
+    fetch(ENV.backend + '/customer/orderDetailReview/641416235bbd0f10a17cf1fb', {
+      //getting data from the backend (all products)
+      method: 'GET',
+      headers: {
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if(res.message=="Success"){
+          setItem(res.Items);
+          setOrder(res.Order);
+          setProduct(res.Product)
+        }
+        isRefreshing ? setRefreshing(false) : setLoaded(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+console.log(Order)
+console.log(Items)
+
   return (
     <SafeAreaView>
       <Header back={true} />
       <ScrollView>
         <View style={styles.screen}>
           <H3>Review Order</H3>
-          <H6> Order id</H6>
-          <H4 style={styles.farmername}>From Komuthu Fernando</H4>
-          <ReviewProductCard></ReviewProductCard>
-          <ReviewProductCard></ReviewProductCard>
+          <H6> {Order?.orderID}</H6>
+          <H4 style={styles.farmername}>{Order?.farmerName}</H4>
+          {Items?.map(item=>{
+           return  <ReviewProductCard
+            title={item?.title}
+            imageUrl={item?.imageUrl} //should be taken from Products table
+            price={item?.uPrice}
+            qty={item?.qty}
+          />
+        })}
+          {/* <ReviewProductCard></ReviewProductCard>
+          <ReviewProductCard></ReviewProductCard> */}
           <H4 style={styles.delivery}>Rate the Delivery</H4>
           <View style={styles.rating}>
-            <Rating></Rating>
+            <Rating value={Order?.deliverRating}></Rating>
           </View>
 
-          <H4 style={styles.communi}>Rate the Communication</H4>
+          <H4 style={styles.communi}>Rate the Farmer</H4>
           <View style={styles.rating}>
-            <Rating style={styles.rating}></Rating>
+            <Rating style={styles.rating} value={Order.farmerRating}></Rating>
           </View>
 
           <Button

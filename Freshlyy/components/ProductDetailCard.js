@@ -1,27 +1,32 @@
 import { contains } from '@firebase/util';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { H1, H2 } from './Texts';
+import { H1, H2, P,Pr} from './Texts';
 import Theme from '../constants/theme';
 import { FilledBigButton } from './Buttons';
 import theme from '../constants/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Rating from './Rating';
 
-export default function () {
+export default function (props) {
+
+
   return (
     <View style={styles.screen}>
       <View style={styles.card}>
         <Image
-          source={require('../assets/carrot.jpg')}
+          source={{ uri: props.imageUrl?.imageUrl }}
           style={styles.cardimage}
         />
-        <Text style={styles.productname}>Carrot</Text>
+        <Text style={styles.productname}>{props.title}</Text>
         <View style={styles.rating}>
-          <Rating value={4}></Rating>
+          <Rating value={props.overallRating}>
+          <P>({props.overallRating})</P>
+          </Rating>
         </View>
-
-        <Text style={styles.productname}>LKR 1250</Text>
+        <Pr>
+          {props.price}/{props.unit}
+        </Pr>
       </View>
     </View>
   );
