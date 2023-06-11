@@ -7,8 +7,8 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function () {
   return (
-    <View style={styles.container}>
-      <H4 style={styles.topic}>Selling Products</H4>
+    <View style={styles.containerOverlay}>
+      <H4 style={styles.topicOverlay}>Selling Products</H4>
       <ScrollView showsVerticalScrollIndicator={false}>
         <SwipeOverlayCard
           imgUrl={require('../assets/carrot.jpg')}
@@ -21,7 +21,7 @@ export default function () {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  containerOverlay: {
     backgroundColor: '#FFFFFF',
     width: '100%',
     borderTopLeftRadius: 100,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 20,
   },
-  topic: {
+  topicOverlay: {
     alignSelf: 'center',
     marginTop: 10,
     marginBottom: 10,

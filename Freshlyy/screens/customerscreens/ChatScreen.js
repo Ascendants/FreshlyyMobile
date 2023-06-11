@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useCallback } from "react"
 import { TouchableOpacity, Text, View, StyleSheet, Image } from 'react-native';
 import { collection, addDoc, orderBy, query, onSnapshot } from 'firebase/firestore';
 import { GiftedChat, InputToolbar, Bubble, Send  } from "react-native-gifted-chat";
-// import { database, auth } from "../../utils/firebase";
+import { database, auth } from "../../utils/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
 import Theme from "../../constants/theme";
@@ -63,7 +63,7 @@ export default function Chat({routes}) {
             {...props}
             containerStyle={{backgroundColor:null, justifyContent: 'center', marginRight:10}}
         >
-                <Image source={require('../assets/send.png')} />
+                {/* <Image source={require('../assets/send.png')} /> */}
         </Send>
     );
 }

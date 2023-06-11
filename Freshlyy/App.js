@@ -14,6 +14,7 @@ export default function App() {
     PoppinsBold: require('./assets/fonts/Poppins-Bold.ttf'),
   });
   const userEmail = 'hasathcharu@icloud.com';
+  const userEmail = 'hasathcharu@icloud.com';
   if (!fonts) return null;
   return (
     <RootNavigation />

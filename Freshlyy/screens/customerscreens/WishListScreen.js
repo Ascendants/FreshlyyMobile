@@ -13,20 +13,20 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 
 export default function ({ navigation, route }) {
   const [wishList, setWishList] = React.useState([]);
-  // React.useState(() => {
-  //   fetch(ENV.backend + '/customer/cart/', {
-  //     method: 'GET',
-  //     headers: {
-  //       userEmail: route.params.userEmail,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (!res.cart) throw new Error('Malformed Response');
-  //       setWishList(res.cart);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  React.useState(() => {
+    fetch(ENV.backend + '/customer/wishList/', {
+      method: 'GET',
+      headers: {
+        userEmail: route.params.userEmail,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (!res.wishList) throw new Error('Malformed Response');
+        setWishList(res.wishList);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const [modal, setModal] = React.useState(false);
   return (
@@ -38,17 +38,17 @@ export default function ({ navigation, route }) {
           howsVerticalScrollIndicator={false}
           style={styles.container}
         >
-          {/* {wishList.map((farmer) =>
+          {wishList.map((farmer) =>
             farmer.items.map((item) => {
               return <ProductView key={item.item} product={item} />;
             })
-          )} */}
+          )}
         </ScrollView>
         <View style={styles.bottomContainer}>
           <Button
             size='big'
             color='filledPrimary'
-            title='Add to Cart'
+            title='Add all the items to Cart'
             // onPress={() => navigation.navigate('Checkout')}
           />
         </View>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     backgroundColor: Theme.overlayShade,
-    height: 130,
+    // height: 130,
     width: '100%',
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,

@@ -20,8 +20,10 @@ import ServicesCardDB from '../../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
-import { H4 } from '../../components/Texts';
+import { H4, H3, H5 } from '../../components/Texts';
 import RefreshView from '../../components/RefreshView';
+import SwipeOverlayCard from '../../components/SwipeOverlayCard';
+import ProductView from '../../components/ProductView';
 
 export default function ({ navigation, route }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -45,6 +47,11 @@ export default function ({ navigation, route }) {
   const bottomSheetRefSelling = useRef(null);
   const bottomSheetRefPending = useRef(null);
   const snapPoints = ['100%', '60%'];
+
+  const [newOrdersList, setNewOrdersList] = React.useState([]);
+  const [pastOrdersList, setPastOrdersList] = React.useState([]);
+  const [sellingList, setSellingList] = React.useState([]);
+  const [pendingList, setPendingList] = React.useState([]);
 
   const handleBottomSheetNewOrderClose = () => {
     setIsBottomSheetNewOrderVisible(false);
@@ -99,6 +106,11 @@ export default function ({ navigation, route }) {
         setPendingProducts(res.pendingProducts);
         setNewOrders(res.newOrders);
         setPastOrders(res.pastOrders);
+        setSellingList(res.liveProductsList);
+        setPendingList(res.pendingProductsList);
+        setNewOrdersList(res.newOrderDetailsList);
+        setPastOrdersList(res.pastOrderDetailsList);
+
         setLoaded(true);
       })
       .catch((err) => console.log(err));
@@ -107,13 +119,8 @@ export default function ({ navigation, route }) {
     <GestureHandlerRootView>
       <SafeAreaView>
         <View style={styles.screen}>
-          <Header
-            farmer={true}
-            notification={true}
-            notifMode={'farmer'}
-            hasNotifications={userData?.notifications}
-          />
-          <RefreshView getData={getData} route={route}>
+          <Header farmer={true} />
+          <RefreshView getData={getData}>
             <InfoCardDB
               user={userData}
               goToBalances={() => navigation.navigate('Farmer Balance')}
@@ -153,7 +160,6 @@ export default function ({ navigation, route }) {
                 size='big'
                 color='shadedPrimary'
                 title='Add new produce listing'
-                onPress={() => navigation.navigate('Insert Product')}
                 // backgroundstyle={styles.button}
               />
             </View>
@@ -262,5 +268,27 @@ const styles = StyleSheet.create({
   },
   lastChild: {
     height: 80,
+  },
+  topic: {
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+    color: Theme.primary,
+  },
+  containerOverlay: {
+    width: '100%',
+  },
+  noItemsContainer: {
+    alignSelf: 'center',
+  },
+  newOrdersContainer: {
+    backgroundColor: Theme.tertiaryShade,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    paddingLeft: 20,
+    // paddingRight: 5,
   },
 });
