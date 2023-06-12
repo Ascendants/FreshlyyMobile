@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,35 +8,35 @@ import {
   TextInput,
   ScrollView,
   Alert,
-} from 'react-native';
-import Theme from '../../constants/theme';
-import { Button } from '../../components/Buttons';
+} from "react-native";
+import Theme from "../../constants/theme";
+import { Button } from "../../components/Buttons";
 import {
   TextInputBox,
   DropDownPicker,
   DatePicker,
-} from '../../components/Inputs';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
-import { H1, H2 } from '../../components/Texts';
-import env from '../../constants/env';
-import * as ImagePicker from 'expo-image-picker';
-import firebase from '../../utils/firebase';
-import { FreshlyyImageStore } from '../../utils/firebase';
-import { async } from '@firebase/util';
-import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import uuid from 'react-native-uuid';
-import { min } from 'react-native-reanimated';
-import { getStorage, deleteObject } from 'firebase/storage';
-import ENV from '../../constants/env';
+} from "../../components/Inputs";
+import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../components/Header";
+import { H1, H2 } from "../../components/Texts";
+import env from "../../constants/env";
+import * as ImagePicker from "expo-image-picker";
+import firebase from "../../utils/firebase";
+import { FreshlyyImageStore } from "../../utils/firebase";
+import { async } from "@firebase/util";
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import uuid from "react-native-uuid";
+import { min } from "react-native-reanimated";
+import { getStorage, deleteObject } from "firebase/storage";
+import ENV from "../../constants/env";
 
 export default function ({ route, navigation }) {
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [description, setDescription] = useState('');
-  const [minQtyIncrement, setMinQuantity] = useState('');
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [description, setDescription] = useState("");
+  const [minQtyIncrement, setMinQuantity] = useState("");
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   const [images, setImages] = useState([]);
@@ -87,7 +87,7 @@ export default function ({ route, navigation }) {
         // } catch (e) {
         //   console.log(e);
         console.error(error);
-        throw new Error('An error occurred while uploading images.');
+        throw new Error("An error occurred while uploading images.");
       }
       setUploading(false);
       return true;
@@ -99,7 +99,7 @@ export default function ({ route, navigation }) {
     // return allImagesUploaded;
     // Return a boolean value indicating whether all images are uploaded successfully or not
     if (!allImagesUploaded) {
-      throw new Error('Not all images were uploaded successfully.');
+      throw new Error("Not all images were uploaded successfully.");
     }
 
     return true;
@@ -121,9 +121,9 @@ export default function ({ route, navigation }) {
       ...prevErrors,
       title:
         text.length < 2
-          ? 'Product Name must be at least 2 characters'
+          ? "Product Name must be at least 2 characters"
           : /\d/.test(text)
-          ? 'Product Name cannot contain numbers'
+          ? "Product Name cannot contain numbers"
           : null,
     }));
   };
@@ -137,7 +137,7 @@ export default function ({ route, navigation }) {
     // perform validation here and update errors
     setErrors((prevErrors) => ({
       ...prevErrors,
-      price: isNaN(Number(text)) ? 'Product Price must be a number' : null,
+      price: isNaN(Number(text)) ? "Product Price must be a number" : null,
     }));
   };
 
@@ -151,7 +151,7 @@ export default function ({ route, navigation }) {
     setErrors((prevErrors) => ({
       ...prevErrors,
       quantity: isNaN(Number(text))
-        ? 'Product Quantity must be a number'
+        ? "Product Quantity must be a number"
         : null,
     }));
   };
@@ -165,13 +165,13 @@ export default function ({ route, navigation }) {
 
     // perform validation here and update errors
     const isValidQuantity =
-      !isNaN(Number(text)) && Number(text) <= Number(quantity);
+      !isNaN(Number(text)) && Number(text) >= Number(quantity);
     console.log(isValidQuantity);
     setErrors((prevErrors) => ({
       ...prevErrors,
       minQtyIncrement: isValidQuantity
-        ? null
-        : 'Minimum Quantity must be a number and less than or equal to the Available Quantity',
+        ? "Minimum Quantity must be a number and less than or equal to the Available Quantity"
+        : null,
     }));
   };
   const handleDescription = (text) => {
@@ -194,21 +194,21 @@ export default function ({ route, navigation }) {
 
   useEffect(() => {
     fetch(
-      ENV.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8',
+      ENV.backend + "/farmer/selling-product/" + "63b6b7b160d78bea22456aa8",
       // "${ENV.backend}/farmer/getSellingProduct/?productId=63f4d385b1a06dad48ec25ba",
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           useremail: route.params.userEmail,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     )
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        if (res.message != 'Success') {
-          throw new Error('Malformed Response');
+        if (res.message != "Success") {
+          throw new Error("Malformed Response");
         }
         const data = res.product;
         console.log(data);
@@ -218,16 +218,16 @@ export default function ({ route, navigation }) {
       .catch((err) => console.log(err));
   }, []);
   useEffect(() => {
-    setProductId('63f4d385b1a06dad48ec25ba');
+    setProductId("63f4d385b1a06dad48ec25ba");
   }, []);
 
   const handleUpdate = async () => {
-    const productId = '63f4d385b1a06dad48ec25ba';
+    const productId = "63f4d385b1a06dad48ec25ba";
     try {
       await uploadImages();
       // Fetch existing product data
       const response = await fetch(
-        env.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8'
+        env.backend + "/farmer/selling-product/" + "63b6b7b160d78bea22456aa8"
         // "/farmer/get-product/" + productId
       );
       const existingData = await response.json();
@@ -244,11 +244,11 @@ export default function ({ route, navigation }) {
 
       // Update product data in the database
       const updateResponse = await fetch(
-        env.backend + '/farmer/update-product/' + '63b6b7b160d78bea22456aa8',
+        env.backend + "/farmer/update-product/" + "63b6b7b160d78bea22456aa8",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(updatedData),
         }
@@ -256,34 +256,34 @@ export default function ({ route, navigation }) {
       const data = await updateResponse.json();
       console.log(data);
 
-      navigation.navigate('productupdated');
+      navigation.navigate("productupdated");
     } catch (error) {
       console.error(error);
     }
   };
 
   const image =
-    product.imageUrls?.length > 0 ? product.imageUrls[0].imageUrl : '';
+    product.imageUrls?.length > 0 ? product.imageUrls[0].imageUrl : "";
   console.log(image);
 
   const handleClose = async () => {
     try {
       // Get Firebase Storage reference
       const storage = getStorage();
-      const storageRef = ref(storage, 'FreshlyyImagestore');
+      const storageRef = ref(storage, "FreshlyyImagestore");
 
       // Delete image from Firebase Storage
       if (product.imageUrls?.length > 0) {
-        const fileName = product.imageUrls[0].imageUrl.split('/').pop();
+        const fileName = product.imageUrls[0].imageUrl.split("/").pop();
         const imageRef = ref(storageRef, fileName);
         await deleteObject(imageRef);
-        console.log('Image deleted successfully');
+        console.log("Image deleted successfully");
       }
 
       // Remove image from component state
       setProduct((prevProduct) => ({ ...prevProduct, imageUrls: [] }));
     } catch (error) {
-      console.log('Error deleting image:', error);
+      console.log("Error deleting image:", error);
     }
     setProduct((prevProduct) => ({ ...prevProduct, imageUrls: [] }));
   };
@@ -294,7 +294,7 @@ export default function ({ route, navigation }) {
         <View style={styles.screen}>
           <H1 style={styles.AddText}>Edit your product</H1>
           <TextInputBox
-            inputlabel='Product Name'
+            inputlabel="Product Name"
             value={product?.title}
             // placeholder={product.title}
             onChangeText={handleProductNameChange}
@@ -304,15 +304,15 @@ export default function ({ route, navigation }) {
           />
           {product && product.qtyAvailable !== undefined && (
             <TextInputBox
-              inputlabel='Quantity Available (Kg)'
+              inputlabel="Quantity Available (Kg)"
               value={
                 product && product.qtyAvailable
                   ? product.qtyAvailable.toString()
-                  : ''
+                  : ""
               }
               // value={product.qtyAvailable.toString()}
               onChangeText={handleProductQuantityChange}
-              keyboardType='numeric'
+              keyboardType="numeric"
               error={errors.quantity}
               touched={true}
               onBlur={() => null}
@@ -320,15 +320,15 @@ export default function ({ route, navigation }) {
           )}
           {product && product.minQtyIncrement !== undefined && (
             <TextInputBox
-              inputlabel='Minimum Quantity (Kg)'
+              inputlabel="Minimum Quantity (Kg)"
               value={
                 product && product.minQtyIncrement
                   ? product.minQtyIncrement.toString()
-                  : ''
+                  : ""
               }
               // value={product.minQtyIncrement.toString()}
               onChangeText={handleMinimumQuantityChange}
-              keyboardType='numeric'
+              keyboardType="numeric"
               error={errors.minQtyIncrement}
               touched={true}
               onBlur={() => null}
@@ -336,17 +336,17 @@ export default function ({ route, navigation }) {
           )}
           {product && product.price !== undefined && (
             <TextInputBox
-              inputlabel='Price of 1Kg (Rs)'
-              value={product && product.price ? product.price.toString() : ''}
+              inputlabel="Price of 1Kg (Rs)"
+              value={product && product.price ? product.price.toString() : ""}
               onChangeText={handleProductPriceChange}
-              keyboardType='numeric'
+              keyboardType="numeric"
               error={errors.price}
               touched={true}
               onBlur={() => null}
             />
           )}
           <TextInputBox
-            inputlabel='Any description'
+            inputlabel="Any description"
             value={product.description}
             onChangeText={handleDescription}
             error={errors.description}
@@ -355,7 +355,7 @@ export default function ({ route, navigation }) {
           />
 
           {!isValid && (
-            <Text style={{ color: 'red' }}>
+            <Text style={{ color: "red" }}>
               You can upload maximum three images of a product
             </Text>
           )}
@@ -365,9 +365,9 @@ export default function ({ route, navigation }) {
                 <Image source={{ uri: image }} style={styles.fillimage} />
                 <TouchableOpacity
                   onPress={handleClose}
-                  style={{ position: 'absolute', top: 10, right: 10 }}
+                  style={{ position: "absolute", top: 10, right: 10 }}
                 >
-                  <Ionicons name='close-circle' size={24} color='white' />
+                  <Ionicons name="close-circle" size={24} color="white" />
                 </TouchableOpacity>
               </>
             )}
@@ -376,17 +376,17 @@ export default function ({ route, navigation }) {
             <View style={styles.buttcont}>
               {images.length < 3 && (
                 <Button
-                  title='Add Image'
-                  type='icon'
+                  title="Add Image"
+                  type="icon"
                   icon={
                     <Ionicons
-                      name='add-circle'
+                      name="add-circle"
                       size={48}
                       color={Theme.primary}
                     />
                   }
-                  color='shadedPrimary'
-                  size='normal'
+                  color="shadedPrimary"
+                  size="normal"
                   onPress={pickImage}
                   disabled={numImages >= 3} // use the numImages state variable
                 />
@@ -411,9 +411,9 @@ export default function ({ route, navigation }) {
                   <Image source={image} style={styles.newimage} />
                   <TouchableOpacity
                     onPress={() => handleDeleteImage(index)}
-                    style={{ position: 'absolute', top: 10, right: 10 }}
+                    style={{ position: "absolute", top: 10, right: 10 }}
                   >
-                    <Ionicons name='close-circle' size={24} color='white' />
+                    <Ionicons name="close-circle" size={24} color="white" />
                   </TouchableOpacity>
                 </View>
               ))}
@@ -421,10 +421,10 @@ export default function ({ route, navigation }) {
           </View>
 
           <Button
-            title='Update'
-            color='filledPrimary'
-            size='big'
-            onPress={() => handleUpdate(navigation.navigate('productupdated'))}
+            title="Update"
+            color="filledPrimary"
+            size="big"
+            onPress={() => handleUpdate(navigation.navigate("productupdated"))}
             disabled={images.length === 0 || !isValid}
           />
         </View>
@@ -436,16 +436,16 @@ export default function ({ route, navigation }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Poppins',
-    height: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "Poppins",
+    height: "100%",
     marginBottom: 80,
     paddingHorizontal: 20,
   },
   logo: {
     height: 50,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginTop: 50,
   },
   vectorimage: {
@@ -460,19 +460,19 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   inputcont: {
-    position: 'relative',
-    width: '80%',
+    position: "relative",
+    width: "80%",
   },
   inputlabel: {
     paddingLeft: 50,
     color: Theme.textColor,
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins",
   },
   input: {
-    position: 'relative',
+    position: "relative",
     height: 40,
-    width: '100%',
-    fontFamily: 'Poppins',
+    width: "100%",
+    fontFamily: "Poppins",
     paddingLeft: 10,
     backgroundColor: Theme.overlay,
     borderColor: Theme.overlay,
@@ -487,14 +487,14 @@ const styles = StyleSheet.create({
   imagecont: {
     marginTop: 10,
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttco: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
   },
   fillimage: {
     width: 200,
@@ -506,14 +506,14 @@ const styles = StyleSheet.create({
   },
   maincont: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   imageCon: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "column",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
     marginHorizontal: -5,
   },
   newimage: {

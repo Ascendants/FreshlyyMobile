@@ -48,6 +48,9 @@ export default function ({ navigation }) {
       aspect: [1, 1],
       quality: 1,
     });
+    if (result.assets.length === 0) {
+      setIsValid(!isValid);
+    }
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const source = { uri: result.assets[result.assets.length - 1].uri };
