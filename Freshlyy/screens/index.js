@@ -1,10 +1,6 @@
 //Utility Screens
-<<<<<<< HEAD
-export { default as MessageScreen } from './util/MessageScreen';
-export { default as NotificationScreen } from './util/NotificationScreen';
-=======
 export { default as MessageScreen } from "./util/MessageScreen";
->>>>>>> origin/Gimhani
+export { default as NotificationScreen } from "./util/NotificationScreen";
 
 //Public Screens
 export { default as BeFarmerScreen } from "./publicscreens/BeFarmerScreen";
@@ -24,61 +20,6 @@ export { default as VerifyYourEmailScreen } from "./publicscreens/VerifyYourEmai
 
 //Customer Screens
 
-<<<<<<< HEAD
-export { default as AddCardScreen } from './customerscreens/AddCardScreen';
-export { default as CantSignInScreen } from './customerscreens/CantSignInScreen';
-export { default as CardScreen } from './customerscreens/CardScreen';
-export { default as CheckoutScreen } from './customerscreens/CheckoutScreen';
-export { default as ConfirmPickupScreen } from './customerscreens/ConfirmPickupScreen';
-export { default as ContactUsScreen } from './customerscreens/ContactUsScreen';
-export { default as CustomerDashboardScreen } from './customerscreens/CustomerDashboardScreen';
-export { default as FarmerDetailScreen } from './customerscreens/FarmerDetailScreen';
-export { default as FarmerFollowerScreen } from './customerscreens/FarmerFollowerScreen';
-export { default as FoodDamagedScreen } from './customerscreens/FoodDamagedScreen';
-export { default as HelpCenterScreen } from './customerscreens/HelpCenterScreen';
-export { default as HelpWithAnOrderScreen } from './customerscreens/HelpWithAnOrderScreen';
-export { default as LocationAddScreen } from './customerscreens/LocationAddScreen';
-export { default as LocationScreen } from './customerscreens/LocationScreen';
-export { default as MyCartScreen } from './customerscreens/MyCartScreen';
-export { default as OrderCancelScreen } from './customerscreens/OrderCancelScreen';
-export { default as OrderIsWrong } from './customerscreens/OrderIsWrong';
-export { default as OrderListScreen } from './customerscreens/OrderListScreen';
-export { default as OrderNeverArrivedScreen } from './customerscreens/OrderNeverArrivedScreen';
-export { default as OrderStatusScreen } from './customerscreens/OrderStatusScreen';
-export { default as OtherPaymentScreen } from './customerscreens/OtherPaymentScreen';
-export { default as PaymentScreen } from './customerscreens/PaymentScreen';
-export { default as ProductDetailScreen } from './customerscreens/ProductDetailScreen';
-export { default as ProductHomePageScreen } from './customerscreens/ProductHomePageScreen';
-export { default as ReviewedOrderScreen } from './customerscreens/ReviewedOrderScreen';
-export { default as SelectOrderScreen } from './customerscreens/SelectOrderScreen';
-export { default as SocialCornerScreen } from './customerscreens/SocialCornerScreen';
-export { default as TicketDetailsScreen } from './customerscreens/TicketDetailsScreen';
-export { default as TicketStatusScreen } from './customerscreens/TicketStatusScreen';
-export { default as ChatScreen } from './customerscreens/ChatScreen';
-export { default as WishListScreen } from './customerscreens/WishListScreen';
-export { default as Chat} from './customerscreens/Chat';
-
-//Farmer Screens
-
-export { default as AddBankAccountScreen } from './farmerscreens/AddBankAccountScreen';
-export { default as ConfirmRequestWithdrawalScreen } from './farmerscreens/ConfirmRequestWithdrawalScreen';
-export { default as CreateCouponScreen } from './farmerscreens/CreateCouponScreen';
-export { default as EditProductScreen } from './farmerscreens/EditProductScreen';
-export { default as EorDProductScreen } from './farmerscreens/EorDProductScreen';
-export { default as FarmerBalancesScreen } from './farmerscreens/FarmerBalancesScreen';
-export { default as FarmerDashboardScreen } from './farmerscreens/FarmerDashboardScreen';
-export { default as FarmerInvoicesScreen } from './farmerscreens/FarmerInvoicesScreen';
-export { default as InsertProductScreen } from './farmerscreens/InsertProductScreen';
-export { default as PayoutRequestListScreen } from './farmerscreens/PayoutRequestListScreen';
-export { default as ProductDeleteScreen } from './farmerscreens/ProductDeleteScreen';
-export { default as ProductAddedScreen } from './farmerscreens/ProductAddedScreen';
-export { default as ProductUpdatedScreen } from './farmerscreens/ProductUpdatedScreen';
-export { default as FarmerInvoiceScreen } from './farmerscreens/FarmerViewInvoiceScreen';
-export { default as SettleAccountScreen } from './farmerscreens/SettleAccountScreen';
-export { default as OtherFarmerPaymentScreen } from './farmerscreens/OtherFarmerPaymentScreen';
-export { default as OrderStatusUpdateScreen } from './farmerscreens/OrderStatusUpdateScreen';
-export { default as DeleteProductScreen } from './farmerscreens/DeleteProductScreen';
-=======
 export { default as AddCardScreen } from "./customerscreens/AddCardScreen";
 export { default as CantSignInScreen } from "./customerscreens/CantSignInScreen";
 export { default as CardScreen } from "./customerscreens/CardScreen";
@@ -108,8 +49,9 @@ export { default as SelectOrderScreen } from "./customerscreens/SelectOrderScree
 export { default as SocialCornerScreen } from "./customerscreens/SocialCornerScreen";
 export { default as TicketDetailsScreen } from "./customerscreens/TicketDetailsScreen";
 export { default as TicketStatusScreen } from "./customerscreens/TicketStatusScreen";
-export { default as OrderReviewScreen } from "./customerscreens/OrderReviewScreen";
-export { default as ReportFarmerScreen } from "./customerscreens/ReportFarmerScreen";
+export { default as ChatScreen } from "./customerscreens/ChatScreen";
+export { default as WishListScreen } from "./customerscreens/WishListScreen";
+export { default as Chat } from "./customerscreens/Chat";
 
 //Farmer Screens
 
@@ -126,4 +68,8 @@ export { default as PayoutRequestListScreen } from "./farmerscreens/PayoutReques
 export { default as ProductDeleteScreen } from "./farmerscreens/ProductDeleteScreen";
 export { default as ProductAddedScreen } from "./farmerscreens/ProductAddedScreen";
 export { default as ProductUpdatedScreen } from "./farmerscreens/ProductUpdatedScreen";
->>>>>>> origin/Gimhani
+export { default as FarmerInvoiceScreen } from "./farmerscreens/FarmerViewInvoiceScreen";
+export { default as SettleAccountScreen } from "./farmerscreens/SettleAccountScreen";
+export { default as OtherFarmerPaymentScreen } from "./farmerscreens/OtherFarmerPaymentScreen";
+export { default as OrderStatusUpdateScreen } from "./farmerscreens/OrderStatusUpdateScreen";
+export { default as DeleteProductScreen } from "./farmerscreens/DeleteProductScreen";
