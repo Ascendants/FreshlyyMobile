@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   loyaltyDescription: {
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     flex: 1,
   },
   progressBar: {},

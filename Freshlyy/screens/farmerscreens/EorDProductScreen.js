@@ -10,21 +10,13 @@ import {
 } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import {
-  TextInputBox,
-  DropDownPicker,
-  DatePicker,
-} from '../../components/Inputs';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { H1, H2, H3, H6, Pr } from '../../components/Texts';
 import ENV from '../../constants/env';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 export default function ({ navigation, route }) {
   const [product, setProduct] = useState({});
-  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     fetch(ENV.backend + '/farmer/selling-product/' + route.params?.productId, {
@@ -45,6 +37,12 @@ export default function ({ navigation, route }) {
 
       .catch((err) => console.log(err));
   }, []);
+  function deleteProduct() {
+    navigation.navigate('Delete Product', {
+      productId: route.params?.productId,
+      productTitle: product.title,
+    });
+  }
   // const image = product.imageUrls[0].imageUrl;
   return (
     <SafeAreaView>
@@ -99,7 +97,12 @@ export default function ({ navigation, route }) {
                 })
               }
             />
-            <Button title='Delete' color='shadedDanger' size='big' />
+            <Button
+              title='Delete'
+              color='shadedDanger'
+              size='big'
+              onPress={deleteProduct}
+            />
           </View>
         </View>
       </ScrollView>

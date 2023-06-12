@@ -25,7 +25,7 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Start screen'
-            component={Screens.LoginScreen}
+            component={Screens.GetStartedScreen}
             options={{
               headerShown: false,
             }}

@@ -41,16 +41,9 @@ export default function ({ navigation, route }) {
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [images, setImages] = useState([]);
   const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
-
   const [product, setProduct] = useState({});
-  const [numImages, setNumImages] = useState(0);
   const pickImage = async () => {
-    if (images.length >= 3) {
-      return; // Do nothing if three images have already been selected
-    }
-
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -62,7 +55,6 @@ export default function ({ navigation, route }) {
       const source = { uri: result.assets[result.assets.length - 1].uri };
       await uploadImage(source);
     }
-    setNumImages(images.length + 1);
   };
   const uploadImage = async (image) => {
     setUploadingImage(true);
@@ -84,7 +76,6 @@ export default function ({ navigation, route }) {
     setUploadingImage(false);
   };
   const handleDeleteImage = (index) => {
-    const image = uploadedImageUrls[index];
     setUploadedImageUrls((curr) => curr.filter((item) => item !== curr[index]));
   };
 
@@ -140,10 +131,9 @@ export default function ({ navigation, route }) {
       ...prevProduct,
       minQtyIncrement: text,
     }));
-
     // perform validation here and update errors
     const isValidQuantity =
-      !isNaN(Number(text)) && Number(text) <= Number(quantity);
+      !isNaN(Number(text)) && Number(text) <= Number(product.qtyAvailable);
     console.log(isValidQuantity);
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -370,7 +360,6 @@ export default function ({ navigation, route }) {
                   color='shadedPrimary'
                   size='normal'
                   onPress={pickImage}
-                  disabled={numImages >= 3} // use the numImages state variable
                 />
               )}
             </View>

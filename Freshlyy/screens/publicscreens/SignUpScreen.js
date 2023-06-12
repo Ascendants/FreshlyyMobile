@@ -15,17 +15,13 @@ import {
   DropDownPicker,
   DatePicker,
 } from '../../components/Inputs';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { Formik, validateYupSchema, useFormik } from 'formik';
 import * as Yup from 'yup';
 import * as Animatable from 'react-native-animatable';
-import { Animations } from '../../constants/Animation';
-import Dropdown from 'react-native-modal-dropdown';
-import { H2, H4, H5, H6, H7, H8 } from '../../components/Texts';
 
-export default function ({ navigation,route }) {
+export default function ({ navigation, route }) {
   const [valid, setValid] = useState(false);
   const [userData, setUserData] = useState({});
 
@@ -70,9 +66,10 @@ export default function ({ navigation,route }) {
     setValid(true);
     setUserData(data);
     console.log(userData);
-    if (valid) {
-      navigation.navigate('beFarmer', { type: 'Success', userData:JSON.stringify(data) });
-    }
+    navigation.navigate('beFarmer', {
+      type: 'Success',
+      userData: JSON.stringify(data),
+    });
   }
   return (
     <SafeAreaView>

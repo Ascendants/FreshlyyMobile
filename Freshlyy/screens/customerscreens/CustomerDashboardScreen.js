@@ -20,6 +20,12 @@ export default function ({ navigation, route }) {
   }
   async function logOut() {
     try {
+      await fetch(ENV.backend + '/customer/reset-push-token', {
+        method: 'POST',
+        headers: {
+          Authorization: route.params.auth,
+        },
+      });
       await auth.signOut();
     } catch (error) {
       console.log(error);
@@ -91,7 +97,7 @@ export default function ({ navigation, route }) {
               onPress={() => viewOrders('All')}
             />
           </View>
-          <ServicesCardDB farmer={userData?.user?.accessLevel=="Farmer"}/>
+          <ServicesCardDB farmer={userData?.user?.accessLevel == 'Farmer'} />
           <Button
             style={styles.buttonContainer}
             title='Log Out'

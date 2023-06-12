@@ -7,9 +7,66 @@ import { UserContext, user } from '../context/UserContext';
 import * as Screens from '../screens';
 import FarmerReportScreen from '../screens/farmerscreens/FarmerReportScreen';
 import { auth } from '../utils/firebase';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+import ENV from '../constants/env';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+}
+
 const Stack = createNativeStackNavigator();
 
 export default function App(props) {
+  React.useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        if (token) {
+          return fetch(ENV.backend + '/customer/update-push-token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: props.user.accessToken,
+            },
+            body: JSON.stringify({
+              pushToken: token,
+            }),
+          });
+        }
+        return null;
+      })
+      .catch((err) => console.log(err));
+  }, []);
   const [fonts] = useFonts({
     Poppins: require('../assets/fonts/Poppins-Medium.ttf'),
     PoppinsRegular: require('../assets/fonts/Poppins-Regular.ttf'),
@@ -40,6 +97,14 @@ export default function App(props) {
           <Stack.Screen
             name='Product Home Page'
             component={Screens.ProductHomePageScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Delete Product'
+            component={Screens.DeleteProductScreen}
             options={{
               headerShown: false,
             }}

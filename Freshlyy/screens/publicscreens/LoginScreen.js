@@ -23,7 +23,6 @@ export default function ({ navigation, route }) {
   const [err, setErr] = useState('');
   const auth = getAuth();
   const [submitting, setSubmitting] = useState(false);
-  const [idToken, SetIdToken] = useState('');
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email!').required('Email is required!'),
