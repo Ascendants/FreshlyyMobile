@@ -1,7 +1,7 @@
 import { contains } from '@firebase/util';
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { H1, H2, P, Pr } from '../components/Texts';
+import { H1, H2, P, Pr ,H6} from '../components/Texts';
 import Theme from '../constants/theme';
 import { FilledBigButton } from '../components/Buttons';
 import theme from '../constants/theme';
@@ -19,8 +19,8 @@ export default function (props) {
           style={styles.productimage}
         />
         <View style={styles.cardinner}>
-          <P style={styles.productname}>{props.title}</P>
-          <P style={styles.productWeight}>{props.qty}</P>
+          <H6 style={styles.productname}>{props.title}</H6>
+          <P style={styles.productWeight}>{props.qty} KG</P>
           <Pr style={styles.productprice}> {props.uPrice}</Pr>
         </View>
         <View style={styles.cardinner2}>

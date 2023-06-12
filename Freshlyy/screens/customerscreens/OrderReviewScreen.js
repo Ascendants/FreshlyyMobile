@@ -25,7 +25,7 @@ import ENV from '../../constants/env';
 
 export default function ({route,navigation}) {
   const [order, setOrder] = useState([]);
-  const [Product,setProduct]=useState([]);
+  const [product,setProduct]=useState([]);
   const [items,setItem]=useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -37,7 +37,7 @@ export default function ({route,navigation}) {
   };
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + '/customer/orderDetail/6480039c9a0f5ec665018982', {
+    fetch(ENV.backend + '/customer/orderDetail/641421775bbd0f10a17cf24e', {
       //getting data from the backend (all products)
       method: 'GET',
 
@@ -47,6 +47,7 @@ export default function ({route,navigation}) {
         if(res.message=="Success"){
           setItem(res.order.items);
           setOrder(res.order);
+          setProduct(res.product);
           console.log(res)
         }
         isRefreshing ? setRefreshing(false) : setLoaded(true);
@@ -68,11 +69,11 @@ export default function ({route,navigation}) {
           <H3>Review Order</H3>
           <H6> #{order?.orderId}</H6>
           <H4 style={styles.farmername}>{order?.farmerName}</H4>
-          {items?.map(item=>{
+          {product?.map(item=>{
            return  <ReviewProductCard
             title={item?.title}
             imageUrl={item?.imageUrl} //should be taken from Products table
-            price={item?.uPrice}
+            uPrice={item?.uPrice}
             qty={item?.qty}
           />
         })}

@@ -24,7 +24,7 @@ import { LocationCard } from '../../components/LocationCard';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Location from 'expo-location';
 import Loading from '../../components/Loading';
-//import { GOOGLE_API_KEY } from '@env';
+
 
 export default function App() {
   const [location, setLocation] = useState(null);

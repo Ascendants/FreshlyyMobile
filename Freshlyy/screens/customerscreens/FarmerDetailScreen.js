@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import {
   StyleSheet,
@@ -8,43 +8,87 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-} from 'react-native';
-import Theme from '../../constants/theme';
-import { Button } from '../../components/Buttons';
+} from "react-native";
+import Theme from "../../constants/theme";
+import { Button } from "../../components/Buttons";
 import {
   TextInputBox,
   DropDownPicker,
   DatePicker,
-} from '../../components/Inputs';
-import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
-import { H4, P, H3,H1 } from '../../components/Texts';
-import Rating from '../../components/Rating';
-import ENV from '../../constants/env';
-import ProductDeatilCard from '../../components/ProductDetailCard';
-import Loading from '../../components/Loading';
+} from "../../components/Inputs";
+import { AntDesign, Ionicons, Feather } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../components/Header";
+import { H4, P, H3, H1 } from "../../components/Texts";
+import Rating from "../../components/Rating";
+import ENV from "../../constants/env";
+import ProductDeatilCard from "../../components/ProductDetailCard";
+import Loading from "../../components/Loading";
 
 export default function ({ navigation, route }) {
   const [products, setProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [farmer, setFarmer]  = useState({});
+  const [farmer, setFarmer] = useState({});
 
-  
+  async function follow() {
+    try {
+      const result = await fetch(
+        ENV.backend + "/customer/follow/" + farmer?.farmerId,
+        {
+          method: "POST",
+          headers: {
+            useremail: route.params.userEmail,
+          },
+        }
+      );
+      const res = await result.json();
+      console.log(res);
+      if (res.message == "Success") {
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  }
+
+  async function unfollow() {
+    try {
+      const result = await fetch(
+        ENV.backend + "/customer/unfollow/" + farmer?.farmerId,
+        {
+          method: "POST",
+          headers: {
+            useremail: route.params.userEmail,
+          },
+        }
+      );
+      const res = await result.json();
+      console.log(res);
+      if (res.message == "Success") {
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  }
+
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + '/customer/farmerDetail/haritha@hasathcharu.com', {
+    fetch(ENV.backend + "/customer/farmerDetail/haritha@hasathcharu.com", {
       //getting data from the backend (all products)
-      method: 'GET',
+      method: "GET",
       headers: {
+        userEmail: route.params.userEmail,
       },
     })
       .then((res) => res.json())
       .then((res) => {
-        if(res.message=="Success"){
+        if (res.message == "Success") {
           setFarmer(res.farmer);
-          setProducts(res.products)
+          setProducts(res.products);
         }
         isRefreshing ? setRefreshing(false) : setLoaded(true);
       })
@@ -54,8 +98,6 @@ export default function ({ navigation, route }) {
   useEffect(() => {
     getData();
   }, []);
-console.log(products)
-  
 
   return (
     <SafeAreaView>
@@ -63,7 +105,10 @@ console.log(products)
       <ScrollView>
         <View style={styles.screen}>
           <View>
-            <Image source={{uri: farmer?.farmerImage?.imageUrl}} style={styles.image} />
+            <Image
+              source={{ uri: farmer?.farmerImage?.imageUrl }}
+              style={styles.image}
+            />
           </View>
           <View style={styles.textName}>
             <H3 style={styles.name}>{farmer?.farmerName}</H3>
@@ -74,55 +119,64 @@ console.log(products)
             <Button
               icon={
                 <Feather
-                  name='message-circle'
+                  name="message-circle"
                   size={24}
                   color={Theme.textColor}
                 />
               }
-              title='Chat'
-              type='icon'
-              size='normal'
-              color='shadedTertiary'
+              title="Chat"
+              type="icon"
+              size="normal"
+              color="shadedTertiary"
             />
             <Button
-              type='icon'
+              type="icon"
               icon={
                 <Ionicons
-                  name='ios-share-outline'
+                  name="ios-share-outline"
                   size={24}
                   color={Theme.textColor}
                 />
               }
-              title='Share'
-              size='normal'
-              color='shadedTertiary'
+              title="Share"
+              size="normal"
+              color="shadedTertiary"
             />
             <Button
-              type='icon'
+              type="icon"
               icon={
                 <Ionicons
-                  name='alert-circle-outline'
+                  name="alert-circle-outline"
                   size={24}
                   color={Theme.textColor}
                 />
               }
-              title='Report'
-              size='normal'
-              color='shadedTertiary'
+              title="Report"
+              size="normal"
+              color="shadedTertiary"
             />
           </View>
-          <Button title='Follow' color='shadedPrimary' size='normal' />
+          <Button
+            title={farmer?.isFollowing ? "Following" : "Follow"}
+            color={farmer?.isFollowing ? "filledPrimary" : "shadedPrimary"}
+            size="normal"
+            onPress={farmer?.isFollowing ? unfollow : follow}
+          />
           <H3>Popular Products</H3>
         </View>
         <ScrollView horizontal={true}>
-        {products?.map(product=>{
-           return  <ProductDeatilCard 
-            title={product?.title}
-            imageUrl={product?.imageUrl}
-            price={product?.uPrice}
-          />
-        })}
-  </ScrollView>
+          {products?.map((product) => {
+            return (
+              <ProductDeatilCard
+                key={product?.productid}
+                title={product?.title}
+                imageUrl={product?.imageUrl}
+                price={product?.uPrice}
+                overallRating={product?.overallRating}
+              />
+            );
+          })}
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
@@ -131,14 +185,14 @@ console.log(products)
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     //justifyContent: 'center',
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins",
     margin: 20,
   },
   logo: {
     height: 50,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginTop: 50,
   },
   image: {
@@ -148,18 +202,18 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Theme.primary,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   Rating: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   H3: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   actionButtonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     //justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: "center",
     flex: 3,
   },
 });
