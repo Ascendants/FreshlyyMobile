@@ -19,8 +19,6 @@ export default function () {
       }
       setInitializing(false);
     });
-    console.log('User Email ', user?.email);
-
     return subscribeFromAuthStateChanged;
   }, []);
   return { user, initializing };

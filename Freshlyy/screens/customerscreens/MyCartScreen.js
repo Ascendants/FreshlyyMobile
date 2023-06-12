@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { H4, H3, Pr } from '../../components/Texts';
 import { Button } from '../../components/Buttons';
 import Header from '../../components/Header';
@@ -7,8 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import ProductView from '../../components/ProductView';
 import ENV from '../../constants/env';
-import ModalComponent from '../../components/ModalComponent';
-import { Ionicons, Feather } from '@expo/vector-icons';
 import Navbar from '../../components/Navbar';
 import RefreshView from '../../components/RefreshView';
 
@@ -30,7 +28,7 @@ export default function ({ navigation, route }) {
         setCart(res.cart);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [route]);
   React.useEffect(() => {
     let ctotal = 0;
     cart?.map((farmer) =>
@@ -51,7 +49,14 @@ export default function ({ navigation, route }) {
           <View>
             {cart.map((farmer) =>
               farmer.items.map((item) => {
-                return <ProductView key={item.item} product={item} />;
+                return (
+                  <ProductView
+                    key={item.item}
+                    product={item}
+                    auth={route.params.auth}
+                    getData={getData}
+                  />
+                );
               })
             )}
           </View>

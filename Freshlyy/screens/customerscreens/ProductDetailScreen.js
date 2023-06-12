@@ -15,6 +15,7 @@ import ModalComponent from '../../components/ModalComponent';
 
 export default function ({ navigation, route }) {
   const [modal, setModal] = React.useState(false);
+  const [soldout, setSoldout] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
   const [added, setAdded] = React.useState(false);
@@ -34,7 +35,7 @@ export default function ({ navigation, route }) {
         if (newQuantity <= availableQuantity) {
           setSelectedQuantity(newQuantity);
         } else {
-          alert('Not enough quantity available');
+          setSoldout(true);
         }
       })
       .catch((err) => console.log(err));
@@ -88,6 +89,8 @@ export default function ({ navigation, route }) {
           setAdded(true);
           return true;
         }
+        if (res.message == 'Quantity unavailable') setSoldout(true);
+        return;
       })
       .catch((err) => console.log(err));
   }
@@ -207,6 +210,21 @@ export default function ({ navigation, route }) {
             size='normal'
             color='shadedWarning'
           />
+        </ModalComponent>
+        <ModalComponent visible={soldout} closeModal={() => setSoldout(false)}>
+          <Image
+            source={require('../../assets/soldout.png')}
+            style={{
+              height: 100,
+              width: 100,
+              alignSelf: 'center',
+              resizeMode: 'contain',
+              marginBottom: 20,
+            }}
+          />
+          <H3 style={{ textAlign: 'center' }}>
+            Sorry, we don't have that much :(
+          </H3>
         </ModalComponent>
         <Header back={true} />
         <RefreshView getData={getData}>

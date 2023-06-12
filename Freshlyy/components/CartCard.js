@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { H2, H3, H5, H6, Pr } from './Texts';
 import Theme from '../constants/theme';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
+import ModalComponent from './ModalComponent';
 
 export default function (props) {
   return (

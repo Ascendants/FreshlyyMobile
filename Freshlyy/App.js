@@ -3,7 +3,6 @@ import React from 'react';
 //import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
-import { H2, H4, H5, H6, H7, H8 } from './components/Texts';
 import RootNavigation from './navigation/index';
 //const Stack = createNativeStackNavigator();
 

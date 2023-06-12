@@ -127,7 +127,12 @@ export default function ({ navigation, route }) {
               <View style={styles.pageArea}>
                 {cart?.map((farmer) =>
                   farmer.items.map((item) => (
-                    <ProductView key={item.item} product={item} />
+                    <ProductView
+                      key={item.item}
+                      product={item}
+                      auth={route.params.auth}
+                      getData={getData}
+                    />
                   ))
                 )}
               </View>
