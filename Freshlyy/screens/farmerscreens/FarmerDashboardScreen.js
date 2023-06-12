@@ -23,14 +23,11 @@ import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
 import { H4, H3, H5 } from '../../components/Texts';
 import RefreshView from '../../components/RefreshView';
+import { set } from 'date-fns';
 
 export default function ({ navigation, route }) {
-  const [loaded, setLoaded] = React.useState(false);
   const [userData, setUserData] = useState([]);
-  const [sellingProducts, setSellingProducts] = useState('');
-  const [pendingProducts, setPendingProducts] = useState('');
-  const [newOrders, setNewOrders] = useState('');
-  const [pastOrders, setPastOrders] = useState('');
+
   const [isOpen, setIsOpen] = useState(false);
   const [isBottomSheetNewOrderVisible, setIsBottomSheetNewOrderVisible] =
     useState(false);
@@ -47,11 +44,16 @@ export default function ({ navigation, route }) {
   const bottomSheetRefPending = useRef(null);
   const snapPoints = ['100%', '60%'];
 
-  const [newOrdersList, setNewOrdersList] = React.useState([]);
-  const [pastOrdersList, setPastOrdersList] = React.useState([]);
-  const [sellingList, setSellingList] = React.useState([]);
-  const [pendingList, setPendingList] = React.useState([]);
-
+  const [pageData, setPageData] = useState({
+    newOrdersList: [],
+    pastOrdersList: [],
+    sellingList: [],
+    pendingList: [],
+    sellingProducts: '',
+    pendingProducts: '',
+    newOrders: '',
+    pastOrders: '',
+  });
   const handleBottomSheetNewOrderClose = () => {
     setIsBottomSheetNewOrderVisible(false);
   };
@@ -101,19 +103,19 @@ export default function ({ navigation, route }) {
           throw new Error('Something went wrong');
         }
         setUserData(res.user);
-        setSellingProducts(res.liveProducts);
-        setPendingProducts(res.pendingProducts);
-        setNewOrders(res.newOrders);
-        setPastOrders(res.pastOrders);
-        setSellingList(res.liveProductsList);
-        setPendingList(res.pendingProductsList);
-        setNewOrdersList(res.newOrderDetailsList);
-        setPastOrdersList(res.pastOrderDetailsList);
-
-        setLoaded(true);
+        setPageData({
+          newOrdersList: res.newOrderDetailsList,
+          pastOrdersList: res.pastOrderDetailsList,
+          sellingList: res.liveProductsList,
+          pendingList: res.pendingProductsList,
+          sellingProducts: res.liveProducts,
+          pendingProducts: res.pendingProducts,
+          newOrders: res.newOrders,
+          pastOrders: res.pastOrders,
+        });
       })
       .catch((err) => console.log(err));
-  }, [route]);
+  }, []);
   return (
     <GestureHandlerRootView>
       <SafeAreaView>
@@ -133,13 +135,13 @@ export default function ({ navigation, route }) {
             <View style={styles.cardContainer}>
               <DashBoardCard
                 imageUri={require('../../assets/gift.png')}
-                number={newOrders}
+                number={pageData.newOrders}
                 text='New Orders'
                 onPress={handleNewOrderBottomSheet}
               />
               <DashBoardCard
                 imageUri={require('../../assets/box.png')}
-                number={pastOrders}
+                number={pageData.pastOrders}
                 text='Past Orders'
                 onPress={handlePastOrderBottomSheet}
               />
@@ -148,13 +150,13 @@ export default function ({ navigation, route }) {
             <View style={styles.cardContainer}>
               <DashBoardCard
                 imageUri={require('../../assets/trade.png')}
-                number={sellingProducts}
+                number={pageData.sellingProducts}
                 text='Selling'
                 onPress={handleSeliingBottomSheet}
               />
               <DashBoardCard
                 imageUri={require('../../assets/pending.png')}
-                number={pendingProducts}
+                number={pageData.pendingProducts}
                 text='Pending'
                 onPress={handlePendingBottomSheet}
               />
@@ -168,7 +170,7 @@ export default function ({ navigation, route }) {
                 // backgroundstyle={styles.button}
               />
             </View>
-            <ServicesCardDB farmer={true}  />
+            <ServicesCardDB farmer={true} />
             <View style={styles.lastChild}></View>
           </RefreshView>
           <BottomSheet
@@ -186,34 +188,33 @@ export default function ({ navigation, route }) {
               <View style={styles.containerOverlay}>
                 <H4 style={styles.topic}>New Orders</H4>
                 <View style={styles.containerOverlay}>
-                  {newOrdersList?.length > 0 ? (
-                    newOrdersList.map((order) => (
-                      <View
-                        style={styles.newOrdersContainer}
-                        key={order.orderId}
-                      >
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate('Order Status Update', {
-                              orderId: order.orderId,
-                            });
-                          }}
-                        >
-                          <H5>
-                            {order.customerFirstName} {order.customerLastName}{' '}
-                            has ordered
-                          </H5>
-                          {order.itemDetails.map((item) => (
-                            <H5
-                              key={item.itemId}
-                              style={{ color: Theme.secondary }}
-                            >
-                              {item.qty} {item.unit} of {item.title}
+                  {pageData.newOrdersList?.length > 0 ? (
+                    pageData.newOrdersList?.map((order, index) => {
+                      return (
+                        <View style={styles.newOrdersContainer} key={index}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate('Order Status Update', {
+                                orderId: order.orderId,
+                              });
+                            }}
+                          >
+                            <H5>
+                              {order.customerFirstName} {order.customerLastName}{' '}
+                              has ordered
                             </H5>
-                          ))}
-                        </TouchableOpacity>
-                      </View>
-                    ))
+                            {order.itemDetails.map((item, index) => (
+                              <H5
+                                key={index}
+                                style={{ color: Theme.secondary }}
+                              >
+                                {item.qty} {item.unit} of {item.title}
+                              </H5>
+                            ))}
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    })
                   ) : (
                     <H4 style={styles.noItemsContainer}>No New Orders</H4>
                   )}
@@ -239,12 +240,9 @@ export default function ({ navigation, route }) {
                 <H4 style={styles.topic}>Past Orders</H4>
                 <View style={styles.containerOverlay}>
                   <ScrollView showsVerticalScrollIndicator={false}>
-                    {pastOrdersList?.length > 0 ? (
-                      pastOrdersList.map((order) => (
-                        <View
-                          style={styles.newOrdersContainer}
-                          key={order.orderId}
-                        >
+                    {pageData.pastOrdersList?.length > 0 ? (
+                      pageData.pastOrdersList.map((order, index) => (
+                        <View style={styles.newOrdersContainer} key={index}>
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate('Order Status Update', {
@@ -256,9 +254,9 @@ export default function ({ navigation, route }) {
                               {order.customerFirstName} {order.customerLastName}{' '}
                               has ordered
                             </H5>
-                            {order.itemDetails.map((item) => (
+                            {order.itemDetails.map((item, index) => (
                               <H5
-                                key={item.itemId}
+                                key={index}
                                 style={{ color: Theme.secondary }}
                               >
                                 {' '}
@@ -293,8 +291,8 @@ export default function ({ navigation, route }) {
               <H4 style={styles.topic}>Selling Items</H4>
               <View style={styles.containerOverlay}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  {sellingList?.length > 0 ? (
-                    sellingList.map((item, index) => (
+                  {pageData.sellingList?.length > 0 ? (
+                    pageData.sellingList.map((item, index) => (
                       <TouchableOpacity
                         key={index}
                         onPress={() =>
@@ -336,8 +334,8 @@ export default function ({ navigation, route }) {
               <H4 style={styles.topic}>Pending Items</H4>
               <View style={styles.containerOverlay}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  {pendingList?.length > 0 ? (
-                    pendingList.map((item, index) => (
+                  {pageData.pendingList?.length > 0 ? (
+                    pageData.pendingList.map((item, index) => (
                       <TouchableOpacity key={index}>
                         <SwipeOverlayCard
                           imageUri={item.imageUrls}
@@ -356,7 +354,7 @@ export default function ({ navigation, route }) {
             </BottomSheetView>
           </BottomSheet>
 
-          <Navbar screenName='Cart' />
+          <Navbar />
         </View>
       </SafeAreaView>
     </GestureHandlerRootView>
