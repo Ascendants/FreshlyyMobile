@@ -28,6 +28,28 @@ export default function ({ navigation, route }) {
       .catch((err) => console.log(err));
   }, []);
 
+  console.log(wishList);
+
+  const addToCart = () => {
+    const payload = { wishList };
+
+    fetch(ENV.backend + '/customer/add-all-to-cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: route.params.auth,
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        // Handle the response from the backend
+        console.log(res);
+        // navigation.navigate('Checkout'); // Navigate to the checkout screen after adding items to the cart
+      })
+      .catch((err) => console.log(err));
+  };
+  
   const [modal, setModal] = React.useState(false);
   return (
     <SafeAreaView>
@@ -49,7 +71,7 @@ export default function ({ navigation, route }) {
             size='big'
             color='filledPrimary'
             title='Add all the items to Cart'
-            // onPress={() => navigation.navigate('Checkout')}
+            onPress={addToCart}
           />
         </View>
       </View>
