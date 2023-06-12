@@ -42,6 +42,8 @@ export default function ({ navigation, route }) {
   const bottomSheetRefPastOrder = useRef(null);
   const bottomSheetRefSelling = useRef(null);
   const bottomSheetRefPending = useRef(null);
+  const bottomSheetRefToDeliver = useRef(null);
+  const bottomSheetRefWillPickup = useRef(null);
   const snapPoints = ['100%', '60%'];
 
   const [pageData, setPageData] = useState({
@@ -61,6 +63,24 @@ export default function ({ navigation, route }) {
   const handleNewOrderBottomSheet = () => {
     setIsBottomSheetNewOrderVisible(true);
     bottomSheetRefNewOrder.current.expand();
+  };
+
+  // const handleBottomSheetToDeliverClose = () => {
+  //   setIsBottomSheetNewOrderVisible(false);
+  // };
+
+  const handleToDeliverBottomSheet = () => {
+    // setIsBottomSheetNewOrderVisible(true);
+    bottomSheetRefToDeliver.current.expand();
+  };
+
+  // const handleBottomSheetWillPickupClose = () => {
+  //   setIsBottomSheetNewOrderVisible(false);
+  // };
+
+  const handleWillPickupBottomSheet = () => {
+    // setIsBottomSheetNewOrderVisible(true);
+    bottomSheetRefWillPickup.current.expand();
   };
 
   const handleBottomSheetPastOrderClose = () => {
@@ -112,6 +132,10 @@ export default function ({ navigation, route }) {
           pendingProducts: res.pendingProducts,
           newOrders: res.newOrders,
           pastOrders: res.pastOrders,
+          toDeliver: res.toDeliver,
+          willPickup: res.willPickup,
+          toDeliverOrdersList: res.toDeliverOrdersList,
+          willPickupOrdersList: res.willPickupOrdersList,
         });
       })
       .catch((err) => console.log(err));
@@ -138,6 +162,18 @@ export default function ({ navigation, route }) {
                 number={pageData.newOrders}
                 text='New Orders'
                 onPress={handleNewOrderBottomSheet}
+              />
+              <DashBoardCard
+                imageUri={require('../../assets/gift.png')}
+                number={pageData.toDeliver}
+                text='To Deliver'
+                onPress={handleToDeliverBottomSheet}
+              />
+              <DashBoardCard
+                imageUri={require('../../assets/gift.png')}
+                number={pageData.willPickup}
+                text='Will Pickup'
+                onPress={handleWillPickupBottomSheet}
               />
               <DashBoardCard
                 imageUri={require('../../assets/box.png')}
@@ -222,7 +258,107 @@ export default function ({ navigation, route }) {
               </View>
             </BottomSheetView>
           </BottomSheet>
-
+          {/* Handing Deliver Order */}
+          <BottomSheet
+            ref={bottomSheetRefToDeliver}
+            index={-1}
+            snapPoints={snapPoints}
+            enablePanDownToClose={true}
+            backgroundStyle={{
+              borderTopRightRadius: 60,
+              borderTopLeftRadius: 60,
+            }}
+          >
+            <BottomSheetView>
+              <View style={styles.containerOverlay}>
+                <H4 style={styles.topic}>To Deliver</H4>
+                <View style={styles.containerOverlay}>
+                  {pageData.toDeliverOrdersList?.length > 0 ? (
+                    pageData.toDeliverOrdersList?.map((order, index) => {
+                      return (
+                        <View style={styles.newOrdersContainer} key={index}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate('Order Status Update', {
+                                orderId: order.orderId,
+                              });
+                            }}
+                          >
+                            <H5>
+                              {order.customerFirstName} {order.customerLastName}{' '}
+                              has ordered
+                            </H5>
+                            {order.itemDetails.map((item, index) => (
+                              <H5
+                                key={index}
+                                style={{ color: Theme.secondary }}
+                              >
+                                {item.qty} {item.unit} of {item.title}
+                              </H5>
+                            ))}
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    })
+                  ) : (
+                    <H4 style={styles.noItemsContainer}>
+                      No orders to deliver
+                    </H4>
+                  )}
+                </View>
+              </View>
+            </BottomSheetView>
+          </BottomSheet>
+          {/* Handing Pickup Order */}
+          <BottomSheet
+            ref={bottomSheetRefWillPickup}
+            index={-1}
+            snapPoints={snapPoints}
+            enablePanDownToClose={true}
+            backgroundStyle={{
+              borderTopRightRadius: 60,
+              borderTopLeftRadius: 60,
+            }}
+          >
+            <BottomSheetView>
+              <View style={styles.containerOverlay}>
+                <H4 style={styles.topic}>Customer Will Pickup</H4>
+                <View style={styles.containerOverlay}>
+                  <ScrollView showsVerticalScrollIndicator={false}>
+                    {pageData.willPickupOrdersList?.length > 0 ? (
+                      pageData.willPickupOrdersList.map((order, index) => (
+                        <View style={styles.newOrdersContainer} key={index}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate('Order Status Update', {
+                                orderId: order.orderId,
+                              });
+                            }}
+                          >
+                            <H5>
+                              {order.customerFirstName} {order.customerLastName}{' '}
+                              has ordered
+                            </H5>
+                            {order.itemDetails.map((item, index) => (
+                              <H5
+                                key={index}
+                                style={{ color: Theme.secondary }}
+                              >
+                                {' '}
+                                {item.qty} {item.unit} of {item.title}
+                              </H5>
+                            ))}
+                          </TouchableOpacity>
+                        </View>
+                      ))
+                    ) : (
+                      <H4 style={styles.noItemsContainer}>No Past Orders</H4>
+                    )}
+                  </ScrollView>
+                </View>
+              </View>
+            </BottomSheetView>
+          </BottomSheet>
           {/* Handing Past Order */}
           <BottomSheet
             ref={bottomSheetRefPastOrder}
