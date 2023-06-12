@@ -6,7 +6,7 @@ import { database, auth } from "../../utils/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
 import Theme from "../../constants/theme";
-import { color } from "react-native-reanimated";
+
 
 export default function Chat({routes}) {
   const [messages, setMessages] = useState([]);

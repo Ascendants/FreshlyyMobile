@@ -51,6 +51,7 @@ export { default as TicketDetailsScreen } from './customerscreens/TicketDetailsS
 export { default as TicketStatusScreen } from './customerscreens/TicketStatusScreen';
 export { default as ChatScreen } from './customerscreens/ChatScreen';
 export { default as WishListScreen } from './customerscreens/WishListScreen';
+export { default as Chat} from './customerscreens/Chat';
 
 //Farmer Screens
 
