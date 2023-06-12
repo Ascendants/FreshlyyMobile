@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,20 +15,17 @@ import {
   DropDownPicker,
   DatePicker,
 } from "../../components/Inputs";
-import { AntDesign, Ionicons, Feather } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/Header";
-import { H4, P, H3, H1 } from "../../components/Texts";
-import Rating from "../../components/Rating";
+import { H4, P, H3, H5, H6 } from "../../components/Texts";
+import { AntDesign, Ionicons, Feather } from "@expo/vector-icons";
 import ENV from "../../constants/env";
-import ProductDeatilCard from "../../components/ProductDetailCard";
-import Loading from "../../components/Loading";
 
-export default function ({ navigation, route }) {
-  const [products, setProducts] = useState([]);
+export default function () {
+  const [farmer, setFarmer] = useState([]);
+  // const [items, setItem] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [farmer, setFarmer] = useState({});
 
   async function follow() {
     try {
@@ -77,24 +73,20 @@ export default function ({ navigation, route }) {
 
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + "/customer/farmerDetail/haritha@hasathcharu.com", {
+    fetch(ENV.backend + "/customer/reportFarmer/63b6b5d2ce65a7b5a2671383", {
       //getting data from the backend (all products)
       method: "GET",
-      headers: {
-        userEmail: route.params.userEmail,
-      },
     })
       .then((res) => res.json())
       .then((res) => {
         if (res.message == "Success") {
           setFarmer(res.farmer);
-          setProducts(res.products);
+          console.log(res);
         }
         isRefreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
   };
-
   useEffect(() => {
     getData();
   }, []);
@@ -104,6 +96,7 @@ export default function ({ navigation, route }) {
       <Header back={true} />
       <ScrollView>
         <View style={styles.screen}>
+          <H3>Report Farmer</H3>
           <View>
             <Image
               source={{ uri: farmer?.farmerImage?.imageUrl }}
@@ -113,70 +106,43 @@ export default function ({ navigation, route }) {
           <View style={styles.textName}>
             <H3 style={styles.name}>{farmer?.farmerName}</H3>
           </View>
-          {/* <Rating value={products.overallRating} /> */}
-          {/* <H4>{product.noOfReviews}</H4> */}
-          <View style={styles.actionButtonContainer}>
-            <Button
-              icon={
-                <Feather
-                  name="message-circle"
-                  size={24}
-                  color={Theme.textColor}
-                />
-              }
-              title="Chat"
-              type="icon"
-              size="normal"
-              color="shadedTertiary"
-            />
-            <Button
-              type="icon"
-              icon={
-                <Ionicons
-                  name="ios-share-outline"
-                  size={24}
-                  color={Theme.textColor}
-                />
-              }
-              title="Share"
-              size="normal"
-              color="shadedTertiary"
-            />
-            <Button
-              type="icon"
-              icon={
-                <Ionicons
-                  name="alert-circle-outline"
-                  size={24}
-                  color={Theme.textColor}
-                />
-              }
-              title="Report"
-              size="normal"
-              color="shadedTertiary"
-            />
-          </View>
+        </View>
+        <View style={styles.actionButtonContainer}>
+          <Button
+            icon={
+              <Feather
+                name="message-circle"
+                size={24}
+                color={Theme.textColor}
+              />
+            }
+            title="Chat"
+            type="icon"
+            size="normal"
+            color="shadedTertiary"
+          />
+          <Button
+            type="icon"
+            icon={
+              <Ionicons
+                name="ios-share-outline"
+                size={24}
+                color={Theme.textColor}
+              />
+            }
+            title="Share"
+            size="normal"
+            color="shadedTertiary"
+          />
+        </View>
+        <View>
           <Button
             title={farmer?.isFollowing ? "Following" : "Follow"}
             color={farmer?.isFollowing ? "filledPrimary" : "shadedPrimary"}
             size="normal"
             onPress={farmer?.isFollowing ? unfollow : follow}
           />
-          <H3>Popular Products</H3>
         </View>
-        <ScrollView horizontal={true}>
-          {products?.map((product) => {
-            return (
-              <ProductDeatilCard
-                key={product?.productid}
-                title={product?.title}
-                imageUrl={product?.imageUrl}
-                price={product?.uPrice}
-                overallRating={product?.overallRating}
-              />
-            );
-          })}
-        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
@@ -214,6 +180,70 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     //justifyContent: 'flex-end',
     alignItems: "center",
-    flex: 3,
+    flex: 2,
   },
 });
+
+// farmername: {
+//   color: "blue",
+// },
+// delivery: {
+//   textAlign: "left",
+//   marginTop: 5,
+//   marginBottom: 5,
+// },
+// communi: {
+//   marginTop: 5,
+//   marginBottom: 5,
+// },
+// rating: {
+//   marginBottom: 5,
+// },
+// edit: {
+//   marginTop: 40,
+// },
+// image: {
+//   width: 85,
+//   height: 85,
+//   borderRadius: 100,
+// },
+// name: {
+//   color: Theme.primary,
+//   justifyContent: "center",
+// },
+// Rating: {
+//   justifyContent: "center",
+// },
+// H4: {
+//   alignItems: "center",
+// },
+// actionButtonContainer: {
+//   flexDirection: "row",
+//   //justifyContent: 'flex-end',
+//   alignItems: "center",
+//   flex: 3,
+// },
+// contaniner: {
+//   display: "flex",
+//   flexDirection: "row",
+//   flex: 2,
+// },
+// innercontaniner: {
+//   display: "flex",
+//   flexDirection: "column",
+//   marginLeft: 20,
+//   justifyContent: "space-between",
+//   //alignItems:'right',
+// },
+// contaniner2: {
+//   display: "flex",
+//   flexDirection: "row",
+//   flex: 2,
+//   margin: 20,
+//   justifyContent: "center",
+// },
+// btn: {
+//   height: "90%",
+//   marginVertical: 10,
+// },
+//});
