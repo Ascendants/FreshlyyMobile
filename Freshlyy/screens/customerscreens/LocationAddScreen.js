@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,35 +8,33 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-} from 'react-native';
-import Theme from '../../constants/theme';
-import { Button } from '../../components/Buttons';
+} from "react-native";
+import Theme from "../../constants/theme";
+import { Button } from "../../components/Buttons";
 import {
   TextInputBox,
   DropDownPicker,
   DatePicker,
-} from '../../components/Inputs';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
-import { H4, P, H6 } from '../../components/Texts';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { LocationCard } from '../../components/LocationCard';
-import MapView, { Marker, Callout } from 'react-native-maps';
-import * as Location from 'expo-location';
-import Loading from '../../components/Loading';
-
+} from "../../components/Inputs";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../components/Header";
+import { H4, P, H6 } from "../../components/Texts";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import MapView, { Marker, Callout } from "react-native-maps";
+import * as Location from "expo-location";
+import Loading from "../../components/Loading";
 
 export default function App() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [locationName, setLocationName] = useState('');
+  const [locationName, setLocationName] = useState("");
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
@@ -47,7 +45,7 @@ export default function App() {
 
   const getAddress = async (latitude, longitude) => {
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${'AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw'}`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw"}`
     );
     const data = await response.json();
     return data.results[0].formatted_address;
@@ -75,14 +73,12 @@ export default function App() {
     });
   };
 
-  let text = <Loading/>;
+  let text = <Loading />;
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     const latitude = location.coords.latitude;
     const longitude = location.coords.longitude;
-  
-    
 
     return (
       <SafeAreaView>
@@ -90,23 +86,33 @@ export default function App() {
           <Header back={true} />
           <View style={styles.screen}>
             <H4>Select your Address</H4>
-            <TextInputBox style={styles.textBox}></TextInputBox>
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: 7.8731,
-                longitude: 80.7718,
-                latitudeDelta: 5,
-                longitudeDelta: 5,
-              }}
-              onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
-            >
-              {selectedLocation && (
-                <Marker coordinate={selectedLocation}>
-                  
-                </Marker>
-              )}
-            </MapView>
+            <View style={styles.inputcont}>
+              <TextInputBox inputlabel="Name" type="text" />
+              <TextInputBox inputlabel="Address" type="text" />
+            </View>
+            <View style={styles.map}>
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: 7.8731,
+                  longitude: 80.7718,
+                  latitudeDelta: 5,
+                  longitudeDelta: 5,
+                }}
+                onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
+              >
+                {selectedLocation && (
+                  <Marker coordinate={selectedLocation}></Marker>
+                )}
+              </MapView>
+            </View>
+            <View>
+              <Button
+                title="Save Location"
+                color="shadedPrimary"
+                size="normal"
+              />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -123,17 +129,18 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  textBox:{
+  textBox: {
     padding: 10,
   },
   map: {
     margin: 10,
-    border: 10,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    // marginRight: 10,
+    //border: 10,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   callout: {
     width: 200,
@@ -141,8 +148,14 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     marginTop: 8,
     padding: 4,
+  },
+  inputcont: {
+    width: "80%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 30,
   },
 });

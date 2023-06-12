@@ -24,12 +24,13 @@ import ENV from "../../constants/env";
 
 export default function ({ navigation, route }) {
   const [location, setLocation] = useState([]);
+  const [address, setAddress] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + "/customer/LocationDetail/", {
+    fetch(ENV.backend + "/customer/selected-location/", {
       method: "GET",
       headers: {
         userEmail: route.params.userEmail,
@@ -56,18 +57,18 @@ export default function ({ navigation, route }) {
       <ScrollView>
         <View style={styles.screen}>
           <H3>Locations</H3>
-          {location?.map((farmer) => {
+          {location?.map((item) => {
             return (
               <LocationCard
-                key={farmer?.farmerid}
-                farmerName={farmer?.farmerName}
-                imageUrl={farmer?.imageUrl}
-                onDelete={() => unfollow(farmer?.farmerid)}
+                locationName={item?.locationName}
+                address={address?.address}
+                longitude={item?.longitude}
+                latitude={item?.latitude}
+                onEdit={() => editLocation(item?.userId)}
+                onDelete={() => deleteLocation(item?.userId)}
               />
             );
           })}
-          <LocationCard />
-          <LocationCard />
           <Button title="Add Location" color="shadedPrimary" size="normal" />
         </View>
       </ScrollView>

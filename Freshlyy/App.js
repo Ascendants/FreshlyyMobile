@@ -24,7 +24,7 @@ export default function App() {
         >
           <Stack.Screen
             name="Order Review"
-            component={Screens.FarmerDetailScreen}
+            component={Screens.LocationScreen}
             initialParams={{
               userEmail: userEmail,
             }}
