@@ -86,7 +86,7 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.Chat}
+            component={Screens.CustomerDashboardScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,
@@ -246,6 +246,11 @@ export default function App(props) {
             options={{
               animation: 'slide_from_bottom',
             }}
+          />
+          <Stack.Screen
+            name='Chat'
+            component={Screens.Chat}
+            initialParams={defaultParams}
           />
           <Stack.Screen
             name='Help Center'

@@ -177,6 +177,12 @@ export default function ({ navigation, route }) {
   //     })
   //     .catch((err) => console.log(err));
   // }
+  // console.log(product.farmer);
+  function navigateToChat() {
+    navigation.navigate('Chat', {
+      farmerName: product.farmerName,
+    });
+  }
 
   return (
     <SafeAreaView>
@@ -288,6 +294,7 @@ export default function ({ navigation, route }) {
                   type='icon'
                   size='normal'
                   color='shadedTertiary'
+                  onPress={navigateToChat}
                 />
                 <Button
                   type='icon'
