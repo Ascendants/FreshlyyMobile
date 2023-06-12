@@ -32,7 +32,7 @@ export default function ({ navigation, route }) {
       const result = await fetch(ENV.backend + "/customer/unfollow/" + id, {
         method: "POST",
         headers: {
-          useremail: route.params.userEmail,
+          Authorization: route.params.auth,
         },
       });
       const res = await result.json();
@@ -51,7 +51,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + "/customer/followDetail/", {
       method: "GET",
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

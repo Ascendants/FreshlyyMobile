@@ -100,7 +100,7 @@ export default function () {
     fetch(ENV.backend + "/customer/farmerDetail/haritha@hasathcharu.com", {
       method: "GET",
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

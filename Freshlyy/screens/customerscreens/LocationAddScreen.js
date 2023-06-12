@@ -23,12 +23,43 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import Loading from "../../components/Loading";
+import { Formik, validateYupSchema, useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function App() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [locationName, setLocationName] = useState("");
+  const [valid, setValid] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  const validationSchema = Yup.object().shape({
+    LocationName: Yup.string()
+      .min(2, "Location name is too short!")
+      .required("Location name is required!"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      LocationName: "",
+    },
+    validationSchema: validationSchema,
+  });
+
+  async function submitSelectedLocation() {
+    formik.validateForm();
+    Object.keys(formik.values).forEach((value) => {
+      formik.setFieldTouched(value);
+    });
+    if (!Object.keys(formik.touched).length) return;
+    for (let error in formik.errors) if (error) return;
+    const data = formik.values;
+    setValid(true);
+    setUserData(data);
+    console.log(userData);
+    console.log(selectedLocation);
+  }
 
   useEffect(() => {
     (async () => {
@@ -82,13 +113,23 @@ export default function App() {
 
     return (
       <SafeAreaView>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Header back={true} />
           <View style={styles.screen}>
             <H4>Select your Address</H4>
             <View style={styles.inputcont}>
-              <TextInputBox inputlabel="Name" type="text" />
-              <TextInputBox inputlabel="Address" type="text" />
+              <TextInputBox
+                inputlabel="Name"
+                placeholder="Enter First name"
+                name="LocationName"
+                onChangeText={formik.handleChange("LocationName")}
+                onBlur={() =>
+                  formik.setFieldTouched("LocationName", true, true)
+                }
+                value={formik.values.LocationName}
+                error={formik.errors.LocationName}
+                touched={formik.touched.LocationName}
+              />
             </View>
             <View style={styles.map}>
               <MapView
@@ -111,6 +152,7 @@ export default function App() {
                 title="Save Location"
                 color="shadedPrimary"
                 size="normal"
+                onPress={submitSelectedLocation}
               />
             </View>
           </View>
@@ -137,10 +179,10 @@ const styles = StyleSheet.create({
   },
   map: {
     margin: 10,
-    // marginRight: 10,
+    marginTop: 0,
     //border: 10,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: 320,
+    height: 520,
   },
   callout: {
     width: 200,

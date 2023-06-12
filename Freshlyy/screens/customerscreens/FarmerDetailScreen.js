@@ -38,7 +38,7 @@ export default function ({ navigation, route }) {
         {
           method: "POST",
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
@@ -60,7 +60,7 @@ export default function ({ navigation, route }) {
         {
           method: "POST",
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
@@ -77,11 +77,11 @@ export default function ({ navigation, route }) {
 
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + "/customer/farmerDetail/haritha@hasathcharu.com", {
+    fetch(ENV.backend + "/customer/farmerDetail/nadun@freshlyy.com", {
       //getting data from the backend (all products)
       method: "GET",
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())

@@ -34,7 +34,7 @@ export default function () {
         {
           method: "POST",
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
@@ -56,7 +56,7 @@ export default function () {
         {
           method: "POST",
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
@@ -76,6 +76,9 @@ export default function () {
     fetch(ENV.backend + "/customer/reportFarmer/63b6b5d2ce65a7b5a2671383", {
       //getting data from the backend (all products)
       method: "GET",
+      headers: {
+        Authorization: route.params.auth,
+      },
     })
       .then((res) => res.json())
       .then((res) => {

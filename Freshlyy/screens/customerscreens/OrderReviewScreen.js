@@ -30,16 +30,14 @@ export default function ({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const sendToProductDetail = async (pubUrl) => {
-    navigation.navigate("Order Detail", {
-      purl: pubUrl,
-    });
-  };
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
     fetch(ENV.backend + "/customer/orderDetail/641421775bbd0f10a17cf24e", {
       //getting data from the backend (all products)
       method: "GET",
+      headers: {
+        Authorization: route.params.auth,
+      },
     })
       .then((res) => res.json())
       .then((res) => {
