@@ -16,7 +16,7 @@ import LoadingModal from '../../components/LoadingModal';
 import LottieView from 'lottie-react-native';
 
 export default function ({ navigation, route }) {
-  console.log(route.params.userData)
+ // console.log(route.params.userData)
   const [errors, setErrors] = useState("");
   const [resend, setReSend] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);

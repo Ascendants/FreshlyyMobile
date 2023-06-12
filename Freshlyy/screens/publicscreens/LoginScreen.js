@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import LoadingModal from '../../components/LoadingModal';
 import { Formik, validateYupSchema, useFormik } from 'formik';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function ({ navigation, route }) {
   const [valid, setValid] = useState(false);
@@ -163,7 +164,14 @@ export default function ({ navigation, route }) {
               size='big'
               onPress={submit}
             />
-            <H7 style={{ color: Theme.secondary }}>Forgot Password</H7>
+            <TouchableOpacity>
+        <Text
+          style={styles.signInText}
+          onPress={() => navigation.navigate('Forgotpassword')}
+        >
+          Forgot Password!
+        </Text>
+        </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
@@ -200,5 +208,10 @@ const styles = StyleSheet.create({
     color: Theme.danger,
     paddingBottom: 10,
     textAlign: 'center',
+  },
+  signInText: {
+    fontSize: 15,
+    color: Theme.blue,
+    fontWeight: 'bold',
   },
 });

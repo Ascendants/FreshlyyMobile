@@ -37,7 +37,7 @@ export default function ({ navigation, route }) {
           <TextInputBox inputlabel='Email' type='email' />
         </View>
         <View></View>
-        <Button title='Send' color='shadedPrimary' size='big' />
+        <Button title='Send' color='shadedPrimary' size='big' onPress={() => navigation.navigate('verifyYourEmail')} />
       </View>
     </SafeAreaView>
   );

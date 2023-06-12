@@ -1,15 +1,15 @@
-import { contains } from '@firebase/util';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { H1, H2, H3, H4, H5, H7, H6, Pr, P } from '../components/Texts';
-import Theme from '../constants/theme';
-import { FilledBigButton } from '../components/Buttons';
-import theme from '../constants/theme';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
-import Rating from '../components/Rating';
-import ENV from '../constants/env';
-import LinearGradient from 'react-native-linear-gradient';
+import { contains } from "@firebase/util";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { H1, H2, H3, H4, H5, H7, H6, Pr, P } from "../components/Texts";
+import Theme from "../constants/theme";
+import { FilledBigButton } from "../components/Buttons";
+import theme from "../constants/theme";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
+import Rating from "../components/Rating";
+import ENV from "../constants/env";
+import LinearGradient from "react-native-linear-gradient";
 
 export default function (props, onLikePress) {
   const [isLiked, setIsLiked] = useState(props.likes.includes(props.userEmail));
@@ -20,9 +20,9 @@ export default function (props, onLikePress) {
   const handleLike = () => {
     const newIsLiked = !isLiked;
     setIsLiked(newIsLiked);
-    const method = newIsLiked ? 'add' : 'remove';
+    const method = newIsLiked ? "add" : "remove";
     props.onLike(props.id, newIsLiked, method);
-    if (method === 'add') {
+    if (method === "add") {
       setLikeCount(likecount + 1);
     } else {
       setLikeCount(likecount - 1);
@@ -32,12 +32,14 @@ export default function (props, onLikePress) {
   };
 
   return (
-    <TouchableOpacity onPress={() => props.onPress(props.publicUrl)}>
+    <TouchableOpacity
+      onPress={() => (props.onPress ? props.onPress(props.publicUrl) : null)}
+    >
       <View styles={styles.cardBigCont}>
         <View
           style={[
             styles.card,
-            props.cardType == 'social'
+            props.cardType == "social"
               ? { height: 290 }
               : props.distanceAway
               ? { height: 290 }
@@ -76,7 +78,7 @@ export default function (props, onLikePress) {
             {props.distanceAway != null ? (
               <H6>{props.distanceAway} Away</H6>
             ) : null}
-            {props.cardType == 'social' && (
+            {props.cardType == "social" && (
               <View style={styles.likecont}>
                 <H6>{likecount} Likes</H6>
                 {isLiked ? (
@@ -106,25 +108,25 @@ export default function (props, onLikePress) {
 }
 const styles = StyleSheet.create({
   cardBigCont: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     padding: 10,
   },
   card: {
     width: 166,
     backgroundColor: Theme.overlay,
     borderRadius: 20,
-    boxShadow: '100px 100px 17px -12px rgba(0,3,0,0.75)',
+    boxShadow: "100px 100px 17px -12px rgba(0,3,0,0.75)",
     marginVertical: 15,
     marginHorizontal: 10,
     paddingHorizontal: 0,
   },
   cheaperCont: {
-    position: 'absolute',
-    backgroundColor: '#FFB400',
+    position: "absolute",
+    backgroundColor: "#FFB400",
     borderRadius: 3.5,
     paddingHorizontal: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     top: -15,
     height: 25,
     width: 95,
@@ -134,44 +136,44 @@ const styles = StyleSheet.create({
   },
   imgcont: {
     marginTop: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   cardimage: {
     width: 145,
     height: 120,
     borderRadius: 10,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   prodname: {},
   reviewCont: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
   },
   desccont: {
-    position: 'relative',
+    position: "relative",
     width: 180,
 
     paddingHorizontal: 10,
     marginTop: 10,
   },
   likecont: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     paddingHorizontal: 2,
   },
   likecont: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   likeIco: {
-    position: 'absolute',
+    position: "absolute",
     left: 110,
     top: -6,
   },

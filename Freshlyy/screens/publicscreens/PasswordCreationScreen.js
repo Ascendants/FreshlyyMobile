@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
@@ -25,7 +26,7 @@ import * as Yup from 'yup';
 export default function ({ navigation, route }) {
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
-  console.log(route.params);
+  //console.log(route.params);
   const validationSchema = Yup.object().shape({
     password: Yup.string()
       .required('Password is required')
@@ -55,7 +56,8 @@ export default function ({ navigation, route }) {
     setValid(true);
     console.log(data);
     if (valid) {
-      navigation.navigate('beFarmer', { type: 'Success' });
+      Alert.alert('Password Created Successfully', '', )
+      navigation.navigate('LoginScreen');
     }
   }
 

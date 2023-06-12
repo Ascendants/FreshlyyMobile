@@ -34,8 +34,10 @@ export default function ({ navigation, route }) {
           Please enter the 4 digit code sent to nadunrupasinghe@gmail.com
         </H4>
 
-        <View></View>
-        <Button title='Verify' color='shadedPrimary' size='big' />
+        <View style={styles.inputcont}>
+        <TextInputBox inputlabel='code'placeholder='Enter Verification code ' />
+        </View>
+        <Button title='Verify' color='shadedPrimary' size='big' onPress={() => navigation.navigate('createPassword')} />
       </View>
     </SafeAreaView>
   );
@@ -61,6 +63,6 @@ const styles = StyleSheet.create({
   inputcont: {
     width: '80%',
     alignItems: 'center',
-    marginBottom: 70,
+    marginBottom: 20,
   },
 });

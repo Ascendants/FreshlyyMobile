@@ -1,5 +1,5 @@
-import { contains } from '@firebase/util';
-import React, { useEffect, useState, useRef } from 'react';
+import { contains } from "@firebase/util";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,31 +8,31 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
-} from 'react-native';
-import { H1, H2, H3, H4, H7, H6, P } from '../../components/Texts';
-import Theme from '../../constants/theme';
-import { FilledBigButton } from '../../components/Buttons';
-import theme from '../../constants/theme';
+} from "react-native";
+import { H1, H2, H3, H4, H7, H6, P } from "../../components/Texts";
+import Theme from "../../constants/theme";
+import { FilledBigButton } from "../../components/Buttons";
+import theme from "../../constants/theme";
 import {
   findFocusedRoute,
   getFocusedRouteNameFromRoute,
-} from '@react-navigation/native';
-import ProductCard from '../../components/ProductCard';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native-gesture-handler';
-import Header from '../../components/Header';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
-import Rating from '../../components/Rating';
-import ENV from '../../constants/env';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { Rate5 } from '../../components/Rate5';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import * as Animatable from 'react-native-animatable';
-import { Animations } from '../../constants/Animation';
-import Loading from '../../components/Loading';
+} from "@react-navigation/native";
+import ProductCard from "../../components/ProductCard";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
+import Header from "../../components/Header";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import Rating from "../../components/Rating";
+import ENV from "../../constants/env";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { Rate5 } from "../../components/Rate5";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import * as Animatable from "react-native-animatable";
+import { Animations } from "../../constants/Animation";
+import Loading from "../../components/Loading";
 
 export default function ({ navigation, route }) {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState([]);
   const [filterproducts, setFilterProducts] = useState([]);
   const [sortByPrice, setSortByPrice] = useState(false);
@@ -47,23 +47,25 @@ export default function ({ navigation, route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const bottomSheetRef = useRef(null);
-  const snapPoints = ['60%', '100%'];
+  const snapPoints = ["60%", "100%"];
 
   const sendToProductDetail = async (pubUrl) => {
-    navigation.navigate('Product Detail', {
+    navigation.navigate("Product Detail", {
       purl: pubUrl,
     });
   };
 
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + '/customer/mainpage/', {
+    //console.log(route.params.auth);
+    fetch(ENV.backend + "/customer/mainpage/", {
       //getting data from the backend (all products)
-      method: 'GET',
+
+      method: "GET",
       headers: {
-        useremail: 'gimhani@freshlyy.com',
+        useremail: "gimhani@freshlyy.com",
         Authorization: route.params?.auth,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
@@ -82,10 +84,11 @@ export default function ({ navigation, route }) {
   const handleLikePress = async (productId) => {
     // Send a POST request to update the product's likes array in MongoDB
     const response = await fetch(`/customer/${productId}/like`, {
-      method: 'POST',
-      body: JSON.stringify({ email: 'gimhani@freshlyy.com' }),
+      method: "POST",
+      body: JSON.stringify({ email: "gimhani@freshlyy.com" }),
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: route.params?.auth,
+        "Content-Type": "application/json",
       },
     });
     const data = await response.json();
@@ -216,7 +219,7 @@ export default function ({ navigation, route }) {
                   style={
                     sortByBestMatch
                       ? { color: Theme.primary }
-                      : { color: 'black' }
+                      : { color: "black" }
                   }
                 />
                 <H6 style={sortByBestMatch ? { color: Theme.primary } : {}}>
@@ -231,7 +234,7 @@ export default function ({ navigation, route }) {
                   name='swap-vertical'
                   size={24}
                   style={
-                    sortByPrice ? { color: Theme.primary } : { color: 'black' }
+                    sortByPrice ? { color: Theme.primary } : { color: "black" }
                   }
                 />
                 <H6 style={sortByPrice ? { color: Theme.primary } : {}}>
@@ -248,7 +251,7 @@ export default function ({ navigation, route }) {
                   style={
                     sortByDistance
                       ? { color: Theme.primary }
-                      : { color: 'black' }
+                      : { color: "black" }
                   }
                 />
                 <H6 style={sortByDistance ? { color: Theme.primary } : {}}>
@@ -269,7 +272,7 @@ export default function ({ navigation, route }) {
               <Loading />
             ) : (
               <FlatList
-                style={{ height: '100%', flex: 1 }}
+                style={{ height: "100%", flex: 1 }}
                 numColumns={2}
                 data={filteredProducts}
                 refreshing={refreshing}
@@ -290,7 +293,7 @@ export default function ({ navigation, route }) {
                       unit={item.unit}
                       overallRating={item.overallRating}
                       likes={item.likes}
-                      userID={auth.user.email}
+                      userID={route.params.userEmail}
                       onLikePress={handleLikePress}
                       bestMatch={sortByBestMatch}
                       cheaper={item.cheaper}
@@ -330,7 +333,7 @@ export default function ({ navigation, route }) {
                           style={
                             sortByBestMatch
                               ? { color: Theme.primary }
-                              : { color: 'black' }
+                              : { color: "black" }
                           }
                         />
                         <H6
@@ -351,7 +354,7 @@ export default function ({ navigation, route }) {
                           style={
                             sortByDistance
                               ? { color: Theme.primary }
-                              : { color: 'black' }
+                              : { color: "black" }
                           }
                         />
                         <H6
@@ -370,7 +373,7 @@ export default function ({ navigation, route }) {
                           style={
                             sortByPrice
                               ? { color: Theme.primary }
-                              : { color: 'black' }
+                              : { color: "black" }
                           }
                         />
                         <H6 style={sortByPrice ? { color: Theme.primary } : {}}>
@@ -388,7 +391,7 @@ export default function ({ navigation, route }) {
                         style={
                           sortByDeliveryCost
                             ? { color: Theme.primary }
-                            : { color: 'black' }
+                            : { color: "black" }
                         }
                       />
                       <H6
@@ -412,10 +415,10 @@ export default function ({ navigation, route }) {
                             sortByRating4
                               ? {
                                   color: Theme.primary,
-                                  fontWeight: 'bold',
+                                  fontWeight: "bold",
                                   fontSize: 17,
                                 }
-                              : { fontWeight: 'bold', fontSize: 17 }
+                              : { fontWeight: "bold", fontSize: 17 }
                           }
                         >
                           & UP
@@ -431,10 +434,10 @@ export default function ({ navigation, route }) {
                             sortByRating3
                               ? {
                                   color: Theme.primary,
-                                  fontWeight: 'bold',
+                                  fontWeight: "bold",
                                   fontSize: 17,
                                 }
-                              : { fontWeight: 'bold', fontSize: 17 }
+                              : { fontWeight: "bold", fontSize: 17 }
                           }
                         >
                           & UP
@@ -451,10 +454,10 @@ export default function ({ navigation, route }) {
                             sortByDeliveryBelow200
                               ? {
                                   color: Theme.primary,
-                                  fontWeight: 'bold',
+                                  fontWeight: "bold",
                                   fontSize: 17,
                                 }
-                              : { fontWeight: 'bold', fontSize: 17 }
+                              : { fontWeight: "bold", fontSize: 17 }
                           }
                         >
                           Below 200
@@ -469,10 +472,10 @@ export default function ({ navigation, route }) {
                             sortByDeliveryBelow300
                               ? {
                                   color: Theme.primary,
-                                  fontWeight: 'bold',
+                                  fontWeight: "bold",
                                   fontSize: 17,
                                 }
-                              : { fontWeight: 'bold', fontSize: 17 }
+                              : { fontWeight: "bold", fontSize: 17 }
                           }
                         >
                           Below 300
@@ -491,72 +494,72 @@ export default function ({ navigation, route }) {
 }
 const styles = StyleSheet.create({
   screen: {
-    height: '100%',
+    height: "100%",
   },
   searchico: {
     paddingRight: 10,
   },
   searchinput: {
-    width: '87%',
+    width: "87%",
   },
   searchContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   searchCont: {
-    display: 'flex',
-    backgroundColor: 'red',
+    display: "flex",
+    backgroundColor: "red",
     padding: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: Theme.overlay,
-    width: '90%',
+    width: "90%",
     borderRadius: 20,
     marginVertical: 10,
   },
   filterCont: {
-    display: 'flex',
-    width: '100%',
+    display: "flex",
+    width: "100%",
     paddingVertical: 0,
     paddingHorizontal: 20,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     marginVertical: 5,
   },
   filterSelect: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 
   productsContainer: {
     marginVertical: 10,
-    width: '100%',
+    width: "100%",
     flex: 1,
     paddingHorizontal: 10,
     marginBottom: 150,
   },
   bottomSheetContent: {
-    color: 'blue',
+    color: "blue",
     padding: 5,
     paddingHorizontal: 25,
   },
   filterText: {
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 15,
   },
   centerFilter: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
     paddingVertical: 10,
   },
   filterByCont: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 5,
     marginVertical: 10,
     backgroundColor: Theme.overlay,
@@ -565,13 +568,13 @@ const styles = StyleSheet.create({
     height: 36,
   },
   filterByText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 17,
   },
   ratingCont: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
     marginBottom: 20,
   },
 });
