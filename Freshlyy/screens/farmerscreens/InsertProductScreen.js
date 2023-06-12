@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,34 +8,33 @@ import {
   TextInput,
   ScrollView,
   Alert,
-} from 'react-native';
-import Theme from '../../constants/theme';
-import { Button } from '../../components/Buttons';
+} from "react-native";
+import Theme from "../../constants/theme";
+import { Button } from "../../components/Buttons";
 import {
   TextInputBox,
   DropDownPicker,
   DatePicker,
-} from '../../components/Inputs';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
-import { H1, H2 } from '../../components/Texts';
-import env from '../../constants/env';
-import * as ImagePicker from 'expo-image-picker';
-import firebase from '../../utils/firebase';
-import { FreshlyyImageStore } from '../../utils/firebase';
-import { async } from '@firebase/util';
-import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import uuid from 'react-native-uuid';
-import { min } from 'react-native-reanimated';
+} from "../../components/Inputs";
+import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../components/Header";
+import { H1, H2 } from "../../components/Texts";
+import env from "../../constants/env";
+import * as ImagePicker from "expo-image-picker";
+import firebase from "../../utils/firebase";
+import { FreshlyyImageStore } from "../../utils/firebase";
+import { async } from "@firebase/util";
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import uuid from "react-native-uuid";
+import { min } from "react-native-reanimated";
 
 export default function ({ navigation }) {
-  console.log();
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [description, setDescription] = useState('');
-  const [minQtyIncrement, setMinQuantity] = useState('');
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [description, setDescription] = useState("");
+  const [minQtyIncrement, setMinQuantity] = useState("");
   const [errors, setErrors] = useState({});
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -85,7 +84,7 @@ export default function ({ navigation }) {
         // } catch (e) {
         //   console.log(e);
         console.error(error);
-        throw new Error('An error occurred while uploading images.');
+        throw new Error("An error occurred while uploading images.");
       }
       setUploading(false);
       return true;
@@ -97,7 +96,7 @@ export default function ({ navigation }) {
     // return allImagesUploaded;
     // Return a boolean value indicating whether all images are uploaded successfully or not
     if (!allImagesUploaded) {
-      throw new Error('Not all images were uploaded successfully.');
+      throw new Error("Not all images were uploaded successfully.");
     }
 
     return true;
@@ -105,10 +104,11 @@ export default function ({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(env.backend + '/farmer/insert-product/', {
-        method: 'POST',
+      const response = await fetch(env.backend + "/farmer/insert-product/", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          userEmail: "nadun@freshlyy.com",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: title,
@@ -136,9 +136,9 @@ export default function ({ navigation }) {
       images.length === 0
     ) {
       Alert.alert(
-        'Error',
-        'Please fill all the required details and select at least one image.',
-        [{ text: 'OK' }]
+        "Error",
+        "Please fill all the required details and select at least one image.",
+        [{ text: "OK" }]
       );
       return;
     }
@@ -148,21 +148,21 @@ export default function ({ navigation }) {
       const areImagesUploaded = await uploadImages();
 
       if (isDataValid && areImagesUploaded) {
-        console.log('Form submitted successfully.');
-        navigation.navigate('productAddedSuccessfully');
+        console.log("Form submitted successfully.");
+        navigation.navigate("productAddedSuccessfully");
       } else {
         Alert.alert(
-          'Error',
-          'An error occurred while submitting the form. Please try again later.',
-          [{ text: 'OK' }]
+          "Error",
+          "An error occurred while submitting the form. Please try again later.",
+          [{ text: "OK" }]
         );
       }
     } catch (error) {
       console.error(error);
       Alert.alert(
-        'Error',
-        'An error occurred while submitting the form. Please try again later.',
-        [{ text: 'OK' }]
+        "Error",
+        "An error occurred while submitting the form. Please try again later.",
+        [{ text: "OK" }]
       );
     }
   };
@@ -174,9 +174,9 @@ export default function ({ navigation }) {
       ...prevErrors,
       title:
         text.length < 2
-          ? 'Product Name must be at least 2 characters'
+          ? "Product Name must be at least 2 characters"
           : /\d/.test(text)
-          ? 'Product Name cannot contain numbers'
+          ? "Product Name cannot contain numbers"
           : null,
     }));
   };
@@ -185,9 +185,9 @@ export default function ({ navigation }) {
       ...prevErrors,
       title:
         title.length < 2
-          ? 'Product Name must be at least 2 characters'
+          ? "Product Name must be at least 2 characters"
           : /\d/.test(title)
-          ? 'Product Name cannot contain numbers'
+          ? "Product Name cannot contain numbers"
           : null,
     }));
   };
@@ -197,7 +197,7 @@ export default function ({ navigation }) {
     // perform validation here and update errors
     setErrors((prevErrors) => ({
       ...prevErrors,
-      price: isNaN(Number(text)) ? 'Product Price must be a number' : null,
+      price: isNaN(Number(text)) ? "Product Price must be a number" : null,
     }));
   };
 
@@ -207,7 +207,7 @@ export default function ({ navigation }) {
     setErrors((prevErrors) => ({
       ...prevErrors,
       quantity: isNaN(Number(text))
-        ? 'Product Quantity must be a number'
+        ? "Product Quantity must be a number"
         : null,
     }));
   };
@@ -222,7 +222,7 @@ export default function ({ navigation }) {
       ...prevErrors,
       minQtyIncrement: isValidQuantity
         ? null
-        : 'Minimum Quantity must be a number and less than or equal to the Available Quantity',
+        : "Minimum Quantity must be a number and less than or equal to the Available Quantity",
     }));
   };
 
@@ -244,15 +244,15 @@ export default function ({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.screen}>
           <Image
-            source={require('../../assets/InsertProduct.png')}
+            source={require("../../assets/InsertProduct.png")}
             style={styles.vectorimage}
           />
 
           <H1 style={styles.AddText}>Add your product</H1>
 
           <TextInputBox
-            inputlabel='Product Name'
-            placeholder='Enter product name'
+            inputlabel="Product Name"
+            placeholder="Enter product name"
             value={title}
             onChangeText={handleProductNameChange}
             onBlur={handleNameBlur}
@@ -260,41 +260,41 @@ export default function ({ navigation }) {
             touched={true}
           />
           <TextInputBox
-            inputlabel='Quantity Available (Kg)'
-            placeholder='Enter quantity available '
+            inputlabel="Quantity Available (Kg)"
+            placeholder="Enter quantity available "
             value={quantity}
             onChangeText={handleProductQuantityChange}
-            keyboardType='numeric'
+            keyboardType="numeric"
             error={errors.quantity}
             touched={true}
             onBlur={() => null}
           />
 
           <TextInputBox
-            inputlabel='Minimum Quantity (Kg)'
-            placeholder='Enter minimum quantity that can be provide '
+            inputlabel="Minimum Quantity (Kg)"
+            placeholder="Enter minimum quantity that can be provide "
             value={minQtyIncrement}
             onChangeText={handleMinimumQuantityChange}
-            keyboardType='numeric'
+            keyboardType="numeric"
             error={errors.minQtyIncrement}
             touched={true}
             onBlur={() => null}
           />
 
           <TextInputBox
-            inputlabel='Price of 1Kg'
-            placeholder='Enter price of 1Kg'
+            inputlabel="Price of 1Kg"
+            placeholder="Enter price of 1Kg"
             value={price}
             onChangeText={handleProductPriceChange}
-            keyboardType='numeric'
+            keyboardType="numeric"
             error={errors.price}
             touched={true}
             onBlur={() => null}
           />
 
           <TextInputBox
-            inputlabel='Any description'
-            placeholder='Enter description if you need'
+            inputlabel="Any description"
+            placeholder="Enter description if you need"
             value={description}
             onChangeText={setDescription}
             error={errors.description}
@@ -307,20 +307,20 @@ export default function ({ navigation }) {
           /> */}
 
           {!isValid && (
-            <Text style={{ color: 'red' }}>
+            <Text style={{ color: "red" }}>
               Please fill in all fields correctly
             </Text>
           )}
           {images.length < 3 && (
             <View style={styles.buttcont}>
               <Button
-                title='Add Image'
-                type='icon'
+                title="Add Image"
+                type="icon"
                 icon={
-                  <Ionicons name='add-circle' size={48} color={Theme.primary} />
+                  <Ionicons name="add-circle" size={48} color={Theme.primary} />
                 }
-                color='shadedPrimary'
-                size='normal'
+                color="shadedPrimary"
+                size="normal"
                 onPress={pickImage}
                 disabled={images.length >= 3}
               />
@@ -328,7 +328,7 @@ export default function ({ navigation }) {
           )}
           <View style={styles.imagecont}>
             {images.map((image, index) => (
-              <View key={index} style={{ position: 'relative' }}>
+              <View key={index} style={{ position: "relative" }}>
                 <Image
                   source={{ uri: image.uri }}
                   style={{
@@ -340,18 +340,18 @@ export default function ({ navigation }) {
                 />
                 <TouchableOpacity
                   onPress={() => handleDeleteImage(index)}
-                  style={{ position: 'absolute', top: 10, right: 10 }}
+                  style={{ position: "absolute", top: 10, right: 10 }}
                 >
-                  <Ionicons name='close-circle' size={24} color='white' />
+                  <Ionicons name="close-circle" size={24} color="white" />
                 </TouchableOpacity>
               </View>
             ))}
           </View>
           {/* </View> */}
           <Button
-            title='Submit'
-            color='filledPrimary'
-            size='big'
+            title="Submit"
+            color="filledPrimary"
+            size="big"
             // onPress={async () => {
             //   const formValid = await handleSubmit();
             //   const imagesValid = uploadImages();
@@ -393,16 +393,16 @@ export default function ({ navigation }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Poppins',
-    height: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "Poppins",
+    height: "100%",
     marginBottom: 80,
     paddingHorizontal: 20,
   },
   logo: {
     height: 50,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginTop: 50,
   },
   vectorimage: {
@@ -417,19 +417,19 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   inputcont: {
-    position: 'relative',
-    width: '80%',
+    position: "relative",
+    width: "80%",
   },
   inputlabel: {
     paddingLeft: 50,
     color: Theme.textColor,
-    fontFamily: 'Poppins',
+    fontFamily: "Poppins",
   },
   input: {
-    position: 'relative',
+    position: "relative",
     height: 40,
-    width: '100%',
-    fontFamily: 'Poppins',
+    width: "100%",
+    fontFamily: "Poppins",
     paddingLeft: 10,
     backgroundColor: Theme.overlay,
     borderColor: Theme.overlay,
@@ -438,14 +438,14 @@ const styles = StyleSheet.create({
   },
   buttcont: {
     // justifyContent: 'space-between',
-    width: '80%',
+    width: "80%",
   },
 
   imagecont: {
     marginTop: 10,
     marginBottom: 20,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
 });
