@@ -109,8 +109,11 @@ console.log(route.params.userData)
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email!").required("Email is required!"),
     password: Yup.string()
-      .required("Password is required")
-      .min(8, "Password must be at least 8 characters long"),
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/,
+      'Password must contain at least one lowercase letter, one uppercase letter, one number, and be at least 6 characters long'
+    )
+    .required("Password is required"),
     cpassword: Yup.string()
       .required("Confirm Password is required")
       .oneOf([Yup.ref("password")], "Passwords must match"),

@@ -37,7 +37,7 @@ export default function ({ navigation, route }) {
   const [barChartMessage, setBarChartMessage] = useState();
   const [pieChartData, setPieChartData] = useState();
   const [colors, setColors] = useState();
-  const [barChartGood, setBarChartGood] = useState();
+  const [barChartGood, setBarChartGood] = useState(false);
   const [titles, setTitles] = useState();
   const [months, setMonths] = useState();
   const [pieChartMessage, setPieChartMessage] = useState();
@@ -90,7 +90,7 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header back={true} home={true} />
+        <Header back={false} home={true} />
         <ScrollView>
           <View style={[styles.barchart, styles.shadowProp]}>
             <H4>Last Months Income </H4>
