@@ -86,14 +86,8 @@ export default function (props) {
   );
 }
 const styles = StyleSheet.create({
-  screen: {
-    //flex: 1,
-    fontFamily: 'Poppins',
-  },
   card: {
     flexDirection: 'row',
-    height: 80,
-    margin: 10,
     //justifyContent:'space-between',
   },
   address: {

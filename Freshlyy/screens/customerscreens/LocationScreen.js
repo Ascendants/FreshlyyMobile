@@ -61,6 +61,27 @@ export default function ({ navigation, route }) {
       console.log(error);
     }
   }
+  async function deleteLocation(index) {
+    try {
+      const result = await fetch(
+        ENV.backend + '/customer/delete-location/' + index,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: route.params.auth,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const res = await result.json();
+      console.log(res.message);
+      if (res.message == 'Success') {
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <SafeAreaView style={{ alignItems: 'center', flex: 1 }}>
       <Header back={true} />
@@ -82,7 +103,7 @@ export default function ({ navigation, route }) {
                 longitude={item?.longitude}
                 selected={item?.isSelected}
                 latitude={item?.latitude}
-                onDelete={() => deleteLocation(item?.userId)}
+                onDelete={() => deleteLocation(index)}
                 selectLocation={() => selectLocation(item)}
               />
             );
@@ -120,7 +141,6 @@ export default function ({ navigation, route }) {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
     alignItems: 'center',
     //justifyContent: 'center',
     fontFamily: 'Poppins',

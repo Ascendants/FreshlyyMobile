@@ -11,7 +11,7 @@ import Loading from '../../components/Loading';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import ENV from '../../constants/env';
-
+import Theme from '../../constants/theme';
 export default function ({ navigation, route }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -64,75 +64,94 @@ export default function ({ navigation, route }) {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+        setSelectedLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          name: 'Home',
+        });
+        console.log(location);
+      } catch (error) {
+        console.log(error);
       }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
     })();
-  }, []);
-
-  let text = <Loading />;
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    return (
-      <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Header back={true} />
-          <View style={styles.screen}>
-            <H4>Select your Address</H4>
-            <View style={styles.inputcont}>
-              <TextInputBox
-                inputlabel='Name'
-                placeholder='Enter First name'
-                name='LocationName'
-                onChangeText={formik.handleChange('LocationName')}
-                onBlur={() =>
-                  formik.setFieldTouched('LocationName', true, true)
-                }
-                value={formik.values.LocationName}
-                error={formik.errors.LocationName}
-                touched={formik.touched.LocationName}
-              />
-            </View>
-            <View style={styles.map}>
-              <MapView
-                style={styles.map}
-                initialRegion={{
-                  latitude: 7.8731,
-                  longitude: 80.7718,
-                  latitudeDelta: 5,
-                  longitudeDelta: 5,
-                }}
-                onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
-              >
-                {selectedLocation && (
-                  <Marker coordinate={selectedLocation}></Marker>
-                )}
-              </MapView>
-            </View>
-            <View>
-              <Button
-                title='Save Location'
-                color='shadedPrimary'
-                size='normal'
-                onPress={submitSelectedLocation}
-              />
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
+  }, [location]);
+  console.log(location);
   return (
-    <View style={styles.screen}>
-      <Text>{text}</Text>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header back={true} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.screen}>
+          {location ? (
+            <>
+              <H4>Select your Address</H4>
+              <View style={styles.inputcont}>
+                <TextInputBox
+                  inputlabel='Name'
+                  placeholder='Give a nickname'
+                  name='LocationName'
+                  onChangeText={formik.handleChange('LocationName')}
+                  onBlur={() =>
+                    formik.setFieldTouched('LocationName', true, true)
+                  }
+                  value={formik.values.LocationName}
+                  error={formik.errors.LocationName}
+                  touched={formik.touched.LocationName}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'blue',
+                  width: 350,
+                  borderWidth: 2,
+                  borderColor: Theme.primary,
+                  borderRadius: 10,
+                }}
+              >
+                <MapView
+                  style={styles.map}
+                  // customMapStyle={styles.map}
+                  initialRegion={{
+                    latitude: parseFloat(location.coords.latitude) || 0,
+                    longitude: parseFloat(location.coords.longitude) || 0,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
+                  }}
+                  onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
+                >
+                  {selectedLocation && (
+                    <Marker coordinate={selectedLocation}></Marker>
+                  )}
+                </MapView>
+              </View>
+              <View style={{ marginVertical: 20 }}>
+                <Button
+                  title='Save Location'
+                  color='shadedPrimary'
+                  size='big'
+                  onPress={submitSelectedLocation}
+                />
+              </View>
+            </>
+          ) : (
+            <Loading />
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -146,11 +165,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   map: {
-    margin: 10,
-    marginTop: 0,
     //border: 10,
-    width: 320,
-    height: 520,
+    alignSelf: 'center',
+    flex: 1,
+    height: 346,
+    width: 346,
+    borderRadius: 10,
   },
   callout: {
     width: 200,
