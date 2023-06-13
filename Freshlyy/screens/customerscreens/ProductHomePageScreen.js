@@ -50,9 +50,10 @@ export default function ({ navigation, route }) {
   const bottomSheetRef = useRef(null);
   const snapPoints = ['60%', '100%'];
 
-  const sendToProductDetail = async (pubUrl) => {
+  const sendToProductDetail = async (pubUrl, distanceAway) => {
     navigation.navigate('Product Detail', {
       purl: pubUrl,
+      distanceAway: distanceAway,
     });
   };
 
@@ -302,7 +303,9 @@ export default function ({ navigation, route }) {
                           ? item.distanceAway
                           : null
                       }
-                      onPress={sendToProductDetail}
+                      onPress={() =>
+                        sendToProductDetail(item.publicUrl, item.distance)
+                      }
                     />
                   </Animatable.View>
                 )}

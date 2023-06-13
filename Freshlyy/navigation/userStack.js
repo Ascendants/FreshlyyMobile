@@ -85,7 +85,7 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.ReviewedOrderScreen}
+            component={Screens.CustomerDashboardScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,
@@ -104,6 +104,14 @@ export default function App(props) {
           <Stack.Screen
             name='Delete Product'
             component={Screens.DeleteProductScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Farmer Report'
+            component={Screens.FarmerReportScreen}
             options={{
               headerShown: false,
             }}
@@ -178,6 +186,11 @@ export default function App(props) {
           <Stack.Screen
             name='Farmer Invoices'
             component={Screens.FarmerInvoicesScreen}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Farmer Invoice'
+            component={Screens.FarmerInvoiceScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
@@ -312,6 +325,11 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
+            name='Chat'
+            component={Screens.Chat}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
             name='Checkout'
             component={Screens.CheckoutScreen}
             initialParams={defaultParams}
@@ -347,7 +365,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name='Farmer Detail Page'
+            name='Farmer Detail'
             component={Screens.FarmerDetailScreen}
             options={{
               headerShown: false,
@@ -365,6 +383,22 @@ export default function App(props) {
           <Stack.Screen
             name='Location Screen'
             component={Screens.LocationScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Settle Account'
+            component={Screens.SettleAccountScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Other Farmer Payment'
+            component={Screens.OtherFarmerPaymentScreen}
             options={{
               headerShown: false,
             }}

@@ -51,10 +51,7 @@ export default function ({ navigation, route }) {
     }
   };
   const handleDeleteImage = (index) => {
-    const image = uploadedImageUrls[index];
-    FreshlyyImageStore.app.setUploadedImageUrls((curr) =>
-      curr.filter((item) => item !== curr[index])
-    );
+    setUploadedImageUrls((curr) => curr.filter((item) => item !== curr[index]));
   };
 
   const uploadImage = async (image) => {

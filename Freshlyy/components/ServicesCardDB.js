@@ -14,16 +14,19 @@ export default function (props) {
         <Image source={require('../assets/message.png')} style={styles.logo} />
         <H8>Messages</H8>
       </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => nav.navigate('Help Center', { farmer: props.farmer })}
-        >
-          <Image source={require('../assets/question.png')} style={styles.logo} />
-          <H8>Help Center</H8>
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => nav.navigate('Help Center', { farmer: props.farmer })}
+      >
+        <Image source={require('../assets/question.png')} style={styles.logo} />
+        <H8>Help Center</H8>
+      </TouchableOpacity>
 
       {props.farmer && (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.navigate('Farmer Report')}
+        >
           <Image
             source={require('../assets/insight.png')}
             style={styles.logo}
@@ -32,12 +35,12 @@ export default function (props) {
         </TouchableOpacity>
       )}
       {!props.farmer && (
-        <TouchableOpacity style={styles.button}>
-          <Image
-            source={require('../assets/documents.png')}
-            style={styles.logo}
-          />
-          <H8>Reviews</H8>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.navigate('Farmer Follower Page')}
+        >
+          <Image source={require('../assets/follow.png')} style={styles.logo} />
+          <H8>Following</H8>
         </TouchableOpacity>
       )}
     </View>

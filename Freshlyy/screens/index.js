@@ -76,3 +76,4 @@ export { default as SettleAccountScreen } from './farmerscreens/SettleAccountScr
 export { default as OtherFarmerPaymentScreen } from './farmerscreens/OtherFarmerPaymentScreen';
 export { default as OrderStatusUpdateScreen } from './farmerscreens/OrderStatusUpdateScreen';
 export { default as DeleteProductScreen } from './farmerscreens/DeleteProductScreen';
+export { default as FarmerReportScreen } from './farmerscreens/FarmerReportScreen';

@@ -1,25 +1,39 @@
+import { contains } from '@firebase/util';
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { H1, H2 } from '../components/Texts';
 import Theme from '../constants/theme';
+import { FilledBigButton } from '../components/Buttons';
+import theme from '../constants/theme';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Button } from '../components/Buttons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function (props) {
+  const nav = useNavigation();
+  console.log(props);
   return (
     <View style={styles.screen}>
-      <View style={styles.card}>
-        <Image
-          source={{ uri: props.imageUrl?.imageUrl }}
-          style={styles.farmerimage}
-        />
-        <Text style={styles.farmername}>{props.farmerName}</Text>
-        <Button
-          title='Following'
-          color='shadedPrimary'
-          size='normal'
-          style={styles.followbutton}
-          onPress={props.onDelete}
-        />
-      </View>
+      <TouchableOpacity
+        onPress={() => nav.navigate('Farmer Detail', { farmer: props.farmer })}
+      >
+        <View style={styles.screen}>
+          <View style={styles.card}>
+            <Image
+              source={{ uri: props.imageUrl?.imageUrl }}
+              style={styles.farmerimage}
+            />
+            <Text style={styles.farmername}>{props.farmerName}</Text>
+            <Button
+              title='Following'
+              color='shadedPrimary'
+              size='normal'
+              style={styles.followbutton}
+              onPress={props.onDelete}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }

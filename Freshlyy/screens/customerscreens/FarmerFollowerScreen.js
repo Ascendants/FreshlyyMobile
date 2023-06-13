@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import Theme from '../../constants/theme';
+import { Button } from '../../components/Buttons';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import { AntDesign } from '@expo/vector-icons';
+import { H4, P, H3 } from '../../components/Texts';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import ENV from '../../constants/env';
-import { H3 } from '../../components/Texts';
 import FarmerFollowCard from '../../components/FarmerFollowCard';
 
 export default function ({ navigation, route }) {
@@ -53,7 +63,6 @@ export default function ({ navigation, route }) {
   useEffect(() => {
     getData();
   }, []);
-
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -76,6 +85,7 @@ export default function ({ navigation, route }) {
                   key={farmer?.farmerid}
                   farmerName={farmer?.farmerName}
                   imageUrl={farmer?.imageUrl}
+                  farmer={farmer?.farmerid}
                   onDelete={() => unfollow(farmer?.farmerid)}
                 />
               );

@@ -42,6 +42,7 @@ export default function (props) {
           type='icon'
           size='normal'
           color='filledWarning'
+          onPress={() => nav.navigate('Location Screen')}
           icon={
             <FontAwesome5
               name='location-arrow'

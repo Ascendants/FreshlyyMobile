@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
+
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import {
+  TextInputBox,
+  DropDownPicker,
+  DatePicker,
+} from '../../components/Inputs';
+import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import { H3 } from '../../components/Texts';
+import { H4, P, H3, H1 } from '../../components/Texts';
+import Rating from '../../components/Rating';
 import ENV from '../../constants/env';
 import ProductDeatilCard from '../../components/ProductDetailCard';
+import Loading from '../../components/Loading';
 
 export default function ({ navigation, route }) {
   const [products, setProducts] = useState([]);
@@ -60,8 +68,8 @@ export default function ({ navigation, route }) {
 
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + '/customer/farmerDetail/nadun@freshlyy.com', {
-      //getting data from the backend (all products) of farmers
+    fetch(ENV.backend + '/customer/farmerDetail/' + route.params.farmer, {
+      //getting data from the backend (all products)
       method: 'GET',
       headers: {
         Authorization: route.params.auth,

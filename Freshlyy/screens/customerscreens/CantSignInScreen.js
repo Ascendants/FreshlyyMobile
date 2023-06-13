@@ -57,6 +57,7 @@ export default function ({ navigation, route }) {
       });
       const data = await response.json();
       const id = data.id;
+      console.log(data);
       navigation.navigate('Message', {
         type: 'Success',
         messageTitle: 'Ticket Sent Successfully!',

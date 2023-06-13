@@ -39,7 +39,7 @@ export default function () {
         {
           method: 'POST',
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
