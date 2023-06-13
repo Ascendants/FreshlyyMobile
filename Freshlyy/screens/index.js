@@ -51,7 +51,7 @@ export { default as TicketDetailsScreen } from './customerscreens/TicketDetailsS
 export { default as TicketStatusScreen } from './customerscreens/TicketStatusScreen';
 export { default as ChatScreen } from './customerscreens/ChatScreen';
 export { default as WishListScreen } from './customerscreens/WishListScreen';
-export { default as Chat} from './customerscreens/Chat';
+export { default as Chat } from './customerscreens/Chat';
 
 //Farmer Screens
 
@@ -73,3 +73,4 @@ export { default as SettleAccountScreen } from './farmerscreens/SettleAccountScr
 export { default as OtherFarmerPaymentScreen } from './farmerscreens/OtherFarmerPaymentScreen';
 export { default as OrderStatusUpdateScreen } from './farmerscreens/OrderStatusUpdateScreen';
 export { default as DeleteProductScreen } from './farmerscreens/DeleteProductScreen';
+export { default as FarmerReportScreen } from './farmerscreens/FarmerReportScreen';

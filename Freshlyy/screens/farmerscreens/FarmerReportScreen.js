@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,10 @@ import {
   ScrollView,
   FlatList,
   SectionList,
-} from "react-native";
-import { H2, H4, H5 } from "../../components/Texts";
-import { Button } from "../../components/Buttons";
-import Header from "../../components/Header";
-import Theme from "../../constants/theme";
+} from 'react-native';
+import { H2, H4, H5 } from '../../components/Texts';
+import Header from '../../components/Header';
+import Theme from '../../constants/theme';
 import {
   VictoryAxis,
   VictoryBar,
@@ -23,14 +22,15 @@ import {
   Circle,
   VictoryLegend,
   VictoryTooltip,
-} from "victory-native";
-import ProductCard from "../../components/ProductCard";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Svg } from "react-native-svg";
-import useAuth from "../../hooks/useAuth";
-import ENV from "../../constants/env";
-import * as Animatable from "react-native-animatable";
-import { Animations } from "../../constants/Animation";
+} from 'victory-native';
+import ProductCard from '../../components/ProductCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Svg } from 'react-native-svg';
+import useAuth from '../../hooks/useAuth';
+import ENV from '../../constants/env';
+import * as Animatable from 'react-native-animatable';
+import { Animations } from '../../constants/Animation';
+import RefreshView from '../../components/RefreshView';
 
 export default function ({ navigation, route }) {
   const [barChartData, setBarChartData] = useState();
@@ -44,20 +44,18 @@ export default function ({ navigation, route }) {
   const [bestOverallProducts, setBestOverallProducts] = useState();
   const [randomNumber, setRandomNumber] = React.useState(null);
   const sendToProductDetail = async (pubUrl) => {
-    navigation.navigate("Product Detail", {
+    navigation.navigate('Product Detail', {
       purl: pubUrl,
     });
   };
 
-  const getReports = async (isRefreshing) => {
-    // isRefreshing ? setRefreshing(true) : setLoaded(false);
-
-    await fetch(ENV.backend + "/farmer/reports/", {
+  const getReports = React.useCallback(async () => {
+    await fetch(ENV.backend + '/farmer/reports/', {
       //getting data from the backend (all products)
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: route.params?.auth,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
       .then((res) => res.json())
@@ -74,10 +72,6 @@ export default function ({ navigation, route }) {
         // isRefreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
-  };
-
-  React.useEffect(() => {
-    getReports();
   }, []);
 
   const animation = Animations[Math.floor(Math.random() * Animations.length)];
@@ -90,8 +84,8 @@ export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header back={false} home={true} />
-        <ScrollView>
+        <Header back={true} home={true} />
+        <RefreshView getData={getReports} route={route}>
           <View style={[styles.barchart, styles.shadowProp]}>
             <H4>Last Months Income </H4>
             <VictoryChart
@@ -129,7 +123,7 @@ export default function ({ navigation, route }) {
                   <H4>{barChartMessage}</H4>
                 </View>
                 <Image
-                  source={require("../../assets/hurray.png")}
+                  source={require('../../assets/hurray.png')}
                   style={styles.vectorimage}
                 />
               </View>
@@ -145,7 +139,7 @@ export default function ({ navigation, route }) {
                   <H4>{barChartMessage}</H4>
                 </View>
                 <Image
-                  source={require("../../assets/dontgiveup.png")}
+                  source={require('../../assets/dontgiveup.png')}
                   style={styles.vectorimage}
                 />
               </View>
@@ -168,7 +162,7 @@ export default function ({ navigation, route }) {
                 innerRadius={60}
                 labelRadius={90}
                 //labels={() => null}
-                style={{ labels: { fontSize: 28, fill: "white" } }}
+                style={{ labels: { fontSize: 28, fill: 'white' } }}
                 animate={{
                   duration: 4000,
                   onLoad: {
@@ -176,13 +170,13 @@ export default function ({ navigation, route }) {
                   },
                 }}
                 colorScale={[
-                  "tomato",
-                  "orange",
-                  "gold",
-                  "cyan",
-                  "navy",
-                  "cornflowerblue",
-                  "lightgreen",
+                  'tomato',
+                  'orange',
+                  'gold',
+                  'cyan',
+                  'navy',
+                  'cornflowerblue',
+                  'lightgreen',
                 ]}
               />
               <Circle
@@ -206,7 +200,7 @@ export default function ({ navigation, route }) {
                 verticalAnchor='middle'
                 x={200}
                 y={200}
-                style={{ fontSize: 30, fill: "black" }}
+                style={{ fontSize: 30, fill: 'black' }}
                 text='Income'
               />
               <VictoryLegend
@@ -227,7 +221,7 @@ export default function ({ navigation, route }) {
                 <H4>{pieChartMessage}</H4>
               </View>
               <Image
-                source={require("../../assets/fruits.png")}
+                source={require('../../assets/fruits.png')}
                 style={styles.pieChartImage}
               />
             </View>
@@ -258,20 +252,20 @@ export default function ({ navigation, route }) {
               keyExtractor={(item) => item._id}
             />
           </View>
-        </ScrollView>
+        </RefreshView>
       </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   screen: {
-    height: "100%",
+    height: '100%',
     paddingHorizontal: 2,
   },
   barchart: {
     marginHorizontal: 10,
     width: 390,
-    backgroundColor: "#F2F2F2",
+    backgroundColor: '#F2F2F2',
     borderRadius: 10,
   },
   piechart: {
@@ -282,8 +276,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   barChartView: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     width: 380,
     paddingVertical: 20,
     paddingHorizontal: 5,
@@ -294,7 +288,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   vectorimage: {
-    alignItems: "center",
+    alignItems: 'center',
     width: 160, // Adjust the width to fit the image
     height: 170,
     marginRight: 10,
@@ -306,15 +300,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   dontgiveupImage: {
-    alignItems: "center",
+    alignItems: 'center',
     width: 160, // Adjust the width to fit the image
     height: 180,
     marginRight: 10,
     marginVertical: 0,
   },
   pieChartView: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     width: 380,
     paddingVertical: 20,
     paddingHorizontal: 5,
@@ -325,7 +319,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   pieChartImage: {
-    alignItems: "center",
+    alignItems: 'center',
     width: 160, // Adjust the width to fit the image
     height: 90,
     marginRight: 10,

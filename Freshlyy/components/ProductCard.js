@@ -32,7 +32,9 @@ export default function (props, onLikePress) {
   };
 
   return (
-    <TouchableOpacity onPress={() => props.onPress(props.publicUrl)}>
+    <TouchableOpacity
+      onPress={() => props.onPress && props.onPress(props.publicUrl)}
+    >
       <View styles={styles.cardBigCont}>
         <View style={[styles.card]}>
           {props.bestMatch && props.cheaper ? (

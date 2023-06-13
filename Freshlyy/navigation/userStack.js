@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import { UserContext, user } from '../context/UserContext';
 import * as Screens from '../screens';
-import FarmerReportScreen from '../screens/farmerscreens/FarmerReportScreen';
 import { auth } from '../utils/firebase';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
@@ -105,6 +104,14 @@ export default function App(props) {
           <Stack.Screen
             name='Delete Product'
             component={Screens.DeleteProductScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Farmer Report'
+            component={Screens.FarmerReportScreen}
             options={{
               headerShown: false,
             }}
