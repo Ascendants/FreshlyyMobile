@@ -1,12 +1,7 @@
-import { contains } from "@firebase/util";
-import React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { H1, H2 } from "../components/Texts";
-import Theme from "../constants/theme";
-import { FilledBigButton } from "../components/Buttons";
-import theme from "../constants/theme";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
-import { Button } from "../components/Buttons";
+import React from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import Theme from '../constants/theme';
+import { Button } from '../components/Buttons';
 
 export default function (props) {
   return (
@@ -18,9 +13,9 @@ export default function (props) {
         />
         <Text style={styles.farmername}>{props.farmerName}</Text>
         <Button
-          title="Following"
-          color="shadedPrimary"
-          size="normal"
+          title='Following'
+          color='shadedPrimary'
+          size='normal'
           style={styles.followbutton}
           onPress={props.onDelete}
         />
@@ -31,34 +26,34 @@ export default function (props) {
 const styles = StyleSheet.create({
   screen: {
     //flex: 1,
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
   },
   card: {
-    display: "flex",
+    display: 'flex',
     padding: 8,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     //paddingLeft:20,
     backgroundColor: Theme.overlay,
     width: 340,
     height: 60,
     borderRadius: 20,
     marginVertical: 10,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   farmerimage: {
     width: 45,
     height: 45,
-    alignSelf: "center",
+    alignSelf: 'center',
     margin: 15,
     borderRadius: 100,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   farmername: {
-    position: "relative",
-    textAlign: "center",
+    position: 'relative',
+    textAlign: 'center',
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: Theme.textColor,
   },
   followbutton: {

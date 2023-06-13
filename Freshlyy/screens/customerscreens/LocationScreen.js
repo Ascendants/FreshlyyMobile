@@ -1,24 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from 'react-native';
-import Theme from '../../constants/theme';
+import React, { useState } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 import { Button } from '../../components/Buttons';
-import {
-  TextInputBox,
-  DropDownPicker,
-  DatePicker,
-} from '../../components/Inputs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { H4, P, H3 } from '../../components/Texts';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 import LocationCard from '../../components/LocationCard';
 import ENV from '../../constants/env';
 import RefreshView from '../../components/RefreshView';

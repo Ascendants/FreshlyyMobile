@@ -54,6 +54,7 @@ export { default as WishListScreen } from './customerscreens/WishListScreen';
 export { default as Chat } from './customerscreens/Chat';
 export { default as OrderReviewScreen } from './customerscreens/OrderReviewScreen';
 export { default as ReportFarmerScreen } from './customerscreens/ReportFarmerScreen';
+export { default as OrderItemReviewScreen } from './customerscreens/OrderItemReviewScreen';
 
 //Farmer Screens
 

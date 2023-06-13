@@ -1,10 +1,10 @@
 import { React, useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Button } from '../../components/Buttons';
 import { TextInputBox } from '../../components/Inputs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import { H4, P, H6 } from '../../components/Texts';
+import { H4 } from '../../components/Texts';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import Loading from '../../components/Loading';
@@ -12,6 +12,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import ENV from '../../constants/env';
 import Theme from '../../constants/theme';
+
 export default function ({ navigation, route }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);

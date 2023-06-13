@@ -1,47 +1,15 @@
-import { contains } from '@firebase/util';
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { H1, H2, P, Pr, H5, H6 } from '../components/Texts';
+import { H5 } from '../components/Texts';
 import Theme from '../constants/theme';
-import { FilledBigButton } from '../components/Buttons';
-import theme from '../constants/theme';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Button } from '../components/Buttons';
-import Rating from '../components/Rating';
-import {
-  AntDesign,
-  Ionicons,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import ListItem from './ListItem';
 
 export default function (props) {
   return (
     <ListItem>
-      {/* <View style={styles.card}>
-        <Button
-          icon={<Ionicons name='location' size={40} color={Theme.primary} />}
-          type='icon'
-          size='small'
-        />
-        <View style={styles.address}>
-          <H5>{props.locationName}</H5>
-        </View>
-
-        <Button
-          icon={
-            <Ionicons name='trash-outline' size={25} color={Theme.danger} />
-          }
-          type='icon'
-          size='small'
-          color='shadedDanger'
-          title='Delete'
-          style={styles.icon}
-          onpress={props.onDelete}
-        />
-        
-      </View> */}
       <View style={styles.imageContainer}>
         <Button
           icon={<Ionicons name='location' size={40} color={Theme.primary} />}

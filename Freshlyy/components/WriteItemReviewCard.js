@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import { P, Pr } from '../components/Texts';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { P, Pr, H6 } from '../components/Texts';
+import { TextInputBox } from '../components/Inputs';
 import Theme from '../constants/theme';
-import { Button } from '../components/Buttons';
 import Rating from '../components/Rating';
 
 export default function (props) {
@@ -14,22 +14,29 @@ export default function (props) {
           style={styles.productimage}
         />
         <View style={styles.cardinner}>
-          <P style={styles.productname}>{props.title}</P>
-          <P style={styles.productWeight}>{props.qty}KG</P>
+          <H6 style={styles.productname}>{props.title}</H6>
+          <P style={styles.productWeight}>{props.qty} KG</P>
           <Pr style={styles.productprice}> {props.uPrice}</Pr>
         </View>
-        <View style={styles.cardinner2}>
-          <Button
-            title='View'
-            color='shadedSecondary'
-            size='small'
-            style={styles.writebutton}
-            onclick={props.title}
-          />
-          <Rating style={styles.rating} value={props.overallRating} />
+      </View>
+      <View style={styles.cardinner2}>
+        <Rating value={props.overallRating} />
+        <View style={styles.cardinner3}>
+          <TextInputBox
+            inputlabel='Your Review'
+            placeholder=''
+            value={props.review}
+            onChangeText={(text) => setReview(text)}
+            style={styles.reviewText}
+            onBlur={() => {
+              console.log('');
+            }}
+            onFocus={() => {
+              console.log('');
+            }}
+          ></TextInputBox>
         </View>
       </View>
-      <View style={styles.lineStyle}></View>
     </View>
   );
 }
@@ -37,6 +44,10 @@ const styles = StyleSheet.create({
   screen: {
     //flex: 1,
     fontFamily: 'Poppins',
+    backgroundColor: Theme.overlay,
+    height: 300,
+    marginBottom: 10,
+    borderRadius: 20,
   },
   card: {
     display: 'flex',
@@ -46,10 +57,13 @@ const styles = StyleSheet.create({
     //paddingLeft:20,
     //backgroundColor:Theme.overlay,
     width: '90%',
-    height: 80,
+    //height: ,
     borderRadius: 20,
     marginVertical: 10,
     justifyContent: 'space-between',
+  },
+  reviewText: {
+    height: 120,
   },
   productimage: {
     width: 70,
@@ -88,15 +102,11 @@ const styles = StyleSheet.create({
   cardinner2: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     flex: 2,
   },
-  rating: {},
-  writebutton: {
-    border: 20,
-    width: '50%',
-  },
-  lineStyle: {
-    borderWidth: 0.5,
-    borderColor: 'black',
+  cardinner3: {
+    width: '80%',
+    height: '20%',
   },
 });

@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from "react-native";
-import Theme from "../../constants/theme";
-import { Button } from "../../components/Buttons";
-import {
-  TextInputBox,
-  DropDownPicker,
-  DatePicker,
-} from "../../components/Inputs";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../../components/Header";
-import { H4, P, H3, H5, H6 } from "../../components/Texts";
-import { AntDesign, Ionicons, Feather } from "@expo/vector-icons";
-import ENV from "../../constants/env";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import Theme from '../../constants/theme';
+import { Button } from '../../components/Buttons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../../components/Header';
+import { H3 } from '../../components/Texts';
+import { Ionicons, Feather } from '@expo/vector-icons';
+import ENV from '../../constants/env';
 
 export default function () {
   const [farmer, setFarmer] = useState([]);
@@ -30,9 +17,9 @@ export default function () {
   async function follow() {
     try {
       const result = await fetch(
-        ENV.backend + "/customer/follow/" + farmer?.farmerId,
+        ENV.backend + '/customer/follow/' + farmer?.farmerId,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
             Authorization: route.params.auth,
           },
@@ -40,7 +27,7 @@ export default function () {
       );
       const res = await result.json();
       console.log(res);
-      if (res.message == "Success") {
+      if (res.message == 'Success') {
         getData();
       }
     } catch (error) {
@@ -52,9 +39,9 @@ export default function () {
   async function unfollow() {
     try {
       const result = await fetch(
-        ENV.backend + "/customer/unfollow/" + farmer?.farmerId,
+        ENV.backend + '/customer/unfollow/' + farmer?.farmerId,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
             Authorization: route.params.auth,
           },
@@ -62,7 +49,7 @@ export default function () {
       );
       const res = await result.json();
       console.log(res);
-      if (res.message == "Success") {
+      if (res.message == 'Success') {
         getData();
       }
     } catch (error) {
@@ -73,16 +60,16 @@ export default function () {
 
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + "/customer/reportFarmer/63b6b5d2ce65a7b5a2671383", {
+    fetch(ENV.backend + '/customer/reportFarmer/63b6b5d2ce65a7b5a2671383', {
       //getting data from the backend (all products)
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.message == "Success") {
+        if (res.message == 'Success') {
           setFarmer(res.farmer);
           console.log(res);
         }
@@ -114,35 +101,35 @@ export default function () {
           <Button
             icon={
               <Feather
-                name="message-circle"
+                name='message-circle'
                 size={24}
                 color={Theme.textColor}
               />
             }
-            title="Chat"
-            type="icon"
-            size="normal"
-            color="shadedTertiary"
+            title='Chat'
+            type='icon'
+            size='normal'
+            color='shadedTertiary'
           />
           <Button
-            type="icon"
+            type='icon'
             icon={
               <Ionicons
-                name="ios-share-outline"
+                name='ios-share-outline'
                 size={24}
                 color={Theme.textColor}
               />
             }
-            title="Share"
-            size="normal"
-            color="shadedTertiary"
+            title='Share'
+            size='normal'
+            color='shadedTertiary'
           />
         </View>
         <View>
           <Button
-            title={farmer?.isFollowing ? "Following" : "Follow"}
-            color={farmer?.isFollowing ? "filledPrimary" : "shadedPrimary"}
-            size="normal"
+            title={farmer?.isFollowing ? 'Following' : 'Follow'}
+            color={farmer?.isFollowing ? 'filledPrimary' : 'shadedPrimary'}
+            size='normal'
             onPress={farmer?.isFollowing ? unfollow : follow}
           />
         </View>
@@ -154,14 +141,14 @@ export default function () {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     //justifyContent: 'center',
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
     margin: 20,
   },
   logo: {
     height: 50,
-    resizeMode: "contain",
+    resizeMode: 'contain',
     marginTop: 50,
   },
   image: {
@@ -171,18 +158,18 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Theme.primary,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   Rating: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   H3: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   actionButtonContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     //justifyContent: 'flex-end',
-    alignItems: "center",
+    alignItems: 'center',
     flex: 2,
   },
 });
