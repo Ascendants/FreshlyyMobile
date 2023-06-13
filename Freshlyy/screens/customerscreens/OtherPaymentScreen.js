@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, Platform } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
 import { H3, P } from '../../components/Texts';
@@ -25,6 +25,7 @@ export default function ({ navigation, route }) {
     setPaying(true);
     setError(null);
     const paymentId = await saveCard();
+    console.log(paymentId);
     if (!paymentId) {
       setError('Something is wrong with your card details');
       setPaying(false);
@@ -105,7 +106,10 @@ export default function ({ navigation, route }) {
       if (error) {
         throw new Error(error);
       } else if (setupIntent) {
-        return setupIntent.paymentMethod.id;
+        if (Platform.OS === 'android') {
+          return setupIntent.paymentMethod.id;
+        }
+        return setupIntent.paymentMethodId;
       }
     } catch (error) {
       console.log(error);

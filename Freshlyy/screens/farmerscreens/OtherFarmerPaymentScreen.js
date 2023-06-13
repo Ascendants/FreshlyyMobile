@@ -100,7 +100,10 @@ export default function ({ navigation, route }) {
       if (error) {
         throw new Error(error);
       } else if (setupIntent) {
-        return setupIntent.paymentMethod.id;
+        if (Platform.OS === 'android') {
+          return setupIntent.paymentMethod.id;
+        }
+        return setupIntent.paymentMethodId;
       }
     } catch (error) {
       console.log(error);

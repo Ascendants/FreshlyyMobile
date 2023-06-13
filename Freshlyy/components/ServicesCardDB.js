@@ -22,7 +22,15 @@ export default function (props) {
         <H8>Help Center</H8>
       </TouchableOpacity>
 
-      {props.farmer && (
+      {props.customerDB ? (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.navigate('Farmer Follower Page')}
+        >
+          <Image source={require('../assets/follow.png')} style={styles.logo} />
+          <H8>Following</H8>
+        </TouchableOpacity>
+      ) : (
         <TouchableOpacity
           style={styles.button}
           onPress={() => nav.navigate('Farmer Report')}
@@ -32,15 +40,6 @@ export default function (props) {
             style={styles.logo}
           />
           <H8>Reports</H8>
-        </TouchableOpacity>
-      )}
-      {!props.farmer && (
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => nav.navigate('Farmer Follower Page')}
-        >
-          <Image source={require('../assets/follow.png')} style={styles.logo} />
-          <H8>Following</H8>
         </TouchableOpacity>
       )}
     </View>
