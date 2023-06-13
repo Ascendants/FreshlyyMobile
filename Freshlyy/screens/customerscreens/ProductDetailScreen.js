@@ -177,10 +177,12 @@ export default function ({ navigation, route }) {
   //     })
   //     .catch((err) => console.log(err));
   // }
-  // console.log(product.farmer);
+  // console.log(product.farmerImage.imageUrl);
   function navigateToChat() {
     navigation.navigate('Chat', {
+      farmerId: product.farmer,
       farmerName: product.farmerName,
+      farmerImg: product.farmerImage.imageUrl,
     });
   }
 

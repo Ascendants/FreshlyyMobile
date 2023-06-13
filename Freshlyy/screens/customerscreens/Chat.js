@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { GiftedChat, InputToolbar, Bubble, Send } from 'react-native-gifted-chat';
 import { StyleSheet, View, Image } from 'react-native';
@@ -8,32 +7,57 @@ import Theme from '../../constants/theme';
 import { auth, database } from '../../utils/firebase';
 import Header from '../../components/Header';
 import ENV from '../../constants/env';
+import { id } from 'date-fns/locale';
+
+
 export default function Chat({ navigation, route }) {
   const [messages, setMessages] = useState([]);
 
+  const farmerId = route?.params?.farmerId;
   const farmerName = route?.params?.farmerName;
-  // const [infor, setInfor] = useState([]);
+  const farmerImage = route?.params?.farmerImg;
 
-  // console.log(route.params.farmerName);
-  // async function handleChatData() {
-  //   try {
-  //     const response = await fetch(`${ENV.backend}/customer/get-chatDetails/${farmerId}`, {
-  //       method: 'GET',
-  //       headers: {
-  //         Authorization: route.params.auth,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }
+  const [uid, setUid] = useState('');
+  const [farmerEmail, setFarmerEmail] = useState('');
+  const [farmerLname, setFarmerLname] = useState('');
 
-  // React.useEffect(() => {
-  //   handleChatData(
-  //     false,
-  //   );
-  // }, []);
+  async function handleChatData() {
+    try {
+      const response = await fetch(`${ENV.backend}/customer/get-chatDetails/${farmerId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: route.params.auth,
+        },
+      });
 
+      const res = await response.json();
+      // console.log(res.farmerEmail);
+      setFarmerEmail(res.farmerEmail);
+      setFarmerLname(res.farmerLname);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  React.useEffect(() => {
+    handleChatData();
+    // const fetchUid = async () => {
+    //   try {
+    //     const email = farmerEmail;
+    //     console.log(email);
+    //     const userRecord = await auth.getUserByEmail(email);
+    //     console.log(userRecord);
+    //     // setUid(userRecord.uid);
+    //   } catch (error) {
+    //     console.log('Error fetching UID:', error);
+    //   }
+    // };
+    // fetchUid();
+  }, []);
+
+
+  // console.log(uid);
+  // console.log(auth.currentUser.uid)
 
   useEffect(() => {
     const unsubscribe = database
@@ -141,7 +165,13 @@ export default function Chat({ navigation, route }) {
     <SafeAreaView>
       <View style={styles.screen}>
         <Header navigation={navigation} back={true} />
-        <H4 style={{ marginLeft: 20, marginTop: 20, color: Theme.textColor, alignSelf: 'center' }}>{farmerName}</H4>
+        <View style={styles.farmerInfor}>
+          <Image
+            source={{ uri: farmerImage }}
+            style={styles.farmerImage}
+          />
+          <H4 style={styles.farmerName}>{farmerName} {farmerLname}</H4>
+        </View>
         <GiftedChat
           messages={messages}
           onSend={handleSend}
@@ -179,5 +209,27 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: 10,
     tintColor: Theme.primary,
+  },
+  farmerInfor: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  farmerName: {
+    marginLeft: 20,
+    // marginTop: 20, 
+    color: Theme.textColor,
+    // alignSelf: 'center' 
+  },
+  farmerImage: {
+    width: 50,
+    height: 50,
+    resizeMode: 'cover',
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    // marginRight: 10,
+    borderRadius: 15,
   },
 });
