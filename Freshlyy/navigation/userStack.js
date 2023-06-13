@@ -61,24 +61,24 @@ export default function App(props) {
     registerForPushNotificationsAsync()
       .then((token) => {
         console.log(token);
-        // if (token) {
-        //   return fetch(ENV.backend + '/customer/update-push-token', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //       Authorization: props.user.accessToken,
-        //     },
-        //     body: JSON.stringify({
-        //       pushToken: token,
-        //     }),
-        //   }).then((res) =>
-        //     res
-        //       .json()
-        //       .then((res) => console.log(res))
-        //       .catch((err) => console.log(err))
-        //   );
-        // }
-        // return null;
+        if (token) {
+          return fetch(ENV.backend + '/customer/update-push-token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: props.user.accessToken,
+            },
+            body: JSON.stringify({
+              pushToken: token,
+            }),
+          }).then((res) =>
+            res
+              .json()
+              .then((res) => console.log(res))
+              .catch((err) => console.log(err))
+          );
+        }
+        return null;
       })
       .catch((err) => console.log(err));
 
