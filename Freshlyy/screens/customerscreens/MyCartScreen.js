@@ -93,8 +93,8 @@ export default function ({ navigation, route }) {
             </View>
           </View>
         )}
+        <Navbar cart={true} />
       </View>
-      <Navbar cart={true} />
     </SafeAreaView>
   );
 }

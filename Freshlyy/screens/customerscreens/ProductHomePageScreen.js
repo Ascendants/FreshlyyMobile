@@ -489,8 +489,8 @@ export default function ({ navigation, route }) {
               </BottomSheetView>
             </BottomSheet>
           </View>
+          <Navbar product={true} />
         </View>
-        <Navbar product={true} />
       </SafeAreaView>
     </GestureHandlerRootView>
   );
