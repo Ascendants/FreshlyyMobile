@@ -184,6 +184,15 @@ export default function ({ navigation, route }) {
   //     .catch((err) => console.log(err));
   // }
 
+  function navigateToChat() {
+    navigation.navigate('Chat', {
+      farmerId: product.farmer,
+      farmerName: product.farmerName,
+      farmerImg: product.farmerImage.imageUrl,
+    });
+  }
+
+
   return (
     <SafeAreaView>
       <View style={styles.screen}>
@@ -302,6 +311,7 @@ export default function ({ navigation, route }) {
                   type='icon'
                   size='normal'
                   color='shadedTertiary'
+                  onPress={navigateToChat}
                 />
                 <Button
                   type='icon'
@@ -342,9 +352,8 @@ export default function ({ navigation, route }) {
               <H4>/KG</H4>
             </View>
             <View style={styles.detail}>
-              {route.params.distanceAway && (
-                <H4>{route.params.distanceAway} KM Away | </H4>
-              )}
+              <H4>{route.params.distanceAway != undefined && route.params.distanceAway + ' KM Away | '}</H4>
+
               <Pr fontSize={20}>{product?.farmerDeliveryCharge}</Pr>
               <H4>/KM</H4>
             </View>

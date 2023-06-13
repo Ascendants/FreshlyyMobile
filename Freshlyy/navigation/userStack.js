@@ -85,7 +85,7 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.LocationScreen}
+            component={Screens.CustomerDashboardScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,
@@ -322,6 +322,11 @@ export default function App(props) {
           <Stack.Screen
             name='Cart'
             component={Screens.MyCartScreen}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Chat'
+            component={Screens.Chat}
             initialParams={defaultParams}
           />
           <Stack.Screen
