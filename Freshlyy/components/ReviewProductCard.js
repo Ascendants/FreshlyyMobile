@@ -4,8 +4,10 @@ import { P, Pr, H6 } from '../components/Texts';
 import Theme from '../constants/theme';
 import { Button } from '../components/Buttons';
 import Rating from '../components/Rating';
+import { useNavigation } from '@react-navigation/native';
 
 export default function (props) {
+  const nav = useNavigation();
   return (
     <View style={styles.screen}>
       <View style={styles.card}>
@@ -20,12 +22,15 @@ export default function (props) {
         </View>
         <View style={styles.cardinner2}>
           <Button
-            title='Rate'
+            title='Write'
             color='shadedSecondary'
             size='small'
             style={styles.ratebutton}
+            onPress={() =>
+              nav.navigate('Order Item Review', { itemId: props.itemId })
+            }
           />
-          <Rating style={styles.rating} value={props.overallRating} />
+          <Rating style={styles.rating} value={props.rating} />
         </View>
       </View>
       <View style={styles.lineStyle}></View>
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
   },
   productprice: {
     position: 'relative',
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 12,
     fontWeight: 'bold',
     color: Theme.textColor,

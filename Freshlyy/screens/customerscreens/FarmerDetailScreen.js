@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet, View, Image, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import {
-  TextInputBox,
-  DropDownPicker,
-  DatePicker,
-} from '../../components/Inputs';
+
 import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
@@ -15,12 +19,12 @@ import { H4, P, H3, H1 } from '../../components/Texts';
 import Rating from '../../components/Rating';
 import ENV from '../../constants/env';
 import ProductDeatilCard from '../../components/ProductDetailCard';
-import Loading from '../../components/Loading';
 
 export default function ({ navigation, route }) {
   const [products, setProducts] = useState([]);
-  const [farmer, setFarmer] = useState({});
+  const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [farmer, setFarmer] = useState({});
 
   async function follow() {
     try {
@@ -133,7 +137,7 @@ export default function ({ navigation, route }) {
               size='normal'
               color='shadedTertiary'
             />
-            <Button
+            {/* <Button
               type='icon'
               icon={
                 <Ionicons
@@ -145,7 +149,7 @@ export default function ({ navigation, route }) {
               title='Report'
               size='normal'
               color='shadedTertiary'
-            />
+            /> */}
           </View>
           <Button
             title={farmer?.isFollowing ? 'Following' : 'Follow'}

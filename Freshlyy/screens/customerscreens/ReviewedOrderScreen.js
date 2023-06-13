@@ -61,7 +61,7 @@ export default function () {
         {
           method: 'POST',
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
@@ -75,6 +75,47 @@ export default function () {
     }
     return;
   }
+
+  async function getFarmerData() {
+    try {
+      const result = await fetch(
+        ENV.backend + '/customer/farmerDetail/haritha@hasathcharu.com',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: route.params.auth,
+          },
+        }
+      );
+      const res = await result.json();
+      console.log(res);
+      if (res.message == 'Success') {
+        setFarmer(res.farmer);
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  }
+
+  // const getFarmerData = (isRefreshing) => {
+  //   isRefreshing ? setRefreshing(true) : setLoaded(false);
+  //   fetch(ENV.backend + '/customer/farmerDetail/haritha@hasathcharu.com', {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: route.params.auth,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.message == 'Success') {
+  //         setFarmer(res.farmer);
+  //       }
+  //       isRefreshing ? setRefreshing(false) : setLoaded(true);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
@@ -94,24 +135,6 @@ export default function () {
       })
       .catch((err) => console.log(err));
   };
-
-  // const getFarmerData = (isRefreshing) => {
-  //   isRefreshing ? setRefreshing(true) : setLoaded(false);
-  //   fetch(ENV.backend + '/customer/farmerDetail/haritha@hasathcharu.com', {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: route.params.auth,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (res.message == 'Success') {
-  //         setFarmer(res.farmer);
-  //       }
-  //       isRefreshing ? setRefreshing(false) : setLoaded(true);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
 
   useEffect(() => {
     getData();

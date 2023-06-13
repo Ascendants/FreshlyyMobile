@@ -26,7 +26,7 @@ export default function (props) {
             inputlabel='Your Review'
             placeholder=''
             value={props.review}
-            onChangeText={(text) => setReview(text)}
+            onChangeText={props.onChangeText}
             style={styles.reviewText}
             onBlur={() => {
               console.log('');

@@ -58,28 +58,28 @@ export default function () {
     return;
   }
 
-  const getData = (isRefreshing) => {
-    isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + '/customer/reportFarmer/63b6b5d2ce65a7b5a2671383', {
-      //getting data from the backend (all products)
-      method: 'GET',
-      headers: {
-        Authorization: route.params.auth,
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message == 'Success') {
-          setFarmer(res.farmer);
-          console.log(res);
-        }
-        isRefreshing ? setRefreshing(false) : setLoaded(true);
-      })
-      .catch((err) => console.log(err));
-  };
-  useEffect(() => {
-    getData();
-  }, []);
+  // const getData = (isRefreshing) => {
+  //   isRefreshing ? setRefreshing(true) : setLoaded(false);
+  //   fetch(ENV.backend + '/customer/report-farmer/63b6b5d2ce65a7b5a2671383', {
+  //     //getting data from the backend (all products)
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: route.params.auth,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.message == 'Success') {
+  //         setFarmer(res.farmer);
+  //         console.log(res);
+  //       }
+  //       isRefreshing ? setRefreshing(false) : setLoaded(true);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
   return (
     <SafeAreaView>
@@ -96,42 +96,42 @@ export default function () {
           <View style={styles.textName}>
             <H3 style={styles.name}>{farmer?.farmerName}</H3>
           </View>
-        </View>
-        <View style={styles.actionButtonContainer}>
-          <Button
-            icon={
-              <Feather
-                name='message-circle'
-                size={24}
-                color={Theme.textColor}
-              />
-            }
-            title='Chat'
-            type='icon'
-            size='normal'
-            color='shadedTertiary'
-          />
-          <Button
-            type='icon'
-            icon={
-              <Ionicons
-                name='ios-share-outline'
-                size={24}
-                color={Theme.textColor}
-              />
-            }
-            title='Share'
-            size='normal'
-            color='shadedTertiary'
-          />
-        </View>
-        <View>
-          <Button
-            title={farmer?.isFollowing ? 'Following' : 'Follow'}
-            color={farmer?.isFollowing ? 'filledPrimary' : 'shadedPrimary'}
-            size='normal'
-            onPress={farmer?.isFollowing ? unfollow : follow}
-          />
+          <View style={styles.actionButtonContainer}>
+            <Button
+              icon={
+                <Feather
+                  name='message-circle'
+                  size={24}
+                  color={Theme.textColor}
+                />
+              }
+              title='Chat'
+              type='icon'
+              size='normal'
+              color='shadedTertiary'
+            />
+            <Button
+              type='icon'
+              icon={
+                <Ionicons
+                  name='ios-share-outline'
+                  size={24}
+                  color={Theme.textColor}
+                />
+              }
+              title='Share'
+              size='normal'
+              color='shadedTertiary'
+            />
+          </View>
+          <View>
+            <Button
+              title={farmer?.isFollowing ? 'Following' : 'Follow'}
+              color={farmer?.isFollowing ? 'filledPrimary' : 'shadedPrimary'}
+              size='normal'
+              onPress={farmer?.isFollowing ? unfollow : follow}
+            />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

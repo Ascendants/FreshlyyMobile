@@ -82,6 +82,8 @@ export default function ({ route, navigation }) {
                 imageUrl={item?.imageUrl} //should be taken from Products table
                 uPrice={item?.uPrice}
                 qty={item?.qty}
+                rating={item?.rating}
+                revie={item?.review}
               />
             );
           })}
@@ -101,7 +103,7 @@ export default function ({ route, navigation }) {
             color='shadedPrimary'
             size='normal'
             style={styles.save}
-            pnPress={() => navigation.navigate('Order Item Review')}
+            onPress={() => navigation.navigate('Order Item Review')}
           />
         </View>
       </ScrollView>
