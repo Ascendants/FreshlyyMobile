@@ -28,6 +28,7 @@ async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
       return;
     }
     token = (
@@ -35,7 +36,6 @@ async function registerForPushNotificationsAsync() {
         projectId: '588dd011-7de9-4aa4-be5b-1e6d216ec6d8',
       })
     ).data;
-    return token;
   }
 
   if (Platform.OS === 'android') {
@@ -43,38 +43,61 @@ async function registerForPushNotificationsAsync() {
       name: 'default',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
+      lightColor: '#10AB68CC',
     });
   }
+
+  return token;
 }
 
 const Stack = createNativeStackNavigator();
 
 export default function App(props) {
+  const [expoPushToken, setExpoPushToken] = React.useState('');
+  const [notification, setNotification] = React.useState(false);
+  const notificationListener = React.useRef();
+  const responseListener = React.useRef();
   React.useEffect(() => {
     registerForPushNotificationsAsync()
       .then((token) => {
         console.log(token);
-        if (token) {
-          return fetch(ENV.backend + '/customer/update-push-token', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: props.user.accessToken,
-            },
-            body: JSON.stringify({
-              pushToken: token,
-            }),
-          }).then((res) =>
-            res
-              .json()
-              .then((res) => console.log(res))
-              .catch((err) => console.log(err))
-          );
-        }
-        return null;
+        // if (token) {
+        //   return fetch(ENV.backend + '/customer/update-push-token', {
+        //     method: 'POST',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //       Authorization: props.user.accessToken,
+        //     },
+        //     body: JSON.stringify({
+        //       pushToken: token,
+        //     }),
+        //   }).then((res) =>
+        //     res
+        //       .json()
+        //       .then((res) => console.log(res))
+        //       .catch((err) => console.log(err))
+        //   );
+        // }
+        // return null;
       })
       .catch((err) => console.log(err));
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, []);
   const [fonts] = useFonts({
     Poppins: require('../assets/fonts/Poppins-Medium.ttf'),

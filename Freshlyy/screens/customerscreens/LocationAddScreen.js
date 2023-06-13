@@ -72,18 +72,21 @@ export default function ({ navigation, route }) {
         }
 
         let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
+        setLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          name: 'Home',
+        });
         setSelectedLocation({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
           name: 'Home',
         });
-        console.log(location);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [location]);
+  }, []);
   console.log(location);
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -125,15 +128,17 @@ export default function ({ navigation, route }) {
                   style={styles.map}
                   // customMapStyle={styles.map}
                   initialRegion={{
-                    latitude: parseFloat(location.coords.latitude) || 0,
-                    longitude: parseFloat(location.coords.longitude) || 0,
+                    latitude: parseFloat(location.latitude) || 0,
+                    longitude: parseFloat(location.longitude) || 0,
                     latitudeDelta: 0.01,
                     longitudeDelta: 0.01,
                   }}
                   onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
                 >
                   {selectedLocation && (
-                    <Marker coordinate={selectedLocation}></Marker>
+                    <>
+                      <Marker coordinate={selectedLocation}></Marker>
+                    </>
                   )}
                 </MapView>
               </View>
