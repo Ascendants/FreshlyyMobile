@@ -30,8 +30,12 @@ async function registerForPushNotificationsAsync() {
     if (finalStatus !== 'granted') {
       return;
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    token = (
+      await Notifications.getExpoPushTokenAsync({
+        projectId: '588dd011-7de9-4aa4-be5b-1e6d216ec6d8',
+      })
+    ).data;
+    return token;
   }
 
   if (Platform.OS === 'android') {
@@ -50,6 +54,7 @@ export default function App(props) {
   React.useEffect(() => {
     registerForPushNotificationsAsync()
       .then((token) => {
+        console.log(token);
         if (token) {
           return fetch(ENV.backend + '/customer/update-push-token', {
             method: 'POST',
@@ -60,7 +65,12 @@ export default function App(props) {
             body: JSON.stringify({
               pushToken: token,
             }),
-          });
+          }).then((res) =>
+            res
+              .json()
+              .then((res) => console.log(res))
+              .catch((err) => console.log(err))
+          );
         }
         return null;
       })
@@ -84,8 +94,8 @@ export default function App(props) {
           screenOptions={{ headerShown: false, animation: 'none' }}
         >
           <Stack.Screen
-            name='Farmer report'
-            component={Screens.CustomerDashboardScreen}
+            name='Location'
+            component={Screens.LocationScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,
