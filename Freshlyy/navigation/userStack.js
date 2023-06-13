@@ -1,15 +1,15 @@
-import React from "react";
-import { StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useFonts } from "expo-font";
-import { UserContext, user } from "../context/UserContext";
-import * as Screens from "../screens";
-import FarmerReportScreen from "../screens/farmerscreens/FarmerReportScreen";
-import { auth } from "../utils/firebase";
-import * as Notifications from "expo-notifications";
-import * as Device from "expo-device";
-import ENV from "../constants/env";
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useFonts } from 'expo-font';
+import { UserContext, user } from '../context/UserContext';
+import * as Screens from '../screens';
+import FarmerReportScreen from '../screens/farmerscreens/FarmerReportScreen';
+import { auth } from '../utils/firebase';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+import ENV from '../constants/env';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -24,23 +24,23 @@ async function registerForPushNotificationsAsync() {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-    if (existingStatus !== "granted") {
+    if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
-    if (finalStatus !== "granted") {
+    if (finalStatus !== 'granted') {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
   }
 
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
+      lightColor: '#FF231F7C',
     });
   }
 }
@@ -52,10 +52,10 @@ export default function App(props) {
     registerForPushNotificationsAsync()
       .then((token) => {
         if (token) {
-          return fetch(ENV.backend + "/customer/update-push-token", {
-            method: "POST",
+          return fetch(ENV.backend + '/customer/update-push-token', {
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: props.user.accessToken,
             },
             body: JSON.stringify({
@@ -68,9 +68,9 @@ export default function App(props) {
       .catch((err) => console.log(err));
   }, []);
   const [fonts] = useFonts({
-    Poppins: require("../assets/fonts/Poppins-Medium.ttf"),
-    PoppinsRegular: require("../assets/fonts/Poppins-Regular.ttf"),
-    PoppinsBold: require("../assets/fonts/Poppins-Bold.ttf"),
+    Poppins: require('../assets/fonts/Poppins-Medium.ttf'),
+    PoppinsRegular: require('../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
   });
   if (!fonts) return null;
   const defaultParams = {
@@ -80,22 +80,22 @@ export default function App(props) {
   return (
     <UserContext.Provider value={null}>
       <NavigationContainer>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle='dark-content' />
         <Stack.Navigator
-          screenOptions={{ headerShown: false, animation: "none" }}
+          screenOptions={{ headerShown: false, animation: 'none' }}
         >
           <Stack.Screen
-            name="Farmer report"
-            component={Screens.LocationAddScreen}
+            name='Farmer report'
+            component={Screens.LocationScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,
-              orderId: "648017f45ed6e07fdd85bb5c",
-              purl: "sri_lankan_mango_640f50d7c36e0ee998dcbca9",
+              orderId: '648017f45ed6e07fdd85bb5c',
+              purl: 'sri_lankan_mango_640f50d7c36e0ee998dcbca9',
             }}
           />
           <Stack.Screen
-            name="Product Home Page"
+            name='Product Home Page'
             component={Screens.ProductHomePageScreen}
             options={{
               headerShown: false,
@@ -103,7 +103,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Delete Product"
+            name='Delete Product'
             component={Screens.DeleteProductScreen}
             options={{
               headerShown: false,
@@ -111,7 +111,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Social Corner"
+            name='Social Corner'
             component={Screens.SocialCornerScreen}
             options={{
               headerShown: false,
@@ -120,219 +120,219 @@ export default function App(props) {
           />
 
           <Stack.Screen
-            name="Farmer Dashboard"
+            name='Farmer Dashboard'
             component={Screens.FarmerDashboardScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Customer Dashboard"
+            name='Customer Dashboard'
             component={Screens.CustomerDashboardScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Payment"
+            name='Payment'
             component={Screens.PaymentScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Other Payment"
+            name='Other Payment'
             component={Screens.OtherPaymentScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Farmer Balance"
+            name='Farmer Balance'
             component={Screens.FarmerBalancesScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Configure Bank"
+            name='Configure Bank'
             component={Screens.AddBankAccountScreen}
             initialParams={defaultParams}
           />
 
           <Stack.Screen
-            name="Confirm Pickup"
+            name='Confirm Pickup'
             component={Screens.ConfirmPickupScreen}
             initialParams={defaultParams}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
           <Stack.Screen
-            name="Orders List"
+            name='Orders List'
             component={Screens.OrderListScreen}
-            initialParams={{ ...defaultParams, initialTab: "all" }}
+            initialParams={{ ...defaultParams, initialTab: 'all' }}
           />
           <Stack.Screen
-            name="Order Status Update"
+            name='Order Status Update'
             component={Screens.OrderStatusUpdateScreen}
             initialParams={{
               ...defaultParams,
-              orderId: "6480039d9a0f5ec665018986",
+              orderId: '6480039d9a0f5ec665018986',
             }}
           />
           <Stack.Screen
-            name="Farmer Payout Requests"
+            name='Farmer Payout Requests'
             component={Screens.PayoutRequestListScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Farmer Invoices"
+            name='Farmer Invoices'
             component={Screens.FarmerInvoicesScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Order Details"
+            name='Order Details'
             component={Screens.OrderStatusScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Notifications"
+            name='Notifications'
             component={Screens.NotificationScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Card Management"
+            name='Card Management'
             component={Screens.CardScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Add Card"
+            name='Add Card'
             component={Screens.AddCardScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Add New Card"
+            name='Add New Card'
             component={Screens.OtherPaymentScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Insert Product"
+            name='Insert Product'
             component={Screens.InsertProductScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Manage Product"
+            name='Manage Product'
             component={Screens.EorDProductScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Edit Product"
+            name='Edit Product'
             component={Screens.EditProductScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="productupdated"
+            name='productupdated'
             component={Screens.ProductUpdatedScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="productAddedSuccessfully"
+            name='productAddedSuccessfully'
             component={Screens.ProductAddedScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Order Cancel Screen"
+            name='Order Cancel Screen'
             component={Screens.OrderCancelScreen}
             initialParams={defaultParams}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
           <Stack.Screen
-            name="Payout Request Screen"
+            name='Payout Request Screen'
             component={Screens.ConfirmRequestWithdrawalScreen}
             initialParams={defaultParams}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
           <Stack.Screen
-            name="Help Center"
+            name='Help Center'
             component={Screens.HelpCenterScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Cant sign in"
+            name='Cant sign in'
             component={Screens.CantSignInScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Food Damaged"
+            name='Food Damaged'
             component={Screens.FoodDamagedScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Select the Order"
+            name='Select the Order'
             component={Screens.SelectOrderScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Help with an order"
+            name='Help with an order'
             component={Screens.HelpWithAnOrderScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Order Naver Arrived"
+            name='Order Naver Arrived'
             component={Screens.OrderNeverArrivedScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Order is Wrong"
+            name='Order is Wrong'
             component={Screens.OrderIsWrong}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Order Details Help Center"
+            name='Order Details Help Center'
             component={Screens.HelpWithAnOrderScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Create Coupon"
+            name='Create Coupon'
             component={Screens.CreateCouponScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Contact Us"
+            name='Contact Us'
             component={Screens.ContactUsScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Ticket Details"
+            name='Ticket Details'
             component={Screens.TicketDetailsScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Ticket Status"
+            name='Ticket Status'
             component={Screens.TicketStatusScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Cart"
+            name='Cart'
             component={Screens.MyCartScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Checkout"
+            name='Checkout'
             component={Screens.CheckoutScreen}
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Wishlist"
+            name='Wishlist'
             component={Screens.WishListScreen}
             initialParams={defaultParams}
           />
 
           <Stack.Screen
-            name="Message"
+            name='Message'
             component={Screens.MessageScreen}
             options={{
-              animation: "slide_from_bottom",
+              animation: 'slide_from_bottom',
             }}
           />
 
           <Stack.Screen
-            name="Phone Verification"
+            name='Phone Verification'
             component={Screens.PhoneVerificationScreen}
             options={{
               headerShown: false,
@@ -340,7 +340,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Product Detail"
+            name='Product Detail'
             component={Screens.ProductDetailScreen}
             options={{
               headerShown: false,
@@ -348,7 +348,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Farmer Detail Page"
+            name='Farmer Detail Page'
             component={Screens.FarmerDetailScreen}
             options={{
               headerShown: false,
@@ -356,7 +356,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Farmer Follower Page"
+            name='Farmer Follower Page'
             component={Screens.FarmerFollowerScreen}
             options={{
               headerShown: false,
@@ -364,7 +364,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Location Screen"
+            name='Location Screen'
             component={Screens.LocationScreen}
             options={{
               headerShown: false,
@@ -372,7 +372,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Add Location Screen"
+            name='Add Location Screen'
             component={Screens.LocationAddScreen}
             options={{
               headerShown: false,
@@ -380,7 +380,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Order Review page"
+            name='Order Review page'
             component={Screens.OrderReviewScreen}
             options={{
               headerShown: false,
@@ -388,7 +388,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Report Farmer page"
+            name='Report Farmer page'
             component={Screens.ReportFarmerScreen}
             options={{
               headerShown: false,
@@ -396,7 +396,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name="Reviewed Order page"
+            name='Reviewed Order page'
             component={Screens.ReviewedOrderScreen}
             options={{
               headerShown: false,

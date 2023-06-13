@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,31 +7,28 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-} from "react-native";
-import Theme from "../../constants/theme";
-import { Button } from "../../components/Buttons";
+} from 'react-native';
+import Theme from '../../constants/theme';
+import { Button } from '../../components/Buttons';
 import {
   TextInputBox,
   DropDownPicker,
   DatePicker,
-} from "../../components/Inputs";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../../components/Header";
-import { H4, P, H3 } from "../../components/Texts";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import LocationCard from "../../components/LocationCard";
-import ENV from "../../constants/env";
+} from '../../components/Inputs';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../../components/Header';
+import { H4, P, H3 } from '../../components/Texts';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+import LocationCard from '../../components/LocationCard';
+import ENV from '../../constants/env';
+import RefreshView from '../../components/RefreshView';
 
 export default function ({ navigation, route }) {
   const [location, setLocation] = useState([]);
-  const [address, setAddress] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [loaded, setLoaded] = useState(false);
 
-  const getData = (isRefreshing) => {
-    isRefreshing ? setRefreshing(true) : setLoaded(false);
-    fetch(ENV.backend + "/customer/selected-location/", {
-      method: "GET",
+  const getData = React.useCallback(() => {
+    return fetch(ENV.backend + '/customer/locations/', {
+      method: 'GET',
       headers: {
         Authorization: route.params.auth,
       },
@@ -39,39 +36,84 @@ export default function ({ navigation, route }) {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        if (res.message == "Success") {
+        if (res.message == 'Success') {
           setLocation(res.location);
         }
-        isRefreshing ? setRefreshing(false) : setLoaded(true);
       })
       .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getData();
   }, []);
-
+  async function selectLocation(data) {
+    try {
+      const result = await fetch(ENV.backend + '/customer/select-location', {
+        method: 'POST',
+        headers: {
+          Authorization: route.params.auth,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await result.json();
+      console.log(res);
+      if (res.message == 'Success') {
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ alignItems: 'center', flex: 1 }}>
       <Header back={true} />
-      <ScrollView>
+      <RefreshView
+        style={{
+          marginHorizontal: 10,
+          backgroundColor: 'red',
+          flex: 1,
+        }}
+        getData={getData}
+      >
         <View style={styles.screen}>
           <H3>Locations</H3>
-          {location?.map((item) => {
+          {location?.map((item, index) => {
             return (
               <LocationCard
-                locationName={item?.locationName}
-                address={address?.address}
+                key={index}
+                locationName={item?.name}
                 longitude={item?.longitude}
+                selected={item?.isSelected}
                 latitude={item?.latitude}
-                onEdit={() => editLocation(item?.userId)}
                 onDelete={() => deleteLocation(item?.userId)}
+                selectLocation={() => selectLocation(item)}
               />
             );
           })}
-          <Button title="Add Location" color="shadedPrimary" size="normal" />
+          {location?.length == 0 && (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <Image
+                style={{
+                  width: 250,
+                  height: 250,
+                  resizeMode: 'contain',
+                  alignSelf: 'center',
+                }}
+                source={require('../../assets/location.png')}
+              />
+              <H4 style={{ textAlign: 'center' }}>
+                Save a location to go shopping!
+              </H4>
+            </View>
+          )}
+
+          <View style={{ marginVertical: 50 }}>
+            <Button
+              title='Add Location'
+              color='shadedPrimary'
+              size='big'
+              onPress={() => navigation.navigate('Add Location Screen')}
+            />
+          </View>
         </View>
-      </ScrollView>
+      </RefreshView>
     </SafeAreaView>
   );
 }
@@ -79,8 +121,8 @@ export default function ({ navigation, route }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     //justifyContent: 'center',
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
   },
 });
