@@ -164,13 +164,13 @@ export default function ({ navigation, route }) {
                 onPress={handleNewOrderBottomSheet}
               />
               <DashBoardCard
-                imageUri={require('../../assets/gift.png')}
+                imageUri={require('../../assets/shipped.png')}
                 number={pageData.toDeliver}
                 text='To Deliver'
                 onPress={handleToDeliverBottomSheet}
               />
               <DashBoardCard
-                imageUri={require('../../assets/gift.png')}
+                imageUri={require('../../assets/topickup.png')}
                 number={pageData.willPickup}
                 text='Will Pickup'
                 onPress={handleWillPickupBottomSheet}

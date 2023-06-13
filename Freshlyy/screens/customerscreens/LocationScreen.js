@@ -84,7 +84,7 @@ export default function ({ navigation, route }) {
   }
   return (
     <SafeAreaView style={{ alignItems: 'center', flex: 1 }}>
-      <Header back={true} />
+      <Header back={true} home={true} />
       <RefreshView
         style={{
           marginHorizontal: 10,
@@ -132,6 +132,14 @@ export default function ({ navigation, route }) {
               size='big'
               onPress={() => navigation.navigate('Add Location Screen')}
             />
+            {location?.length > 0 && (
+              <Button
+                title='Browse Products'
+                color='filledPrimary'
+                size='big'
+                onPress={() => navigation.navigate('Product Home Page')}
+              />
+            )}
           </View>
         </View>
       </RefreshView>

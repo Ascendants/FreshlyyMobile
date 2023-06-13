@@ -24,6 +24,7 @@ export default function ({ navigation, route }) {
   const [notifications, setNotifications] = React.useState([]);
   const [loaded, setLoaded] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
+
   const getNotifications = React.useCallback(async (refreshing) => {
     refreshing ? setRefreshing(true) : setLoaded(false);
     return fetch(ENV.backend + `/${route.params.mode}/notifications`, {

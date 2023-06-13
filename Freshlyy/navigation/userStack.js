@@ -85,7 +85,7 @@ export default function App(props) {
         >
           <Stack.Screen
             name='Farmer report'
-            component={Screens.FarmerDashboardScreen}
+            component={Screens.LocationScreen}
             options={{ headerShown: false }}
             initialParams={{
               ...defaultParams,
@@ -360,7 +360,7 @@ export default function App(props) {
             initialParams={defaultParams}
           />
           <Stack.Screen
-            name='Farmer Detail Page'
+            name='Farmer Detail'
             component={Screens.FarmerDetailScreen}
             options={{
               headerShown: false,
@@ -378,6 +378,22 @@ export default function App(props) {
           <Stack.Screen
             name='Location Screen'
             component={Screens.LocationScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Settle Account'
+            component={Screens.SettleAccountScreen}
+            options={{
+              headerShown: false,
+            }}
+            initialParams={defaultParams}
+          />
+          <Stack.Screen
+            name='Other Farmer Payment'
+            component={Screens.OtherFarmerPaymentScreen}
             options={{
               headerShown: false,
             }}

@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { H2, P, H3, H4, H5, Pr } from '../../components/Texts';
 import { Button } from '../../components/Buttons';
@@ -67,7 +73,7 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   }, []);
-
+  console.log(product?.farmerDeliveryCharge);
   async function postCart() {
     const result = await fetch(ENV.backend + '/customer/cart/add', {
       method: 'POST',
@@ -266,15 +272,23 @@ export default function ({ navigation, route }) {
               <P>10 Reviews</P>
             </View>
             <View style={styles.actionArea}>
-              <View style={styles.farmerDetail}>
-                <Image
-                  source={{ uri: product?.farmerImage?.imageUrl }}
-                  style={styles.farmerImage}
-                />
-                <H5 numberOfLines={1} style={styles.farmerName}>
-                  {product?.farmerName}
-                </H5>
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Farmer Detail', {
+                    farmer: product?.farmer,
+                  })
+                }
+              >
+                <View style={styles.farmerDetail}>
+                  <Image
+                    source={{ uri: product?.farmerImage?.imageUrl }}
+                    style={styles.farmerImage}
+                  />
+                  <H5 numberOfLines={1} style={styles.farmerName}>
+                    {product?.farmerName}
+                  </H5>
+                </View>
+              </TouchableOpacity>
               <View style={styles.actionButtonContainer}>
                 <Button
                   icon={
@@ -328,8 +342,10 @@ export default function ({ navigation, route }) {
               <H4>/KG</H4>
             </View>
             <View style={styles.detail}>
-              <H4>{product?.distance} KM Away | </H4>
-              <Pr fontSize={20}>{product?.pricePerKm}</Pr>
+              {route.params.distanceAway && (
+                <H4>{route.params.distanceAway} KM Away | </H4>
+              )}
+              <Pr fontSize={20}>{product?.farmerDeliveryCharge}</Pr>
               <H4>/KM</H4>
             </View>
             <View style={styles.detail}>

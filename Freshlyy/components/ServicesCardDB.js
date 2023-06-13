@@ -35,12 +35,12 @@ export default function (props) {
         </TouchableOpacity>
       )}
       {!props.farmer && (
-        <TouchableOpacity style={styles.button}>
-          <Image
-            source={require('../assets/documents.png')}
-            style={styles.logo}
-          />
-          <H8>Reviews</H8>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.navigate('Farmer Follower Page')}
+        >
+          <Image source={require('../assets/follow.png')} style={styles.logo} />
+          <H8>Following</H8>
         </TouchableOpacity>
       )}
     </View>
