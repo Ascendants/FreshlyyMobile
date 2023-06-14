@@ -1,14 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Header from '../../components/Header';
-import Navbar from '../../components/Navbar';
-import DashBoardCard from '../../components/DashBoardCard';
-import ServicesCardDB from '../../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { H5, Pr, H3, P, H4, H6 } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
-import InfoCardDBCust from '../../components/InfoCardDBCust';
 import RefreshView from '../../components/RefreshView';
 import Box from '../../components/Box';
 import ListItem from '../../components/ListItem';
@@ -22,7 +18,12 @@ function PriceItem(props) {
   return (
     <View style={styles.priceItemContainer}>
       <H5 style={color}>{props.title}</H5>
-      <Pr style={{ textAlign: 'right' }} fontSize={20}>
+      <Pr
+        style={{
+          textAlign: 'right',
+        }}
+        fontSize={20}
+      >
         {props.amount}
       </Pr>
     </View>
@@ -49,7 +50,7 @@ export default function ({ navigation, route }) {
     return fetch(ENV.backend + '/farmer/earnings', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -60,12 +61,12 @@ export default function ({ navigation, route }) {
         setData(res.earnings);
       })
       .catch((err) => console.log(err));
-  });
+  },[]);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} home={true} />
-        <RefreshView getData={getData}>
+        <RefreshView getData={getData} route={route}>
           <H3 style={{ textAlign: 'center' }}>Your Earnings</H3>
           <Box>
             <ListItem>
@@ -109,6 +110,7 @@ export default function ({ navigation, route }) {
                   title='Settle Account'
                   color='filledPrimary'
                   size='big'
+                  onPress={() => navigation.navigate('Settle Account')}
                 />
                 <P style={styles.infoTextLast}>
                   ⓘ Negative since {data.negativeSince}
@@ -182,7 +184,9 @@ export default function ({ navigation, route }) {
             />
           )}
           <View style={styles.infoTextCont}>
-            <P>Last updated {data.lastUpdate}</P>
+            <P style={{ textAlign: 'center' }}>
+              Last updated {data.lastUpdate}
+            </P>
             <P style={styles.infoTextLast}>
               ⓘ Balance updates 3 days after an order is complete
             </P>

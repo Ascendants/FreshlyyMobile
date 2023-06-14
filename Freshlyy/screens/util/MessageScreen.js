@@ -3,14 +3,17 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { H3, H5 } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import ProductHomePageScreen from '../customerscreens/ProductHomePageScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 
 export default function ({ navigation, route }) {
   function buttonPress() {
-    if (route.params.goto) {
+    if (route.params.goto && !route.params.screenParams) {
       navigation.navigate(route.params.goto);
+      return;
+    }
+    if (route.params.goto && route.params.screenParams) {
+      navigation.navigate(route.params.goto, route.params.screenParams);
       return;
     }
     navigation.goBack();

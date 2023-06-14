@@ -13,7 +13,22 @@ import Theme from '../../constants/theme';
 import { H3, H4, H5 } from '../../components/Texts';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function ({ navigation }) {
+export default function ({ navigation, route }) {
+
+  const email = route.params.userEmail;
+  function navigateToSelectOrder(email) {
+    navigation.navigate('Select the Order', {
+    });
+  }
+
+  function navigateToCreateCoupon(email) {
+    navigation.navigate('Create Coupon');
+  }
+
+  function navigateToTicketStatus(email) {
+    navigation.navigate('Ticket Status');
+  }
+
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -32,28 +47,29 @@ export default function ({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Select the Order')}
+            onPress={navigateToSelectOrder}
           >
             <View style={styles.barContainer}>
               <H5>Help with an order</H5>
               <AntDesign name='right' size={24} color={Theme.textColor} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Create Coupon')}
-          >
-            <View style={styles.barContainer}>
-              <H5>Create coupon</H5>
-              <AntDesign name='right' size={24} color={Theme.textColor} />
-            </View>
-          </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Ticket status')}>
+          {route?.params?.farmer && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={navigateToCreateCoupon}
+            >
+              <View style={styles.barContainer}>
+                <H5>Create coupon</H5>
+                <AntDesign name='right' size={24} color={Theme.textColor} />
+              </View>
+            </TouchableOpacity>)}
+          <TouchableOpacity style={styles.button} onPress={navigateToTicketStatus}>
             <View style={styles.barContainer}>
               <H5>View my tickets</H5>
               <AntDesign name="right" size={24} color={Theme.textColor} />
             </View>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <H5 style={{ margin: 10 }}>Still Have Questions?</H5>
           <Image
             source={require('../../assets/support-ticket.png')}

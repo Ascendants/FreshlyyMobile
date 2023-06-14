@@ -1,17 +1,20 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { H4, H5, H6 } from '../components/Texts';
+import { H4, H5, H6, Pr } from '../components/Texts';
 import { MaterialIcons } from '@expo/vector-icons';
 import Theme from '../constants/theme';
 
 export default function (props) {
+  const firstImageUrl = props.imageUri && props.imageUri.length > 0 ? props.imageUri[0].imageUrl : null;
   return (
     <View style={styles.container}>
-      <Image source={props.imgUrl?.imageUrl} style={styles.image} />
-      {/* <MaterialIcons name="horizontal-rule" size={24} color="black" /> */}
       <View style={styles.left}>
-        <H5>{props.topic}</H5>
-        <H6>{props.subTopic}</H6>
+        <Image source={{uri: firstImageUrl}} style={styles.image} />
+      </View>
+      <View style={styles.right}>
+        <H5>{props.name}</H5>
+        <H6>{props.quantity} {props.unit}</H6>
+        <Pr>{props.price}</Pr>
       </View>
     </View>
   );
@@ -20,15 +23,22 @@ export default function (props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    margin: 20,
+    marginBottom: 10,
+    marginLeft: 20,
+    marginRight: 20,
     paddingLeft: 5,
   },
   image: {
     width: 60,
     height: 60,
     borderRadius: 15,
+    margin: 10,
+    backgroundColor: Theme.overlayShade,
   },
   left: {
+    justifyContent: 'center',
+  },
+  right: {
     margin: 10,
   },
 });

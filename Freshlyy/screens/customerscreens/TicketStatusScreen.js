@@ -12,17 +12,18 @@ import RefreshView from '../../components/RefreshView';
 export default function ({ navigation, route }) {
   const [tickets, setTickets] = useState([]);
 
-  React.useState(() => {
+  React.useEffect(() => {
     fetch(ENV.backend + '/customer/get-support-tickets/', {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         //this will be replaced with an http only token
         //after auth gets set
       },
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res)
         if (!res.tickets) throw new Error('Malformed Response');
         setTickets(res.tickets);
       })
@@ -44,7 +45,7 @@ export default function ({ navigation, route }) {
                 style={styles.button}
                 key={index}
                 onPress={() =>
-                  navigation.navigate('Ticket Details', { ticket: ticket._id })
+                  navigation.navigate('Ticket Details', { ticketId: ticket._id })
                 }
               >
                 <View style={styles.ticketContainer}>

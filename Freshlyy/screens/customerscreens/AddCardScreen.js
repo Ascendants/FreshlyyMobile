@@ -2,13 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Image, ScrollView, Settings } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import { TextInputBox, MaskedTextInputBox } from '../../components/Inputs';
-import { H2, P } from '../../components/Texts';
+import { H3, P } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import { Formik, useFormik } from 'formik';
-import * as Yup from 'yup';
-import CardTypeSelector from '../../components/CardTypeSelector';
 import ENV from '../../constants/env';
 import LoadingModal from '../../components/LoadingModal';
 import {
@@ -30,7 +26,7 @@ export default function ({ navigation, route }) {
         {
           method: 'GET',
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
@@ -48,7 +44,7 @@ export default function ({ navigation, route }) {
     const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
       paymentMethodType: 'Card',
     });
-
+    setSaving(false);
     if (error) {
       navigation.navigate('Message', {
         type: 'fail',
@@ -57,7 +53,6 @@ export default function ({ navigation, route }) {
         goto: 'Card Management',
         goButtonText: 'View Cards',
       });
-      setSaving(false);
       return;
     } else if (setupIntent) {
       navigation.navigate('Message', {
@@ -67,7 +62,6 @@ export default function ({ navigation, route }) {
         goto: 'Card Management',
         goButtonText: 'View Cards',
       });
-      setSaving(false);
       return;
     }
   }
@@ -78,7 +72,7 @@ export default function ({ navigation, route }) {
         <View style={styles.screen}>
           <LoadingModal message='Saving Card' visible={saving} />
           <Header back={true} home={true} />
-          <H2 style={{ textAlign: 'center' }}>Add Card</H2>
+          <H3 style={{ textAlign: 'center' }}>Add Card</H3>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pageContent}>
               <Image
@@ -109,7 +103,16 @@ export default function ({ navigation, route }) {
                   onPress={saveCard}
                 />
               </View>
-              <View style={styles.inputcont}></View>
+            </View>
+            <View style={{ marginTop: 20 }}>
+              <P style={styles.infoText}>
+                ⓘ We may charge a small amount to verify your card which will be
+                refunded back to you.
+              </P>
+              <P style={styles.infoText}>
+                We do not store your card details with us. It is stored securely
+                with our payment processor Stripe.
+              </P>
             </View>
           </ScrollView>
         </View>
@@ -135,5 +138,9 @@ const styles = StyleSheet.create({
   inputcont: {
     width: '100%',
     alignItems: 'center',
+  },
+  infoText: {
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });

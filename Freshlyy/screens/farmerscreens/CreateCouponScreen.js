@@ -69,48 +69,48 @@ export default function ({ navigation, route }) {
 
   const couponRegex = /^CP\d{4}$/;
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     const response = await fetch(ENV.backend + '/farmer/verify-coupon-code/', {
-  //       method: 'POST',
-  //       headers: {
-  //         useremail: route.params.userEmail,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         cCode: code,
-  //       })
-  //     })
-  //     const result = await response.json();
-  //     if (result.isExist) {
-  //       alert(`Coupon code ${code} already exists`);
-  //     } else {
-  //       const response = await fetch(ENV.backend + "/farmer/create-coupon/", {
-  //         method: 'POST',
-  //         headers: {
-  //           useremail: route.params.userEmail,
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           presentage: presentage,
-  //           cCode: code,
-  //           cDate: createDateString,
-  //           eDate: expireDateString,
-  //         })
-  //       })
-  //       // console.log(response.id);
-  //       navigation.navigate('Message', {
-  //         type: 'Success',
-  //         messageTitle: 'Coupon Created Successfully!',
-  //         messageText: 'An administrator will be in touch with you shortly!',
-  //         goto: 'Farmer Dashboard',
-  //         goButtonText: 'Dashboard',
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(ENV.backend + '/farmer/verify-coupon-code/', {
+        method: 'POST',
+        headers: {
+          useremail: route.params.userEmail,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cCode: code,
+        })
+      })
+      const result = await response.json();
+      if (result.isExist) {
+        alert(`Coupon code ${code} already exists`);
+      } else {
+        const response = await fetch(ENV.backend + "/farmer/create-coupon/", {
+          method: 'POST',
+          headers: {
+            useremail: route.params.userEmail,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            presentage: presentage,
+            cCode: code,
+            cDate: createDateString,
+            eDate: expireDateString,
+          })
+        })
+        // console.log(response.id);
+        navigation.navigate('Message', {
+          type: 'Success',
+          messageTitle: 'Coupon Created Successfully!',
+          messageText: 'An administrator will be in touch with you shortly!',
+          goto: 'Farmer Dashboard',
+          goButtonText: 'Dashboard',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const minimumDate = new Date();
   minimumDate.setDate(minimumDate.getDate() + 1);
@@ -187,7 +187,7 @@ export default function ({ navigation, route }) {
                   {
                     method: 'POST',
                     headers: {
-                      useremail: route.params.userEmail,
+                      Authorization: route.params.auth,
                       'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -204,7 +204,7 @@ export default function ({ navigation, route }) {
                     {
                       method: 'POST',
                       headers: {
-                        useremail: route.params.userEmail,
+                        Authorization: route.params.auth,
                         'Content-Type': 'application/json',
                       },
                       body: JSON.stringify({
@@ -263,13 +263,25 @@ export default function ({ navigation, route }) {
                   onChangeText={handleChange('code')}
                   onFocus={() => setShowInstructions(true)}
                   onBlur={() => {
-                    setShowInstructions(false);
+                    setShowInstructions(true);
                     setFieldTouched('code');
                   }}
                   error={errors.code}
                   touched={touched.code}
                 />
-                {showInstructions && suggestions.length > 0 && (
+                <View style={styles.instructionContainer}>
+                    <H6>Code format -- "CP" and 4 digit code.</H6>
+                    <H6>Suggestions:</H6>
+                    {suggestions.map((suggestion, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => setCode(suggestion)}
+                      >
+                        <H6>{suggestion}</H6>
+                      </TouchableOpacity>
+                    ))}
+                </View>
+                {/* {showInstructions && suggestions.length > 0 && (
                   <View style={styles.instructionContainer}>
                     <H6>Code format -- "CP" and 4 digit code.</H6>
                     <H6>Suggestions:</H6>
@@ -282,7 +294,7 @@ export default function ({ navigation, route }) {
                       </TouchableOpacity>
                     ))}
                   </View>
-                )}
+                )} */}
                 <DatePicker
                   inputlabel={'Activates On'}
                   name='Activates On'

@@ -3,41 +3,93 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { H3, H5 } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-
+import ENV from '../../constants/env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import * as Yup from 'yup';
-import PhoneInput from 'react-native-phone-number-input';
-import * as Animatable from 'react-native-animatable';
-import { Animations } from '../../constants/Animation';
 import { auth } from '../../utils/firebase';
-import Loading from '../../components/Loading';
 import LoadingModal from '../../components/LoadingModal';
 import LottieView from 'lottie-react-native';
 
 export default function ({ navigation, route }) {
+  console.log(route.params.userData);
   const [errors, setErrors] = useState('');
   const [resend, setReSend] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
-  console.log(route.params.userData);
+  const [validUser, setValidUser] = useState();
+  console.log(auth.currentUser);
   const handleVerifyEmail = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      try {
-        console.log(user);
-        await user.reload();
-        if (user.emailVerified) {
-          console.log(user);
-          console.log('Success', 'Email has been verified!');
-          setEmailVerified(true);
-        } else {
-          setErrors('Email has not been verified!');
-          console.log('Error', 'Email has not been verified!');
+    try {
+      const user = auth.currentUser;
+      const idToken = await auth.currentUser
+        .getIdToken()
+        .then((token) => {
+          return token;
+        })
+        .catch((error) => {
+          if (error.code === 'auth/user-token-expired') {
+            setErrors('Time out try again!');
+            return;
+          }
+          console.error('Error getting ID token:', error);
+        });
+      if (user) {
+        setValidUser(user);
+        try {
+          await user.reload();
+          if (user.emailVerified) {
+            setErrors('');
+            console.log('Email has been verified!');
+            await SendToRegister(idToken);
+          } else {
+            setErrors('Email has not been verified!');
+          }
+        } catch (error) {
+          if (error.code === 'auth/internal-error') {
+            setErrors('Try again later!');
+            return;
+          }
+
+          if (error.code === 'auth/email-already-exists') {
+            setErrors('User account already exists!');
+            return;
+          }
+          if (error.code === 'auth/user-token-expired') {
+            setErrors('User account already exists!');
+            return;
+          } else {
+            setErrors(error.code);
+          }
+          //console.log("Error", error.message);
         }
-      } catch (error) {
-        setErrors(error.message);
-        console.log('Error', error.message);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const SendToRegister = async (idToken) => {
+    // console.log(idToken)
+    try {
+      const result = await fetch(ENV.backend + '/customer/signup', {
+        method: 'POST',
+        headers: {
+          Authorization: idToken,
+          'Content-Type': 'application/json',
+        },
+        body: route.params.userData,
+      });
+      const res = await result.json();
+      console.log('Res', res);
+      console.log(route.params.userData);
+      if (res.message === 'Success') {
+        setEmailVerified(true);
+        return auth.signOut();
+      }
+      if (res.message === 'Unsuccessful') {
+        setErrors(res.error);
+      }
+    } catch (error) {
+      setErrors(error.message);
     }
   };
 
@@ -51,13 +103,15 @@ export default function ({ navigation, route }) {
       })
       .catch((error) => {
         setReSend(false);
-        console.log(error);
-        setErrors('Try again!');
+        if (error.code === 'auth/email-already-in-use') {
+          setErrors('User account already exists!');
+          return;
+        }
       });
   };
 
   const onAnimationFinish = () => {
-    navigation.navigate('homePage');
+    navigation.navigate('login', { message: 'Success' });
   };
 
   return (

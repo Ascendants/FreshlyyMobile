@@ -17,7 +17,7 @@ export default function ({ navigation, route }) {
 
   const [selected, setSelected] = useState('');
 
-  const orderId = route.params.orderId;
+  const orderId = route.params?.orderId;
 
   const data = [
     { key: '1', value: 'Technical issues' },
@@ -31,10 +31,10 @@ export default function ({ navigation, route }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(ENV.backend + '/farmer/support-ticket/', {
+      const response = await fetch(ENV.backend + '/customer/support-ticket/', {
         method: 'POST',
         headers: {
-          useremail: route.params.userEmail,
+          Authorization: route.params.auth,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -57,7 +57,7 @@ export default function ({ navigation, route }) {
         subjectId: id,
         messageText:
           ' is your ticket number. An administrator will be in touch with you shortly!',
-        goto: 'Farmer Dashboard',
+        goto: 'Customer Dashboard',
         goButtonText: 'Dashboard',
       });
       // console.log(data.id);

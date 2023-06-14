@@ -8,60 +8,86 @@ import theme from '../constants/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Button } from '../components/Buttons';
 import Rating from '../components/Rating';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import {
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
 
-export default function () {
+import ListItem from './ListItem';
+
+export default function (props) {
   return (
-    <View style={styles.screen}>
-      <View style={styles.card}>
+    <ListItem>
+      {/* <View style={styles.card}>
         <Button
-          icon={<Ionicons name='location' size={40} color={Theme.danger} />}
+          icon={<Ionicons name='location' size={40} color={Theme.primary} />}
           type='icon'
           size='small'
         />
         <View style={styles.address}>
-          <H5>My Home</H5>
-          <H6>No 12, 2nd Lane,</H6>
-          <H6>Moratuwa</H6>
+          <H5>{props.locationName}</H5>
         </View>
+
         <Button
           icon={
-            <Ionicons name='pencil-outline' size={25} color={Theme.textColor} />
-          }
-          type='icon'
-          size='small'
-          color='shadedPrimary'
-          style={styles.icon}
-        />
-        <Button
-          icon={
-            <Ionicons name='trash-outline' size={25} color={Theme.textColor} />
+            <Ionicons name='trash-outline' size={25} color={Theme.danger} />
           }
           type='icon'
           size='small'
           color='shadedDanger'
+          title='Delete'
           style={styles.icon}
+          onpress={props.onDelete}
+        />
+        
+      </View> */}
+      <View style={styles.imageContainer}>
+        <Button
+          icon={<Ionicons name='location' size={40} color={Theme.primary} />}
+          type='icon'
+          size='small'
         />
       </View>
-      <View style={styles.lineStyle}></View>
-    </View>
+      <View style={styles.descContainer}>
+        <H5>{props.locationName}</H5>
+      </View>
+
+      <View style={styles.actionContainer}>
+        <Button
+          icon={
+            <MaterialCommunityIcons
+              name='target'
+              size={25}
+              color={props.selected ? Theme.textColor : Theme.primary}
+            />
+          }
+          type='icon'
+          size='small'
+          color={props.selected ? 'filledWarning' : 'shadedPrimary'}
+          title={props.selected ? 'Selected' : 'Select'}
+          disabled={props.selected}
+          style={styles.icon}
+          onPress={props.selectLocation}
+        />
+        <Button
+          icon={
+            <Ionicons name='trash-outline' size={25} color={Theme.danger} />
+          }
+          type='icon'
+          size='small'
+          color='shadedDanger'
+          title='Delete'
+          style={styles.icon}
+          onPress={props.onDelete}
+        />
+      </View>
+    </ListItem>
   );
 }
 const styles = StyleSheet.create({
-  screen: {
-    //flex: 1,
-    fontFamily: 'Poppins',
-  },
   card: {
-    display: 'flex',
-    padding: 8,
     flexDirection: 'row',
-    alignItems: 'center',
-    //paddingLeft:20,
-    //backgroundColor:Theme.overlay,
-    width: '90%',
-    height: 80,
-    marginVertical: 10,
     //justifyContent:'space-between',
   },
   address: {
@@ -78,5 +104,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 0,
     marginLeft: 0,
+  },
+  imageContainer: {
+    marginHorizontal: 5,
+    alignItems: 'center',
+    borderRadius: 18,
+  },
+  image: {
+    resizeMode: 'cover',
+    width: 70,
+    height: 70,
+    borderRadius: 18,
+  },
+  descContainer: {
+    flex: 1,
+    marginHorizontal: 5,
+    justifyContent: 'center',
+    height: '100%',
+  },
+  actionContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: '100%',
+  },
+  qtyArea: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    width: '100%',
   },
 });

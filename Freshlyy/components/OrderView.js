@@ -42,7 +42,16 @@ export default function (props) {
   return (
     <TouchableOpacity onPress={() => props.viewOrder(props.orderId)}>
       <ListItem>
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            {
+              backgroundColor: props.isConcerned
+                ? Theme.primaryShadeLighter
+                : 'auto',
+            },
+          ]}
+        >
           <H7>From {props.farmer}</H7>
           <H7>Order #{props.orderId}</H7>
           <H7>Placed on {props.orderDate}</H7>
@@ -65,6 +74,8 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignself: 'center',
+    borderRadius: 10,
+    padding: 10,
   },
   bottomContainer: {
     flexDirection: 'row',

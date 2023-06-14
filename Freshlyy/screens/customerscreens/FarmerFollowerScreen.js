@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,9 +19,55 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { H4, P } from '../../components/Texts';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
+import ENV from '../../constants/env';
 import FarmerFollowCard from '../../components/FarmerFollowCard';
 
-export default function () {
+export default function ({ navigation, route }) {
+  const [follow, setFollowing] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  async function unfollow(id) {
+    try {
+      const result = await fetch(ENV.backend + '/customer/unfollow/' + id, {
+        method: 'POST',
+        headers: {
+          Authorization: route.params.auth,
+        },
+      });
+      const res = await result.json();
+      console.log(res);
+      if (res.message == 'Success') {
+        getData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  }
+
+  const getData = (isRefreshing) => {
+    isRefreshing ? setRefreshing(true) : setLoaded(false);
+    fetch(ENV.backend + '/customer/followDetail/', {
+      method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message == 'Success') {
+          setFollowing(res.follow);
+        }
+        isRefreshing ? setRefreshing(false) : setLoaded(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <SafeAreaView>
       <Header back={true} />
@@ -37,8 +83,17 @@ export default function () {
             <TextInput placeholder='Search' style={styles.searchinput} />
           </View>
           <View style={styles.followingList}>
-            <FarmerFollowCard></FarmerFollowCard>
-            <FarmerFollowCard></FarmerFollowCard>
+            {follow?.map((farmer) => {
+              return (
+                <FarmerFollowCard
+                  key={farmer?.farmerid}
+                  farmerName={farmer?.farmerName}
+                  imageUrl={farmer?.imageUrl}
+                  farmer={farmer?.farmerid}
+                  onDelete={() => unfollow(farmer?.farmerid)}
+                />
+              );
+            })}
           </View>
         </View>
       </ScrollView>

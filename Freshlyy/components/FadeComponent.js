@@ -26,6 +26,7 @@ export default function (props) {
             translateY: scrollAnim,
           },
         ],
+        flex: 1,
       }}
     >
       {props.children}

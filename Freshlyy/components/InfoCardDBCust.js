@@ -2,7 +2,13 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { P, Pr, H2, H4, H3 } from './Texts';
 import Theme from '../constants/theme';
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import LoyaltyArea from './LoyaltyArea';
+import {
+  FontAwesome,
+  FontAwesome5,
+  AntDesign,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
 import { Button } from '../components/Buttons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,6 +32,9 @@ export default function (props) {
           />
         </View>
       </View>
+      <View style={styles.loyaltyLayout}>
+        <LoyaltyArea user={props.user} />
+      </View>
       <View style={styles.buttonsLayout}>
         <Button
           title='Locations'
@@ -33,10 +42,11 @@ export default function (props) {
           type='icon'
           size='normal'
           color='filledWarning'
+          onPress={() => nav.navigate('Location Screen')}
           icon={
             <FontAwesome5
               name='location-arrow'
-              size={30}
+              size={28}
               color={Theme.textColor}
             />
           }
@@ -49,13 +59,28 @@ export default function (props) {
           size='normal'
           color='filledSecondary'
           icon={
-            <Ionicons
-              name='card-outline'
-              size={30}
+            <FontAwesome
+              name='credit-card-alt'
+              size={28}
               color={Theme.contrastTextColor}
             />
           }
         />
+        {/* <Button
+          title='Coupons'
+          type='icon'
+          onPress={() => nav.navigate('Customer Coupons')}
+          backgroundStyle={styles.buttonBackground}
+          size='normal'
+          color='filledSecondary'
+          icon={
+            <MaterialCommunityIcons
+              name='ticket'
+              size={28}
+              color={Theme.contrastTextColor}
+            />
+          }
+        /> */}
         <Button
           title='Edit Profile'
           type='icon'
@@ -65,12 +90,20 @@ export default function (props) {
           icon={
             <FontAwesome5
               name='user-circle'
-              size={30}
+              size={28}
               color={Theme.contrastTextColor}
             />
           }
         />
       </View>
+      <Button
+        size='normal'
+        title='Wishlist'
+        color='shadedDanger'
+        icon={<AntDesign name='hearto' size={24} color={Theme.danger} />}
+        type='icon'
+        onPress={() => nav.navigate('Wishlist')}
+      />
     </View>
   );
 }
@@ -87,6 +120,11 @@ const styles = StyleSheet.create({
   cardLayout: {
     flexDirection: 'row',
     padding: 15,
+    flex: 1,
+  },
+  loyaltyLayout: {
+    padding: 15,
+    paddingTop: 0,
     flex: 1,
   },
   cardRight: {
@@ -112,9 +150,9 @@ const styles = StyleSheet.create({
   buttonsLayout: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
   },
   buttonBackground: {
-    width: 80,
+    flex: 1,
+    width: '100%',
   },
 });

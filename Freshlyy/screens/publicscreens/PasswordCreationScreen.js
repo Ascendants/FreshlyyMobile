@@ -23,7 +23,6 @@ import { Formik, validateYupSchema, useFormik } from 'formik';
 import * as Yup from 'yup';
 
 export default function ({ navigation, route }) {
-  const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
   console.log(route.params);
   const validationSchema = Yup.object().shape({
@@ -52,11 +51,7 @@ export default function ({ navigation, route }) {
     if (!Object.keys(formik.touched).length) return;
     for (let error in formik.errors) if (error) return;
     const data = formik.values;
-    setValid(true);
-    console.log(data);
-    if (valid) {
-      navigation.navigate('beFarmer', { type: 'Success' });
-    }
+    navigation.navigate('beFarmer', { type: 'Success' });
   }
 
   return (
@@ -70,8 +65,8 @@ export default function ({ navigation, route }) {
           />
           <View style={styles.inputcont}>
             <TextInputBox
-              inputlabel='password'
-              placeholder='password'
+              inputlabel='Password'
+              placeholder='Enter Password'
               type='password'
               name='password'
               secure={true}
@@ -82,7 +77,7 @@ export default function ({ navigation, route }) {
               touched={formik.touched.password}
             />
             <TextInputBox
-              inputlabel='confirmPassword'
+              inputlabel='Confirm Password'
               placeholder='Confirm Password'
               type='password'
               name='cpassword'

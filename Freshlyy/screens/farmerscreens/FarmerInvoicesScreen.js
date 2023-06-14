@@ -1,15 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, Image, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { H4, H3, Pr, P } from '../../components/Texts';
 import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FadeComponent from '../../components/FadeComponent';
 import ENV from '../../constants/env';
-import TabMenu from '../../components/TabMenu';
 import Loading from '../../components/Loading';
-import PayoutRequestView from '../../components/PayoutRequestView';
 import ListItem from '../../components/ListItem';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 function emptyOrders() {
   return (
     <View style={styles.noOrdersContent}>
@@ -32,7 +35,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/farmer/invoices/', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -46,58 +49,55 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   }
-  function navigateToOrder(order) {
-    navigation.navigate('Order Details', {
-      orderId: order,
-    });
-  }
+
   React.useEffect(() => {
     getInvoiceList(false);
   }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} home={true} />
-        <H3>Your Invoices</H3>
-        {!loaded ? (
-          <Loading />
-        ) : (
-          <View style={styles.ordersContainer}>
-            <FadeComponent>
-              <FlatList
-                style={styles.flatList}
-                ListEmptyComponent={emptyOrders}
-                data={invoices}
-                refreshing={refreshing}
-                onRefresh={() => getInvoiceList(true)}
-                renderItem={(invoice) => (
-                  <TouchableOpacity>
-                    <ListItem key={invoice.index}>
-                      <H4 style={styles.listItemTitle}>
-                        Invoice for{' '}
-                        {(invoice.item.month + 1).toString().padStart(2, 0)}/
-                        {invoice.item.year}
-                      </H4>
-                    </ListItem>
-                  </TouchableOpacity>
-                )}
-              />
-            </FadeComponent>
-            <P style={styles.infoTextLast}>
-              ⓘ Invoices are generated on the 5th of every month
-            </P>
-          </View>
-        )}
-      </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header back={true} home={true} />
+      <H3 style={{ textAlign: 'center' }}>Your Invoices</H3>
+      {!loaded ? (
+        <Loading />
+      ) : (
+        <View style={styles.ordersContainer}>
+          <FadeComponent>
+            <FlatList
+              style={{ flex: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+              ListEmptyComponent={emptyOrders}
+              data={invoices}
+              refreshing={refreshing}
+              onRefresh={() => getInvoiceList(true)}
+              renderItem={(invoice) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Farmer Invoice', {
+                      invoiceId: invoice.item.id,
+                    });
+                  }}
+                >
+                  <ListItem key={invoice.index}>
+                    <H4 style={styles.listItemTitle}>
+                      Invoice for{' '}
+                      {(invoice.item.month + 1).toString().padStart(2, 0)}/
+                      {invoice.item.year}
+                    </H4>
+                  </ListItem>
+                </TouchableOpacity>
+              )}
+            />
+          </FadeComponent>
+          <P style={styles.infoTextLast}>
+            ⓘ Invoices are generated on the 5th of every month
+          </P>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    height: '100%',
-    alignItems: 'center',
-  },
   ordersContainer: {
     marginVertical: 10,
     width: '100%',

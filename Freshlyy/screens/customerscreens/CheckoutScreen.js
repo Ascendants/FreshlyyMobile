@@ -1,11 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Image, ScrollView, StatusBar } from 'react-native';
-import { H3, H4, Pr } from '../../components/Texts';
+import { H3, H4, Pr, P } from '../../components/Texts';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import theme from '../../constants/theme';
-import { UserContext } from '../../context/UserContext';
-import FadeComponent from '../../components/FadeComponent';
 import Header from '../../components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProductView from '../../components/ProductView';
@@ -14,18 +11,12 @@ import LoadingModal from '../../components/LoadingModal';
 import ENV from '../../constants/env';
 import Loading from '../../components/Loading';
 import RefreshView from '../../components/RefreshView';
-
 export default function ({ navigation, route }) {
-  const [loaded, setLoaded] = React.useState(false);
-  const [orderData, setOrderData] = React.useState({
-    selectedPaymentMethod: 'cod',
-  });
   const [deliveries, setDeliveries] = React.useState({});
   const [confirmOrder, setConfirmOrder] = React.useState(false);
   const [subTotal, setSubTotal] = React.useState(0);
   const [total, setTotal] = React.useState(0);
   const [cart, setCart] = React.useState([]);
-
   async function placeOrder() {
     const data = {};
     setConfirmOrder(true);
@@ -39,10 +30,8 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/place-order/', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
-        //this will be replaced with an http only token
-        //after auth gets set
       },
       body: JSON.stringify(data),
     })
@@ -106,7 +95,7 @@ export default function ({ navigation, route }) {
     return fetch(ENV.backend + '/customer/cart/', {
       method: 'GET',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params?.auth,
         //this will be replaced with an http only token
         //after auth gets set
       },
@@ -122,11 +111,9 @@ export default function ({ navigation, route }) {
           });
           return curr;
         });
-        setLoaded(true);
       })
       .catch((err) => console.log(err));
-  });
-
+  }, []);
   return (
     <>
       <StatusBar barStyle='dark-content' />
@@ -140,7 +127,12 @@ export default function ({ navigation, route }) {
               <View style={styles.pageArea}>
                 {cart?.map((farmer) =>
                   farmer.items.map((item) => (
-                    <ProductView key={item.item} product={item} />
+                    <ProductView
+                      key={item.item}
+                      product={item}
+                      auth={route.params.auth}
+                      getData={getData}
+                    />
                   ))
                 )}
               </View>
@@ -171,6 +163,9 @@ export default function ({ navigation, route }) {
                   onPress={placeOrder}
                 />
               </View>
+              <P style={styles.infoText}>
+                ⓘ Orders from different farmers will be processed separately.
+              </P>
             </View>
           </RefreshView>
         </View>
@@ -196,5 +191,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 40,
+  },
+  infoText: {
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });

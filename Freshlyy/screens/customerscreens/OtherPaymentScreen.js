@@ -1,14 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Image, ScrollView, Settings } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, Platform } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import { TextInputBox, MaskedTextInputBox } from '../../components/Inputs';
-import { H2, P } from '../../components/Texts';
+import { H3, P } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import { Formik, useFormik } from 'formik';
-import * as Yup from 'yup';
-import CardTypeSelector from '../../components/CardTypeSelector';
 import ENV from '../../constants/env';
 import LoadingModal from '../../components/LoadingModal';
 import { CheckBox } from '../../components/Inputs';
@@ -24,9 +20,17 @@ const stripeKey =
 export default function ({ navigation, route }) {
   const [saveCardLater, setSaveCardLater] = React.useState(false);
   const [paying, setPaying] = React.useState(false);
+  const [error, setError] = React.useState(null);
   async function handleButtonPress() {
     setPaying(true);
+    setError(null);
     const paymentId = await saveCard();
+    console.log(paymentId);
+    if (!paymentId) {
+      setError('Something is wrong with your card details');
+      setPaying(false);
+      return;
+    }
     await makePayment(paymentId);
     setPaying(false);
   }
@@ -40,10 +44,8 @@ export default function ({ navigation, route }) {
       const result = await fetch(ENV.backend + '/customer/payment/', {
         method: 'POST',
         headers: {
-          userEmail: route.params.userEmail,
+          Authorization: route.params.auth,
           'Content-Type': 'application/json',
-          //this will be replaced with an http only token
-          //after auth gets set
         },
         body: JSON.stringify(data),
       });
@@ -56,6 +58,10 @@ export default function ({ navigation, route }) {
         messageTitle: 'Payment Complete!',
         messageText: 'The farmers will process your order and let you know!',
         goto: 'Orders List',
+        screenParams: {
+          concerned: route.params?.orders?.map((order) => order._id),
+          initialTab: 'Processing',
+        },
         goButtonText: 'View Order',
       });
     } catch (error) {
@@ -65,6 +71,7 @@ export default function ({ navigation, route }) {
         messageTitle: 'Payment Failed :(',
         messageText: 'One or more payments failed :(',
         goto: 'Orders List',
+
         goButtonText: 'View Order',
       });
     }
@@ -77,7 +84,7 @@ export default function ({ navigation, route }) {
         {
           method: 'GET',
           headers: {
-            useremail: route.params.userEmail,
+            Authorization: route.params.auth,
           },
         }
       );
@@ -90,15 +97,22 @@ export default function ({ navigation, route }) {
   };
 
   async function saveCard() {
-    const { clientSecret } = await fetchSetupIntent();
-    const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
-      paymentMethodType: 'Card',
-    });
+    try {
+      const { clientSecret } = await fetchSetupIntent();
+      const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
+        paymentMethodType: 'Card',
+      });
 
-    if (error) {
-      throw new Error(error);
-    } else if (setupIntent) {
-      return setupIntent.paymentMethodId;
+      if (error) {
+        throw new Error(error);
+      } else if (setupIntent) {
+        if (Platform.OS === 'android') {
+          return setupIntent.paymentMethod.id;
+        }
+        return setupIntent.paymentMethodId;
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
   return (
@@ -107,7 +121,7 @@ export default function ({ navigation, route }) {
         <View style={styles.screen}>
           <LoadingModal message='Making Payment' visible={paying} />
           <Header back={true} home={true} />
-          <H2 style={{ textAlign: 'center' }}>Payment</H2>
+          <H3 style={{ textAlign: 'center' }}>Payment</H3>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.pageContent}>
               <Image
@@ -144,8 +158,20 @@ export default function ({ navigation, route }) {
                   onPress={handleButtonPress}
                 />
               </View>
-              <View style={styles.inputcont}></View>
+              <P
+                style={{
+                  marginTop: 10,
+                  textAlign: 'center',
+                  color: Theme.danger,
+                }}
+              >
+                {error}
+              </P>
             </View>
+            <P style={styles.infoText}>
+              ⓘ We do not store your card details with us. It is stored securely
+              with our payment processor Stripe.
+            </P>
           </ScrollView>
         </View>
       </SafeAreaView>
@@ -170,5 +196,9 @@ const styles = StyleSheet.create({
   inputcont: {
     width: '100%',
     alignItems: 'center',
+  },
+  infoText: {
+    textAlign: 'center',
+    marginTop: 50,
   },
 });

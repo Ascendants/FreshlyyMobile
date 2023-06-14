@@ -30,7 +30,7 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/farmer/payout-requests/', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -43,58 +43,43 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   }
-  function navigateToOrder(order) {
-    navigation.navigate('Order Details', {
-      orderId: order,
-    });
-  }
+
   React.useEffect(() => {
     getRequestsList(false);
   }, []);
   return (
-    <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} home={true} />
-        <H3>Your Payout Requests</H3>
-        {!loaded ? (
-          <Loading />
-        ) : (
-          <View style={styles.ordersContainer}>
-            <FadeComponent>
-              <FlatList
-                style={styles.flatList}
-                ListEmptyComponent={emptyOrders}
-                data={payoutRequests}
-                refreshing={refreshing}
-                onRefresh={() => getRequestsList(true)}
-                renderItem={(request) => (
-                  <PayoutRequestView
-                    request={request.item}
-                    key={request.index}
-                  />
-                )}
-              />
-            </FadeComponent>
-          </View>
-        )}
-      </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header back={true} home={true} />
+      <H3 style={{ textAlign: 'center' }}>Your Payout Requests</H3>
+      {!loaded ? (
+        <Loading />
+      ) : (
+        <View style={styles.ordersContainer}>
+          <FadeComponent>
+            <FlatList
+              style={{ flex: 1 }}
+              contentContainerStyle={{ flexGrow: 1 }}
+              ListEmptyComponent={emptyOrders}
+              data={payoutRequests}
+              refreshing={refreshing}
+              onRefresh={() => getRequestsList(true)}
+              renderItem={(request) => (
+                <PayoutRequestView request={request.item} key={request.index} />
+              )}
+            />
+          </FadeComponent>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    height: '100%',
-    alignItems: 'center',
-  },
   ordersContainer: {
     marginVertical: 10,
     width: '100%',
     flex: 1,
     paddingHorizontal: 10,
-  },
-  flatList: {
-    height: '100%',
   },
   noOrdersContent: {
     paddingHorizontal: 10,

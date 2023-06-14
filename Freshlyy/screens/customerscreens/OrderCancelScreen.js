@@ -18,7 +18,7 @@ export default function ({ navigation, route }) {
         {
           method: 'POST',
           headers: {
-            userEmail: route.params.userEmail,
+            Authorization: route.params.auth,
             //this will be replaced with an http only token
             //after auth gets set
           },
@@ -33,6 +33,7 @@ export default function ({ navigation, route }) {
           messageText:
             'We will refund any payments you have done within 7 business days.',
           goto: 'Orders List',
+          screenParams: { initialTab: 'cancelled' },
         });
         return;
       }
@@ -89,7 +90,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   messageTitle: {
-    fontFamily: 'Poppins',
     textAlign: 'center',
     paddingVertical: 20,
   },

@@ -17,26 +17,27 @@ import * as Animatable from 'react-native-animatable';
 import { Animations } from '../../constants/Animation';
 
 export default function ({ navigation, route }) {
-  // setUserData(route.params.userData)
+   const data=JSON.parse(route.params.userData);
   const handleLaterPress = () => {
     const updatedUserData = {
-      ...route.params.userData,
-      accessLevel: 'customer',
+      ...data,
+      accessLevel: 'Customer',
     };
     navigation.navigate('Email Verification', {
       message: 'Success',
-      userData: updatedUserData,
+      userData: JSON.stringify(updatedUserData),
     });
   };
 
   const handleBecomeFarmerPress = () => {
     const updatedUserData = {
-      ...route.params.userData,
-      accessLevel: 'farmer',
+      ...data,
+      accessLevel: 'Farmer',
     };
+   // console.log(updatedUserData)
     navigation.navigate('FarmerCreateAccount', {
       message: 'Success',
-      userData: updatedUserData,
+      userData: JSON.stringify(updatedUserData),
     });
   };
   return (

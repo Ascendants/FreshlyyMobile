@@ -30,6 +30,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import { Animations } from '../../constants/Animation';
 import Loading from '../../components/Loading';
+import Navbar from '../../components/Navbar';
 
 export default function ({ navigation, route }) {
   const [searchText, setSearchText] = useState('');
@@ -49,23 +50,26 @@ export default function ({ navigation, route }) {
   const bottomSheetRef = useRef(null);
   const snapPoints = ['60%', '100%'];
 
-  const sendToProductDetail = async (pubUrl) => {
+  const sendToProductDetail = async (pubUrl, distanceAway) => {
     navigation.navigate('Product Detail', {
       purl: pubUrl,
+      distanceAway: distanceAway,
     });
   };
+
   const getData = (isRefreshing) => {
     isRefreshing ? setRefreshing(true) : setLoaded(false);
     fetch(ENV.backend + '/customer/mainpage/', {
       //getting data from the backend (all products)
       method: 'GET',
       headers: {
-        useremail: 'harini@freshlyy.com',
+        useremail: 'gimhani@freshlyy.com',
+        Authorization: route.params?.auth,
+        'Content-Type': 'application/json',
       },
     })
       .then((res) => res.json())
       .then((res) => {
-        const data = res;
         console.log(res);
         setProducts(res.mainPageProducts);
         isRefreshing ? setRefreshing(false) : setLoaded(true);
@@ -73,7 +77,7 @@ export default function ({ navigation, route }) {
       .catch((err) => console.log(err));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getData();
   }, []);
 
@@ -81,7 +85,7 @@ export default function ({ navigation, route }) {
     // Send a POST request to update the product's likes array in MongoDB
     const response = await fetch(`/customer/${productId}/like`, {
       method: 'POST',
-      body: JSON.stringify({ email: 'harini@freshlyy.com' }),
+      body: JSON.stringify({ email: 'gimhani@freshlyy.com' }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -169,7 +173,7 @@ export default function ({ navigation, route }) {
     ? products
     : null;
 
-  const filteredProducts = sortedProducts.filter((product) => {
+  const filteredProducts = sortedProducts?.filter((product) => {
     return product?.title.toLowerCase().includes(searchText.toLowerCase());
   });
 
@@ -183,8 +187,8 @@ export default function ({ navigation, route }) {
   };
   const animation = Animations[Math.floor(Math.random() * Animations.length)];
   return (
-    <GestureHandlerRootView>
-      <SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <Header back={true} />
 
         <View style={styles.screen}>
@@ -267,7 +271,8 @@ export default function ({ navigation, route }) {
               <Loading />
             ) : (
               <FlatList
-                style={{ height: '100%', flex: 1 }}
+                style={{ flex: 1 }}
+                contentContainerStyle={{ flexGrow: 1 }}
                 numColumns={2}
                 data={filteredProducts}
                 refreshing={refreshing}
@@ -298,7 +303,9 @@ export default function ({ navigation, route }) {
                           ? item.distanceAway
                           : null
                       }
-                      onPress={sendToProductDetail}
+                      onPress={() =>
+                        sendToProductDetail(item.publicUrl, item.distance)
+                      }
                     />
                   </Animatable.View>
                 )}
@@ -482,6 +489,7 @@ export default function ({ navigation, route }) {
               </BottomSheetView>
             </BottomSheet>
           </View>
+          <Navbar product={true} />
         </View>
       </SafeAreaView>
     </GestureHandlerRootView>
@@ -489,7 +497,7 @@ export default function ({ navigation, route }) {
 }
 const styles = StyleSheet.create({
   screen: {
-    height: '100%',
+    flex: 1,
   },
   searchico: {
     paddingRight: 10,
@@ -532,7 +540,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     paddingHorizontal: 10,
-    marginBottom: 150,
+    marginBottom: 70,
   },
   bottomSheetContent: {
     color: 'blue',

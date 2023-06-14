@@ -37,6 +37,9 @@ export default function ({ navigation, route }) {
   React.useEffect(() => {
     fetch(ENV.backend + '/farmer/get-banks/', {
       method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+      },
     })
       .then((res) => res.json())
       .then((res) => {
@@ -58,10 +61,8 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/farmer/save-account/', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
-        //this will be replaced with an http only token
-        //after auth gets set
       },
       body: JSON.stringify(data),
     })

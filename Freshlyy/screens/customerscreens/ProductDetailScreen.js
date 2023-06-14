@@ -1,9 +1,15 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { H2, P, H3, H4, H6, Pr } from '../../components/Texts';
+import { H2, P, H3, H4, H5, Pr } from '../../components/Texts';
 import { Button } from '../../components/Buttons';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
 import Header from '../../components/Header';
 import ImageDots from '../../components/ImageDots';
 import Theme from '../../constants/theme';
@@ -13,10 +19,13 @@ import Rating from '../../components/Rating';
 import RefreshView from '../../components/RefreshView';
 import ModalComponent from '../../components/ModalComponent';
 
-export default function ({ route, navigation, productId, addToCart }) {
+export default function ({ navigation, route }) {
   const [modal, setModal] = React.useState(false);
+  const [soldout, setSoldout] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
+  const [added, setAdded] = React.useState(false);
+  const [wishListed, setWishListed] = React.useState(false);
   const [product, setProduct] = React.useState({
     purl: route.params.purl,
     imageUrls: [],
@@ -32,7 +41,7 @@ export default function ({ route, navigation, productId, addToCart }) {
         if (newQuantity <= availableQuantity) {
           setSelectedQuantity(newQuantity);
         } else {
-          alert('Not enough quantity available');
+          setSoldout(true);
         }
       })
       .catch((err) => console.log(err));
@@ -48,8 +57,11 @@ export default function ({ route, navigation, productId, addToCart }) {
   }
   const getData = React.useCallback(async () => {
     const purl = product?.purl;
-    return fetch(ENV.backend + '/public/product/' + purl, {
+    return fetch(ENV.backend + '/customer/product/' + purl, {
       method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+      },
     })
       .then((res) => res.json())
       .then((res) => {
@@ -57,15 +69,16 @@ export default function ({ route, navigation, productId, addToCart }) {
           return { ...prev, ...res.product };
         });
         setSelectedQuantity(res.product?.minQtyIncrement);
+        setWishListed(res.product?.isWishListed);
       })
       .catch((err) => console.log(err));
-  });
-
+  }, []);
+  console.log(product?.farmerDeliveryCharge);
   async function postCart() {
     const result = await fetch(ENV.backend + '/customer/cart/add', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
         //this will be replaced with an http only token
         //after auth gets set
@@ -79,15 +92,156 @@ export default function ({ route, navigation, productId, addToCart }) {
       .then((res) => {
         console.log(res);
         if (res.message == 'Success') {
+          setAdded(true);
+          return true;
+        }
+        if (res.message == 'Quantity unavailable') setSoldout(true);
+        return;
+      })
+      .catch((err) => console.log(err));
+  }
+
+  async function postWishList() {
+    const result = await fetch(ENV.backend + '/customer/wishList/add', {
+      method: 'POST',
+      headers: {
+        Authorization: route.params.auth,
+        'Content-Type': 'application/json',
+        //this will be replaced with an http only token
+        //after auth gets set
+      },
+      body: JSON.stringify({
+        productId: product._id,
+        quantity: selectedQuantity,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.message == 'Success') {
+          setWishListed(true);
+
           return true;
         }
       })
       .catch((err) => console.log(err));
   }
+
+  //   async function postWishList() {
+  //   const result = await fetch(ENV.backend + '/customer/wishList', {
+  //     method: 'GET',
+  //     headers: {
+  //       userEmail: route.params.userEmail,
+  //       'Content-Type': 'application/json',
+  //       // this will be replaced with an http only token
+  //       // after auth gets set
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       const wishlistItem = res.wishlist.find(
+  //         (item) => item.productId === product._id
+  //       );
+
+  //       if (wishlistItem) {
+  //         // Item is already in the wishlist, remove it
+  //         return fetch(
+  //           ENV.backend + '/customer/wishList/remove/' + wishlistItem._id,
+  //           {
+  //             method: 'DELETE',
+  //             headers: {
+  //               userEmail: route.params.userEmail,
+  //               'Content-Type': 'application/json',
+  //               // this will be replaced with an http only token
+  //               // after auth gets set
+  //             },
+  //           }
+  //         );
+  //       } else {
+  //         // Item is not in the wishlist, add it
+  //         return fetch(ENV.backend + '/customer/wishList/add', {
+  //           method: 'POST',
+  //           headers: {
+  //             userEmail: route.params.userEmail,
+  //             'Content-Type': 'application/json',
+  //             // this will be replaced with an http only token
+  //             // after auth gets set
+  //           },
+  //           body: JSON.stringify({
+  //             productId: product._id,
+  //             quantity: selectedQuantity,
+  //           }),
+  //         });
+  //       }
+  //     })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.message === 'Success') {
+  //         return true;
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
+
+  function navigateToChat() {
+    navigation.navigate('Chat', {
+      farmerId: product.farmer,
+      farmerName: product.farmerName,
+      farmerImg: product.farmerImage.imageUrl,
+    });
+  }
+
+
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header />
+        <ModalComponent visible={added} closeModal={() => setAdded(false)}>
+          <Image
+            source={require('../../assets/success.png')}
+            style={{
+              height: 100,
+              width: 100,
+              alignSelf: 'center',
+              resizeMode: 'contain',
+              marginBottom: 20,
+            }}
+          />
+          <H3 style={{ textAlign: 'center' }}>Added to Cart!</H3>
+          <Button
+            title={'Continue Shopping'}
+            onPress={() => {
+              setAdded(false);
+            }}
+            color='filledPrimary'
+            size='normal'
+          />
+          <Button
+            title={'View Cart'}
+            onPress={() => {
+              setAdded(false);
+              navigation.navigate('Cart');
+            }}
+            size='normal'
+            color='shadedWarning'
+          />
+        </ModalComponent>
+        <ModalComponent visible={soldout} closeModal={() => setSoldout(false)}>
+          <Image
+            source={require('../../assets/soldout.png')}
+            style={{
+              height: 100,
+              width: 100,
+              alignSelf: 'center',
+              resizeMode: 'contain',
+              marginBottom: 20,
+            }}
+          />
+          <H3 style={{ textAlign: 'center' }}>
+            Sorry, we don't have that much :(
+          </H3>
+        </ModalComponent>
+        <Header back={true} />
         <RefreshView getData={getData}>
           <View style={styles.pageContent}>
             <View style={styles.productImageContainer}>
@@ -120,8 +274,30 @@ export default function ({ route, navigation, productId, addToCart }) {
                 index={imageScroll}
               />
             </View>
+            <H4 style={styles.productTopic}>{product?.title}</H4>
+
+            <View style={styles.ratingArea}>
+              <Rating value={product?.overallRating} />
+              <P>10 Reviews</P>
+            </View>
             <View style={styles.actionArea}>
-              <H3 style={styles.productTopic}>{product?.title}</H3>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Farmer Detail', {
+                    farmer: product?.farmer,
+                  })
+                }
+              >
+                <View style={styles.farmerDetail}>
+                  <Image
+                    source={{ uri: product?.farmerImage?.imageUrl }}
+                    style={styles.farmerImage}
+                  />
+                  <H5 numberOfLines={1} style={styles.farmerName}>
+                    {product?.farmerName}
+                  </H5>
+                </View>
+              </TouchableOpacity>
               <View style={styles.actionButtonContainer}>
                 <Button
                   icon={
@@ -135,15 +311,25 @@ export default function ({ route, navigation, productId, addToCart }) {
                   type='icon'
                   size='normal'
                   color='shadedTertiary'
+                  onPress={navigateToChat}
                 />
                 <Button
                   type='icon'
                   icon={
-                    <Feather name='heart' size={24} color={Theme.textColor} />
+                    wishListed ? (
+                      <AntDesign name='heart' size={24} color={Theme.danger} />
+                    ) : (
+                      <AntDesign
+                        name='hearto'
+                        size={24}
+                        color={Theme.textColor}
+                      />
+                    )
                   }
                   title='Wishlist'
                   size='normal'
                   color='shadedTertiary'
+                  onPress={postWishList}
                 />
                 <Button
                   type='icon'
@@ -160,24 +346,15 @@ export default function ({ route, navigation, productId, addToCart }) {
                 />
               </View>
             </View>
-            <View style={styles.ratingArea}>
-              <Rating value={product?.overallRating} />
-              <P>10 Reviews</P>
-            </View>
-            <View style={styles.farmerDetail}>
-              <Image
-                source={{ uri: product?.farmerImage?.imageUrl }}
-                style={styles.farmerImage}
-              />
-              <H4 style={styles.farmerName}>{product?.farmerName}</H4>
-            </View>
+
             <View style={styles.detail}>
               <Pr fontSize={20}>{product?.price}</Pr>
               <H4>/KG</H4>
             </View>
             <View style={styles.detail}>
-              <H4>{product?.distance} KM Away | </H4>
-              <Pr fontSize={20}>{product?.pricePerKm}</Pr>
+              <H4>{route.params.distanceAway != undefined && route.params.distanceAway + ' KM Away | '}</H4>
+
+              <Pr fontSize={20}>{product?.farmerDeliveryCharge}</Pr>
               <H4>/KM</H4>
             </View>
             <View style={styles.detail}>
@@ -236,7 +413,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     flex: 1,
-    // width: 350,
   },
   productImageSwiper: {
     width: 345,
@@ -254,14 +430,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 5,
   },
-  actionArea: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
+
   productTopic: {
-    flex: 4,
-    alignSelf: 'center',
+    wordWrap: 'break-word',
+  },
+
+  ratingArea: {
+    flexDirection: 'row',
+    marginBottom: 10,
   },
   actionButtonContainer: {
     flexDirection: 'row',
@@ -269,17 +445,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 3,
   },
-  ratingArea: {
+  actionArea: {
     flexDirection: 'row',
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    marginBottom: 5,
   },
   farmerDetail: {
+    wordWrap: 'break-word',
     backgroundColor: Theme.overlay,
     flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
-    alignSelf: 'flex-start',
     borderRadius: 15,
-    marginBottom: 10,
+    marginVertical: 5,
+    flex: 2,
   },
   farmerImage: {
     width: 30,
@@ -288,7 +467,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   farmerName: {
+    wordWrap: 'break-word',
+    textAlignVertical: 'center',
     color: Theme.primary,
+    lineHeight: 30,
   },
   detail: {
     flexDirection: 'row',

@@ -1,40 +1,55 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import Theme from '../constants/theme';
-import { useNavigation, NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ({ screenName }) {
+export default function ({ customer, cart, social, product }) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
-        <TouchableOpacity style={styles.iconBehave}>
+        <TouchableOpacity
+          style={styles.iconBehave}
+          title={`Go to Social Corner`}
+          onPress={() => navigation.navigate('Product Home Page')}
+        >
           <Image
             source={require('../assets/home.png')}
             style={styles.navLogo}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconBehave}>
-          <Image
-            source={require('../assets/social-media.png')}
-            style={styles.navLogo}
+            tintColor={product && '#10AB68'}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconBehave}
-          title={`Go to ${screenName}`}
-          onPress={() => navigation.navigate(screenName)}
+          title={`Go to Social Corner`}
+          onPress={() => navigation.navigate('Social Corner')}
+        >
+          <Image
+            source={require('../assets/social-media.png')}
+            style={styles.navLogo}
+            tintColor={social && '#10AB68'}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconBehave}
+          title={`Go to Cart`}
+          onPress={() => navigation.navigate('Cart')}
         >
           <Image
             source={require('../assets/shopping-cart.png')}
             style={styles.navLogo}
+            tintColor={cart && '#10AB68'}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconBehave}>
+        <TouchableOpacity
+          style={styles.iconBehave}
+          title={`Go to Dashboard`}
+          onPress={() => navigation.navigate('Customer Dashboard')}
+        >
           <Image
             source={require('../assets/user.png')}
             style={styles.navLogo}
-            tintColor='#10AB68'
+            tintColor={customer && '#10AB68'}
           />
         </TouchableOpacity>
       </View>
@@ -48,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     width: '100%',
-    bottom: 0,
+    bottom: 10,
   },
   navbar: {
     flexDirection: 'row',

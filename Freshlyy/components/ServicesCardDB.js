@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { H6, H7, H8 } from '../components/Texts';
 import Theme from '../constants/theme';
-
-export default function (props, { navigation }) {
+import { useNavigation } from '@react-navigation/native';
+export default function (props) {
+  const nav = useNavigation();
   return (
     <View style={styles.container}>
       {/* <View style={styles.notify}>
@@ -15,28 +16,30 @@ export default function (props, { navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => this.props.navigation.navigate('Help Center')}
+        onPress={() => nav.navigate('Help Center', { farmer: props.farmer })}
       >
         <Image source={require('../assets/question.png')} style={styles.logo} />
         <H8>Help Center</H8>
       </TouchableOpacity>
 
-      {props.farmer && (
-        <TouchableOpacity style={styles.button}>
+      {props.customerDB ? (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.navigate('Farmer Follower Page')}
+        >
+          <Image source={require('../assets/follow.png')} style={styles.logo} />
+          <H8>Following</H8>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.navigate('Farmer Report')}
+        >
           <Image
             source={require('../assets/insight.png')}
             style={styles.logo}
           />
           <H8>Reports</H8>
-        </TouchableOpacity>
-      )}
-      {!props.farmer && (
-        <TouchableOpacity style={styles.button}>
-          <Image
-            source={require('../assets/documents.png')}
-            style={styles.logo}
-          />
-          <H8>Reviews</H8>
         </TouchableOpacity>
       )}
     </View>

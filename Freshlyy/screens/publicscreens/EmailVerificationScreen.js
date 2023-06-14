@@ -31,32 +31,50 @@ import LoadingModal from '../../components/LoadingModal';
 export default function ({ navigation, route }) {
   const [valid, setValid] = useState(false);
   const [err, setErr] = useState('');
-  const [password, setPassword] = useState('123456');
   const [isVerified, setIsVerified] = useState(false);
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-
-  const handleSignUp = async (email) => {
+  console.log(route.params.userData);
+  const handleSignUp = async (email, password) => {
     setSubmitting(true);
-    console.log(email);
+    const paramsData = JSON.parse(route.params.userData);
+    const updatedUserData = {
+      ...paramsData,
+      email: email,
+    };
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
+      console.log(user);
       if (user) {
         await user.sendEmailVerification();
         setSubmitting(false);
         console.log('Verification email sent!');
         navigation.navigate('EmailVerify', {
           message: 'Success',
-          userData: route.params.userData,
+          userData: JSON.stringify(updatedUserData),
         });
+      } else {
+        setSubmitting(false);
+        setErr(
+          'The email address is already in use by another account! Try Loging in'
+        );
       }
     } catch (error) {
+      //console.log("Hi")
       setSubmitting(false);
       console.log(error);
-      setErr('The email address is already in use by another account');
+      if (error.code === 'auth/email-already-in-use') {
+        setErr('User account already exists!');
+        return;
+      }
+      if (error.code === 'auth/internal-error') {
+        setErr('Try again later!');
+        return;
+      }
+      setErr;
     }
   };
 
@@ -93,8 +111,12 @@ export default function ({ navigation, route }) {
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email!').required('Email is required!'),
     password: Yup.string()
-      .required('Password is required')
-      .min(8, 'Password must be at least 8 characters long'),
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/,
+        'Password must contain at least one lowercase letter, one uppercase letter, one number, and be at least 6 characters long'
+      )
+      .required('Password is required'),
+
     cpassword: Yup.string()
       .required('Confirm Password is required')
       .oneOf([Yup.ref('password')], 'Passwords must match'),
@@ -120,10 +142,12 @@ export default function ({ navigation, route }) {
     for (let error in formik.errors) if (error) return;
     const data = formik.values;
     setValid(true);
-    sendToSignup(data.email);
+    //console.log(data.password,data.email)
+    sendToSignup(data.email, data.password);
   };
-  const sendToSignup = (email) => {
-    handleSignUp(email);
+  const sendToSignup = (email, password) => {
+    //console.log("Hello im in the handlesignup");
+    handleSignUp(email, password);
   };
   return (
     <SafeAreaView>
@@ -154,10 +178,11 @@ export default function ({ navigation, route }) {
                   value={formik.values.email}
                   error={formik.errors.email}
                   touched={formik.touched.email}
+                  onFocus={() => formik.setFieldTouched('email', true, true)}
                 />
                 <TextInputBox
-                  inputlabel='password'
-                  placeholder='password'
+                  inputlabel='Password'
+                  placeholder='Enter Password'
                   type='password'
                   name='password'
                   secure={true}
@@ -166,9 +191,10 @@ export default function ({ navigation, route }) {
                   value={formik.values.password}
                   error={formik.errors.password}
                   touched={formik.touched.password}
+                  onFocus={() => formik.setFieldTouched('password', true, true)}
                 />
                 <TextInputBox
-                  inputlabel='confirmPassword'
+                  inputlabel='Confirm Password'
                   placeholder='Confirm Password'
                   type='password'
                   name='cpassword'
@@ -178,6 +204,9 @@ export default function ({ navigation, route }) {
                   value={formik.values.cpassword}
                   error={formik.errors.cpassword}
                   touched={formik.touched.cpassword}
+                  onFocus={() =>
+                    formik.setFieldTouched('cpassword', true, true)
+                  }
                 />
                 {err ? <H6 style={styles.messageText}> {err}</H6> : null}
 

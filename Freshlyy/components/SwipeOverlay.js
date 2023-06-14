@@ -4,47 +4,24 @@ import { H4 } from '../components/Texts';
 import Theme from '../constants/theme';
 import SwipeOverlayCard from './SwipeOverlayCard';
 import { AntDesign } from '@expo/vector-icons';
-// import { BlurView } from "@react-native-community/blur";
 
 export default function () {
   return (
-    <View style={styles.container}>
-      {/* <BlurView blurType="light" blurAmount={10} reducedTransparencyFallbackColor="white"> */}
-      <H4 style={styles.topic}>Selling Products</H4>
+    <View style={styles.containerOverlay}>
+      <H4 style={styles.topicOverlay}>Selling Products</H4>
       <ScrollView showsVerticalScrollIndicator={false}>
         <SwipeOverlayCard
           imgUrl={require('../assets/carrot.jpg')}
           topic='Sri Lankan Carrots'
           subTopic='10 KG'
         />
-        <SwipeOverlayCard
-          imgUrl={require('../assets/carrot.jpg')}
-          topic='Ordinary Mango'
-          subTopic='20 KG'
-        />
-        <SwipeOverlayCard
-          imgUrl={require('../assets/carrot.jpg')}
-          topic='Green Beens'
-          subTopic='5 KG'
-        />
-        <SwipeOverlayCard
-          imgUrl={require('../assets/carrot.jpg')}
-          topic='Sri Lankan Eggplant'
-          subTopic='2 KG'
-        />
-        <SwipeOverlayCard
-          imgUrl={require('../assets/carrot.jpg')}
-          topic='Sri Lankan Eggplant'
-          subTopic='2 KG'
-        />
       </ScrollView>
-      {/* </BlurView> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  containerOverlay: {
     backgroundColor: '#FFFFFF',
     width: '100%',
     borderTopLeftRadius: 100,
@@ -56,7 +33,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 20,
   },
-  topic: {
+  topicOverlay: {
     alignSelf: 'center',
     marginTop: 10,
     marginBottom: 10,

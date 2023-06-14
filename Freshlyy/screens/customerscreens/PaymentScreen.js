@@ -32,11 +32,12 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/cards/', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         if (!res.cards) throw new Error('Malformed Response');
         setPaymentMethods(res.cards);
         setLoaded(true);
@@ -49,7 +50,7 @@ export default function ({ navigation, route }) {
     new Promise((resolve, reject) => setTimeout(resolve, time));
   async function makePayment() {
     if (orderData.selectedPaymentMethod == 'other') {
-      navigation.navigate('Add New Card', {
+      navigation.navigate('Other Payment', {
         orders: orderData.orders.map((order) => order._id),
       });
       return;
@@ -63,10 +64,8 @@ export default function ({ navigation, route }) {
     fetch(ENV.backend + '/customer/payment/', {
       method: 'POST',
       headers: {
-        userEmail: route.params.userEmail,
+        Authorization: route.params.auth,
         'Content-Type': 'application/json',
-        //this will be replaced with an http only token
-        //after auth gets set
       },
       body: JSON.stringify(data),
     })
@@ -81,6 +80,10 @@ export default function ({ navigation, route }) {
           messageTitle: 'Payment Complete!',
           messageText: 'The farmers will process your order and let you know!',
           goto: 'Orders List',
+          screenParams: {
+            concerned: route.params?.orders?.map((order) => order._id),
+            initialTab: 'Processing',
+          },
           goButtonText: 'View Order',
         });
         return;
@@ -115,14 +118,14 @@ export default function ({ navigation, route }) {
                   return <PlacedOrderView key={order.farmer} order={order} />;
                 })}
               </View>
-              <View style={styles.pageArea}>
+              {/* <View style={styles.pageArea}>
                 <H3>Total</H3>
                 <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>
-              </View>
-              <View style={styles.pageArea}>
+              </View> */}
+              {/* <View style={styles.pageArea}>
                 <H4 style={styles.title}>Apply Coupon Code</H4>
                 <View style={styles.coupon}></View>
-              </View>
+              </View> */}
               <View style={styles.pageArea}>
                 <H3>Net Total</H3>
                 <Pr fontSize={30}>{orderData.orderTotal.toFixed(2)}</Pr>

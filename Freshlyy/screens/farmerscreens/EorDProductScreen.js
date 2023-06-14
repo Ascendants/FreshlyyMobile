@@ -10,33 +10,22 @@ import {
 } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import {
-  TextInputBox,
-  DropDownPicker,
-  DatePicker,
-} from '../../components/Inputs';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { H1, H2, H3, H6, Pr } from '../../components/Texts';
 import ENV from '../../constants/env';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 export default function ({ navigation, route }) {
   const [product, setProduct] = useState({});
-  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
-    fetch(
-      ENV.backend + '/farmer/selling-product/' + '63b6b7b160d78bea22456aa8',
-      {
-        method: 'GET',
-        headers: {
-          useremail: route.params.userEmail,
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    fetch(ENV.backend + '/farmer/selling-product/' + route.params?.productId, {
+      method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+        'Content-Type': 'application/json',
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.message != 'Success') {
@@ -48,6 +37,12 @@ export default function ({ navigation, route }) {
 
       .catch((err) => console.log(err));
   }, []);
+  function deleteProduct() {
+    navigation.navigate('Delete Product', {
+      productId: route.params?.productId,
+      productTitle: product.title,
+    });
+  }
   // const image = product.imageUrls[0].imageUrl;
   return (
     <SafeAreaView>
@@ -72,22 +67,22 @@ export default function ({ navigation, route }) {
           {/* <DatePicker/> */}
           <H6 style={styles.PText}>{product.title}</H6>
           <View style={styles.DeBox}>
-            <H2 style={styles.DText}>Available Quantity -:</H2>
+            <H2 style={styles.DText}>Available Quantity</H2>
             <H1 style={styles.DText}>
               {product?.qtyAvailable}
               {product?.unit}
             </H1>
-            <H2 style={styles.DText}>Minimum Quantity -:</H2>
+            <H2 style={styles.DText}>Minimum Quantity</H2>
             <H1 style={styles.DText}>
               {' '}
               {product.minQtyIncrement}
               {product.unit}
             </H1>
-            <H2 style={styles.DText}>Price -: </H2>
+            <H2 style={styles.DText}>Price</H2>
             <Pr>
               <H1 style={styles.DText}>{product.price} </H1>
             </Pr>
-            <H2 style={styles.DText}>Description -: </H2>
+            <H2 style={styles.DText}>Description</H2>
             <H1 style={styles.DText}>{product.description}</H1>
           </View>
 
@@ -96,9 +91,18 @@ export default function ({ navigation, route }) {
               title='Edit'
               color='shadedPrimary'
               size='big'
-              onPress={() => navigation.navigate('editScreen')}
+              onPress={() =>
+                navigation.navigate('Edit Product', {
+                  productId: route.params.productId,
+                })
+              }
             />
-            <Button title='Delete' color='shadedDanger' size='big' />
+            <Button
+              title='Delete'
+              color='shadedDanger'
+              size='big'
+              onPress={deleteProduct}
+            />
           </View>
         </View>
       </ScrollView>

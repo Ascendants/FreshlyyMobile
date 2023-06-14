@@ -6,20 +6,20 @@ import FadeComponent from './FadeComponent';
 export default function (props) {
   const [loaded, setLoaded] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(async () => {
+  function onRefresh() {
     setRefreshing(true);
-    await props.getData();
-    setRefreshing(false);
-  }, []);
+    props.getData().then(() => setRefreshing(false));
+  }
   React.useEffect(() => {
     props.getData().then(() => setLoaded(true));
-  }, []);
+  }, [props.getData]);
   return !loaded ? (
     <Loading />
   ) : (
     <ScrollView
       howsVerticalScrollIndicator={false}
       style={styles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
@@ -31,7 +31,8 @@ export default function (props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    flex: 1,
     paddingHorizontal: 10,
+    width: '100%',
   },
 });

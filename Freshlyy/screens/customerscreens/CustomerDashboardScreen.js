@@ -7,9 +7,10 @@ import ServicesCardDB from '../../components/ServicesCardDB';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
+import { Button } from '../../components/Buttons';
 import InfoCardDBCust from '../../components/InfoCardDBCust';
 import RefreshView from '../../components/RefreshView';
-
+import { auth } from '../../utils/firebase';
 export default function ({ navigation, route }) {
   const [userData, setUserData] = useState({});
   function viewOrders(type) {
@@ -17,11 +18,24 @@ export default function ({ navigation, route }) {
       initialTab: type,
     });
   }
+  async function logOut() {
+    try {
+      await fetch(ENV.backend + '/customer/reset-push-token', {
+        method: 'POST',
+        headers: {
+          Authorization: route.params.auth,
+        },
+      });
+      await auth.signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const getData = React.useCallback(async () => {
     return fetch(ENV.backend + '/customer/dashboard', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -32,12 +46,18 @@ export default function ({ navigation, route }) {
         setUserData(res);
       })
       .catch((err) => console.log(err));
-  });
+  }, [route]);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
-        <Header customer={true} />
-        <RefreshView getData={getData}>
+        <Header
+          customer={true}
+          notification={true}
+          hasNotifications={userData.user?.notifications}
+          notifMode={'customer'}
+          hasFarmerAccess={userData.user?.accessLevel == 'Farmer'}
+        />
+        <RefreshView getData={getData} route={route}>
           <InfoCardDBCust user={userData.user} />
           <View style={styles.cardContainer}>
             <DashBoardCard
@@ -77,10 +97,20 @@ export default function ({ navigation, route }) {
               onPress={() => viewOrders('All')}
             />
           </View>
-          <ServicesCardDB />
+          <ServicesCardDB
+            farmer={userData?.user?.accessLevel == 'Farmer'}
+            customerDB={true}
+          />
+          <Button
+            style={styles.buttonContainer}
+            title='Log Out'
+            size='big'
+            color='shadedDanger'
+            onPress={logOut}
+          />
           <View style={styles.lastChild}></View>
         </RefreshView>
-        <Navbar />
+        <Navbar customer={true} />
       </View>
     </SafeAreaView>
   );

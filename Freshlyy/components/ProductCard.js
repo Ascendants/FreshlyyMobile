@@ -32,18 +32,11 @@ export default function (props, onLikePress) {
   };
 
   return (
-    <TouchableOpacity onPress={() => props.onPress(props.publicUrl)}>
+    <TouchableOpacity
+      onPress={() => props.onPress && props.onPress(props.publicUrl)}
+    >
       <View styles={styles.cardBigCont}>
-        <View
-          style={[
-            styles.card,
-            props.cardType == 'social'
-              ? { height: 290 }
-              : props.distanceAway
-              ? { height: 290 }
-              : { height: 270 },
-          ]}
-        >
+        <View style={[styles.card]}>
           {props.bestMatch && props.cheaper ? (
             <View style={styles.cheaperCont}>
               <H4 style={styles.cheaperText}>
@@ -63,7 +56,9 @@ export default function (props, onLikePress) {
           </View>
 
           <View style={styles.desccont}>
-            <H6 style={styles.prodname}>{props.title}</H6>
+            <H6 style={styles.prodname} numberOfLines={1}>
+              {props.title}
+            </H6>
             <View style={styles.reviewCont}>
               <Rating value={props.overallRating} />
               <P>({props.overallRating})</P>
@@ -117,6 +112,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     marginHorizontal: 10,
     paddingHorizontal: 0,
+    flex: 1,
   },
   cheaperCont: {
     position: 'absolute',

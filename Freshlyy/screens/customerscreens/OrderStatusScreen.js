@@ -28,13 +28,13 @@ function getPaymentType(order) {
 
 export default function ({ navigation, route }) {
   const [order, setOrder] = React.useState({});
-
+  console.log(order);
   const getData = React.useCallback(async () => {
     const orderId = route.params.orderId;
     return fetch(ENV.backend + '/customer/get-order/' + orderId, {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
@@ -47,13 +47,13 @@ export default function ({ navigation, route }) {
         });
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
   return (
     <SafeAreaView>
       <View style={styles.screen}>
         <Header back={true} home={true} />
         <H3>Order</H3>
-        <RefreshView getData={getData}>
+        <RefreshView getData={getData} route={route}>
           <View style={styles.ordersContainer}>
             <H7 style={styles.orderInfo} selectable={true}>
               #{order?._id}
@@ -189,6 +189,7 @@ export default function ({ navigation, route }) {
 const styles = StyleSheet.create({
   screen: {
     height: '100%',
+    width: '100%',
     alignItems: 'center',
   },
   pageArea: {
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
+
     paddingHorizontal: 10,
   },
   ordersContainer: {

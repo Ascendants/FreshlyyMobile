@@ -14,7 +14,7 @@ import Theme from '../constants/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CheckBox from 'expo-checkbox';
-import { H5 } from './Texts';
+import { H5, H6 } from './Texts';
 import { Button } from './Buttons';
 import DateTimePicker, {
   DateTimePickerAndroid,

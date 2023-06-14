@@ -7,19 +7,32 @@ import { FilledBigButton } from '../components/Buttons';
 import theme from '../constants/theme';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Button } from '../components/Buttons';
+import { useNavigation } from '@react-navigation/native';
 
-export default function () {
+export default function (props) {
+  const nav = useNavigation();
+  console.log(props);
   return (
-    <View style={styles.screen}>
-      <View style={styles.card}>
-        <Image
-          source={require('../assets/farmer.jpg')}
-          style={styles.farmerimage}
-        />
-        <Text style={styles.farmername}>Komuthu Fernando</Text>
-        <Button title='Follow' color='shadedPrimary' size='normal' style={styles.followbutton} />
+    <TouchableOpacity
+      onPress={() => nav.navigate('Farmer Detail', { farmer: props.farmer })}
+    >
+      <View style={styles.screen}>
+        <View style={styles.card}>
+          <Image
+            source={{ uri: props.imageUrl?.imageUrl }}
+            style={styles.farmerimage}
+          />
+          <Text style={styles.farmername}>{props.farmerName}</Text>
+          <Button
+            title='Following'
+            color='shadedPrimary'
+            size='normal'
+            style={styles.followbutton}
+            onPress={props.onDelete}
+          />
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
@@ -28,17 +41,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
   card: {
-    display:'flex',
-    padding:8,
-    flexDirection:'row',
-    alignItems:'center',
+    display: 'flex',
+    padding: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
     //paddingLeft:20,
-    backgroundColor:Theme.overlay,
-    width:340,
-    height:60,
-    borderRadius:20,
-    marginVertical:10,
-    justifyContent:'space-between',
+    backgroundColor: Theme.overlay,
+    width: 340,
+    height: 60,
+    borderRadius: 20,
+    marginVertical: 10,
+    justifyContent: 'space-between',
   },
   farmerimage: {
     width: 45,
@@ -55,7 +68,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Theme.textColor,
   },
-  followbutton:{
-    borderLeft:20,
-  }
+  followbutton: {
+    borderLeft: 20,
+  },
 });

@@ -1,131 +1,162 @@
 import { React, useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from 'react-native';
-import Theme from '../../constants/theme';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Button } from '../../components/Buttons';
-import {
-  TextInputBox,
-  DropDownPicker,
-  DatePicker,
-} from '../../components/Inputs';
+import { TextInputBox } from '../../components/Inputs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { H4, P, H6 } from '../../components/Texts';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { LocationCard } from '../../components/LocationCard';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-//import { GOOGLE_API_KEY } from '@env';
-
-export default function App() {
+import Loading from '../../components/Loading';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import ENV from '../../constants/env';
+import Theme from '../../constants/theme';
+export default function ({ navigation, route }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [locationName, setLocationName] = useState('');
+
+  const validationSchema = Yup.object().shape({
+    LocationName: Yup.string()
+      .min(2, 'Location name is too short!')
+      .required('Location name is required!'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      LocationName: '',
+    },
+    validationSchema: validationSchema,
+  });
+
+  async function submitSelectedLocation() {
+    try {
+      formik.validateForm();
+      Object.keys(formik.values).forEach((value) => {
+        formik.setFieldTouched(value);
+      });
+      if (!Object.keys(formik.touched).length) return;
+      for (let error in formik.errors) if (error) return;
+      const data = formik.values;
+      console.log(data);
+      console.log(selectedLocation);
+      data.longitude = selectedLocation.longitude;
+      data.latitude = selectedLocation.latitude;
+
+      const result = await fetch(ENV.backend + '/customer/sendLocation', {
+        method: 'POST',
+        headers: {
+          Authorization: route.params.auth,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await result.json();
+      console.log(res);
+      if (res.message == 'Success') {
+        navigation.navigate('Location Screen');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied');
+          return;
+        }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          name: 'Home',
+        });
+        setSelectedLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          name: 'Home',
+        });
+      } catch (error) {
+        console.log(error);
+      }
     })();
   }, []);
-
-  const getAddress = async (latitude, longitude) => {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${'AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw'}`
-    );
-    const data = await response.json();
-    return data.results[0].formatted_address;
-  };
-
-  const handleLocationSelect = async (event) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate;
-    setSelectedLocation(event.nativeEvent.coordinate);
-    const address = await getAddress(latitude, longitude);
-    setSelectedLocation((prevState) => {
-      return {
-        ...prevState,
-        address: address,
-      };
-    });
-  };
-
-  const handleLocationNameChange = (name) => {
-    setLocationName(name);
-    setSelectedLocation((prevState) => {
-      return {
-        ...prevState,
-        name: name,
-      };
-    });
-  };
-
-  let text = 'Waiting...';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    const latitude = location.coords.latitude;
-    const longitude = location.coords.longitude;
-
-    return (
-      <SafeAreaView>
-        <ScrollView>
-          <Header back={true} />
-          <View style={styles.screen}>
-            <H4>Select your Address</H4>
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: 7.8731,
-                longitude: 80.7718,
-                latitudeDelta: 5,
-                longitudeDelta: 5,
-              }}
-              onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
-            >
-              {selectedLocation && (
-                <Marker coordinate={selectedLocation}>
-                  <Callout>
-                    <View style={styles.callout}>
-                      <Text>{selectedLocation.address}</Text>
-                      <H6>Your location</H6>
-                      <TextInput
-                        style={styles.textInput}
-                        placeholder='Enter location name'
-                        value={locationName}
-                        onChangeText={handleLocationNameChange}
-                      />
-                      <H6>Flat/Building/Street</H6>
-                      <TextInput style={styles.textInput} />
-                    </View>
-                  </Callout>
-                </Marker>
-              )}
-            </MapView>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
+  console.log(location);
   return (
-    <View style={styles.screen}>
-      <Text>{text}</Text>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header back={true} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={styles.screen}>
+          {location ? (
+            <>
+              <H4>Select your Address</H4>
+              <View style={styles.inputcont}>
+                <TextInputBox
+                  inputlabel='Name'
+                  placeholder='Give a nickname'
+                  name='LocationName'
+                  onChangeText={formik.handleChange('LocationName')}
+                  onBlur={() =>
+                    formik.setFieldTouched('LocationName', true, true)
+                  }
+                  value={formik.values.LocationName}
+                  error={formik.errors.LocationName}
+                  touched={formik.touched.LocationName}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'blue',
+                  width: 350,
+                  borderWidth: 2,
+                  borderColor: Theme.primary,
+                  borderRadius: 10,
+                }}
+              >
+                <MapView
+                  style={styles.map}
+                  // customMapStyle={styles.map}
+                  initialRegion={{
+                    latitude: parseFloat(location.latitude) || 0,
+                    longitude: parseFloat(location.longitude) || 0,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
+                  }}
+                  onPress={(e) => setSelectedLocation(e.nativeEvent.coordinate)}
+                >
+                  {selectedLocation && (
+                    <>
+                      <Marker coordinate={selectedLocation}></Marker>
+                    </>
+                  )}
+                </MapView>
+              </View>
+              <View style={{ marginVertical: 20 }}>
+                <Button
+                  title='Save Location'
+                  color='shadedPrimary'
+                  size='big'
+                  onPress={submitSelectedLocation}
+                />
+              </View>
+            </>
+          ) : (
+            <Loading />
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -135,11 +166,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textBox: {
+    padding: 10,
+  },
   map: {
-    margin: 10,
-    border: 10,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    //border: 10,
+    alignSelf: 'center',
+    flex: 1,
+    height: 346,
+    width: 346,
+    borderRadius: 10,
   },
   callout: {
     width: 200,
@@ -150,5 +186,11 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     marginTop: 8,
     padding: 4,
+  },
+  inputcont: {
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 30,
   },
 });

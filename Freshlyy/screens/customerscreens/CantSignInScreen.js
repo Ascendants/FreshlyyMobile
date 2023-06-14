@@ -41,10 +41,10 @@ export default function ({ navigation, route }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(ENV.backend + '/farmer/support-ticket/', {
+      const response = await fetch(ENV.backend + '/customer/support-ticket/', {
         method: 'POST',
         headers: {
-          useremail: route.params.userEmail,
+          Authorization: route.params.auth,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -57,13 +57,14 @@ export default function ({ navigation, route }) {
       });
       const data = await response.json();
       const id = data.id;
+      console.log(data);
       navigation.navigate('Message', {
         type: 'Success',
         messageTitle: 'Ticket Sent Successfully!',
         subjectId: id,
         messageText:
           ' is your ticket number. An administrator will be in touch with you shortly!',
-        goto: 'Farmer Dashboard',
+        goto: 'Customer Dashboard',
         goButtonText: 'Dashboard',
       });
     } catch (error) {

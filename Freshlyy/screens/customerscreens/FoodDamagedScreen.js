@@ -84,10 +84,10 @@ export default function ({ navigation, route }) {
   const handleSubmit = async () => {
     try {
       console.log(route.params.userEmail);
-      const response = await fetch(ENV.backend + '/farmer/support-ticket/', {
+      const response = await fetch(ENV.backend + '/customer/support-ticket/', {
         method: 'POST',
         headers: {
-          useremail: route.params.userEmail,
+          Authorization: route.params.auth,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -98,6 +98,7 @@ export default function ({ navigation, route }) {
         }),
       });
       const data = await response.json();
+      console.log(data)
       const id = data.id;
       navigation.navigate('Message', {
         type: 'Success',
@@ -105,7 +106,7 @@ export default function ({ navigation, route }) {
         subjectId: id,
         messageText:
           ' is your ticket number. An administrator will be in touch with you shortly!',
-        goto: 'Farmer Dashboard',
+        goto: 'Customer Dashboard',
         goButtonText: 'Dashboard',
       });
       // console.log(data.id);
@@ -167,15 +168,15 @@ export default function ({ navigation, route }) {
               console.log('');
             }}
           />
-          <Text style={styles.inputLabel}>
-            Screenshot of the error message while you are trying to sign in
+          {/* <Text style={styles.inputLabel}>
+            Upload a photo of the affected item
           </Text>
           <TouchableOpacity>
             <View style={styles.inputImgBox}>
               <Ionicons name='image' size={22} color={Theme.tertiary} />
               <H8 style={{ color: Theme.tertiary }}>Select file</H8>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TextInputBox
             inputlabel='Share details'
             placeholder=''

@@ -23,17 +23,18 @@ export default function ({ navigation, route }) {
   const [orders, setOrders] = React.useState([]);
 
   const userEmail = route.params.userEmail;
-
+  console.log(route.params.userEmail)
   async function getOrderList(refreshing) {
     refreshing ? setRefreshing(true) : setLoaded(false);
     fetch(ENV.backend + '/customer/get-orders/' + 'to-review', {
       method: 'GET',
       headers: {
-        useremail: route.params.userEmail,
+        Authorization: route.params.auth,
       },
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res)
         if (res.message != 'Success') {
           throw new Error('Malformed Response');
         }
@@ -52,7 +53,6 @@ export default function ({ navigation, route }) {
   React.useEffect(() => {
     getOrderList(
       false,
-      route.params.initialTab.replace(/\s+/g, '-').toLowerCase()
     );
   }, []);
   return (
@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   noOrdersContent: {
-    paddingHorizontal: 10,
-    minHeight: '100%',
+    // minHeight: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },

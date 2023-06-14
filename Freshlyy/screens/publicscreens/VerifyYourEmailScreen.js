@@ -1,26 +1,13 @@
-import { React, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-import {
-  TextInputBox,
-  DropDownPicker,
-  CheckBox,
-} from '../../components/Inputs';
 import Header from '../../components/Header';
 
-import { H1, H2, H4, H3 } from '../../components/Texts';
+import { H4, H3 } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function () {
+export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
       <View style={styles.screen}>

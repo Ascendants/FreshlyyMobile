@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Freshlyy",
-    "slug": "Freshlyy",
+    "slug": "freshlyy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,6 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Freshlyy to use your location."
+        }
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -18,13 +26,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-      ,"config": {
+      "supportsTablet": true,
+      "config": {
         "googleMapsApiKey": "AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw"
       }
-
     },
-
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -34,10 +40,21 @@
         "googleMaps": {
           "apiKey": "AIzaSyCorJgnsZs2Y8q_c4eMqUtUV_0icAmHWhw"
         }
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "588dd011-7de9-4aa4-be5b-1e6d216ec6d8"
+      }
+    },
+    "owner": "hasathcharu"
   }
 }
