@@ -14,7 +14,6 @@ import LinearGradient from 'react-native-linear-gradient';
 export default function (props, onLikePress) {
   const [isLiked, setIsLiked] = useState(props.likes.includes(props.userEmail));
   const [likecount, setLikeCount] = useState(props.likes.length); //props.likes.length
-  const [liked, setLiked] = useState(true);
 
   // console.log(userID+" "+productID)
   const handleLike = () => {
@@ -170,16 +169,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 2,
   },
-  likecont: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
+  // likecont: {
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   flexDirection: 'row',
+  //   flexWrap: 'wrap',
+  //   justifyContent: 'space-between',
+  // },
   likeIco: {
-    position: 'absolute',
-    left: 110,
-    top: -6,
+    // position: 'absolute',
+    // left: 110,
+    // top: -6,
   },
 });

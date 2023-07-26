@@ -58,7 +58,6 @@ export default function ({ navigation, route }) {
   const auth = useAuth();
   const [products, setProducts] = useState([]);
   const [showSocial, setSocial] = useState(true);
-  const [activeTab, setActiveTab] = useState('All Products');
 
   const handleLike = async (productId, newLike, method) => {
     console.log(productId, method, newLike);
@@ -159,21 +158,23 @@ export default function ({ navigation, route }) {
                     horizontal
                     data={section.data}
                     renderItem={({ item }) => (
-                      <ProductCard
-                        cardType='social'
-                        title={item.title}
-                        id={item._id}
-                        userEmail={auth.user.userEmail}
-                        imageUrl={item.imageUrl}
-                        unit={item.unit}
-                        likes={item.likes}
-                        overallRating={item.overallRating}
-                        price={item.price}
-                        farmerName={item.farmerName}
-                        publicUrl={item.publicUrl}
-                        onPress={sendToProductDetail}
-                        onLike={handleLike}
-                      />
+                      <View style={{ minWidth: 170 }}>
+                        <ProductCard
+                          cardType='social'
+                          title={item.title}
+                          id={item._id}
+                          userEmail={auth.user.userEmail}
+                          imageUrl={item.imageUrl}
+                          unit={item.unit}
+                          likes={item.likes}
+                          overallRating={item.overallRating}
+                          price={item.price}
+                          farmerName={item.farmerName}
+                          publicUrl={item.publicUrl}
+                          onPress={sendToProductDetail}
+                          onLike={handleLike}
+                        />
+                      </View>
                     )}
                     keyExtractor={(prod, index) => prod._id}
                     showsHorizontalScrollIndicator={false}
