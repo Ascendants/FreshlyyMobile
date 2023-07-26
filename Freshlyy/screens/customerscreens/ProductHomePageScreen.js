@@ -272,7 +272,10 @@ export default function ({ navigation, route }) {
             ) : (
               <FlatList
                 style={{ flex: 1 }}
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  alignItems: 'center',
+                }}
                 numColumns={2}
                 data={filteredProducts}
                 refreshing={refreshing}
@@ -282,6 +285,7 @@ export default function ({ navigation, route }) {
                     animation={animation}
                     duration={1000}
                     delay={index * 300}
+                    style={{ width: '50%' }}
                   >
                     <ProductCard
                       animation={animation}

@@ -14,13 +14,11 @@ import Header from '../../components/Header';
 import ImageDots from '../../components/ImageDots';
 import Theme from '../../constants/theme';
 import ENV from '../../constants/env';
-import Loading from '../../components/Loading';
 import Rating from '../../components/Rating';
 import RefreshView from '../../components/RefreshView';
 import ModalComponent from '../../components/ModalComponent';
 
 export default function ({ navigation, route }) {
-  const [modal, setModal] = React.useState(false);
   const [soldout, setSoldout] = React.useState(false);
   const [imageScroll, setImageScroll] = React.useState(0);
   const [selectedQuantity, setSelectedQuantity] = React.useState(0);
@@ -73,7 +71,6 @@ export default function ({ navigation, route }) {
       })
       .catch((err) => console.log(err));
   }, []);
-  console.log(product?.farmerDeliveryCharge);
   async function postCart() {
     const result = await fetch(ENV.backend + '/customer/cart/add', {
       method: 'POST',
@@ -86,11 +83,11 @@ export default function ({ navigation, route }) {
       body: JSON.stringify({
         productId: product._id,
         quantity: selectedQuantity,
+        distance: route.params?.distanceAway,
       }),
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         if (res.message == 'Success') {
           setAdded(true);
           return true;
@@ -117,7 +114,6 @@ export default function ({ navigation, route }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         if (res.message == 'Success') {
           setWishListed(true);
 
@@ -191,7 +187,6 @@ export default function ({ navigation, route }) {
       farmerImg: product.farmerImage.imageUrl,
     });
   }
-
 
   return (
     <SafeAreaView>
@@ -352,7 +347,10 @@ export default function ({ navigation, route }) {
               <H4>/KG</H4>
             </View>
             <View style={styles.detail}>
-              <H4>{route.params.distanceAway != undefined && route.params.distanceAway + ' KM Away | '}</H4>
+              <H4>
+                {route.params.distanceAway != undefined &&
+                  route.params.distanceAway + ' KM Away | '}
+              </H4>
 
               <Pr fontSize={20}>{product?.farmerDeliveryCharge}</Pr>
               <H4>/KM</H4>

@@ -33,6 +33,13 @@ export default function (props, onLikePress) {
 
   return (
     <TouchableOpacity
+      style={
+        {
+          // flex: 1 / 2,
+          // flexGrow: 1,
+          // backgroundColor: 'yellow',
+        }
+      }
       onPress={() => props.onPress && props.onPress(props.publicUrl)}
     >
       <View styles={styles.cardBigCont}>
@@ -59,10 +66,10 @@ export default function (props, onLikePress) {
             <H6 style={styles.prodname} numberOfLines={1}>
               {props.title}
             </H6>
-            <View style={styles.reviewCont}>
+            {/* <View style={styles.reviewCont}>
               <Rating value={props.overallRating} />
               <P>({props.overallRating})</P>
-            </View>
+            </View> */}
 
             <Pr>
               {props.price}/{props.unit}
@@ -101,16 +108,19 @@ export default function (props, onLikePress) {
 }
 const styles = StyleSheet.create({
   cardBigCont: {
-    backgroundColor: 'red',
     padding: 10,
+    flex: 1,
+    backgroundColor: 'yellow',
+    minHeight: 100,
+    width: '100%',
   },
   card: {
-    width: 166,
+    // width: 166,
     backgroundColor: Theme.overlay,
     borderRadius: 20,
     boxShadow: '100px 100px 17px -12px rgba(0,3,0,0.75)',
     marginVertical: 15,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     paddingHorizontal: 0,
     flex: 1,
   },
@@ -134,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardimage: {
-    width: 145,
+    width: '90%',
     height: 120,
     borderRadius: 10,
     resizeMode: 'cover',
@@ -146,10 +156,11 @@ const styles = StyleSheet.create({
   },
   desccont: {
     position: 'relative',
-    width: 180,
+    // width: 180,
 
     paddingHorizontal: 10,
     marginTop: 10,
+    marginBottom: 10,
   },
   likecont: {
     display: 'flex',
