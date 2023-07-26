@@ -274,7 +274,7 @@ export default function ({ navigation, route }) {
                 style={{ flex: 1 }}
                 contentContainerStyle={{
                   flexGrow: 1,
-                  alignItems: 'center',
+                  // alignItems: 'center',
                 }}
                 numColumns={2}
                 data={filteredProducts}

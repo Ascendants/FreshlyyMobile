@@ -4,7 +4,7 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   TextInput,
   ScrollView,
 } from 'react-native';
@@ -56,50 +56,54 @@ export default function ({ navigation, route }) {
 
   return (
     <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Image
-            source={require('../../assets/passwordvec.png')}
-            style={styles.loginpic}
-          />
-          <View style={styles.inputcont}>
-            <TextInputBox
-              inputlabel='Password'
-              placeholder='Enter Password'
-              type='password'
-              name='password'
-              secure={true}
-              onChangeText={formik.handleChange('password')}
-              onBlur={() => formik.setFieldTouched('password', true, true)}
-              value={formik.values.password}
-              error={formik.errors.password}
-              touched={formik.touched.password}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.screen}>
+          <Header back={true} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Image
+              source={require('../../assets/passwordvec.png')}
+              style={styles.loginpic}
             />
-            <TextInputBox
-              inputlabel='Confirm Password'
-              placeholder='Confirm Password'
-              type='password'
-              name='cpassword'
-              secure={true}
-              onChangeText={formik.handleChange('cpassword')}
-              onBlur={() => formik.setFieldTouched('cpassword', true, true)}
-              value={formik.values.cpassword}
-              error={formik.errors.cpassword}
-              touched={formik.touched.cpassword}
+            <View style={styles.inputcont}>
+              <TextInputBox
+                inputlabel='Password'
+                placeholder='Enter Password'
+                type='password'
+                name='password'
+                secure={true}
+                onChangeText={formik.handleChange('password')}
+                onBlur={() => formik.setFieldTouched('password', true, true)}
+                value={formik.values.password}
+                error={formik.errors.password}
+                touched={formik.touched.password}
+              />
+              <TextInputBox
+                inputlabel='Confirm Password'
+                placeholder='Confirm Password'
+                type='password'
+                name='cpassword'
+                secure={true}
+                onChangeText={formik.handleChange('cpassword')}
+                onBlur={() => formik.setFieldTouched('cpassword', true, true)}
+                value={formik.values.cpassword}
+                error={formik.errors.cpassword}
+                touched={formik.touched.cpassword}
+              />
+            </View>
+            <View></View>
+            <Button
+              title='Next'
+              color='filledSecondary'
+              size='big'
+              onPress={submit}
             />
-          </View>
-          <View></View>
-          <Button
-            title='Next'
-            color='filledSecondary'
-            size='big'
-            onPress={submit}
-          />
 
-          {/* <CheckBox /> */}
-        </ScrollView>
-      </View>
+            {/* <CheckBox /> */}
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

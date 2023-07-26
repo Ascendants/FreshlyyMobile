@@ -1,25 +1,25 @@
-import { React, useState } from "react";
+import { React, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Image,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   TextInput,
   ScrollView,
-} from "react-native";
-import Theme from "../../constants/theme";
-import { Button } from "../../components/Buttons";
+} from 'react-native';
+import Theme from '../../constants/theme';
+import { Button } from '../../components/Buttons';
 import {
   TextInputBox,
   DropDownPicker,
   DatePicker,
-} from "../../components/Inputs";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../../components/Header";
-import { Formik, validateYupSchema, useFormik } from "formik";
-import * as Yup from "yup";
-import * as Animatable from "react-native-animatable";
+} from '../../components/Inputs';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../../components/Header';
+import { Formik, validateYupSchema, useFormik } from 'formik';
+import * as Yup from 'yup';
+import * as Animatable from 'react-native-animatable';
 
 export default function ({ navigation, route }) {
   const [valid, setValid] = useState(false);
@@ -28,31 +28,31 @@ export default function ({ navigation, route }) {
 
   const validationSchema = Yup.object().shape({
     FirstName: Yup.string()
-      .min(2, "First Name is too short!")
-      .required("First Name is required!"),
+      .min(2, 'First Name is too short!')
+      .required('First Name is required!'),
     LastName: Yup.string()
-      .min(2, "Last Name is too short!")
-      .required("Last Name is required!"),
+      .min(2, 'Last Name is too short!')
+      .required('Last Name is required!'),
     dob: Yup.date()
       .max(
         new Date(new Date().setFullYear(new Date().getFullYear() - 15)),
-        "You must be at least 15 years old to register."
+        'You must be at least 15 years old to register.'
       )
-      .required("Date of birth is required!"),
-    gender: Yup.string().nullable().required("Gender is required"),
-    address: Yup.string().required("Address is required!"),
+      .required('Date of birth is required!'),
+    gender: Yup.string().nullable().required('Gender is required'),
+    address: Yup.string().required('Address is required!'),
     nic: Yup.string()
-      .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, "Invalid NIC format!")
-      .required("NIC is required!"),
+      .matches(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/, 'Invalid NIC format!')
+      .required('NIC is required!'),
   });
   const formik = useFormik({
     initialValues: {
-      FirstName: "",
-      LastName: "",
-      address: "",
+      FirstName: '',
+      LastName: '',
+      address: '',
       dob: new Date(),
-      gender: "",
-      nic: "",
+      gender: '',
+      nic: '',
     },
     validationSchema: validationSchema,
   });
@@ -67,120 +67,128 @@ export default function ({ navigation, route }) {
     setValid(true);
     setUserData(data);
     console.log(userData);
-    navigation.navigate("beFarmer", {
-      type: "Success",
+    navigation.navigate('beFarmer', {
+      type: 'Success',
       userData: JSON.stringify(data),
     });
   }
   return (
     <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Animatable.View
-            animation="fadeInUpBig"
-            duration={1000}
-            delay={2 * 300}
-          >
-            <View style={styles.pageContent}>
-              <Image
-                source={require("../../assets/signupvector.png")}
-                style={styles.vectorimage}
-              />
-              {/* <DatePicker/> */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.screen}>
+          <Header back={true} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Animatable.View
+              animation='fadeInUpBig'
+              duration={1000}
+              delay={2 * 300}
+            >
+              <View style={styles.pageContent}>
+                <Image
+                  source={require('../../assets/signupvector.png')}
+                  style={styles.vectorimage}
+                />
+                {/* <DatePicker/> */}
 
-              <View style={styles.inputcont}>
-                <TextInputBox
-                  inputlabel="First Name"
-                  placeholder="Enter First name"
-                  name="FirstName"
-                  onChangeText={formik.handleChange("FirstName")}
-                  onBlur={() => formik.setFieldTouched("FirstName", true, true)}
-                  value={formik.values.FirstName}
-                  error={formik.errors.FirstName}
-                  touched={formik.touched.FirstName}
-                />
+                <View style={styles.inputcont}>
+                  <TextInputBox
+                    inputlabel='First Name'
+                    placeholder='Enter First name'
+                    name='FirstName'
+                    onChangeText={formik.handleChange('FirstName')}
+                    onBlur={() =>
+                      formik.setFieldTouched('FirstName', true, true)
+                    }
+                    value={formik.values.FirstName}
+                    error={formik.errors.FirstName}
+                    touched={formik.touched.FirstName}
+                  />
 
-                <TextInputBox
-                  inputlabel="Last Name"
-                  placeholder="Enter Last name "
-                  name="LastName"
-                  onChangeText={formik.handleChange("LastName")}
-                  onBlur={() => formik.setFieldTouched("LastName", true, true)}
-                  value={formik.values.LastName}
-                  error={formik.errors.LastName}
-                  touched={formik.touched.LastName}
-                />
-                <DatePicker
-                  inputlabel={"Date of Birth"}
-                  name="Date of Birth"
-                  onChange={(date) => formik.setFieldValue("dob", date)}
-                  onPress={() => formik.setFieldTouched("dob", true, true)}
-                  value={formik.values.dob}
-                  touched={formik.touched.dob}
-                  error={formik.errors.dob}
-                />
-                <DropDownPicker
-                  inputlabel="Gender"
-                  items={[
-                    { label: "Male", value: "Male" },
-                    { label: "Female", value: "Female" },
-                  ]}
-                  value={formik.values.gender}
-                  onChange={(value) => formik.setFieldValue("gender", value)}
-                  touched={formik.touched.gender}
-                  error={formik.errors.gender}
-                  onClose={() => formik.setFieldTouched("gender", true, true)}
-                  placeholder="Choose gender"
-                />
+                  <TextInputBox
+                    inputlabel='Last Name'
+                    placeholder='Enter Last name '
+                    name='LastName'
+                    onChangeText={formik.handleChange('LastName')}
+                    onBlur={() =>
+                      formik.setFieldTouched('LastName', true, true)
+                    }
+                    value={formik.values.LastName}
+                    error={formik.errors.LastName}
+                    touched={formik.touched.LastName}
+                  />
+                  <DatePicker
+                    inputlabel={'Date of Birth'}
+                    name='Date of Birth'
+                    onChange={(date) => formik.setFieldValue('dob', date)}
+                    onPress={() => formik.setFieldTouched('dob', true, true)}
+                    value={formik.values.dob}
+                    touched={formik.touched.dob}
+                    error={formik.errors.dob}
+                  />
+                  <DropDownPicker
+                    inputlabel='Gender'
+                    items={[
+                      { label: 'Male', value: 'Male' },
+                      { label: 'Female', value: 'Female' },
+                    ]}
+                    value={formik.values.gender}
+                    onChange={(value) => formik.setFieldValue('gender', value)}
+                    touched={formik.touched.gender}
+                    error={formik.errors.gender}
+                    onClose={() => formik.setFieldTouched('gender', true, true)}
+                    placeholder='Choose gender'
+                  />
 
-                <TextInputBox
-                  inputlabel="NIC Number"
-                  placeholder="Enter NIC"
-                  name="nic"
-                  onChangeText={formik.handleChange("nic")}
-                  onBlur={() => formik.setFieldTouched("nic", true, true)}
-                  value={formik.values.nic}
-                  error={formik.errors.nic}
-                  touched={formik.touched.nic}
-                />
-                <TextInputBox
-                  inputlabel="Address"
-                  placeholder="Enter Address"
-                  name="address"
-                  onChangeText={formik.handleChange("address")}
-                  onBlur={() => formik.setFieldTouched("address", true, true)}
-                  value={formik.values.address}
-                  error={formik.errors.address}
-                  touched={formik.touched.address}
-                />
-                <Button
-                  title="Next"
-                  color="filledSecondary"
-                  size="big"
-                  onPress={submit}
-                />
+                  <TextInputBox
+                    inputlabel='NIC Number'
+                    placeholder='Enter NIC'
+                    name='nic'
+                    onChangeText={formik.handleChange('nic')}
+                    onBlur={() => formik.setFieldTouched('nic', true, true)}
+                    value={formik.values.nic}
+                    error={formik.errors.nic}
+                    touched={formik.touched.nic}
+                  />
+                  <TextInputBox
+                    inputlabel='Address'
+                    placeholder='Enter Address'
+                    name='address'
+                    onChangeText={formik.handleChange('address')}
+                    onBlur={() => formik.setFieldTouched('address', true, true)}
+                    value={formik.values.address}
+                    error={formik.errors.address}
+                    touched={formik.touched.address}
+                  />
+                  <Button
+                    title='Next'
+                    color='filledSecondary'
+                    size='big'
+                    onPress={submit}
+                  />
+                </View>
               </View>
-            </View>
-          </Animatable.View>
-        </ScrollView>
-      </View>
+            </Animatable.View>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    height: "100%",
-    fontFamily: "Poppins",
+    height: '100%',
+    fontFamily: 'Poppins',
   },
   pageContent: {
     paddingHorizontal: 15,
-    alignItems: "center",
+    alignItems: 'center',
   },
   logo: {
     height: 50,
-    resizeMode: "contain",
+    resizeMode: 'contain',
     marginTop: 50,
   },
   vectorimage: {
@@ -189,22 +197,22 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   inputcont: {
-    position: "relative",
-    width: "90%",
+    position: 'relative',
+    width: '90%',
     marginVertical: 0,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputlabel: {
     paddingLeft: 10,
     color: Theme.textColor,
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
   },
   input: {
-    position: "relative",
+    position: 'relative',
     height: 40,
-    width: "100%",
-    fontFamily: "Poppins",
+    width: '100%',
+    fontFamily: 'Poppins',
     paddingLeft: 10,
     backgroundColor: Theme.overlay,
     borderColor: Theme.overlay,
@@ -220,23 +228,23 @@ const styles = StyleSheet.create({
   },
   inputlabel: {
     color: Theme.textColor,
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
     fontSize: 15,
   },
   dropDownCont: {
     width: 320,
     paddingVertical: 10,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 9,
-    color: "#A7A7A7",
+    color: '#A7A7A7',
   },
   dropDown: {
-    display: "flex",
+    display: 'flex',
 
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     width: 310,
-    borderColor: "white",
+    borderColor: 'white',
     height: 75,
     borderRadius: 5,
   },

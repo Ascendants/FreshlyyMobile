@@ -271,10 +271,10 @@ export default function ({ navigation, route }) {
             </View>
             <H4 style={styles.productTopic}>{product?.title}</H4>
 
-            <View style={styles.ratingArea}>
+            {/* <View style={styles.ratingArea}>
               <Rating value={product?.overallRating} />
               <P>10 Reviews</P>
-            </View>
+            </View> */}
             <View style={styles.actionArea}>
               <TouchableOpacity
                 onPress={() =>
@@ -431,6 +431,7 @@ const styles = StyleSheet.create({
 
   productTopic: {
     wordWrap: 'break-word',
+    marginBottom: 10,
   },
 
   ratingArea: {

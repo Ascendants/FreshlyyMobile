@@ -4,7 +4,7 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   TextInput,
   ScrollView,
 } from 'react-native';
@@ -31,8 +31,6 @@ import LoadingModal from '../../components/LoadingModal';
 export default function ({ navigation, route }) {
   const [valid, setValid] = useState(false);
   const [err, setErr] = useState('');
-  const [isVerified, setIsVerified] = useState(false);
-  const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   console.log(route.params.userData);
   const handleSignUp = async (email, password) => {
@@ -151,78 +149,88 @@ export default function ({ navigation, route }) {
   };
   return (
     <SafeAreaView>
-      <View style={styles.screen}>
-        <LoadingModal message='Submitting' visible={submitting} />
-        <Header back={true} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Animatable.View
-            animation='fadeInUpBig'
-            duration={1000}
-            delay={2 * 300}
-          >
-            <View style={styles.pageContent}>
-              <Image
-                source={require('../../assets/signup.png')}
-                style={styles.vectorimage}
-              />
-              {/* <DatePicker/> */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.screen}>
+          <LoadingModal message='Submitting' visible={submitting} />
+          <Header back={true} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Animatable.View
+              animation='fadeInUpBig'
+              duration={1000}
+              delay={2 * 300}
+            >
+              <View style={styles.pageContent}>
+                <Image
+                  source={require('../../assets/signup.png')}
+                  style={styles.vectorimage}
+                />
+                {/* <DatePicker/> */}
 
-              <View style={styles.inputcont}>
-                <TextInputBox
-                  inputlabel='Email'
-                  placeholder='Enter Email'
-                  type='email-address'
-                  name='email'
-                  onChangeText={formik.handleChange('email')}
-                  onBlur={() => formik.setFieldTouched('email', true, true)}
-                  value={formik.values.email}
-                  error={formik.errors.email}
-                  touched={formik.touched.email}
-                  onFocus={() => formik.setFieldTouched('email', true, true)}
-                />
-                <TextInputBox
-                  inputlabel='Password'
-                  placeholder='Enter Password'
-                  type='password'
-                  name='password'
-                  secure={true}
-                  onChangeText={formik.handleChange('password')}
-                  onBlur={() => formik.setFieldTouched('password', true, true)}
-                  value={formik.values.password}
-                  error={formik.errors.password}
-                  touched={formik.touched.password}
-                  onFocus={() => formik.setFieldTouched('password', true, true)}
-                />
-                <TextInputBox
-                  inputlabel='Confirm Password'
-                  placeholder='Confirm Password'
-                  type='password'
-                  name='cpassword'
-                  secure={true}
-                  onChangeText={formik.handleChange('cpassword')}
-                  onBlur={() => formik.setFieldTouched('cpassword', true, true)}
-                  value={formik.values.cpassword}
-                  error={formik.errors.cpassword}
-                  touched={formik.touched.cpassword}
-                  onFocus={() =>
-                    formik.setFieldTouched('cpassword', true, true)
-                  }
-                />
-                {err ? <H6 style={styles.messageText}> {err}</H6> : null}
+                <View style={styles.inputcont}>
+                  <TextInputBox
+                    inputlabel='Email'
+                    placeholder='Enter Email'
+                    type='email-address'
+                    name='email'
+                    onChangeText={formik.handleChange('email')}
+                    onBlur={() => formik.setFieldTouched('email', true, true)}
+                    value={formik.values.email}
+                    error={formik.errors.email}
+                    touched={formik.touched.email}
+                    onFocus={() => formik.setFieldTouched('email', true, true)}
+                  />
+                  <TextInputBox
+                    inputlabel='Password'
+                    placeholder='Enter Password'
+                    type='password'
+                    name='password'
+                    secure={true}
+                    onChangeText={formik.handleChange('password')}
+                    onBlur={() =>
+                      formik.setFieldTouched('password', true, true)
+                    }
+                    value={formik.values.password}
+                    error={formik.errors.password}
+                    touched={formik.touched.password}
+                    onFocus={() =>
+                      formik.setFieldTouched('password', true, true)
+                    }
+                  />
+                  <TextInputBox
+                    inputlabel='Confirm Password'
+                    placeholder='Confirm Password'
+                    type='password'
+                    name='cpassword'
+                    secure={true}
+                    onChangeText={formik.handleChange('cpassword')}
+                    onBlur={() =>
+                      formik.setFieldTouched('cpassword', true, true)
+                    }
+                    value={formik.values.cpassword}
+                    error={formik.errors.cpassword}
+                    touched={formik.touched.cpassword}
+                    onFocus={() =>
+                      formik.setFieldTouched('cpassword', true, true)
+                    }
+                  />
+                  {err ? <H6 style={styles.messageText}> {err}</H6> : null}
 
-                <Button
-                  title='Submit'
-                  color='filledSecondary'
-                  size='big'
-                  onPress={submit}
-                />
+                  <Button
+                    title='Submit'
+                    color='filledSecondary'
+                    size='big'
+                    onPress={submit}
+                  />
+                </View>
+
+                <View style={styles.inputcont}></View>
               </View>
-
-              <View style={styles.inputcont}></View>
-            </View>
-          </Animatable.View>
-        </ScrollView>
-      </View>
+            </Animatable.View>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

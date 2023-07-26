@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Theme from '../../constants/theme';
@@ -117,54 +118,58 @@ export default function ({ navigation, route }) {
   };
   return (
     <SafeAreaView>
-      <View style={styles.screen}>
-        <LoadingModal message='Logging In' visible={submitting} />
-        <Header back={true} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.pageContent}>
-            <Image
-              source={require('../../assets/loginpic.png')}
-              style={styles.loginpic}
-            />
-            <H4 style={styles.logintext}>Log In</H4>
-            <View style={styles.inputcont}>
-              <TextInputBox
-                inputlabel='Email'
-                placeholder='Enter Email'
-                type='email-address'
-                name='email'
-                onChangeText={formik.handleChange('email')}
-                onBlur={() => formik.setFieldTouched('email', true, true)}
-                value={formik.values.email}
-                error={formik.errors.email}
-                touched={formik.touched.email}
-                onFocus={() => formik.setFieldTouched('email', true, true)}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.screen}>
+          <LoadingModal message='Logging In' visible={submitting} />
+          <Header back={true} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.pageContent}>
+              <Image
+                source={require('../../assets/loginpic.png')}
+                style={styles.loginpic}
               />
-              <TextInputBox
-                inputlabel='Password'
-                placeholder='Password'
-                type='password'
-                name='password'
-                secure={true}
-                onChangeText={formik.handleChange('password')}
-                onBlur={() => formik.setFieldTouched('password', true, true)}
-                value={formik.values.password}
-                error={formik.errors.password}
-                touched={formik.touched.password}
-                onFocus={() => formik.setFieldTouched('password', true, true)}
+              <H4 style={styles.logintext}>Log In</H4>
+              <View style={styles.inputcont}>
+                <TextInputBox
+                  inputlabel='Email'
+                  placeholder='Enter Email'
+                  type='email-address'
+                  name='email'
+                  onChangeText={formik.handleChange('email')}
+                  onBlur={() => formik.setFieldTouched('email', true, true)}
+                  value={formik.values.email}
+                  error={formik.errors.email}
+                  touched={formik.touched.email}
+                  onFocus={() => formik.setFieldTouched('email', true, true)}
+                />
+                <TextInputBox
+                  inputlabel='Password'
+                  placeholder='Password'
+                  type='password'
+                  name='password'
+                  secure={true}
+                  onChangeText={formik.handleChange('password')}
+                  onBlur={() => formik.setFieldTouched('password', true, true)}
+                  value={formik.values.password}
+                  error={formik.errors.password}
+                  touched={formik.touched.password}
+                  onFocus={() => formik.setFieldTouched('password', true, true)}
+                />
+              </View>
+              {err ? <H6 style={styles.messageText}> {err}</H6> : null}
+              <Button
+                title='Login'
+                color='filledPrimary'
+                size='big'
+                onPress={submit}
               />
+              <H7 style={{ color: Theme.secondary }}>Forgot Password</H7>
             </View>
-            {err ? <H6 style={styles.messageText}> {err}</H6> : null}
-            <Button
-              title='Login'
-              color='filledPrimary'
-              size='big'
-              onPress={submit}
-            />
-            <H7 style={{ color: Theme.secondary }}>Forgot Password</H7>
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

@@ -4,7 +4,7 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   TextInput,
   ScrollView,
 } from 'react-native';
@@ -20,28 +20,32 @@ import Header from '../../components/Header';
 import { H1, H2, H4, H3 } from '../../components/Texts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function ({navigation,route}) {
+export default function ({ navigation, route }) {
   return (
     <SafeAreaView>
-      <ScrollView>
-        <Header back={true} />
-        <View style={styles.screen}>
-          <H3 style={styles.heading}>Create New Password</H3>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView>
+          <Header back={true} />
+          <View style={styles.screen}>
+            <H3 style={styles.heading}>Create New Password</H3>
 
-          <Image
-            source={require('../../assets/createNewPassword.png')}
-            style={styles.loginpic}
-          />
-          <H4 style={styles.desc}>
-            Your new password must be different from previously used password
-          </H4>
-          <View style={styles.inputcont}>
-            <TextInputBox inputlabel='New Password' type='password' />
-            <TextInputBox inputlabel='Confirm Password' type='password' />
+            <Image
+              source={require('../../assets/createNewPassword.png')}
+              style={styles.loginpic}
+            />
+            <H4 style={styles.desc}>
+              Your new password must be different from previously used password
+            </H4>
+            <View style={styles.inputcont}>
+              <TextInputBox inputlabel='New Password' type='password' />
+              <TextInputBox inputlabel='Confirm Password' type='password' />
+            </View>
+            <Button title='Submit' color='shadedPrimary' size='big' />
           </View>
-          <Button title='Submit' color='shadedPrimary' size='big' />
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

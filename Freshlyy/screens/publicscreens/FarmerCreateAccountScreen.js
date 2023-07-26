@@ -4,7 +4,7 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
+  KeyboardAvoidingView,
   TextInput,
   ScrollView,
 } from 'react-native';
@@ -74,94 +74,100 @@ export default function ({ navigation, route }) {
   const animation = Animations[Math.floor(Math.random() * Animations.length)];
   return (
     <SafeAreaView>
-      <View style={styles.screen}>
-        <Header back={true} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Animatable.View
-            animation='fadeInUpBig'
-            duration={1000}
-            delay={2 * 300}
-          >
-            <View style={styles.pageContent}>
-              <Image
-                source={require('../../assets/farmer.png')}
-                style={styles.vectorimage}
-              />
-              {/* <DatePicker/> */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.screen}>
+          <Header back={true} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Animatable.View
+              animation='fadeInUpBig'
+              duration={1000}
+              delay={2 * 300}
+            >
+              <View style={styles.pageContent}>
+                <Image
+                  source={require('../../assets/farmer.png')}
+                  style={styles.vectorimage}
+                />
+                {/* <DatePicker/> */}
 
-              <View style={styles.inputcont}>
-                <TextInputBox
-                  inputlabel='Occupation'
-                  placeholder='Enter Occupation'
-                  name='Occupation'
-                  onChangeText={formik.handleChange('Occupation')}
-                  onBlur={() =>
-                    formik.setFieldTouched('Occupation', true, true)
-                  }
-                  value={formik.values.Occupation}
-                  error={formik.errors.Occupation}
-                  touched={formik.touched.Occupation}
-                />
+                <View style={styles.inputcont}>
+                  <TextInputBox
+                    inputlabel='Occupation'
+                    placeholder='Enter Occupation'
+                    name='Occupation'
+                    onChangeText={formik.handleChange('Occupation')}
+                    onBlur={() =>
+                      formik.setFieldTouched('Occupation', true, true)
+                    }
+                    value={formik.values.Occupation}
+                    error={formik.errors.Occupation}
+                    touched={formik.touched.Occupation}
+                  />
 
-                <TextInputBox
-                  inputlabel='Maximum Delivery Distance'
-                  placeholder='Enter Maximum Delivery Distance'
-                  name='delDistance'
-                  onChangeText={formik.handleChange('delDistance')}
-                  onBlur={() =>
-                    formik.setFieldTouched('delDistance', true, true)
-                  }
-                  keyboardType='number-pad'
-                  value={formik.values.delDistance}
-                  error={formik.errors.delDistance}
-                  touched={formik.touched.delDistance}
-                />
+                  <TextInputBox
+                    inputlabel='Maximum Delivery Distance (KM)'
+                    placeholder='Enter Maximum Delivery Distance'
+                    name='delDistance'
+                    onChangeText={formik.handleChange('delDistance')}
+                    onBlur={() =>
+                      formik.setFieldTouched('delDistance', true, true)
+                    }
+                    keyboardType='number-pad'
+                    value={formik.values.delDistance}
+                    error={formik.errors.delDistance}
+                    touched={formik.touched.delDistance}
+                  />
 
-                <TextInputBox
-                  inputlabel='Delivery Charge'
-                  placeholder='Enter delivery charge per Km'
-                  name='delCharge'
-                  onChangeText={formik.handleChange('delCharge')}
-                  onBlur={() => formik.setFieldTouched('delCharge', true, true)}
-                  keyboardType='number-pad'
-                  value={formik.values.delCharge}
-                  error={formik.errors.delCharge}
-                  touched={formik.touched.delCharge}
-                />
+                  <TextInputBox
+                    inputlabel='Delivery Charge (LKR)'
+                    placeholder='Enter delivery charge per Km'
+                    name='delCharge'
+                    onChangeText={formik.handleChange('delCharge')}
+                    onBlur={() =>
+                      formik.setFieldTouched('delCharge', true, true)
+                    }
+                    keyboardType='number-pad'
+                    value={formik.values.delCharge}
+                    error={formik.errors.delCharge}
+                    touched={formik.touched.delCharge}
+                  />
 
-                <DropDownPicker
-                  inputlabel='Do you have a vehicle?'
-                  items={[
-                    {
-                      label: 'Has a vehicle to deliver',
-                      value: 'Has a vehicle to deliver',
-                    },
-                    {
-                      label: 'No vehicle to deliver',
-                      value: 'No vehicle to deliver',
-                    },
-                  ]}
-                  value={formik.values.hasVehicle}
-                  onChange={(value) =>
-                    formik.setFieldValue('hasVehicle', value)
-                  }
-                  touched={formik.touched.hasVehicle}
-                  error={formik.errors.hasVehicle}
-                  onClose={() =>
-                    formik.setFieldTouched('hasVehicle', true, true)
-                  }
-                />
-                <Button
-                  title='Next'
-                  color='filledSecondary'
-                  size='big'
-                  onPress={submit}
-                />
+                  <DropDownPicker
+                    inputlabel='Do you have a vehicle?'
+                    items={[
+                      {
+                        label: 'Has a vehicle to deliver',
+                        value: 'Has a vehicle to deliver',
+                      },
+                      {
+                        label: 'No vehicle to deliver',
+                        value: 'No vehicle to deliver',
+                      },
+                    ]}
+                    value={formik.values.hasVehicle}
+                    onChange={(value) =>
+                      formik.setFieldValue('hasVehicle', value)
+                    }
+                    touched={formik.touched.hasVehicle}
+                    error={formik.errors.hasVehicle}
+                    onClose={() =>
+                      formik.setFieldTouched('hasVehicle', true, true)
+                    }
+                  />
+                  <Button
+                    title='Next'
+                    color='filledSecondary'
+                    size='big'
+                    onPress={submit}
+                  />
+                </View>
               </View>
-            </View>
-          </Animatable.View>
-        </ScrollView>
-      </View>
+            </Animatable.View>
+          </ScrollView>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
