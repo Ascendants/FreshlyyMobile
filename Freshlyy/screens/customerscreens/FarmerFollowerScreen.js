@@ -10,10 +10,14 @@ import {
 } from 'react-native';
 import Theme from '../../constants/theme';
 import { Button } from '../../components/Buttons';
-
+import {
+  TextInputBox,
+  DropDownPicker,
+  DatePicker,
+} from '../../components/Inputs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
-import { H4, P, H3 } from '../../components/Texts';
+import { H4, P } from '../../components/Texts';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import ENV from '../../constants/env';
 import FarmerFollowCard from '../../components/FarmerFollowCard';

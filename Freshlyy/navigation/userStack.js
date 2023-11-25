@@ -83,7 +83,18 @@ export default function App(props) {
         <Stack.Navigator
           screenOptions={{ headerShown: false, animation: 'none' }}
         >
-          {/* <Stack.Screen
+          <Stack.Screen
+            name='Farmer report'
+            component={Screens.CustomerDashboardScreen}
+            options={{ headerShown: false }}
+            initialParams={{
+              ...defaultParams,
+              orderId: '648017f45ed6e07fdd85bb5c',
+              purl: 'sri_lankan_mango_640f50d7c36e0ee998dcbca9',
+              farmer: '63b6b5d2ce65a7b5a2671383',
+            }}
+          />
+          <Stack.Screen
             name='Reviewed Order'
             component={Screens.OrderReviewScreen}
             options={{ headerShown: false }}
@@ -93,7 +104,7 @@ export default function App(props) {
               purl: 'sri_lankan_mango_640f50d7c36e0ee998dcbca9',
               farmer: '63b6b5d2ce65a7b5a2671383',
             }}
-          /> */}
+          />
           <Stack.Screen
             name='Order Item Review'
             component={Screens.OrderItemReviewScreen}
