@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import Theme from '../../constants/theme';
+import { TextInputBox } from '../../components/Inputs';
 import { Button } from '../../components/Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
@@ -8,9 +9,9 @@ import { H3 } from '../../components/Texts';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import ENV from '../../constants/env';
 
-export default function () {
+export default function ({ route, navigation }) {
   const [farmer, setFarmer] = useState([]);
-  // const [items, setItem] = useState([]);
+  const [Report, setReport] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
@@ -58,28 +59,28 @@ export default function () {
     return;
   }
 
-  // const getData = (isRefreshing) => {
-  //   isRefreshing ? setRefreshing(true) : setLoaded(false);
-  //   fetch(ENV.backend + '/customer/report-farmer/63b6b5d2ce65a7b5a2671383', {
-  //     //getting data from the backend (all products)
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: route.params.auth,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (res.message == 'Success') {
-  //         setFarmer(res.farmer);
-  //         console.log(res);
-  //       }
-  //       isRefreshing ? setRefreshing(false) : setLoaded(true);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-  // useEffect(() => {
-  //   getData();
-  // }, []);
+  const getData = (isRefreshing) => {
+    isRefreshing ? setRefreshing(true) : setLoaded(false);
+    fetch(ENV.backend + '/customer/report-farmer/63b6b5d2ce65a7b5a2671383', {
+      //getting data from the backend (all products)
+      method: 'GET',
+      headers: {
+        Authorization: route.params.auth,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message == 'Success') {
+          setReport(res.Report);
+          console.log(res);
+        }
+        isRefreshing ? setRefreshing(false) : setLoaded(true);
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <SafeAreaView>
@@ -132,6 +133,19 @@ export default function () {
               onPress={farmer?.isFollowing ? unfollow : follow}
             />
           </View>
+          <View style={styles.report}>
+            <TextInputBox
+              inputlabel='Report'
+              placeholder='Write Report'
+              name='Report'
+              //onChangeText={setReport('Report')}
+            />
+            <Button
+              size='normal'
+              title='Submit  Report'
+              color='shadedDanger'
+            ></Button>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -171,6 +185,10 @@ const styles = StyleSheet.create({
     //justifyContent: 'flex-end',
     alignItems: 'center',
     flex: 2,
+  },
+  report: {
+    width: '90%',
+    marginBottom: 100,
   },
 });
 

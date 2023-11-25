@@ -25,7 +25,7 @@ export default function ({ navigation, route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [farmer, setFarmer] = useState({});
-
+  console.log(farmer);
   async function follow() {
     try {
       const result = await fetch(

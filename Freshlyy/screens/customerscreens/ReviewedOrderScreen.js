@@ -24,7 +24,7 @@ import ReviewProductCard from '../../components/ReviewProductCard';
 import Rating from '../../components/Rating';
 import ENV from '../../constants/env';
 
-export default function () {
+export default function ({ route, navigation }) {
   const [order, setOrder] = useState([]);
   const [product, setProduct] = useState([]);
   const [items, setItem] = useState([]);
@@ -174,6 +174,7 @@ export default function () {
             color='shadedPrimary'
             size='normal'
             style={styles.edit}
+            onPress={() => navigation.navigate('Order Review')}
           />
           <View style={styles.contaniner}>
             <Image source={{ uri: farmer?.farmerImage }} style={styles.image} />
